@@ -24,5 +24,5 @@ class puppetdb::terminus(
         notify      => $::puppet::master::service_notify
     }
         
-    Package["puppetdb-terminus"] -> File[$routes_file] -> File[$puppetdb_conf_file] ->
+    Package["puppetdb-terminus"] -> File[$routes_file] -> File[$puppetdb_conf_file]
 }
