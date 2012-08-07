@@ -5,12 +5,20 @@ class puppetdb::terminus(
         ensure => present,
     }
 
-    package { "puppetmaster":
-        ensure => present,
+    
+    #######Hack until i find a nice way to do this 
+    if ! defined(Package['puppetmaster'])
+    {
+        package { "puppetmaster":
+            ensure => present,
+        }
     }
 
-    service { "puppetmaster":
-        ensure => running,
+    if ! defined(Service['puppetmaster'])
+    {
+        service { "puppetmaster":
+            ensure => running,
+        }
     }
 
     # TODO: this will overwrite any existing routes.yaml;
