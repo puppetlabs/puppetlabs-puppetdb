@@ -1,5 +1,6 @@
 class puppetdb::terminus(
-    $puppetdb_host = $settings::certname
+    $puppetdb_host = $settings::certname,
+    $puppetmaster_service = undef
 ) {
     package { "puppetdb-terminus":
         ensure => present,
@@ -12,8 +13,8 @@ class puppetdb::terminus(
     file { "$routes_file":
         ensure      => file,
         content     => template('puppetdb/terminus/routes.yaml.erb'),
-        require     => Class['puppet::master'],
-        notify      => $::puppet::master::service_notify
+        require     => Package['puppetdb-terminus'],
+        notify      => $puppetmaster_service,
     }
 
     $notify_exec = "notify: puppet.conf changes required"
@@ -21,8 +22,7 @@ class puppetdb::terminus(
     file { "$puppetdb_conf_file":
         ensure      => file,
         content     => template('puppetdb/terminus/puppetdb.conf.erb'),
-        notify      => $::puppet::master::service_notify
+        require     => File[$routes_file],
+        notify      => $puppetmaster_service,
     }
-        
-    Package["puppetdb-terminus"] -> File[$routes_file] -> File[$puppetdb_conf_file]
 }
