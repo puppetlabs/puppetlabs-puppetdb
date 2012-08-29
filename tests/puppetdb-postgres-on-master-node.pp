@@ -9,8 +9,6 @@
 # After that if you run 'puppet agent --test' (on the same machine), you
 #  should see the puppetdb being exercised (see /var/log/puppetdb)
 #
-
-include puppetdb::terminus
 include puppetdb::postgresql::server
 
 class { 'puppetdb::server':

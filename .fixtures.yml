@@ -2,4 +2,4 @@ fixtures:
     repositories:
         'inifile':  "git://github.com/cprice-puppet/puppetlabs-inifile.git"
     symlinks:
-        "puppet": "#{source_dir}"
+        "puppetdb": "#{source_dir}"

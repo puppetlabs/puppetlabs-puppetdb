@@ -1,35 +1,36 @@
 class puppetdb::server(
     $database              = 'embedded',
-    $psdatabase_host       = $puppetdb::params::psdatabase_host,
-    $psdatabase_port       = $puppetdb::params::psdatabase_port,
-    $psdatabase_username   = $puppetdb::params::psdatabase_username,
-    $psdatabase_password   = $puppetdb::params::psdatabase_password,  
-    $psdatabase            = $puppetdb::params::psdatabase_psdatabase,
+    $psqldatabase_host       = $puppetdb::params::psqldatabase_host,
+    $psqldatabase_port       = $puppetdb::params::psqldatabase_port,
+    $psqldatabase_username   = $puppetdb::params::psqldatabase_username,
+    $psqldatabase_password   = $puppetdb::params::psqldatabase_password,  
+    $psqldatabase            = $puppetdb::params::psqldatabase,
     $confdir               = $puppetdb::params::confdir,
-    $gc_interval           = $puppetdb::params::gc_interval
+    $gc_interval           = $puppetdb::params::gc_interval,
+    $version               = 'present'
 ) inherits puppetdb::params {
 
     package { 'puppetdb':
         ensure  => present,
-        notifty => Service['puppetdb'],
+        notify => Service['puppetdb'],
     }
     
-    file { "{confdir}/database.ini":
+    file { "${confdir}/database.ini":
         ensure      => file,
-        path        => $puppetdb_ini_file,
         require     => Package['puppetdb'],
     }
 
     service { 'puppetdb':
         ensure => running,
-        require => File['puppetdb: database.ini'],
+        enable => true,
+        require => File["${confdir}/database.ini"],
     }
 
     #Set the defaults
     Ini_setting {
         path    => "${confdir}/database.ini",
-        require => File['{confdir}/database.ini'],
-        notifty => Service['puppetdb'],
+        require => File["${confdir}/database.ini"],
+        notify => Service['puppetdb'],
     }
 
     if $database == 'embedded'{
@@ -39,21 +40,21 @@ class puppetdb::server(
     } elsif $database == 'postgres' {
         $classname = 'org.postgresql.Driver'
         $subprotocol = 'postgresql'
-        $subname = "//#${psdatabase_host}:${psdatabase_port}/${psdatabase}"
+        $subname = "//${psqldatabase_host}:${psqldatabase_port}/${psqldatabase}"
     
         ##Only setup for postgres
         ini_setting {'puppetdb_psdatabase_username':
             ensure  => present,
             section => 'database',
             setting => 'username',
-            value   => $psdatabase_username,
+            value   => $psqldatabase_username,
         }
 
-        ini_setting {'puppetdb_psdatabase_username':
+        ini_setting {'puppetdb_psdatabase_password':
             ensure  => present,
             section => 'database',
             setting => 'password',
-            value   => $psdatabase_password,
+            value   => $psqldatabase_password,
         }
     }
     
@@ -88,7 +89,7 @@ class puppetdb::server(
     ini_setting {'puppetdb_gc_interval':
             ensure  => present,
             section => 'database',
-            setting => 'gc-interval ',
+            setting => 'gc-interval',
             value   => $gc_interval ,
     }
     
