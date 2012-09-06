@@ -1,13 +1,13 @@
 class puppetdb::server(
-    $database              = 'embedded',
+    $database                = 'embedded',
     $psqldatabase_host       = $puppetdb::params::psqldatabase_host,
     $psqldatabase_port       = $puppetdb::params::psqldatabase_port,
     $psqldatabase_username   = $puppetdb::params::psqldatabase_username,
     $psqldatabase_password   = $puppetdb::params::psqldatabase_password,  
     $psqldatabase            = $puppetdb::params::psqldatabase,
-    $confdir               = $puppetdb::params::confdir,
-    $gc_interval           = $puppetdb::params::gc_interval,
-    $version               = 'present'
+    $confdir                 = $puppetdb::params::confdir,
+    $gc_interval             = $puppetdb::params::gc_interval,
+    $version                 = 'present',
 ) inherits puppetdb::params {
 
     package { 'puppetdb':
