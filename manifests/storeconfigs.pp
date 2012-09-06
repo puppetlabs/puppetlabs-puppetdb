@@ -4,7 +4,6 @@
 #
 # Parameters:
 #   ['puppet_confdir']    - The config directory of puppet
-#   ['puppet_service']    - The service needing to be notified of the change puppetmasterd or httpd
 #   ['dbport']            - The port of the puppetdb
 #   ['dbserver']          - The dns name of the puppetdb server
 #   ['puppet_conf']       - The puppet config file
@@ -18,9 +17,8 @@
 #
 # Sample Usage:
 #   class { 'puppetdb::storeconfigs':
-#       dbserver             => Service['httpd'],
-#       dbport                     => 8081,
 #       dbserver                   => 'localhost'
+#       dbport                     => 8081,
 #   }
 #
 class puppetdb::storeconfigs(
