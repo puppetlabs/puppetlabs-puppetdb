@@ -10,5 +10,4 @@
 #  should see the puppetdb being exercised (see /var/log/puppetdb)
 #
 
-include puppetdb::terminus
 include puppetdb::server
