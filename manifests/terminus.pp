@@ -1,63 +1,60 @@
-class puppetdb::terminus(
-    $puppetdb_host = $settings::certname
-) {
-    package { "puppetdb-terminus":
-        ensure => present,
-    }
-
-    package { "puppetmaster":
-        ensure => present,
-    }
-
-    service { "puppetmaster":
-        ensure => running,
+  # Class: puppetdb::terminus
+  #
+  # This class installs and configures the puppetdb terminus pacakge
+  #
+  # Parameters:
+  #   ['puppet_confdir']    - The config directory of puppet
+  #   ['dbport']            - The port of the puppetdb
+  #   ['dbserver']          - The dns name of the puppetdb server
+  #
+  # Actions:
+  # - Configures the puppetdb terminus package
+  #
+  # Requires:
+  # - Inifile
+  #
+  # Sample Usage:
+  #   class { 'puppet::terminus':
+  #       puppet_confdir             => '/etc/puppet/',
+  #       dbport                     => 8081,
+  #       dbserver                   => 'localhost'
+  #   }
+  #
+  class puppetdb::terminus($puppet_confdir, $dbport, $dbserver)
+  {
+    package { 'puppetdb-terminus':
+      ensure  => present,
     }
 
     # TODO: this will overwrite any existing routes.yaml;
     #  to handle this properly we should just be ensuring
     #  that the proper lines exist
-    $routes_file = "${settings::confdir}/routes.yaml"
-    file { "$routes_file":
-        ensure      => file,
-        content     => template('puppetdb/terminus/routes.yaml.erb'),
-        notify      => Service['puppetmaster'],
+    file { "${puppet_confdir}/routes.yaml":
+      ensure      => file,
+      source      => 'puppet:///modules/puppet/routes.yaml',
+      require     => Package['puppetdb-terminus'],
     }
 
-    $notify_exec = "notify: puppet.conf changes required"
-    $puppetdb_conf_file = "${settings::confdir}/puppetdb.conf"
-    file { "$puppetdb_conf_file":
-        ensure      => file,
-        content     => template('puppetdb/terminus/puppetdb.conf.erb'),
-        notify      => [Service['puppetmaster'], Exec[$notify_exec]]
+    file { "${puppet_confdir}/puppetdb.conf":
+      ensure      => file,
+      require     => File["${puppet_confdir}/routes.yaml"],
     }
 
-    # TODO: we also need to make some small changes to puppet.conf, but
-    #  that requires the ability to manipulate an .ini file, which
-    #  we can't easily accomplish at this point.  This exec is here
-    #  to notify the users of the situation.  Can't use a real 'notify'
-    #  because we only want this to appear on refresh.
-    $puppet_conf_changes_msg = "
-        Almost there!  To finish, you'll need to add the following lines to
-        your puppet.conf file, in the [main] section:
-
-            server=${settings::certname}
-            storeconfigs=true
-            storeconfigs_backend=puppetdb
-
-        Then you should be able to run 'puppet agent --test' to exercise
-        your puppetdb installation.
-
-        "
-    exec { $notify_exec:
-        refreshonly => true,
-        path        => '/bin:/usr/bin',
-        command     => "echo \"$puppet_conf_changes_msg\"",
-        logoutput   => true,
+    ini_setting {'puppetterminusserver':
+      ensure  => present,
+      section => 'main',
+      setting => 'server',
+      path    => "${puppet_confdir}/puppetdb.conf",
+      value   => $dbserver,
+      require => File["${puppet_confdir}/puppetdb.conf"],
     }
 
-    Package["puppetmaster"] ->
-        Package["puppetdb-terminus"] ->
-        File[$routes_file] ->
-        File[$puppetdb_conf_file] ->
-        Service["puppetmaster"]
-}
+    ini_setting {'puppetterminusport':
+      ensure  => present,
+      section => 'main',
+      setting => 'port',
+      path    => "${puppet_confdir}/puppetdb.conf",
+      value   => $dbport,
+      require => File["${puppet_confdir}/puppetdb.conf"],
+    }
+  }
