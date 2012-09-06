@@ -37,7 +37,7 @@ class puppetdb::storeconfigs(
   Ini_setting{
     section => 'master',
     path    => $puppet_conf,
-    require => Class[puppetdb::dbterminus],
+    require => Class[puppetdb::terminus],
   }
 
   ini_setting {'puppetmasterstoreconfigserver':
