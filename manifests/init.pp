@@ -20,6 +20,10 @@
 #                  db can be used for very small installations or for
 #                  testing, but is not recommended for use in production
 #                  environments.  For more info, see the puppetdb docs.)
+#   ['puppetdb_version']   - The version of the `puppetdb` package that should
+#                  be installed.  You may specify an explicit version
+#                  number, 'present', or 'latest'.  Defaults to
+#                  'present'.
 #
 # Actions:
 # - Creates and manages a puppetdb server and its database server/instance.
@@ -34,10 +38,12 @@
 # TODO: expose more parameters
 
 class puppetdb(
-    $database = $puppetdb::params::database,
+    $database         = $puppetdb::params::database,
+    $puppetdb_version = $puppetdb::params::puppetdb_version,
 ) inherits puppetdb::params {
     class { 'puppetdb::server':
-        database => $database,
+        database         => $database,
+        puppetdb_version => $puppetdb_version,
     }
 
     if ($database == "postgres") {

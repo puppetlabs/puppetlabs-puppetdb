@@ -26,6 +26,8 @@ class puppetdb::params {
     $database_username      = 'puppetdb'
     $database_password      = 'puppetdb'
 
+    $puppetdb_version       = 'present'
+
     # TODO: figure out a way to make this not platform-specific
     $manage_redhat_firewall = true
 

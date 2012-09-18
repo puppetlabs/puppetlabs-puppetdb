@@ -41,6 +41,10 @@
 #                            (defaults to `puppetdb`; ignored for `embedded` db)
 #   ['database_name']      - The name of the database instance to connect to.
 #                            (defaults to `puppetdb`; ignored for `embedded` db)
+#   ['puppetdb_version']   - The version of the `puppetdb` package that should
+#                            be installed.  You may specify an explicit version
+#                            number, 'present', or 'latest'.  Defaults to
+#                            'present'.
 #   ['manage_redhat_firewall'] - boolean indicating whether or not the module
 #                            should open a port in the firewall on redhat-based
 #                            systems.  Defaults to `true`.  This parameter is
@@ -73,13 +77,14 @@ class puppetdb::server(
     $database_username       = $puppetdb::params::database_username,
     $database_password       = $puppetdb::params::database_password,
     $database_name           = $puppetdb::params::database_name,
+    $puppetdb_version        = $puppetdb::params::puppetdb_version,
     $manage_redhat_firewall  = $puppetdb::params::manage_redhat_firewall,
     $confdir                 = $puppetdb::params::confdir,
     $gc_interval             = $puppetdb::params::gc_interval,
 ) inherits puppetdb::params {
 
     package { 'puppetdb':
-        ensure  => present,
+        ensure  => $puppetdb_version,
         notify => Service['puppetdb'],
     }
 

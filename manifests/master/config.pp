@@ -19,6 +19,10 @@
 #                         storeconfig settings (defaults to true)
 #   ['puppet_confdir']  - Puppet's config directory; defaults to /etc/puppet
 #   ['puppet_conf']     - Puppet's config file; defaults to /etc/puppet/puppet.conf
+#   ['puppetdb_version']   - The version of the `puppetdb` package that should
+#                         be installed.  You may specify an explicit version
+#                         number, 'present', or 'latest'.  Defaults to
+#                         'present'.
 #
 # Actions:
 # - Configures the puppet master to use puppetdb.
@@ -42,10 +46,11 @@ class puppetdb::master::config(
       $manage_storeconfigs  = true,
       $puppet_confdir       = '/etc/puppet',
       $puppet_conf          = '/etc/puppet/puppet.conf',
-)
-{
+      $puppetdb_version     = $puppetdb::params::puppetdb_version,
+) inherits puppetdb::params {
+
   package { 'puppetdb-terminus':
-    ensure  => present,
+    ensure  => $puppetdb_version,
   }
 
   # Validate the puppetdb connection.  If we can't connect to puppetdb then we
