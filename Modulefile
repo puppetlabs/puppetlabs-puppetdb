@@ -1,5 +1,5 @@
 name 'cprice404-puppetdb'
-version '0.1.0'
+version '0.1.1'
 source 'git://github.com/cprice-puppet/puppetlabs-puppetdb.git'
 author 'Puppet Labs'
 description 'PuppetDB resource types'

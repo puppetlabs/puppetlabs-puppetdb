@@ -41,6 +41,14 @@
 #                            (defaults to `puppetdb`; ignored for `embedded` db)
 #   ['database_name']      - The name of the database instance to connect to.
 #                            (defaults to `puppetdb`; ignored for `embedded` db)
+#   ['manage_redhat_firewall'] - boolean indicating whether or not the module
+#                            should open a port in the firewall on redhat-based
+#                            systems.  Defaults to `true`.  This parameter is
+#                            likely to change in future versions.  Possible
+#                            changes include support for non-RedHat systems and
+#                            finer-grained control over the firewall rule
+#                            (currently, it simply opens up the postgres port to
+#                            all TCP connections).
 #   ['confdir']            - The puppetdb configuration directory; defaults to
 #                            `/etc/puppetdb/conf.d`.
 #
@@ -65,6 +73,7 @@ class puppetdb::server(
     $database_username       = $puppetdb::params::database_username,
     $database_password       = $puppetdb::params::database_password,
     $database_name           = $puppetdb::params::database_name,
+    $manage_redhat_firewall  = $puppetdb::params::manage_redhat_firewall,
     $confdir                 = $puppetdb::params::confdir,
     $gc_interval             = $puppetdb::params::gc_interval,
 ) inherits puppetdb::params {
@@ -72,6 +81,11 @@ class puppetdb::server(
     package { 'puppetdb':
         ensure  => present,
         notify => Service['puppetdb'],
+    }
+
+    class { 'puppetdb::server::firewall':
+        port                   => $ssl_listen_port,
+        manage_redhat_firewall => $manage_redhat_firewall,
     }
 
     class { 'puppetdb::server::database_ini':
@@ -98,6 +112,7 @@ class puppetdb::server(
     }
 
     Package['puppetdb'] ->
+        Class['puppetdb::server::firewall'] ->
         Class['puppetdb::server::database_ini'] ->
         Class['puppetdb::server::jetty_ini'] ->
         Service['puppetdb']
