@@ -30,6 +30,16 @@ changes, to help make sure that PuppetDB doesn’t end up in a broken state
 the Puppet master, to help make sure that your master doesn’t end up in a broken
 state
 
+Examples
+--------
+In the `tests` directory, there are example manifests that show how you can
+do a basic setup in a few different configurations.  They include examples of
+setting up PuppetDB and all of its dependencies all on the same node as your
+Puppet master, and also an example of a 3-node distributed setup in which
+Puppet, PuppetDB, and PostgreSQL are all running on separate machines.
+
+Also, see `README_GETTING_STARTED.md` for a little more of a guided tour.
+
 Resource Overview
 -----------------
 
@@ -61,7 +71,7 @@ database that it depends on; so it’ll manage the PuppetDB package, service,
 config files, etc., but will allow you to manage the database (e.g. postgresql)
 however you see fit.
 
-###### `puppetdb::database::postgresql` class
+##### `puppetdb::database::postgresql` class
 
 This is a class for managing a postgresql server for use by PuppetDB.  It can
 manage the postgresql packages and service, as well as creating and managing the
