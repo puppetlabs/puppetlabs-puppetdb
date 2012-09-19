@@ -154,11 +154,11 @@ manifest will trigger:
 PuppetDB
 * Validate the PuppetDB connection and, if successful, modify the Puppet master
 config files to use PuppetDB
+* Restart the Puppet master so that it will pick up the config changes
 
-You will need to restart your puppet master one time after the run, in order for
-all of these changes to take effect.  If your logging level is set to INFO or
-finer, you should start seeing PuppetDB-related log messages appear in both your
-Puppet master log and your PuppetDB log as subsequent agent runs occur.
+If your logging level is set to INFO or finer, you should start seeing
+PuppetDB-related log messages appear in both your Puppet master log and your
+PuppetDB log as subsequent agent runs occur.
 
 Note: If you’d prefer to use PuppetDB’s embedded database rather than
 PostgreSQL, have a look at the database parameter on the puppetdb class.  The
