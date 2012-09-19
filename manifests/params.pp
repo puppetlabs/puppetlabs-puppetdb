@@ -46,4 +46,7 @@ class puppetdb::params {
         #$persist_firewall_command = '/sbin/iptables-save > /etc/iptables/rules.v4'
       }
     }
+
+    # TODO: need to condition this for PE
+    $puppet_service_name  = 'puppetmaster'
 }

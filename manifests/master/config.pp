@@ -68,15 +68,27 @@ class puppetdb::master::config(
   Service<|title == 'puppetdb'|> -> Puppetdb_conn_validator['puppetdb_conn']
 
 
-  # Conditionally manage the `routes.yaml` file.
+  # We will need to restart the puppet master service if certain config
+  # files are changed, so here we make sure it's in the catalog.
+  if ! defined(Service[$puppet_service_name]) {
+    service { $puppet_service_name:
+      ensure => running,
+    }
+  }
+
+  # Conditionally manage the `routes.yaml` file.  Restart the puppet service
+  # if changes are made.
   if ($manage_routes) {
     class { 'puppetdb::master::routes':
       puppet_confdir => $puppet_confdir,
       require        => Puppetdb_conn_validator['puppetdb_conn'],
+      notify         => Service[$puppet_service_name],
     }
   }
 
-  # Conditionally manage the storeconfigs settings in `puppet.conf`.
+  # Conditionally manage the storeconfigs settings in `puppet.conf`.  We don't
+  # need to trigger a restart of the puppet master service for this one, because
+  # it polls it automatically.
   if ($manage_storeconfigs) {
     class { 'puppetdb::master::storeconfigs':
       puppet_conf => $puppet_conf,
@@ -84,12 +96,14 @@ class puppetdb::master::config(
     }
   }
 
-  # Manage the `puppetdb.conf` file.
+  # Manage the `puppetdb.conf` file.  Restart the puppet service if changes
+  # are made.
   class { 'puppetdb::master::puppetdb_conf':
     server         => $puppetdb_server,
     port           => $puppetdb_port,
     puppet_confdir => $puppet_confdir,
     require        => Puppetdb_conn_validator['puppetdb_conn'],
+    notify         => Service[$puppet_service_name],
   }
 
 }
