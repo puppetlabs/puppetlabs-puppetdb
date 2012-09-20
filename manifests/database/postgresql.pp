@@ -31,27 +31,26 @@
 #       listen_addresses         => 'my.postgres.host.name',
 #   }
 #
-
 class puppetdb::database::postgresql(
-    # TODO: expose more of the parameters from `inkling/postgresql`!
-    $listen_addresses = $puppetdb::params::database_host,
+  # TODO: expose more of the parameters from `inkling/postgresql`!
+  $listen_addresses = $puppetdb::params::database_host,
 ) inherits puppetdb::params {
 
-    # get the pg server up and running
-    class { '::postgresql::server':
-      config_hash => {
-          # TODO: make this stuff configurable
-          'ip_mask_allow_all_users' => '0.0.0.0/0',
-          'listen_addresses' => $listen_addresses,
-          'manage_redhat_firewall' => true,
-      },
-    }
+  # get the pg server up and running
+  class { '::postgresql::server':
+    config_hash => {
+      # TODO: make this stuff configurable
+      'ip_mask_allow_all_users' => '0.0.0.0/0',
+      'listen_addresses'        => $listen_addresses,
+      'manage_redhat_firewall'  => true,
+    },
+  }
 
-    # create the puppetdb database
-    postgresql::db{ 'puppetdb':
-      user          => 'puppetdb',
-      password      => 'puppetdb',
-      grant         => 'all',
-      require       => Class['::postgresql::server'],
-    }
+  # create the puppetdb database
+  postgresql::db{ 'puppetdb':
+    user     => 'puppetdb',
+    password => 'puppetdb',
+    grant    => 'all',
+    require  => Class['::postgresql::server'],
+  }
 }
