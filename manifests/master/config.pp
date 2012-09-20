@@ -36,17 +36,16 @@
 #       puppetdb_port            => 8081,
 #   }
 #
-
 # TODO: port this to use params
-
+#
 class puppetdb::master::config(
-      $puppetdb_server      = $::clientcert,
-      $puppetdb_port        = 8081,
-      $manage_routes        = true,
-      $manage_storeconfigs  = true,
-      $puppet_confdir       = '/etc/puppet',
-      $puppet_conf          = '/etc/puppet/puppet.conf',
-      $puppetdb_version     = $puppetdb::params::puppetdb_version,
+  $puppetdb_server      = $::clientcert,
+  $puppetdb_port        = 8081,
+  $manage_routes        = true,
+  $manage_storeconfigs  = true,
+  $puppet_confdir       = '/etc/puppet',
+  $puppet_conf          = '/etc/puppet/puppet.conf',
+  $puppetdb_version     = $puppetdb::params::puppetdb_version,
 ) inherits puppetdb::params {
 
   package { 'puppetdb-terminus':
@@ -56,9 +55,9 @@ class puppetdb::master::config(
   # Validate the puppetdb connection.  If we can't connect to puppetdb then we
   # *must* not perform the other configuration steps, or else
   puppetdb_conn_validator { 'puppetdb_conn':
-      puppetdb_server      => $puppetdb_server,
-      puppetdb_port        => $puppetdb_port,
-      require              => Package['puppetdb-terminus'],
+    puppetdb_server => $puppetdb_server,
+    puppetdb_port   => $puppetdb_port,
+    require         => Package['puppetdb-terminus'],
   }
 
   # This is a bit of puppet chicanery that allows us to create a
@@ -67,11 +66,10 @@ class puppetdb::master::config(
   # this validator."
   Service<|title == 'puppetdb'|> -> Puppetdb_conn_validator['puppetdb_conn']
 
-
   # We will need to restart the puppet master service if certain config
   # files are changed, so here we make sure it's in the catalog.
-  if ! defined(Service[$puppet_service_name]) {
-    service { $puppet_service_name:
+  if ! defined(Service[$puppetdb::params::puppet_service_name]) {
+    service { $puppetdb::params::puppet_service_name:
       ensure => running,
     }
   }
@@ -82,7 +80,7 @@ class puppetdb::master::config(
     class { 'puppetdb::master::routes':
       puppet_confdir => $puppet_confdir,
       require        => Puppetdb_conn_validator['puppetdb_conn'],
-      notify         => Service[$puppet_service_name],
+      notify         => Service[$puppetdb::params::puppet_service_name],
     }
   }
 
@@ -92,7 +90,7 @@ class puppetdb::master::config(
   if ($manage_storeconfigs) {
     class { 'puppetdb::master::storeconfigs':
       puppet_conf => $puppet_conf,
-      require        => Puppetdb_conn_validator['puppetdb_conn'],
+      require     => Puppetdb_conn_validator['puppetdb_conn'],
     }
   }
 
@@ -103,8 +101,6 @@ class puppetdb::master::config(
     port           => $puppetdb_port,
     puppet_confdir => $puppet_confdir,
     require        => Puppetdb_conn_validator['puppetdb_conn'],
-    notify         => Service[$puppet_service_name],
+    notify         => Service[$puppetdb::params::puppet_service_name],
   }
-
 }
-
