@@ -19,29 +19,28 @@
 #       server => 'my.puppetdb.server'
 #   }
 #
-
+#
 # TODO: port this to use params
-
+#
 class puppetdb::master::puppetdb_conf(
-    $server         = 'localhost',
-    $port           = 8081,
-    $puppet_confdir = '/etc/puppet',
-)
-{
-    Ini_setting {
-      ensure  => present,
-      section => 'main',
-      path    => "${puppet_confdir}/puppetdb.conf",
-    }
+  $server         = 'localhost',
+  $port           = '8081',
+  $puppet_confdir = '/etc/puppet',
+) {
 
-    ini_setting {'puppetdbserver':
-      setting => 'server',
-      value   => $server,
-    }
+  Ini_setting {
+    ensure  => present,
+    section => 'main',
+    path    => "${puppet_confdir}/puppetdb.conf",
+  }
 
-    ini_setting {'puppetdbport':
-      setting => 'port',
-      value   => $port,
-    }
+  ini_setting {'puppetdbserver':
+    setting => 'server',
+    value   => $server,
+  }
 
+  ini_setting {'puppetdbport':
+    setting => 'port',
+    value   => $port,
+  }
 }

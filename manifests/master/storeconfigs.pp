@@ -17,13 +17,12 @@
 #       puppet_conf => '/etc/puppet/puppet.conf'
 #   }
 #
-
+#
 # TODO: port this to use params
-
+#
 class puppetdb::master::storeconfigs(
-    $puppet_conf = '/etc/puppet/puppet.conf',
-)
-{
+  $puppet_conf = '/etc/puppet/puppet.conf',
+) {
 
   Ini_setting{
     section => 'master',

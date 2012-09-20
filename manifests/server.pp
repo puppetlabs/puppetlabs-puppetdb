@@ -67,59 +67,57 @@
 #         database_host     => 'puppetdb-postgres',
 #     }
 #
-
 class puppetdb::server(
-    $ssl_listen_address      = $puppetdb::params::ssl_listen_address,
-    $ssl_listen_port         = $puppetdb::params::ssl_listen_port,
-    $database                = $puppetdb::params::database,
-    $database_host           = $puppetdb::params::database_host,
-    $database_port           = $puppetdb::params::database_port,
-    $database_username       = $puppetdb::params::database_username,
-    $database_password       = $puppetdb::params::database_password,
-    $database_name           = $puppetdb::params::database_name,
-    $puppetdb_version        = $puppetdb::params::puppetdb_version,
-    $manage_redhat_firewall  = $puppetdb::params::manage_redhat_firewall,
-    $confdir                 = $puppetdb::params::confdir,
-    $gc_interval             = $puppetdb::params::gc_interval,
+  $ssl_listen_address      = $puppetdb::params::ssl_listen_address,
+  $ssl_listen_port         = $puppetdb::params::ssl_listen_port,
+  $database                = $puppetdb::params::database,
+  $database_host           = $puppetdb::params::database_host,
+  $database_port           = $puppetdb::params::database_port,
+  $database_username       = $puppetdb::params::database_username,
+  $database_password       = $puppetdb::params::database_password,
+  $database_name           = $puppetdb::params::database_name,
+  $puppetdb_version        = $puppetdb::params::puppetdb_version,
+  $manage_redhat_firewall  = $puppetdb::params::manage_redhat_firewall,
+  $confdir                 = $puppetdb::params::confdir,
+  $gc_interval             = $puppetdb::params::gc_interval,
 ) inherits puppetdb::params {
 
-    package { 'puppetdb':
-        ensure  => $puppetdb_version,
-        notify => Service['puppetdb'],
-    }
+  package { 'puppetdb':
+    ensure => $puppetdb_version,
+    notify => Service['puppetdb'],
+  }
 
-    class { 'puppetdb::server::firewall':
-        port                   => $ssl_listen_port,
-        manage_redhat_firewall => $manage_redhat_firewall,
-    }
+  class { 'puppetdb::server::firewall':
+    port                   => $ssl_listen_port,
+    manage_redhat_firewall => $manage_redhat_firewall,
+  }
 
-    class { 'puppetdb::server::database_ini':
-        database                => $database,
-        database_host           => $database_host,
-        database_port           => $database_port,
-        database_username       => $database_username,
-        database_password       => $database_password,
-        database_name           => $database_name,
-        confdir                 => $confdir,
-        notify                  => Service['puppetdb'],
-    }
+  class { 'puppetdb::server::database_ini':
+    database          => $database,
+    database_host     => $database_host,
+    database_port     => $database_port,
+    database_username => $database_username,
+    database_password => $database_password,
+    database_name     => $database_name,
+    confdir           => $confdir,
+    notify            => Service['puppetdb'],
+  }
 
-    class { 'puppetdb::server::jetty_ini':
-        ssl_listen_address  => $ssl_listen_address,
-        ssl_listen_port     => $ssl_listen_port,
-        confdir             => $confdir,
-        notify              => Service['puppetdb'],
-    }
+  class { 'puppetdb::server::jetty_ini':
+    ssl_listen_address  => $ssl_listen_address,
+    ssl_listen_port     => $ssl_listen_port,
+    confdir             => $confdir,
+    notify              => Service['puppetdb'],
+  }
 
-    service { 'puppetdb':
-        ensure => running,
-        enable => true,
-    }
+  service { 'puppetdb':
+    ensure => running,
+    enable => true,
+  }
 
-    Package['puppetdb'] ->
-        Class['puppetdb::server::firewall'] ->
-        Class['puppetdb::server::database_ini'] ->
-        Class['puppetdb::server::jetty_ini'] ->
-        Service['puppetdb']
-    
+  Package['puppetdb'] ->
+  Class['puppetdb::server::firewall'] ->
+  Class['puppetdb::server::database_ini'] ->
+  Class['puppetdb::server::jetty_ini'] ->
+  Service['puppetdb']
 }
