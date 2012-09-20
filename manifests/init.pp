@@ -34,21 +34,22 @@
 # Sample Usage:
 #   include puppetdb
 #
-
+#
 # TODO: expose more parameters
-
+#
 class puppetdb(
-    $database         = $puppetdb::params::database,
-    $puppetdb_version = $puppetdb::params::puppetdb_version,
+  $database         = $puppetdb::params::database,
+  $puppetdb_version = $puppetdb::params::puppetdb_version,
 ) inherits puppetdb::params {
-    class { 'puppetdb::server':
-        database         => $database,
-        puppetdb_version => $puppetdb_version,
-    }
 
-    if ($database == "postgres") {
-        class { 'puppetdb::database::postgresql':
-            before => Class['puppetdb::server']
-        }
+  class { 'puppetdb::server':
+    database         => $database,
+    puppetdb_version => $puppetdb_version,
+  }
+
+  if ($database == 'postgres') {
+    class { 'puppetdb::database::postgresql':
+      before => Class['puppetdb::server']
     }
+  }
 }

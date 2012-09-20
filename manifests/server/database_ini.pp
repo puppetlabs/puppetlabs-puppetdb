@@ -29,81 +29,92 @@
 #
 # Sample Usage:
 #   class { 'puppetdb::server::database_ini':
-#       database_host           => 'my.postgres.host',
-#       database_port           => 5432,
-#       database_username       => 'puppetdb_pguser',
-#       database_password       => 'puppetdb_pgpasswd',
-#       database_name           => 'puppetdb',
+#     database_host     => 'my.postgres.host',
+#     database_port     => '5432',
+#     database_username => 'puppetdb_pguser',
+#     database_password => 'puppetdb_pgpasswd',
+#     database_name     => 'puppetdb',
 #   }
 #
-
 class puppetdb::server::database_ini(
-    $database                = $puppetdb::params::database,
-    $database_host           = $puppetdb::params::database_host,
-    $database_port           = $puppetdb::params::database_port,
-    $database_username       = $puppetdb::params::database_username,
-    $database_password       = $puppetdb::params::database_password,
-    $database_name           = $puppetdb::params::database_name,
-    $confdir                 = $puppetdb::params::confdir,
+  $database          = $puppetdb::params::database,
+  $database_host     = $puppetdb::params::database_host,
+  $database_port     = $puppetdb::params::database_port,
+  $database_username = $puppetdb::params::database_username,
+  $database_password = $puppetdb::params::database_password,
+  $database_name     = $puppetdb::params::database_name,
+  $confdir           = $puppetdb::params::confdir,
 ) inherits puppetdb::params {
 
   # Validate the database connection.  If we can't connect, we want to fail
   # and skip the rest of the configuration, so that we don't leave puppetdb
   # in a broken state.
   class { 'puppetdb::server::validate_db':
-    database                => $database,
-    database_host           => $database_host,
-    database_port           => $database_port,
-    database_username       => $database_username,
-    database_password       => $database_password,
-    database_name           => $database_name,
+    database          => $database,
+    database_host     => $database_host,
+    database_port     => $database_port,
+    database_username => $database_username,
+    database_password => $database_password,
+    database_name     => $database_name,
   }
 
   #Set the defaults
   Ini_setting {
-      path    => "${confdir}/database.ini",
-      ensure  => present,
-      section => 'database',
-      require => Class['puppetdb::server::validate_db'],
+    path    => "${confdir}/database.ini",
+    ensure  => present,
+    section => 'database',
+    require => Class['puppetdb::server::validate_db'],
   }
-  if $database == 'embedded'{
-      $classname = 'org.hsqldb.jdbcDriver'
-      $subprotocol = 'hsqldb'
-      $subname = 'file:/usr/share/puppetdb/db/db;hsqldb.tx=mvcc;sql.syntax_pgs=true'
-  } elsif $database == 'postgres' {
-      $classname = 'org.postgresql.Driver'
-      $subprotocol = 'postgresql'
-      $subname = "//${database_host}:${database_port}/${database_name}"
 
-      ##Only setup for postgres
-      ini_setting {'puppetdb_psdatabase_username':
-          setting => 'username',
-          value   => $database_username,
-      }
-       ini_setting {'puppetdb_psdatabase_password':
-          setting => 'password',
-          value   => $database_password,
-      }
+  if $database == 'embedded'{
+
+    $classname   = 'org.hsqldb.jdbcDriver'
+    $subprotocol = 'hsqldb'
+    $subname     = 'file:/usr/share/puppetdb/db/db;hsqldb.tx=mvcc;sql.syntax_pgs=true'
+
+  } elsif $database == 'postgres' {
+    $classname = 'org.postgresql.Driver'
+    $subprotocol = 'postgresql'
+    $subname = "//${database_host}:${database_port}/${database_name}"
+
+    $classname   = 'org.postgresql.Driver'
+    $subprotocol = 'postgresql'
+    $subname     = "//${database_host}:${database_port}/${database}"
+
+    ##Only setup for postgres
+    ini_setting {'puppetdb_psdatabase_username':
+      setting => 'username',
+      value   => $database_username,
+    }
+
+    ini_setting {'puppetdb_psdatabase_password':
+      setting => 'password',
+      value   => $database_password,
+    }
   }
 
   ini_setting {'puppetdb_classname':
-          setting => 'classname',
-          value   => $classname,
+    setting => 'classname',
+    value   => $classname,
   }
+
   ini_setting {'puppetdb_subprotocol':
-          setting => 'subprotocol',
-          value   => $subprotocol,
+    setting => 'subprotocol',
+    value   => $subprotocol,
   }
+
   ini_setting {'puppetdb_pgs':
-          setting => 'syntax_pgs',
-          value   => true,
+    setting => 'syntax_pgs',
+    value   => true,
   }
+
   ini_setting {'puppetdb_subname':
-          setting => 'subname',
-          value   => $subname,
+    setting => 'subname',
+    value   => $subname,
   }
+
   ini_setting {'puppetdb_gc_interval':
-          setting => 'gc-interval',
-          value   => $gc_interval ,
+    setting => 'gc-interval',
+    value   => $puppetdb::params::gc_interval,
   }
 }
