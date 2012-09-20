@@ -77,10 +77,6 @@ class puppetdb::server::database_ini(
     $subprotocol = 'postgresql'
     $subname = "//${database_host}:${database_port}/${database_name}"
 
-    $classname   = 'org.postgresql.Driver'
-    $subprotocol = 'postgresql'
-    $subname     = "//${database_host}:${database_port}/${database}"
-
     ##Only setup for postgres
     ini_setting {'puppetdb_psdatabase_username':
       setting => 'username',
