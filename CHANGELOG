@@ -1,3 +1,9 @@
+2012-09-20 - Chris Price <chris@puppetlabs.com>
+ * 1.0.1 release
+
+2012-09-20 - Garrett Honeycutt <garrett@puppetlabs.com>
+ * complies with style guide (1aab5d9)
+
 2012-09-19 - Chris Price <chris@puppetlabs.com>
  * Fix invalid subname in database.ini (be683b7)
 
