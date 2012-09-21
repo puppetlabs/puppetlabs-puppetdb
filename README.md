@@ -3,7 +3,7 @@ puppetlabs-puppetdb
 
 Purpose:	    Install and manage the PuppetDB server and database, and
                 configure the Puppet master to use PuppetDB
-Module:	        puppetlabs/puppetdb (http://forge.puppetlabs.com/cprice404/puppetdb)
+Module:	        puppetlabs/puppetdb (http://forge.puppetlabs.com/puppetlabs/puppetdb)
 Puppet Version:	2.7+
 Platforms:	    RHEL6, Debian6, Ubuntu 10.04
 

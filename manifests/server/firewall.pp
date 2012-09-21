@@ -7,13 +7,13 @@ class puppetdb::server::firewall(
   # TODO: the firewall module should be able to handle this itself
   if ($manage_redhat_firewall and $puppetdb::params::firewall_supported) {
 
-    exec { 'persist-firewall':
+    exec { 'puppetdb-persist-firewall':
       command     => $puppetdb::params::persist_firewall_command,
       refreshonly => true,
     }
 
     Firewall {
-      notify => Exec['persist-firewall']
+      notify => Exec['puppetdb-persist-firewall']
     }
 
     firewall { "${port} accept - puppetdb":

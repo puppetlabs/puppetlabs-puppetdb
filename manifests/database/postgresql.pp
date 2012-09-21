@@ -33,7 +33,8 @@
 #
 class puppetdb::database::postgresql(
   # TODO: expose more of the parameters from `inkling/postgresql`!
-  $listen_addresses = $puppetdb::params::database_host,
+  $listen_addresses       = $puppetdb::params::database_host,
+  $manage_redhat_firewall = $puppetdb::params::manage_redhat_firewall,
 ) inherits puppetdb::params {
 
   # get the pg server up and running
@@ -42,7 +43,7 @@ class puppetdb::database::postgresql(
       # TODO: make this stuff configurable
       'ip_mask_allow_all_users' => '0.0.0.0/0',
       'listen_addresses'        => $listen_addresses,
-      'manage_redhat_firewall'  => true,
+      'manage_redhat_firewall'  => $manage_redhat_firewall,
     },
   }
 
