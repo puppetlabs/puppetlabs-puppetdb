@@ -1,3 +1,9 @@
+2012-09-23 - Chris Price <chris@puppetlabs.com>
+ * 1.0.3 release
+
+2012-09-23 - Chris Price <chris@puppetlabs.com>
+ * Add a parameter for restarting puppet master (179b337)
+
 2012-09-21 - Chris Price <chris@puppetlabs.com>
  * 1.0.2 release
 

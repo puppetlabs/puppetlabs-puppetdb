@@ -1,5 +1,5 @@
 name 'puppetlabs-puppetdb'
-version '1.0.2'
+version '1.0.3'
 source 'git://github.com/puppetlabs-puppet/puppetlabs-puppetdb.git'
 author 'Puppet Labs'
 description 'PuppetDB resource types'
