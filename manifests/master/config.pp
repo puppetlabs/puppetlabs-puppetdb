@@ -23,6 +23,10 @@
 #                         be installed.  You may specify an explicit version
 #                         number, 'present', or 'latest'.  Defaults to
 #                         'present'.
+#   ['restart_puppet']  - If true, the module will restart the puppet master when
+#                         necessary.  The default is 'true'.  If set to 'false',
+#                         you must restart the service manually in order to pick
+#                         up changes to the config files (other than `puppet.conf`).
 #
 # Actions:
 # - Configures the puppet master to use puppetdb.
@@ -46,6 +50,7 @@ class puppetdb::master::config(
   $puppet_confdir       = '/etc/puppet',
   $puppet_conf          = '/etc/puppet/puppet.conf',
   $puppetdb_version     = $puppetdb::params::puppetdb_version,
+  $restart_puppet       = true,
 ) inherits puppetdb::params {
 
   package { 'puppetdb-terminus':
@@ -66,21 +71,12 @@ class puppetdb::master::config(
   # this validator."
   Service<|title == 'puppetdb'|> -> Puppetdb_conn_validator['puppetdb_conn']
 
-  # We will need to restart the puppet master service if certain config
-  # files are changed, so here we make sure it's in the catalog.
-  if ! defined(Service[$puppetdb::params::puppet_service_name]) {
-    service { $puppetdb::params::puppet_service_name:
-      ensure => running,
-    }
-  }
-
   # Conditionally manage the `routes.yaml` file.  Restart the puppet service
   # if changes are made.
   if ($manage_routes) {
     class { 'puppetdb::master::routes':
       puppet_confdir => $puppet_confdir,
       require        => Puppetdb_conn_validator['puppetdb_conn'],
-      notify         => Service[$puppetdb::params::puppet_service_name],
     }
   }
 
@@ -101,6 +97,19 @@ class puppetdb::master::config(
     port           => $puppetdb_port,
     puppet_confdir => $puppet_confdir,
     require        => Puppetdb_conn_validator['puppetdb_conn'],
-    notify         => Service[$puppetdb::params::puppet_service_name],
   }
+
+  if ($restart_puppet) {
+    # We will need to restart the puppet master service if certain config
+    # files are changed, so here we make sure it's in the catalog.
+    if ! defined(Service[$puppetdb::params::puppet_service_name]) {
+      service { $puppetdb::params::puppet_service_name:
+        ensure => running,
+      }
+    }
+
+    Class['puppetdb::master::puppetdb_conf'] ~> Service[$puppetdb::params::puppet_service_name]
+    Class['puppetdb::master::routes']        ~> Service[$puppetdb::params::puppet_service_name]
+  }
+
 }
