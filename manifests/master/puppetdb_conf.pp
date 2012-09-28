@@ -25,7 +25,7 @@
 class puppetdb::master::puppetdb_conf(
   $server         = 'localhost',
   $port           = '8081',
-  $puppet_confdir = '/etc/puppet',
+  $puppet_confdir = $puppetdb::params::puppet_confdir,
 ) {
 
   Ini_setting {
