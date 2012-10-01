@@ -19,8 +19,6 @@
 #   }
 #
 #
-# TODO: port this to use params
-#
 class puppetdb::master::routes(
   $puppet_confdir = $puppetdb::params::puppet_confdir,
 ) {

@@ -11,8 +11,6 @@
 # Sample Usage:
 #
 class puppetdb::params {
-  # TODO: need to condition this based on whether we are a PE install or not
-
   $ssl_listen_address    = $::clientcert
   $ssl_listen_port       = '8081'
 

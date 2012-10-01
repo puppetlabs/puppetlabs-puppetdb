@@ -20,7 +20,7 @@
 #   }
 #
 #
-# TODO: port this to use params
+# TODO: finish porting this to use params
 #
 class puppetdb::master::puppetdb_conf(
   $server         = 'localhost',

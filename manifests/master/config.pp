@@ -40,7 +40,7 @@
 #       puppetdb_port            => 8081,
 #   }
 #
-# TODO: port this to use params
+# TODO: finish porting this to use params
 #
 class puppetdb::master::config(
   $puppetdb_server      = $::clientcert,

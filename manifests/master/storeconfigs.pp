@@ -18,8 +18,6 @@
 #   }
 #
 #
-# TODO: port this to use params
-#
 class puppetdb::master::storeconfigs(
   $puppet_conf = $puppetdb::params::puppet_conf
 ) {
