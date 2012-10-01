@@ -18,10 +18,8 @@
 #   }
 #
 #
-# TODO: port this to use params
-#
 class puppetdb::master::storeconfigs(
-  $puppet_conf = '/etc/puppet/puppet.conf',
+  $puppet_conf = $puppetdb::params::puppet_conf
 ) {
 
   Ini_setting{

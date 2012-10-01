@@ -40,21 +40,23 @@
 #       puppetdb_port            => 8081,
 #   }
 #
-# TODO: port this to use params
+# TODO: finish porting this to use params
 #
 class puppetdb::master::config(
   $puppetdb_server      = $::clientcert,
   $puppetdb_port        = 8081,
   $manage_routes        = true,
   $manage_storeconfigs  = true,
-  $puppet_confdir       = '/etc/puppet',
-  $puppet_conf          = '/etc/puppet/puppet.conf',
+  $puppet_confdir       = $puppetdb::params::puppet_confdir,
+  $puppet_conf          = $puppetdb::params::puppet_conf,
   $puppetdb_version     = $puppetdb::params::puppetdb_version,
+  $terminus_package     = $puppetdb::params::terminus_package,
+  $puppet_service_name  = $puppetdb::params::puppet_service_name,
   $restart_puppet       = true,
 ) inherits puppetdb::params {
 
-  package { 'puppetdb-terminus':
-    ensure  => $puppetdb_version,
+  package { $terminus_package:
+    ensure => $puppetdb_version,
   }
 
   # Validate the puppetdb connection.  If we can't connect to puppetdb then we
@@ -62,7 +64,7 @@ class puppetdb::master::config(
   puppetdb_conn_validator { 'puppetdb_conn':
     puppetdb_server => $puppetdb_server,
     puppetdb_port   => $puppetdb_port,
-    require         => Package['puppetdb-terminus'],
+    require         => Package[$terminus_package],
   }
 
   # This is a bit of puppet chicanery that allows us to create a
@@ -102,14 +104,14 @@ class puppetdb::master::config(
   if ($restart_puppet) {
     # We will need to restart the puppet master service if certain config
     # files are changed, so here we make sure it's in the catalog.
-    if ! defined(Service[$puppetdb::params::puppet_service_name]) {
-      service { $puppetdb::params::puppet_service_name:
+    if ! defined(Service[$puppet_service_name]) {
+      service { $puppet_service_name:
         ensure => running,
       }
     }
 
-    Class['puppetdb::master::puppetdb_conf'] ~> Service[$puppetdb::params::puppet_service_name]
-    Class['puppetdb::master::routes']        ~> Service[$puppetdb::params::puppet_service_name]
+    Class['puppetdb::master::puppetdb_conf'] ~> Service[$puppet_service_name]
+    Class['puppetdb::master::routes']        ~> Service[$puppet_service_name]
   }
 
 }

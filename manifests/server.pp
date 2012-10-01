@@ -76,15 +76,17 @@ class puppetdb::server(
   $database_username       = $puppetdb::params::database_username,
   $database_password       = $puppetdb::params::database_password,
   $database_name           = $puppetdb::params::database_name,
+  $puppetdb_package        = $puppetdb::params::puppetdb_package,
   $puppetdb_version        = $puppetdb::params::puppetdb_version,
+  $puppetdb_service        = $puppetdb::params::puppetdb_service,
   $manage_redhat_firewall  = $puppetdb::params::manage_redhat_firewall,
   $confdir                 = $puppetdb::params::confdir,
   $gc_interval             = $puppetdb::params::gc_interval,
 ) inherits puppetdb::params {
 
-  package { 'puppetdb':
+  package { $puppetdb_package:
     ensure => $puppetdb_version,
-    notify => Service['puppetdb'],
+    notify => Service[$puppetdb_service],
   }
 
   class { 'puppetdb::server::firewall':
@@ -100,24 +102,24 @@ class puppetdb::server(
     database_password => $database_password,
     database_name     => $database_name,
     confdir           => $confdir,
-    notify            => Service['puppetdb'],
+    notify            => Service[$puppetdb_service],
   }
 
   class { 'puppetdb::server::jetty_ini':
     ssl_listen_address  => $ssl_listen_address,
     ssl_listen_port     => $ssl_listen_port,
     confdir             => $confdir,
-    notify              => Service['puppetdb'],
+    notify              => Service[$puppetdb_service],
   }
 
-  service { 'puppetdb':
+  service { $puppetdb_service:
     ensure => running,
     enable => true,
   }
 
-  Package['puppetdb'] ->
+  Package[$puppetdb_package] ->
   Class['puppetdb::server::firewall'] ->
   Class['puppetdb::server::database_ini'] ->
   Class['puppetdb::server::jetty_ini'] ->
-  Service['puppetdb']
+  Service[$puppetdb_service]
 }
