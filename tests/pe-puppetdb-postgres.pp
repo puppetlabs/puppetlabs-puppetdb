@@ -17,4 +17,10 @@ node pe_puppetdb_server {
     puppetdb_service => 'pe-puppetdb',
     confdir          => '/etc/puppetlabs/puppetdb/conf.d',
   }
+  if $::lsbdistcodename == 'precise' {
+    # Hack for precise postgresql 9.1 service being dumb
+    Service<| title == 'postgresqld' |> {
+      status => '/etc/init.d/postgresql status | egrep -q "Running clusters: .+"',
+    }
+  }
 }
