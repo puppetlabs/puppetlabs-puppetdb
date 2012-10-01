@@ -31,7 +31,6 @@ class puppetdb::params {
   $manage_redhat_firewall = true
 
   $gc_interval            = '60'
-  $confdir                = '/etc/puppetdb/conf.d'
 
   case $::osfamily {
     'RedHat': {
@@ -50,5 +49,11 @@ class puppetdb::params {
   }
 
   # TODO: need to condition this for PE
+  $puppetdb_package     = 'puppetdb'
+  $puppetdb_service     = 'puppetdb'
+  $confdir              = '/etc/puppetdb/conf.d'
   $puppet_service_name  = 'puppetmaster'
+  $puppet_confdir       = '/etc/puppet'
+  $puppet_conf          = "${puppet_confdir}/puppet.conf"
+  $terminus_package     = 'puppetdb-terminus'
 }

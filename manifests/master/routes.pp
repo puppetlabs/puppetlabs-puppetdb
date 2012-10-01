@@ -22,7 +22,7 @@
 # TODO: port this to use params
 #
 class puppetdb::master::routes(
-  $puppet_confdir = '/etc/puppet',
+  $puppet_confdir = $puppetdb::params::puppet_confdir,
 ) {
 
   # TODO: this will overwrite any existing routes.yaml;
