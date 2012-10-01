@@ -8,6 +8,10 @@ node pe_puppetmaster_server {
 }
 
 node pe_puppetdb_server {
+  class { 'java':
+    distribution => 'jre',
+    before       => Package['pe-puppetdb'],
+  }
   class { 'puppetdb':
     puppetdb_package => 'pe-puppetdb',
     puppetdb_service => 'pe-puppetdb',
