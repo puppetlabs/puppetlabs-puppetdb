@@ -20,12 +20,12 @@
 #   }
 #
 #
-# TODO: port this to use params
+# TODO: finish porting this to use params
 #
 class puppetdb::master::puppetdb_conf(
   $server         = 'localhost',
   $port           = '8081',
-  $puppet_confdir = '/etc/puppet',
+  $puppet_confdir = $puppetdb::params::puppet_confdir,
 ) {
 
   Ini_setting {
