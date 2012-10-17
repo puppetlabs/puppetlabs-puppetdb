@@ -26,7 +26,7 @@ def attempt_connection
     end
     return true
   rescue Errno::ECONNREFUSED => e
-    Puppet.warning "Unable to connect to puppetdb server (#{host}:#{port}): #{e.inspect} "
+    Puppet.notice "Unable to connect to puppetdb server (#{host}:#{port}): #{e.inspect} "
     return false
   end
 end
@@ -38,17 +38,26 @@ Puppet::Type.type(:puppetdb_conn_validator).provide(:puppet_https) do
         setup from the local puppet environment to authenticate."
 
   def exists?
+    start_time = Time.now
+    timeout = resource[:timeout]
+
     success = attempt_connection
     unless success
-      # It can take several seconds for the puppetdb server to start up;
-      # especially on the first install.  Therefore, our first connection attempt
-      # may fail.  Here we have somewhat arbitrarily chosen to retry one time
-      # after ten seconds if that situation arises.  May want to revisit this,
-      # but it seems to work OK for the common use case.
-      Puppet.notice("Failed to connect to puppetdb; sleeping 10 seconds before retry")
-      sleep 10
-      success = attempt_connection
+      while (Time.now - start_time) < timeout
+        # It can take several seconds for the puppetdb server to start up;
+        # especially on the first install.  Therefore, our first connection attempt
+        # may fail.  Here we have somewhat arbitrarily chosen to retry every 10
+        # seconds until the configurable timeout has expired.
+        Puppet.notice("Failed to connect to puppetdb; sleeping 2 seconds before retry")
+        sleep 2
+        success = attempt_connection
+      end
     end
+
+    unless success
+      Puppet.notice("Failed to connect to puppetdb within timeout window of #{timeout} seconds; giving up.")
+    end
+
     success
   end
 
