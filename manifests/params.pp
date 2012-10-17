@@ -62,5 +62,6 @@ class puppetdb::params {
     $terminus_package     = 'puppetdb-terminus'
   }
 
-  $puppet_conf          = "${puppet_confdir}/puppet.conf"
+  $puppet_conf              = "${puppet_confdir}/puppet.conf"
+  $puppetdb_startup_timeout = 15
 }
