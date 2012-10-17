@@ -53,6 +53,7 @@ class puppetdb::params {
     $puppet_service_name  = 'pe-httpd'
     $puppet_confdir       = '/etc/puppetlabs/puppet'
     $terminus_package     = 'pe-puppetdb-terminus'
+    $embedded_subname     = 'file:/opt/puppet/share/puppetdb/db/db;hsqldb.tx=mvcc;sql.syntax_pgs=true'
   } else {
     $puppetdb_package     = 'puppetdb'
     $puppetdb_service     = 'puppetdb'
@@ -60,6 +61,7 @@ class puppetdb::params {
     $puppet_service_name  = 'puppetmaster'
     $puppet_confdir       = '/etc/puppet'
     $terminus_package     = 'puppetdb-terminus'
+    $embedded_subname     = 'file:/usr/share/puppetdb/db/db;hsqldb.tx=mvcc;sql.syntax_pgs=true'
   }
 
   $puppet_conf              = "${puppet_confdir}/puppet.conf"
