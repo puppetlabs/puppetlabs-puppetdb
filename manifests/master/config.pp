@@ -23,6 +23,10 @@
 #                         be installed.  You may specify an explicit version
 #                         number, 'present', or 'latest'.  Defaults to
 #                         'present'.
+#   ['puppetdb_startup_timeout']  - The maximum amount of time that the module
+#                         should wait for puppetdb to start up; this is most
+#                         important during the initial install of puppetdb.
+#                         Defaults to 15 seconds.
 #   ['restart_puppet']  - If true, the module will restart the puppet master when
 #                         necessary.  The default is 'true'.  If set to 'false',
 #                         you must restart the service manually in order to pick
@@ -43,15 +47,16 @@
 # TODO: finish porting this to use params
 #
 class puppetdb::master::config(
-  $puppetdb_server      = $::clientcert,
-  $puppetdb_port        = 8081,
-  $manage_routes        = true,
-  $manage_storeconfigs  = true,
-  $puppet_confdir       = $puppetdb::params::puppet_confdir,
-  $puppet_conf          = $puppetdb::params::puppet_conf,
-  $puppetdb_version     = $puppetdb::params::puppetdb_version,
-  $terminus_package     = $puppetdb::params::terminus_package,
-  $puppet_service_name  = $puppetdb::params::puppet_service_name,
+  $puppetdb_server          = $::clientcert,
+  $puppetdb_port            = 8081,
+  $manage_routes            = true,
+  $manage_storeconfigs      = true,
+  $puppet_confdir           = $puppetdb::params::puppet_confdir,
+  $puppet_conf              = $puppetdb::params::puppet_conf,
+  $puppetdb_version         = $puppetdb::params::puppetdb_version,
+  $terminus_package         = $puppetdb::params::terminus_package,
+  $puppet_service_name      = $puppetdb::params::puppet_service_name,
+  $puppetdb_startup_timeout = $puppetdb::params::puppetdb_startup_timeout,
   $restart_puppet       = true,
 ) inherits puppetdb::params {
 
@@ -64,6 +69,7 @@ class puppetdb::master::config(
   puppetdb_conn_validator { 'puppetdb_conn':
     puppetdb_server => $puppetdb_server,
     puppetdb_port   => $puppetdb_port,
+    timeout         => $puppetdb_startup_timeout,
     require         => Package[$terminus_package],
   }
 
