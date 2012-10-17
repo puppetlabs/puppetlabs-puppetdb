@@ -70,7 +70,7 @@ class puppetdb::server::database_ini(
 
     $classname   = 'org.hsqldb.jdbcDriver'
     $subprotocol = 'hsqldb'
-    $subname     = 'file:/usr/share/puppetdb/db/db;hsqldb.tx=mvcc;sql.syntax_pgs=true'
+    $subname     = $puppetdb::params::embedded_subname
 
   } elsif $database == 'postgres' {
     $classname = 'org.postgresql.Driver'
