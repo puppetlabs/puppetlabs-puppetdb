@@ -57,7 +57,7 @@ class puppetdb::master::config(
   $terminus_package         = $puppetdb::params::terminus_package,
   $puppet_service_name      = $puppetdb::params::puppet_service_name,
   $puppetdb_startup_timeout = $puppetdb::params::puppetdb_startup_timeout,
-  $restart_puppet       = true,
+  $restart_puppet           = true
 ) inherits puppetdb::params {
 
   package { $terminus_package:
