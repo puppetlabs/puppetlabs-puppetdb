@@ -1,3 +1,33 @@
+2012-10-24 - Chris Price <chris@puppetlabs.com>
+ * 1.1.0 release
+
+2012-10-24 - Chris Price <chris@puppetlabs.com> (1.1.0)
+ * Update postgres dependency to puppetlabs/postgresql (bea79b4)
+
+2012-10-17 - Reid Vandewiele <reid@puppetlabs.com> (1.1.0)
+ * Fix embedded db setup in Puppet Enterprise (bf0ab45)
+
+2012-10-17 - Chris Price <chris@puppetlabs.com> (1.1.0)
+ * Update manifests/master/config.pp (b119a30)
+
+2012-10-16 - Chris Price <chris@puppetlabs.com> (1.1.0)
+ * Make puppetdb startup timeout configurable (783b595)
+
+2012-10-01 - Hunter Haugen <h.haugen@gmail.com> (1.1.0)
+ * Add condition to detect PE installations and provide different parameters (63f1c52)
+
+2012-10-01 - Hunter Haugen <h.haugen@gmail.com> (1.1.0)
+ * Add example manifest code for pe puppet master (a598edc)
+
+2012-10-01 - Chris Price <chris@puppetlabs.com> (1.1.0)
+ * Update comments and docs w/rt PE params (b5df5d9)
+
+2012-10-01 - Hunter Haugen <h.haugen@gmail.com> (1.1.0)
+ * Adding pe_puppetdb tests class (850e039)
+
+2012-09-28 - Hunter Haugen <h.haugen@gmail.com> (1.1.0)
+ * Add parameters to enable usage of enterprise versions of PuppetDB (df6f7cc)
+
 2012-09-23 - Chris Price <chris@puppetlabs.com>
  * 1.0.3 release
 
