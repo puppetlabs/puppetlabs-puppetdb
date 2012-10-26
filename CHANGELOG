@@ -1,4 +1,10 @@
-2012-10-26 - Chris Price <chris@puppetlabs.com> (1.1.1)
+2012-10-26 - Chris Price <chris@puppetlabs.com> (1.1.2)
+ * 1.1.2 release
+
+2012-10-26 - Chris Price <chris@puppetlabs.com>
+ * Add some more missing `inherit`s for `puppetdb::params` (a72cc7c)
+
+2012-10-26 - Chris Price <chris@puppetlabs.com> (1.1.2)
  * 1.1.1 release
 
 2012-10-26 - Chris Price <chris@puppetlabs.com> (1.1.1)
