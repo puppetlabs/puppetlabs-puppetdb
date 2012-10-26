@@ -26,7 +26,7 @@ class puppetdb::master::puppetdb_conf(
   $server         = 'localhost',
   $port           = '8081',
   $puppet_confdir = $puppetdb::params::puppet_confdir,
-) {
+) inherits puppetdb::params {
 
   Ini_setting {
     ensure  => present,
