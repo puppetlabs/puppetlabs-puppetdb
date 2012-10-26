@@ -21,7 +21,7 @@
 #
 class puppetdb::master::routes(
   $puppet_confdir = $puppetdb::params::puppet_confdir,
-) {
+) inherits puppetdb::params {
 
   # TODO: this will overwrite any existing routes.yaml;
   #  to handle this properly we should just be ensuring

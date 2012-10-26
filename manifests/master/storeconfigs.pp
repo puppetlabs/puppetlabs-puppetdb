@@ -20,7 +20,7 @@
 #
 class puppetdb::master::storeconfigs(
   $puppet_conf = $puppetdb::params::puppet_conf
-) {
+) inherits puppetdb::params {
 
   Ini_setting{
     section => 'master',
