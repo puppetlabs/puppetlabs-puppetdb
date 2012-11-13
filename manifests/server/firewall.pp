@@ -1,6 +1,6 @@
 class puppetdb::server::firewall(
-    $open_http_port         = $puppetdb::params::open_http_port
-    $http_port              = $puppetdb::params::listen_port             
+    $open_http_port         = $puppetdb::params::open_http_port,
+    $http_port              = $puppetdb::params::listen_port,             
     $ssl_port               = $puppetdb::params::ssl_listen_port,
     $manage_redhat_firewall = $puppetdb::params::manage_redhat_firewall,
 ) inherits puppetdb::params {
