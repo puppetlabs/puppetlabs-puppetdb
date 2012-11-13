@@ -22,10 +22,17 @@
 # use the `puppetdb::master::config` class to accomplish this.
 #
 # Parameters:
+#   ['listen_address']     - The address that the web server should bind to
+#                            for HTTP requests.  (defaults to `localhost`.)
+#   ['listen_port']        - The port on which the puppetdb web server should
+#                            accept HTTP requests (defaults to 8080).
+#   ['open_http_port']     - If true, open the http port on the firewall. 
+#                            (defaults to false since the default HTTP listen 
+#                            address is localhost).
 #   ['ssl_listen_address'] - The address that the web server should bind to
 #                            for HTTPS requests.  (defaults to `$::clientcert`.)
 #   ['ssl_listen_port']    - The port on which the puppetdb web server should
-#                            accept HTTPS requests.
+#                            accept HTTPS requests (defaults to 8081).
 #   ['database']           - Which database backend to use; legal values are
 #                            `postgres` (default) or `embedded`.  (The `embedded`
 #                            db can be used for very small installations or for
@@ -68,6 +75,9 @@
 #     }
 #
 class puppetdb::server(
+  $listen_address          = $puppetdb::params::listen_address,
+  $listen_port             = $puppetdb::params::listen_port,
+  $open_http_port          = $puppetdb::params::open_http_port,
   $ssl_listen_address      = $puppetdb::params::ssl_listen_address,
   $ssl_listen_port         = $puppetdb::params::ssl_listen_port,
   $database                = $puppetdb::params::database,
@@ -90,7 +100,9 @@ class puppetdb::server(
   }
 
   class { 'puppetdb::server::firewall':
-    port                   => $ssl_listen_port,
+    http_port              => $listen_port,
+    open_http_port         => $open_http_port,
+    ssl_port               => $ssl_listen_port,
     manage_redhat_firewall => $manage_redhat_firewall,
   }
 
@@ -106,6 +118,8 @@ class puppetdb::server(
   }
 
   class { 'puppetdb::server::jetty_ini':
+    listen_address      => $listen_address,
+    listen_port         => $listen_port,
     ssl_listen_address  => $ssl_listen_address,
     ssl_listen_port     => $ssl_listen_port,
     confdir             => $confdir,
