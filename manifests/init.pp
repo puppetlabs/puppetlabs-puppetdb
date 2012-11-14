@@ -123,7 +123,10 @@ class puppetdb(
 
   if ($database == 'postgres') {
     class { 'puppetdb::database::postgresql':
-      manage_redhat_firewall => $manage_redhat_firewall ? $manage_redhat_firewall : $open_postgres_port,
+      manage_redhat_firewall => $manage_redhat_firewall ? {
+        true                 => $manage_redhat_firewall,
+        false                => $open_postgres_port,
+      }
       listen_addresses       => $postgres_listen_addresses,
       before                 => Class['puppetdb::server']
     }
