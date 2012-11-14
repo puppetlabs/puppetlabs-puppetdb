@@ -1,5 +1,5 @@
 class puppetdb::server::firewall(
-    $port                   = undef,
+    $port                   = false,
     $http_port              = $puppetdb::params::listen_port,             
     $open_http_port         = $puppetdb::params::open_listen_port,
     $ssl_port               = $puppetdb::params::ssl_listen_port,
