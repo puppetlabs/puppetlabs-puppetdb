@@ -1,5 +1,5 @@
 class puppetdb::server::firewall(
-    $port                   = false,
+    $port                   = '',
     $http_port              = $puppetdb::params::listen_port,             
     $open_http_port         = $puppetdb::params::open_listen_port,
     $ssl_port               = $puppetdb::params::ssl_listen_port,
@@ -35,7 +35,7 @@ class puppetdb::server::firewall(
       notify { 'Deprecation notice: `port` parameter will be removed in future versions of the puppetdb module. Please use ssl_port instead.': }
     }
 
-    if (port and ssl_port) {
+    if (port != '' and ssl_port != '') {
       fail('`port` and `ssl_port` cannot both be defined. `port` is deprecated in favor of `ssl_port`')
     }
     
