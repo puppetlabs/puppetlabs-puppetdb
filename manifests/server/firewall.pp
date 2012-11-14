@@ -1,7 +1,9 @@
 class puppetdb::server::firewall(
-    $open_http_port         = $puppetdb::params::open_http_port,
+    $port                   = '',
     $http_port              = $puppetdb::params::listen_port,             
+    $open_http_port         = $puppetdb::params::open_listen_port,
     $ssl_port               = $puppetdb::params::ssl_listen_port,
+    $open_ssl_port          = $puppetdb::params::open_ssl_listen_port,
     $manage_redhat_firewall = $puppetdb::params::manage_redhat_firewall,
 ) inherits puppetdb::params {
   # TODO: figure out a way to make this not platform-specific; debian and ubuntu
@@ -18,6 +20,14 @@ class puppetdb::server::firewall(
       notify => Exec['puppetdb-persist-firewall']
     }
     
+    if (port) {
+      notify { 'Deprecation notice: `port` parameter will be removed in future versions of the puppetdb module. Please use ssl_port instead.': }
+    }
+
+    if (port && ssl_port) {
+      fail('`port` and `ssl_port` cannot both be defined. `port` is deprecated in favor of `ssl_port`')
+    }
+    
     if ($open_http_port) {
       firewall { "${http_port} accept - puppetdb":
         port   => $http_port,
@@ -26,10 +36,12 @@ class puppetdb::server::firewall(
       }
     } 
 
-    firewall { "${ssl_port} accept - puppetdb":
-      port   => $ssl_port,
-      proto  => 'tcp',
-      action => 'accept',
+    if ($open_ssl_port) {
+      firewall { "${ssl_port} accept - puppetdb":
+        port   => $ssl_port,
+        proto  => 'tcp',
+        action => 'accept',
+      }
     }
   }
 }
