@@ -14,10 +14,7 @@ class puppetdb::server::firewall(
     if ($manage_redhat_firewall) {
       notify {'Deprecation notice: `$manage_redhat_firewall` is deprecated in the `puppetdb::service::firewall` class and will be removed in a future version. Use `open_http_port` and `open_ssl_port` instead.':}
 
-      if (!$open_ssl_port) {
-        # If the new param isn't set, go ahead and set to the old for consistent backward compatibility.
-        $open_ssl_port = $manage_redhat_firewall
-      } else {
+      if ($open_ssl_port) {
         fail('`$manage_redhat_firewall` and `$open_ssl_port` cannot both be specified.')
       }
     }
@@ -47,7 +44,7 @@ class puppetdb::server::firewall(
       }
     } 
 
-    if ($open_ssl_port) {
+    if ($open_ssl_port or $manage_redhat_firewall) {
       firewall { "${ssl_port} accept - puppetdb":
         port   => $ssl_port,
         proto  => 'tcp',

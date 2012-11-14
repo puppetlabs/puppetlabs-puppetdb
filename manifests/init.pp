@@ -101,10 +101,6 @@ class puppetdb(
     notify {'Deprecation notice: `$manage_redhat_firewall` has been deprecated in `puppetdb` class and will be removed in a future versions. Use $open_ssl_listen_port and $open_postgres_listen_port instead.':}
   }
 
-  if ($manage_redhat_firewall and !$open_postgres_listen_port) {
-    $open_postgres_listen_port = $manage_redhat_firewall
-  }
-
   class { 'puppetdb::server':
     listen_address          => $listen_address,
     listen_port             => $listen_port,
@@ -127,7 +123,7 @@ class puppetdb(
 
   if ($database == 'postgres') {
     class { 'puppetdb::database::postgresql':
-      manage_redhat_firewall => $open_postgres_listen_port,
+      manage_redhat_firewall => $manage_redhat_firewall ? $manage_redhat_firewall : $open_postgres_port,
       listen_addresses       => $postgres_listen_addresses,
       before                 => Class['puppetdb::server']
     }
