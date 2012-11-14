@@ -18,7 +18,7 @@ class puppetdb::params {
   $ssl_listen_port           = '8081'
   $open_ssl_listen_port      = false
   $postgres_listen_addresses = 'localhost'
-  $open_postgres_            = false
+  $open_postgres_port        = false
 
   $database                  = 'postgres'
 
