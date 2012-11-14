@@ -91,8 +91,8 @@ class puppetdb(
   $puppetdb_package          = $puppetdb::params::puppetdb_package,
   $puppetdb_version          = $puppetdb::params::puppetdb_version,
   $puppetdb_service          = $puppetdb::params::puppetdb_service,
-  $postgres_listen_addresses = $puppetdb::params::postgres_listen_address,
-  $open_postgres_listen_port = $puppetdb::params::open_postgres_port,
+  $postgres_listen_addresses = $puppetdb::params::postgres_listen_addresses,
+  $open_postgres_port        = $puppetdb::params::open_postgres_port,
   $manage_redhat_firewall    = $puppetdb::params::manage_redhat_firewall,
   $confdir                   = $puppetdb::params::confdir
 ) inherits puppetdb::params {
