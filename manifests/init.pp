@@ -94,7 +94,7 @@ class puppetdb(
   $postgres_listen_addresses = $puppetdb::params::postgres_listen_address,
   $open_postgres_listen_port = $puppetdb::params::open_postgres_port,
   $manage_redhat_firewall    = $puppetdb::params::manage_redhat_firewall,
-  $confdir                   = $puppetdb::params::confdir,
+  $confdir                   = $puppetdb::params::confdir
 ) inherits puppetdb::params {
 
   if ($manage_redhat_firewall) {
@@ -106,23 +106,23 @@ class puppetdb(
   }
 
   class { 'puppetdb::server':
-    listen_address          = $listen_address,
-    listen_port             = $listen_port,
-    open_listen_port        = $open_listen_port,
-    ssl_listen_address      = $ssl_listen_address,
-    ssl_listen_port         = $ssl_listen_port,
-    open_ssl_listen_port    = $open_ssl_listen_port,
-    database                = $database,
-    database_host           = $database_host,
-    database_port           = $database_port,
-    database_username       = $database_username,
-    database_password       = $database_password,
-    database_name           = $database_name,
-    puppetdb_package        = $puppetdb_package,
-    puppetdb_version        = $puppetdb_version,
-    puppetdb_service        = $puppetdb_service,
-    manage_redhat_firewall  = $manage_redhat_firewall,
-    confdir                 = $confdir
+    listen_address          => $listen_address,
+    listen_port             => $listen_port,
+    open_listen_port        => $open_listen_port,
+    ssl_listen_address      => $ssl_listen_address,
+    ssl_listen_port         => $ssl_listen_port,
+    open_ssl_listen_port    => $open_ssl_listen_port,
+    database                => $database,
+    database_host           => $database_host,
+    database_port           => $database_port,
+    database_username       => $database_username,
+    database_password       => $database_password,
+    database_name           => $database_name,
+    puppetdb_package        => $puppetdb_package,
+    puppetdb_version        => $puppetdb_version,
+    puppetdb_service        => $puppetdb_service,
+    manage_redhat_firewall  => $manage_redhat_firewall,
+    confdir                 => $confdir
   }
 
   if ($database == 'postgres') {
