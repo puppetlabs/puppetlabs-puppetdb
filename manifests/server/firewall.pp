@@ -9,7 +9,18 @@ class puppetdb::server::firewall(
   # TODO: figure out a way to make this not platform-specific; debian and ubuntu
   # have an out-of-the-box firewall configuration that seems trickier to manage.
   # TODO: the firewall module should be able to handle this itself
-  if ($manage_redhat_firewall and $puppetdb::params::firewall_supported) {
+  if ($puppetdb::params::firewall_supported) {
+
+    if ($manage_redhat_firewall) {
+      notify {'Deprecation notice: `$manage_redhat_firewall` is deprecated in the `puppetdb::service::firewall` class and will be removed in a future version. Use `open_http_port` and `open_ssl_port` instead.':}
+
+      if (!$open_ssl_port) {
+        # If the new param isn't set, go ahead and set to the old for consistent backward compatibility.
+        $open_ssl_port = $manage_redhat_firewall
+      } else {
+        fail('`$manage_redhat_firewall` and `$open_ssl_port` cannot both be specified.')
+      }
+    }
 
     exec { 'puppetdb-persist-firewall':
       command     => $puppetdb::params::persist_firewall_command,

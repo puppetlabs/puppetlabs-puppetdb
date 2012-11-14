@@ -45,17 +45,20 @@
 #                            (defaults to `localhost`; ignored for `embedded` db)
 #   ['database_port']      - The port that the database server listens on.
 #                            (defaults to `5432`; ignored for `embedded` db)
-#   ['database_user']      - The name of the database user to connect as.
+#   ['database_username']  - The name of the database user to connect as.
 #                            (defaults to `puppetdb`; ignored for `embedded` db)
 #   ['database_password']  - The password for the database user.
 #                            (defaults to `puppetdb`; ignored for `embedded` db)
 #   ['database_name']      - The name of the database instance to connect to.
 #                            (defaults to `puppetdb`; ignored for `embedded` db)
+#   ['database_package']   - The puppetdb package name in the package manager
 #   ['puppetdb_version']   - The version of the `puppetdb` package that should
 #                            be installed.  You may specify an explicit version
 #                            number, 'present', or 'latest'.  Defaults to
 #                            'present'.
-#   ['manage_redhat_firewall'] - boolean indicating whether or not the module
+#   ['puppetdb_service']   - The name of the puppetdb service.
+#   ['manage_redhat_firewall'] - DEPRECATED: Use open_ssl_listen_port instead.
+#                            boolean indicating whether or not the module
 #                            should open a port in the firewall on redhat-based
 #                            systems.  Defaults to `true`.  This parameter is
 #                            likely to change in future versions.  Possible
@@ -95,7 +98,6 @@ class puppetdb::server(
   $puppetdb_service        = $puppetdb::params::puppetdb_service,
   $manage_redhat_firewall  = $puppetdb::params::manage_redhat_firewall,
   $confdir                 = $puppetdb::params::confdir,
-  $gc_interval             = $puppetdb::params::gc_interval,
 ) inherits puppetdb::params {
 
   package { $puppetdb_package:
@@ -108,7 +110,7 @@ class puppetdb::server(
     open_http_port         => $open_listen_port,
     ssl_port               => $ssl_listen_port,
     open_ssl_port          => $open_ssl_listen_port,
-    manage_redhat_firewall => $manage_redhat_firewall,
+    manage_redhat_firewall => $manage_redhat_firewall
   }
 
   class { 'puppetdb::server::database_ini':
