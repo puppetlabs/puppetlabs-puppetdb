@@ -98,7 +98,7 @@ class puppetdb(
 ) inherits puppetdb::params {
 
   if ($manage_redhat_firewall) {
-    notify {'Deprecation notice: `$manage_redhat_firewall` has been deprecated in `puppetdb` class and will be removed in a future versions. Use $open_ssl_listen_port and $open_postgres_listen_port instead.':}
+    notify {'Deprecation notice: `$manage_redhat_firewall` has been deprecated in `puppetdb` class and will be removed in a future versions. Use $open_ssl_listen_port and $open_postgres_port instead.':}
   }
 
   class { 'puppetdb::server':
