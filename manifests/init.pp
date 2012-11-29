@@ -28,14 +28,12 @@
 #   ['ssl_listen_port']    - The port on which the puppetdb web server should
 #                            accept HTTPS requests (defaults to 8081).
 #   ['open_ssl_listen_port'] - If true, open the ssl listen port on the firewall. 
-#                            (defaults to false).
+#                            (defaults to true).
 #   ['database']           - Which database backend to use; legal values are
 #                            `postgres` (default) or `embedded`.  (The `embedded`
 #                            db can be used for very small installations or for
 #                            testing, but is not recommended for use in production
 #                            environments.  For more info, see the puppetdb docs.)
-#   ['database_host']      - The hostname or IP address of the database server.
-#                            (defaults to `localhost`; ignored for `embedded` db)
 #   ['database_port']      - The port that the database server listens on.
 #                            (defaults to `5432`; ignored for `embedded` db)
 #   ['database_username']  - The name of the database user to connect as.
@@ -50,10 +48,6 @@
 #                            number, 'present', or 'latest'.  (defaults to
 #                            'present')
 #   ['puppetdb_service']   - The name of the puppetdb service.
-#   ['postgres_listen_addresses'] - The addresses for postgres to listen on.
-#                            (defaults to 'localhost'. '*' = all)
-#   ['open_postgres_port'] - If true, open the postgres listen port on the firewall. 
-#                            (defaults to false).
 #   ['manage_redhat_firewall'] - DEPRECATED: Use open_ssl_listen_port instead.
 #                            boolean indicating whether or not the module
 #                            should open a port in the firewall on redhat-based
@@ -83,7 +77,6 @@ class puppetdb(
   $ssl_listen_port           = $puppetdb::params::ssl_listen_port,
   $open_ssl_listen_port      = $puppetdb::params::open_ssl_listen_port,
   $database                  = $puppetdb::params::database,
-  $database_host             = $puppetdb::params::database_host,
   $database_port             = $puppetdb::params::database_port,
   $database_username         = $puppetdb::params::database_username,
   $database_password         = $puppetdb::params::database_password,
@@ -91,7 +84,6 @@ class puppetdb(
   $puppetdb_package          = $puppetdb::params::puppetdb_package,
   $puppetdb_version          = $puppetdb::params::puppetdb_version,
   $puppetdb_service          = $puppetdb::params::puppetdb_service,
-  $postgres_listen_addresses = $puppetdb::params::postgres_listen_addresses,
   $open_postgres_port        = $puppetdb::params::open_postgres_port,
   $manage_redhat_firewall    = $puppetdb::params::manage_redhat_firewall,
   $confdir                   = $puppetdb::params::confdir
@@ -109,7 +101,6 @@ class puppetdb(
     ssl_listen_port         => $ssl_listen_port,
     open_ssl_listen_port    => $open_ssl_listen_port,
     database                => $database,
-    database_host           => $database_host,
     database_port           => $database_port,
     database_username       => $database_username,
     database_password       => $database_password,

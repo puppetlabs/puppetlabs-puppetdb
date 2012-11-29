@@ -35,7 +35,7 @@
 #   ['ssl_listen_port']    - The port on which the puppetdb web server should
 #                            accept HTTPS requests (defaults to 8081).
 #   ['open_ssl_listen_port'] - If true, open the ssl listen port on the firewall. 
-#                            (defaults to false).
+#                            (defaults to true).
 #   ['database']           - Which database backend to use; legal values are
 #                            `postgres` (default) or `embedded`.  (The `embedded`
 #                            db can be used for very small installations or for
