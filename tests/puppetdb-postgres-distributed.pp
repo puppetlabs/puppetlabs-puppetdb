@@ -11,8 +11,11 @@ node puppet {
 # This node is our postgres server
 node puppetdb-postgres {
     # Here we install and configure postgres and the puppetdb database instance
+    # Optionally, open the firewall port for postgres so puppetdb server can 
+    # gain access.
     class { 'puppetdb::database::postgresql':
-        listen_addresses => 'puppetdb-postgres',
+        listen_addresses       => 'puppetdb-postgres',
+        manage_redhat_firewall => true,
     }
 }
 
@@ -20,7 +23,12 @@ node puppetdb-postgres {
 node puppetdb {
     # Here we install and configure the puppetdb server, and tell it where to
     # find the postgres database.
+    # Set open_ssl_listen_port to allow the puppet master to gain access to 
+    # puppetdb.  Optionally, set open_listen_port to open the HTTP port so 
+    # you can access the PuppetDB dashboard.
     class { 'puppetdb::server':
-        database_host      => 'puppetdb-postgres',
+        database_host        => 'puppetdb-postgres',
+        open_ssl_listen_port => true,
+        open_listen_port     => true,
     }
 }

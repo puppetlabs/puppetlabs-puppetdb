@@ -11,10 +11,16 @@
 # Sample Usage:
 #
 class puppetdb::params {
-  $ssl_listen_address    = $::clientcert
-  $ssl_listen_port       = '8081'
+  $listen_address            = 'localhost'
+  $listen_port               = '8080'
+  $open_listen_port          = false
+  $ssl_listen_address        = $::clientcert
+  $ssl_listen_port           = '8081'
+  $open_ssl_listen_port      = true
+  $postgres_listen_addresses = 'localhost'
+  $open_postgres_port        = true
 
-  $database          = 'postgres'
+  $database                  = 'postgres'
 
   # The remaining database settings are not used for an embedded database
   $database_host          = 'localhost'
@@ -26,7 +32,7 @@ class puppetdb::params {
   $puppetdb_version       = 'present'
 
   # TODO: figure out a way to make this not platform-specific
-  $manage_redhat_firewall = true
+  $manage_redhat_firewall = false
 
   $gc_interval            = '60'
 
