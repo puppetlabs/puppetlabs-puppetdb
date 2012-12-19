@@ -136,10 +136,11 @@ sufficient for many real-world deployments depending on the number of nodes
 you’re managing.  So, what would our manifest look like in this case?
 
     node puppetmaster {
-       # Configure puppetdb and its underlying database
-       include puppetdb
-       # Configure the puppet master to use puppetdb
-       include puppetdb::master::config
+     # Configure puppetdb and its underlying database
+     include puppetdb
+
+     # Configure the puppet master to use puppetdb
+     include puppetdb::master::config
     }
 
 
@@ -179,30 +180,30 @@ scenario might look like:
 
     # This node is our Puppet master.
     node puppet {
-        # Here we configure the puppet master to use PuppetDB,
-        # and tell it that the hostname is ‘puppetdb’
-        class { 'puppetdb::master::config':
-            puppetdb_server => 'puppetdb',
-        }
+      # Here we configure the puppet master to use PuppetDB,
+      # and tell it that the hostname is ‘puppetdb’
+      class { 'puppetdb::master::config':
+        puppetdb_server => 'puppetdb',
+      }
     }
 
     # This node is our postgres server
     node puppetdb-postgres {
-        # Here we install and configure postgres and the puppetdb
-        # database instance, and tell postgres that it should
-        # listen for connections to the hostname ‘puppetdb-postgres’
-        class { 'puppetdb::database::postgresql':
-            listen_addresses => 'puppetdb-postgres',
-        }
+      # Here we install and configure postgres and the puppetdb
+      # database instance, and tell postgres that it should
+      # listen for connections to the hostname ‘puppetdb-postgres’
+      class { 'puppetdb::database::postgresql':
+        listen_addresses => 'puppetdb-postgres',
+      }
     }
 
     # This node is our main puppetdb server
     node puppetdb {
-        # Here we install and configure PuppetDB, and tell it where to
-        # find the postgres database.
-        class { 'puppetdb::server':
-            database_host      => 'puppetdb-postgres',
-        }
+      # Here we install and configure PuppetDB, and tell it where to
+      # find the postgres database.
+      class { 'puppetdb::server':
+        database_host => 'puppetdb-postgres',
+      }
     }
 
 That’s it!  This should be all it takes to get a 3-node, distributed
