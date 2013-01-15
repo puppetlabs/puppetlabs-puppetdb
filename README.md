@@ -8,7 +8,7 @@ Module Description
 -------------------
 The PuppetDB module provides a quick way to get started using PuppetDB, an open source inventory resource service that manages storage and retrieval of platform-generated data. The module will install PostgreSQL and PuppetDB if you don't have them, as well as set up the connection to puppet master. The module will also provide a dashboard you can use to view the current state of your system.
  
-For more information about PuppetDB [please see the official PuppetDB documentation.](http://docs.puppetlabs.com/#puppetdbpuppetdb1)
+For more information about PuppetDB [please see the official PuppetDB documentation.](http://docs.puppetlabs.com/puppetdb/)
 
 
 Setup
