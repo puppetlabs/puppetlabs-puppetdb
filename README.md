@@ -2,7 +2,7 @@ puppetdb
 =========
 Overview
 --------
-The PuppetDB module provides faster, more streamlined access to data on puppetized infrastructure, by guiding puppetdb setup and configuration with a puppet master.     
+By guiding puppetdb setup and configuration with a puppet master, the PuppetDB module provides fast, streamlined access to data on puppetized infrastructure.     
 
 Module Description
 -------------------
@@ -11,8 +11,8 @@ The PuppetDB module provides a quick way to get started using PuppetDB, an open 
 For more information about PuppetDB [please see the official PuppetDB documentation.](http://docs.puppetlabs.com/#puppetdbpuppetdb1)
 
 
-Getting Started
-----------------
+Setup
+-----
 
 **What PuppetDB affects:**
 
