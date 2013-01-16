@@ -1,3 +1,25 @@
+1.1.3
+========
+
+2013-01-15 - Chris Price <chris@puppetlabs.com>
+ * Update Modulefile for 1.1.3 release (updates dependencies
+   on postgres and inifile modules to the latest versions) (76bfd9e)
+
+2012-12-19 - Garrett Honeycutt <garrett@puppetlabs.com>
+ * (#18228) updates README for style (fd2e990)
+
+2012-11-29 - Drew Blessing <Drew.Blessing@Buckle.com>
+ * 17594 - Fixes suggested by cprice-puppet (0cf9632)
+
+2012-11-14 - Drew Blessing <Drew.Blessing@Buckle.com>
+ * Adjust examples in tests to include new port params (0afc276)
+
+2012-11-13 - Drew Blessing <Drew.Blessing@Buckle.com>
+ * 17594 - PuppetDB - Add ability to set standard host listen address and open firewall
+
+1.1.2
+========
+
 2012-10-26 - Chris Price <chris@puppetlabs.com> (1.1.2)
  * 1.1.2 release
 
