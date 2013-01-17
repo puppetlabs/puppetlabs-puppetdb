@@ -42,7 +42,9 @@
 #                            (defaults to `puppetdb`; ignored for `embedded` db)
 #   ['database_name']      - The name of the database instance to connect to.
 #                            (defaults to `puppetdb`; ignored for `embedded` db)
-#   ['database_package']   - The puppetdb package name in the package manager
+#   ['open_postgres_port'] - If true, open the postgres port on the firewall.
+#                            (defaults to true).
+#   ['puppetdb_package']   - The puppetdb package name in the package manager
 #   ['puppetdb_version']   - The version of the `puppetdb` package that should
 #                            be installed.  You may specify an explicit version
 #                            number, 'present', or 'latest'.  (defaults to
