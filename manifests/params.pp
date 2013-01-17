@@ -16,7 +16,7 @@ class puppetdb::params {
   $open_listen_port          = false
   $ssl_listen_address        = $::clientcert
   $ssl_listen_port           = '8081'
-  $open_ssl_listen_port      = true
+  $open_ssl_listen_port      = undef
   $postgres_listen_addresses = 'localhost'
   $open_postgres_port        = true
 
@@ -32,7 +32,7 @@ class puppetdb::params {
   $puppetdb_version       = 'present'
 
   # TODO: figure out a way to make this not platform-specific
-  $manage_redhat_firewall = false
+  $manage_redhat_firewall = undef
 
   $gc_interval            = '60'
 
