@@ -44,6 +44,12 @@ class puppetdb::server::firewall(
       }
     }
 
+    # This technically defaults to 'true', but in order to preserve backwards
+    # compatibility with the deprecated 'manage_redhat_firewall' parameter, we
+    # had to specify 'undef' as the default so that we could tell whether or
+    # not the user explicitly specified a value. Here's where we're resolving
+    # that and setting the 'real' default.  We should be able to get rid of
+    # this block when we remove `manage_redhat_firewall`.
     if ($open_ssl_port != undef) {
       $final_open_ssl_port = $open_ssl_port
     } else {
