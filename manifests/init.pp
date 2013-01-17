@@ -89,7 +89,7 @@ class puppetdb(
   $confdir                   = $puppetdb::params::confdir
 ) inherits puppetdb::params {
 
-  if ($manage_redhat_firewall) {
+  if ($manage_redhat_firewall != undef) {
     notify {'Deprecation notice: `$manage_redhat_firewall` has been deprecated in `puppetdb` class and will be removed in a future versions. Use $open_ssl_listen_port and $open_postgres_port instead.':}
   }
 
@@ -116,7 +116,8 @@ class puppetdb(
     class { 'puppetdb::database::postgresql':
       manage_redhat_firewall => $manage_redhat_firewall ? {
         true                 => $manage_redhat_firewall,
-        false                => $open_postgres_port,
+        false                => $manage_redhat_firewall,
+        undef                => $open_postgres_port,
       },
       listen_addresses       => $postgres_listen_addresses,
       before                 => Class['puppetdb::server']
