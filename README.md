@@ -1,6 +1,17 @@
 puppetdb
 =========
 
+####Table of Contents
+
+1. [Overview - What is the PuppetDB module?](#overview)
+2. [Module Description - What does the module do?](#module-description)
+3. [Setup - The basics of getting started with PuppetDB module](#setup)
+4. [Usage - The classes and parameters available for configuration](#usage)
+5. [Implementation - An under-the-hood peek at what the module is doing](#implementation)
+6. [Limitations - OS compatibility, etc.](#limitations)
+7. [Development - Guide for contributing to the module](#development)
+8. [Release Notes - Notes on the most recent updates to the module](#release-notes)
+
 Overview
 --------
 By guiding puppetdb setup and configuration with a puppet master, the PuppetDB module provides fast, streamlined access to data on puppetized infrastructure.     
