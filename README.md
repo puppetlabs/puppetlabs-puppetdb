@@ -14,12 +14,12 @@ puppetdb
 
 Overview
 --------
-By guiding puppetdb setup and configuration with a puppet master, the PuppetDB module provides fast, streamlined access to data on puppetized infrastructure.     
+By guiding puppetdb setup and configuration with a puppet master, the PuppetDB module provides fast, streamlined access to data on puppetized infrastructure.
 
 Module Description
 -------------------
 The PuppetDB module provides a quick way to get started using PuppetDB, an open source inventory resource service that manages storage and retrieval of platform-generated data. The module will install PostgreSQL and PuppetDB if you don't have them, as well as set up the connection to puppet master. The module will also provide a dashboard you can use to view the current state of your system.
- 
+
 For more information about PuppetDB [please see the official PuppetDB documentation.](http://docs.puppetlabs.com/puppetdb/)
 
 
@@ -29,7 +29,7 @@ Setup
 **What PuppetDB affects:**
 
 * package/service/configuration files for PuppetDB
-	* **note**: Using the `database_host` class will cause your routes.yaml file to be overwritten entirely (see **Usage** below for options and more information )
+  * **note**: Using the `database_host` class will cause your routes.yaml file to be overwritten entirely (see **Usage** below for options and more information )
 * package/service/configuration files for PostgreSQL (optional, but set as default)
 * puppet master's runtime (via plugins)
 * puppet master's configuration
@@ -40,16 +40,17 @@ Setup
 
 To begin using PuppetDB, you’ll have to make a few decisions:
 
-* Which database back-end should I use? 
-	* PostgreSQL (default) or our embedded database
-		* **note:** We suggest using the embedded database only for experimental environments rather than production, as it does not scale well and can cause difficulty in migrating to Postgres.
+* Which database back-end should I use?
+  * PostgreSQL (default) or our embedded database
+  * Embedded database
+    * **note:** We suggest using the embedded database only for experimental environments rather than production, as it does not scale well and can cause difficulty in migrating to PostgreSQL.
 * Should I run the database on the same node that I run PuppetDB on?
 * Should I run PuppetDB on the same node that I run my master on?
 
 The answers to those questions will be largely dependent on your answers to questions about your Puppet environment:
- 
-* How many nodes are you managing? 
-* What kind of hardware are you running on? 
+
+* How many nodes are you managing?
+* What kind of hardware are you running on?
 * Is your current load approaching the limits of your hardware?
 
 Depending on your answers to all of the questions above, you will likely fall under one of these set-up options:
@@ -59,17 +60,16 @@ Depending on your answers to all of the questions above, you will likely fall un
 
 ### Single Node Setup
 
-This approach assumes you will use our default database (PostgreSQL) and run everything (PostgreSQL, PuppetDB, puppet master) all on the same node. This setup will be great for a testing or experimental environment. In this case, your manifest will look 
-like:
-	
+This approach assumes you will use our default database (PostgreSQL) and run everything (PostgreSQL, PuppetDB, puppet master) all on the same node. This setup will be great for a testing or experimental environment. In this case, your manifest will look like:
+
     node puppetmaster {
       # Configure puppetdb and its underlying database
-      include puppetdb
+      class { 'puppetdb': }
       # Configure the puppet master to use puppetdb
-      include puppetdb::master::config
+      class { 'puppetdb::master::config': }
     }
 
-You can provide some parameters for these classes if you’d like more control, but that is literally all that it will take to get you up and running with the default configuration. 
+You can provide some parameters for these classes if you’d like more control, but that is literally all that it will take to get you up and running with the default configuration.
 
 ### Multiple Node Setup
 
@@ -107,48 +107,45 @@ This node is our main puppetdb server:
         database_host => 'puppetdb-postgres',
       }
     }
-	
+
 This should be all it takes to get a 3-node, distributed installation of PuppetDB up and running. Note that, if you prefer, you could easily move two of these classes to a single node and end up with a 2-node setup instead.
 
-### Beginning with PuppetDB	
+### Beginning with PuppetDB
 Whether you choose a single node development setup or a multi-node setup, a basic setup of PuppetDB will cause: PostgreSQL to install on the node if it’s not already there; PuppetDB postgres database instance and user account to be created; the postgres connection to be validated and, if successful, PuppetDB to be installed and configured; PuppetDB connection to be validated and, if successful, the puppet master config files to be modified to use PuppetDB; and the puppet master to be restarted so that it will pick up the config changes.
 
 If your logging level is set to INFO or finer, you should start seeing PuppetDB-related log messages appear in both your puppet master log and your puppetdb log as subsequent agent runs occur.
 
-If you’d prefer to use PuppetDB’s embedded database rather than PostgreSQL, have a 
-look at the database parameter on the puppetdb class:
-	
+If you’d prefer to use PuppetDB’s embedded database rather than PostgreSQL, have a look at the database parameter on the puppetdb class:
+
     class { 'puppetdb':
       database => 'embedded',
     }
-  	  
+
 The embedded database can be useful for testing and very small production environments, but it is not recommended for production environments since it consumes a great deal of memory as your number of nodes increase.
 
 ### Cross-node Dependencies
 
-It is worth noting that there are some cross-node dependencies, which means that the first time you add the module's configurations to your manifests, you may see a few failed puppet runs on the affected nodes.  
+It is worth noting that there are some cross-node dependencies, which means that the first time you add the module's configurations to your manifests, you may see a few failed puppet runs on the affected nodes.
 
 PuppetDB handles cross-node dependencies by taking a sort of “eventual consistency” approach. There’s nothing that the module can do to control the order in which your nodes check in, but the module can check to verify that the services it depends on are up and running before it makes configuration changes--so that’s what it does.
 
 When your puppet master node checks in, it will validate the connectivity to the puppetdb server before it applies its changes to the puppet master config files. If it can’t connect to puppetdb, then the puppet run will fail and the previous config files will be left intact. This prevents your master from getting into a broken state where all incoming puppet runs fail because the master is configured to use a puppetdb server that doesn’t  exist yet. The same strategy is used to handle the dependency between the puppetdb server and the postgres server.
 
-Hence the failed puppet runs. These failures should be limited to 1 failed run on the puppetdb node, and up to 2 failed runs on the puppet master node. After that, 
-all of the dependencies should be satisfied and your puppet runs should start to succeed again.
+Hence the failed puppet runs. These failures should be limited to 1 failed run on the puppetdb node, and up to 2 failed runs on the puppet master node. After that, all of the dependencies should be satisfied and your puppet runs should start to succeed again.
 
 You can also manually trigger puppet runs on the nodes in the correct order (Postgres, PuppetDB, puppet master), which will avoid any failed runs.
 
 Usage
 ------
 
-PuppetDB supports a large number of configuration options for both configuring the 
-puppetdb service and connecting that service to the puppet master.
+PuppetDB supports a large number of configuration options for both configuring the puppetdb service and connecting that service to the puppet master.
 
 ### puppetdb
-The `puppetdb` class is intended as a high-level abstraction (sort of an 'all-in-one' class) to help simplify the process of getting your puppetdb server up and running. It wraps the slightly-lower-level classes `puppetdb::server` and `puppetdb::database::*`, and it'll get you up and running with everything you need (including database setup and management) on the server side.  For maximum configurability, you may choose not to use this class.  You may prefer to use the `puppetdb::server` class directly, or manage your puppetdb setup on your own. 
+The `puppetdb` class is intended as a high-level abstraction (sort of an 'all-in-one' class) to help simplify the process of getting your puppetdb server up and running. It wraps the slightly-lower-level classes `puppetdb::server` and `puppetdb::database::*`, and it'll get you up and running with everything you need (including database setup and management) on the server side.  For maximum configurability, you may choose not to use this class.  You may prefer to use the `puppetdb::server` class directly, or manage your puppetdb setup on your own.
 
 You must declare the class to use it:
 
-	include puppetdb
+    class { 'puppetdb': }
 
 **Parameters within `puppetdb`:**
 
@@ -166,8 +163,7 @@ If true, open the http_listen\_port on the firewall (defaults to false).
 
 ####`ssl_listen_address`
 
-The address that the web server should bind to for HTTPS requests (defaults to 
-`$::clientcert`). Set to '0.0.0.0' to listen on all addresses.
+The address that the web server should bind to for HTTPS requests (defaults to `$::clientcert`). Set to '0.0.0.0' to listen on all addresses.
 
 ####`ssl_listen_port`
 
@@ -187,8 +183,7 @@ The port that the database server listens on (defaults to `5432`; ignored for `e
 
 ####`database_username`
 
-The name of the database user to connect as (defaults to `puppetdb`; ignored for 
-`embedded` db).
+The name of the database user to connect as (defaults to `puppetdb`; ignored for `embedded` db).
 
 ####`database_password`
 
@@ -204,15 +199,14 @@ The puppetdb package name in the package manager.
 
 ####`puppetdb_version`
 
-The version of the `puppetdb` package that should be installed.  You may specify an 
-explicit version number, 'present', or 'latest' (defaults to 'present').
+The version of the `puppetdb` package that should be installed.  You may specify an explicit version number, 'present', or 'latest' (defaults to 'present').
 
 ####`puppetdb_service`
 
 The name of the puppetdb service.
 
 ####`manage_redhat_firewall`
- 
+
 *DEPRECATED: Use open_ssl_listen_port instead.*
 
 Supports a Boolean of true or false, indicating whether or not the module should open a port in the firewall on RedHat-based systems.  Defaults to `false`.  This parameter is likely to change in future versions. Possible changes include support for non-RedHat systems and finer-grained control over the firewall rule (currently, it simply opens up the postgres port to all TCP connections).
@@ -223,7 +217,7 @@ The puppetdb configuration directory (defaults to `/etc/puppetdb/conf.d`).
 
 ### puppetdb:server
 
-The `puppetdb::server` class manages the puppetdb server independently of the underlying database that it depends on. It will manage the puppetdb package, service, config files, etc., but will still allow you to manage the database (e.g. postgresql) however you see fit. 
+The `puppetdb::server` class manages the puppetdb server independently of the underlying database that it depends on. It will manage the puppetdb package, service, config files, etc., but will still allow you to manage the database (e.g. postgresql) however you see fit.
 
     class { 'puppetdb::server':
       database_host => 'puppetdb-postgres',
@@ -231,7 +225,7 @@ The `puppetdb::server` class manages the puppetdb server independently of the un
 
 **Parameters within `puppetdb::server`:**
 
-Mostly the same parameters as `puppetdb`, with one addition 
+Uses the same parameters as `puppetdb`, with one addition:
 
 ####`database_host`
 
@@ -259,9 +253,9 @@ The dns name or ip of the puppetdb server (defaults to the certname of the curre
 The port that the puppetdb server is running on (defaults to 8081).
 
 ####`manage_routes`
- 
+
 If true, the module will overwrite the puppet master's routes file to configure it to use PuppetDB (defaults to true).
- 
+
 ####`manage_storeconfigs`
 
 If true, the module will manage the puppet master's storeconfig settings (defaults to true).
@@ -276,8 +270,7 @@ Puppet's config file (defaults to `/etc/puppet/puppet.conf`).
 
 ####`puppetdb_version`
 
-The version of the `puppetdb` package that should be installed.  You may specify an 
-explicit version number, 'present', or 'latest' (defaults to 'present').
+The version of the `puppetdb` package that should be installed. You may specify an explicit version number, 'present', or 'latest' (defaults to 'present').
 
 ####`puppetdb_startup_timeout`
 
@@ -285,11 +278,10 @@ The maximum amount of time that the module should wait for PuppetDB to start up.
 
 ####`restart_puppet`
 
-If true, the module will restart the puppet master when PuppetDB configuration files are changed by the module.  The default is 'true'.  If set to 'false', you must restart the service manually in order to pick up changes to the config files (other than `puppet.conf`). 
+If true, the module will restart the puppet master when PuppetDB configuration files are changed by the module.  The default is 'true'.  If set to 'false', you must restart the service manually in order to pick up changes to the config files (other than `puppet.conf`).
 
 ### puppetdb::database::postgresql
-The `puppetdb::database::postgresql` class manages a postgresql server for use by
-PuppetDB. It can manage the postgresql packages and service, as well as creating and managing the puppetdb database and database user accounts.
+The `puppetdb::database::postgresql` class manages a postgresql server for use by PuppetDB. It can manage the postgresql packages and service, as well as creating and managing the puppetdb database and database user accounts.
 
     class { 'puppetdb::database::postgresql':
       listen_addresses => 'my.postgres.host.name',
@@ -306,8 +298,7 @@ In addition to the classes and variables mentioned above, PuppetDB includes:
 
 **puppetdb::master::routes**
 
-Configures the puppet master to use PuppetDB as the facts terminus. *WARNING*: the 
-current implementation simply overwrites your routes.yaml file; if you have an existing routes.yaml file that you are using for other purposes, you should *not* use this.
+Configures the puppet master to use PuppetDB as the facts terminus. *WARNING*: the current implementation simply overwrites your routes.yaml file; if you have an existing routes.yaml file that you are using for other purposes, you should *not* use this.
 
     class { 'puppetdb::master::routes':
       puppet_confdir => '/etc/puppet'
@@ -315,8 +306,7 @@ current implementation simply overwrites your routes.yaml file; if you have an e
 
 **puppetdb::master::storeconfigs**
 
-Configures the puppet master to enable storeconfigs and to use PuppetDB as the 
-storeconfigs backend.
+Configures the puppet master to enable storeconfigs and to use PuppetDB as the storeconfigs backend.
 
     class { 'puppetdb::master::storeconfigs':
       puppet_conf => '/etc/puppet/puppet.conf'
@@ -336,9 +326,7 @@ Manages PuppetDB's `database.ini` file.
 
 **puppetdb::server::validate_db**
 
-Validates that a successful database connection can be established between the node on 
-which this resource is run and the specified puppetdb database instance 
-(host/port/user/password/database name).
+Validates that a successful database connection can be established between the node on which this resource is run and the specified puppetdb database instance (host/port/user/password/database name).
 
     puppetdb::server::validate_db { 'validate my puppetdb database connection':
       database_host     => 'my.postgres.host',
@@ -351,19 +339,19 @@ which this resource is run and the specified puppetdb database instance
 
 **puppetdb_conn_validator**
 
-Verifies that a connection can be successfully established between a node and the puppetdb
-server. Its primary use is as a precondition to prevent configuration changes from being 
-applied if the puppetdb server cannot be reached, but it could potentially be used for 
-other purposes such as monitoring.
+Verifies that a connection can be successfully established between a node and the puppetdb server. Its primary use is as a precondition to prevent configuration changes from being applied if the puppetdb server cannot be reached, but it could potentially be used for other purposes such as monitoring.
 
 Limitations
 ------------
 
-Currently, PuppetDB is compatible with: 
+Currently, PuppetDB is compatible with:
 
     Puppet Version: 2.7+
 
-Platforms	  : RHEL6, Debian6, Ubuntu 10.04
+Platforms:
+* RHEL6
+* Debian6
+* Ubuntu 10.04
 
 Development
 ------------
@@ -377,4 +365,10 @@ You can read the complete module contribution guide [on the Puppet Labs wiki.](h
 Release Notes
 --------------
 
-Minor bugfix release (fix a missing dependency in puppetdb::master::* classes).
+**1.1.4**
+
+This is a bugfix release, mostly around fixing backward-compatibility for the deprecated manage_redhat_firewall parameter. It wasn’t actually entirely backwards-compatible in the 1.1.3 release.
+
+**1.1.3**
+
+This is mostly a maintenance release, to update the module dependencies to newer versions in preparation for some new features. This release does include some nice additions around the ability to set the listen address for the HTTP port on Jetty and manage the firewall for that port. Thanks very much to Drew Blessing for those submissions!
