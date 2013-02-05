@@ -193,7 +193,7 @@ The password for the database user (defaults to `puppetdb`; ignored for `embedde
 
 The name of the database instance to connect to (defaults to `puppetdb`; ignored for `embedded` db).
 
-####`database_package`
+####`puppetdb_package`
 
 The puppetdb package name in the package manager.
 
