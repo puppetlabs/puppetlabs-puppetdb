@@ -121,7 +121,10 @@ class puppetdb(
         false                => $manage_redhat_firewall,
         undef                => $open_postgres_port,
       },
-      listen_addresses       => $postgres_listen_addresses,
+      listen_addresses       => $puppetdb::params::postgres_listen_addresses,
+      database_name          => $database_name,
+      database_username      => $database_username,
+      database_password      => $database_password,
       before                 => Class['puppetdb::server']
     }
   }
