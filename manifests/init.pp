@@ -75,7 +75,10 @@
 #                            all TCP connections).
 #   ['confdir']            - The puppetdb configuration directory; defaults to
 #                            `/etc/puppetdb/conf.d`.
-#
+#   ['java_args']          - Java VM options used for overriding default Java VM
+#                            options specified in PuppetDB package.
+#                            (defaults to `{}`).
+#                            e.g. { '-Xmx' => '512m', '-Xms' => '256m' }
 # Actions:
 # - Creates and manages a puppetdb server and its database server/instance.
 #
@@ -106,7 +109,8 @@ class puppetdb(
   $puppetdb_service          = $puppetdb::params::puppetdb_service,
   $open_postgres_port        = $puppetdb::params::open_postgres_port,
   $manage_redhat_firewall    = $puppetdb::params::manage_redhat_firewall,
-  $confdir                   = $puppetdb::params::confdir
+  $confdir                   = $puppetdb::params::confdir,
+  $java_args                 = {}
 ) inherits puppetdb::params {
 
   # Apply necessary suffix if zero is specified.
@@ -163,7 +167,8 @@ class puppetdb(
     puppetdb_version       => $puppetdb_version,
     puppetdb_service       => $puppetdb_service,
     manage_redhat_firewall => $manage_redhat_firewall,
-    confdir                => $confdir
+    confdir                => $confdir,
+    java_args               => $java_args,
   }
 
   if ($database == 'postgres') {

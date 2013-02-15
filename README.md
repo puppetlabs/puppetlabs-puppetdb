@@ -231,6 +231,12 @@ Supports a Boolean of true or false, indicating whether or not the module should
 
 The puppetdb configuration directory (defaults to `/etc/puppetdb/conf.d`).
 
+####`java_args`
+
+Java VM options used for overriding default Java VM options specified in PuppetDB package (defaults to `{}`). See [PuppetDB Configuration](http://docs.puppetlabs.com/puppetdb/1.1/configure.html) to get more details about the current defaults.
+
+Example: to set `-Xmx512m -Xms256m` options use `{ '-Xmx' => '512m', '-Xms' => '256m' }`
+
 ### puppetdb:server
 
 The `puppetdb::server` class manages the puppetdb server independently of the underlying database that it depends on. It will manage the puppetdb package, service, config files, etc., but will still allow you to manage the database (e.g. postgresql) however you see fit.
