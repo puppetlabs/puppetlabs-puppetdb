@@ -16,7 +16,7 @@ def attempt_connection
     # All that we care about is that we are able to connect successfully via
     # https, so here we're simpling hitting a somewhat arbitrary low-impact URL
     # on the puppetdb server.
-    path = "/metrics/mbean/java.lang:type=Memory"
+    path = "/v1/metrics/mbean/java.lang:type=Memory"
     headers = {"Accept" => "application/json"}
     conn = Puppet::Network::HttpPool.http_instance(host, port, true)
     response = conn.get(path, headers)
