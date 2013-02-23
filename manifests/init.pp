@@ -140,7 +140,7 @@ class puppetdb(
   validate_re ($report_ttl_real, ['^(\d)+[s,m,d]$'], "report_ttl is <${report_ttl}> which does not match the regex validation")
 
   if ($manage_redhat_firewall != undef) {
-    notify {'Deprecation notice: `$manage_redhat_firewall` has been deprecated in `puppetdb` class and will be removed in a future versions. Use $open_ssl_listen_port and $open_postgres_port instead.':}
+    notify {'Deprecation notice: `$manage_redhat_firewall` has been deprecated in `puppetdb` class and will be removed in a future version. Use $open_ssl_listen_port and $open_postgres_port instead.':}
   }
 
   class { 'puppetdb::server':
