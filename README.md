@@ -195,15 +195,15 @@ The name of the database instance to connect to (defaults to `puppetdb`; ignored
 
 ####`node_ttl`
 
-The length of time a node can go without receiving any new data before it's automatically deactivated.  (defaults to '0', which disables auto-deactivation)
+The length of time a node can go without receiving any new data before it's automatically deactivated.  (defaults to '0', which disables auto-deactivation). This option is supported in PuppetDB >= 1.1.0.
 
 ####`node_purge_ttl`
 
-The length of time a node can be deactivated before it's deleted from the database. (defaults to '0', which disables purging)
+The length of time a node can be deactivated before it's deleted from the database. (defaults to '0', which disables purging). This option is supported in PuppetDB >= 1.2.0.
 
 ####`report_ttl`
 
-The length of time reports should be stored before being deleted. (defaults to '7d', which is a 7-day period)
+The length of time reports should be stored before being deleted. (defaults to '7d', which is a 7-day period). This option is supported in PuppetDB >= 1.1.0.
 
 ####`puppetdb_package`
 
