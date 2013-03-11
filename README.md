@@ -361,14 +361,3 @@ Puppet Labs modules on the Puppet Forge are open projects, and community contrib
 We want to keep it as easy as possible to contribute changes so that our modules work in your environment. There are a few guidelines that we need contributors to follow so that we can have a chance of keeping on top of things.
 
 You can read the complete module contribution guide [on the Puppet Labs wiki.](http://projects.puppetlabs.com/projects/module-site/wiki/Module_contributing)
-
-Release Notes
---------------
-
-**1.1.4**
-
-This is a bugfix release, mostly around fixing backward-compatibility for the deprecated manage_redhat_firewall parameter. It wasn’t actually entirely backwards-compatible in the 1.1.3 release.
-
-**1.1.3**
-
-This is mostly a maintenance release, to update the module dependencies to newer versions in preparation for some new features. This release does include some nice additions around the ability to set the listen address for the HTTP port on Jetty and manage the firewall for that port. Thanks very much to Drew Blessing for those submissions!
