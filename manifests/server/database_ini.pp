@@ -113,4 +113,19 @@ class puppetdb::server::database_ini(
     setting => 'gc-interval',
     value   => $puppetdb::params::gc_interval,
   }
+
+  ini_setting {'puppetdb_node_ttl':
+    setting => 'node-ttl',
+    value   => $puppetdb::params::node_ttl,
+  }
+
+  ini_setting {'puppetdb_node_purge_ttl':
+    setting => 'node-purge-ttl',
+    value   => $puppetdb::params::node_purge_ttl,
+  }
+
+  ini_setting {'puppetdb_report_ttl':
+    setting => 'report-ttl',
+    value   => $puppetdb::params::report_ttl,
+  }
 }

@@ -51,7 +51,19 @@
 #                            (defaults to `puppetdb`; ignored for `embedded` db)
 #   ['database_name']      - The name of the database instance to connect to.
 #                            (defaults to `puppetdb`; ignored for `embedded` db)
-#   ['database_package']   - The puppetdb package name in the package manager
+#   ['node_ttl']           - The length of time a node can go without receiving
+#                            any new data before it's automatically deactivated.
+#                            (defaults to '0', which disables auto-deactivation)
+#                            This option is supported in PuppetDB >= 1.1.0.
+#   ['node_purge_ttl']     - The length of time a node can be deactivated before
+#                            it's deleted from the database.
+#                            (defaults to '0', which disables purging)
+#                            This option is supported in PuppetDB >= 1.2.0.
+#   ['report_ttl']         - The length of time reports should be stored before
+#                            being deleted.
+#                            (defaults to '7d', which is a 7-day period)
+#                            This option is supported in PuppetDB >= 1.1.0.
+#   ['puppetdb_package']   - The puppetdb package name in the package manager
 #   ['puppetdb_version']   - The version of the `puppetdb` package that should
 #                            be installed.  You may specify an explicit version
 #                            number, 'present', or 'latest'.  Defaults to
@@ -93,6 +105,9 @@ class puppetdb::server(
   $database_username       = $puppetdb::params::database_username,
   $database_password       = $puppetdb::params::database_password,
   $database_name           = $puppetdb::params::database_name,
+  $node_ttl                = $puppetdb::params::node_ttl,
+  $node_purge_ttl          = $puppetdb::params::node_purge_ttl,
+  $report_ttl              = $puppetdb::params::report_ttl,
   $puppetdb_package        = $puppetdb::params::puppetdb_package,
   $puppetdb_version        = $puppetdb::params::puppetdb_version,
   $puppetdb_service        = $puppetdb::params::puppetdb_service,
