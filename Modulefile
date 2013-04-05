@@ -1,10 +1,10 @@
 name 'puppetlabs-puppetdb'
-version '1.1.5'
+version '1.2.0'
 source 'git://github.com/puppetlabs-puppet/puppetlabs-puppetdb.git'
 author 'Puppet Labs'
 description 'PuppetDB resource types'
 summary 'PuppetDB resource types'
-license 'Apache'
+license 'ASL 2.0'
 project_page 'https://github.com/puppetlabs-puppet/puppetlabs-puppetdb'
 
 dependency 'cprice404/inifile', '>= 0.9.0'
