@@ -43,6 +43,9 @@ class puppetdb::server::database_ini(
   $database_username = $puppetdb::params::database_username,
   $database_password = $puppetdb::params::database_password,
   $database_name     = $puppetdb::params::database_name,
+  $node_ttl          = $puppetdb::params::node_ttl,
+  $node_purge_ttl    = $puppetdb::params::node_purge_ttl,
+  $report_ttl        = $puppetdb::params::report_ttl,
   $confdir           = $puppetdb::params::confdir,
 ) inherits puppetdb::params {
 
@@ -116,16 +119,16 @@ class puppetdb::server::database_ini(
 
   ini_setting {'puppetdb_node_ttl':
     setting => 'node-ttl',
-    value   => $puppetdb::params::node_ttl,
+    value   => $node_ttl,
   }
 
   ini_setting {'puppetdb_node_purge_ttl':
     setting => 'node-purge-ttl',
-    value   => $puppetdb::params::node_purge_ttl,
+    value   => $node_purge_ttl,
   }
 
   ini_setting {'puppetdb_report_ttl':
     setting => 'report-ttl',
-    value   => $puppetdb::params::report_ttl,
+    value   => $report_ttl,
   }
 }

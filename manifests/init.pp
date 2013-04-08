@@ -111,22 +111,25 @@ class puppetdb(
   }
 
   class { 'puppetdb::server':
-    listen_address          => $listen_address,
-    listen_port             => $listen_port,
-    open_listen_port        => $open_listen_port,
-    ssl_listen_address      => $ssl_listen_address,
-    ssl_listen_port         => $ssl_listen_port,
-    open_ssl_listen_port    => $open_ssl_listen_port,
-    database                => $database,
-    database_port           => $database_port,
-    database_username       => $database_username,
-    database_password       => $database_password,
-    database_name           => $database_name,
-    puppetdb_package        => $puppetdb_package,
-    puppetdb_version        => $puppetdb_version,
-    puppetdb_service        => $puppetdb_service,
-    manage_redhat_firewall  => $manage_redhat_firewall,
-    confdir                 => $confdir
+    listen_address         => $listen_address,
+    listen_port            => $listen_port,
+    open_listen_port       => $open_listen_port,
+    ssl_listen_address     => $ssl_listen_address,
+    ssl_listen_port        => $ssl_listen_port,
+    open_ssl_listen_port   => $open_ssl_listen_port,
+    database               => $database,
+    database_port          => $database_port,
+    database_username      => $database_username,
+    database_password      => $database_password,
+    database_name          => $database_name,
+    node_ttl               => $node_ttl,
+    node_purge_ttl         => $node_purge_ttl,
+    report_ttl             => $report_ttl,
+    puppetdb_package       => $puppetdb_package,
+    puppetdb_version       => $puppetdb_version,
+    puppetdb_service       => $puppetdb_service,
+    manage_redhat_firewall => $manage_redhat_firewall,
+    confdir                => $confdir
   }
 
   if ($database == 'postgres') {

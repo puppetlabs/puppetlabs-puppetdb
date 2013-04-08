@@ -135,6 +135,9 @@ class puppetdb::server(
     database_username => $database_username,
     database_password => $database_password,
     database_name     => $database_name,
+    node_ttl          => $node_ttl,
+    node_purge_ttl    => $node_purge_ttl,
+    report_ttl        => $report_ttl,
     confdir           => $confdir,
     notify            => Service[$puppetdb_service],
   }
