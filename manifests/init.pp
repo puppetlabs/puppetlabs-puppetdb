@@ -27,6 +27,8 @@
 #                            Set to '0.0.0.0' to listen on all addresses.
 #   ['ssl_listen_port']    - The port on which the puppetdb web server should
 #                            accept HTTPS requests (defaults to 8081).
+#   ['disable_ssl']        - If true, disable HTTPS and only serve
+#                            HTTP requests. Defaults to false.
 #   ['open_ssl_listen_port'] - If true, open the ssl listen port on the firewall. 
 #                            (defaults to true).
 #   ['database']           - Which database backend to use; legal values are
@@ -89,6 +91,7 @@ class puppetdb(
   $open_listen_port          = $puppetdb::params::open_listen_port,
   $ssl_listen_address        = $puppetdb::params::ssl_listen_address,
   $ssl_listen_port           = $puppetdb::params::ssl_listen_port,
+  $disable_ssl               = $puppetdb::params::disable_ssl,
   $open_ssl_listen_port      = $puppetdb::params::open_ssl_listen_port,
   $database                  = $puppetdb::params::database,
   $database_port             = $puppetdb::params::database_port,
@@ -116,6 +119,7 @@ class puppetdb(
     open_listen_port        => $open_listen_port,
     ssl_listen_address      => $ssl_listen_address,
     ssl_listen_port         => $ssl_listen_port,
+    disable_ssl             => $disable_ssl,
     open_ssl_listen_port    => $open_ssl_listen_port,
     database                => $database,
     database_port           => $database_port,
