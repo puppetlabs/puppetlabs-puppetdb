@@ -46,6 +46,7 @@ class puppetdb::server::database_ini(
   $node_ttl          = $puppetdb::params::node_ttl,
   $node_purge_ttl    = $puppetdb::params::node_purge_ttl,
   $report_ttl        = $puppetdb::params::report_ttl,
+  $gc_interval       = $puppetdb::params::gc_interval,
   $confdir           = $puppetdb::params::confdir,
 ) inherits puppetdb::params {
 
@@ -114,7 +115,7 @@ class puppetdb::server::database_ini(
 
   ini_setting {'puppetdb_gc_interval':
     setting => 'gc-interval',
-    value   => $puppetdb::params::gc_interval,
+    value   => $gc_interval,
   }
 
   ini_setting {'puppetdb_node_ttl':
