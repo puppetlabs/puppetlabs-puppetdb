@@ -36,7 +36,7 @@
 #                            accept HTTPS requests (defaults to 8081).
 #   ['disable_ssl']        - If true, disable HTTPS and only serve
 #                            HTTP requests. Defaults to false.
-#   ['open_ssl_listen_port'] - If true, open the ssl listen port on the firewall. 
+#   ['open_ssl_listen_port'] - If true, open the ssl listen port on the firewall.
 #                            (defaults to true).
 #   ['database']           - Which database backend to use; legal values are
 #                            `postgres` (default) or `embedded`.  (The `embedded`
