@@ -18,7 +18,7 @@ describe 'puppetdb::server::jetty_ini', :type => :class do
              'path'    => '/etc/puppetdb/conf.d/jetty.ini',
              'section' => 'jetty',
              'setting' => 'host',
-             'value'   => 'localhost',
+             'value'   => 'localhost'
              )}
       it { should contain_ini_setting('puppetdb_port').
         with(
@@ -26,7 +26,7 @@ describe 'puppetdb::server::jetty_ini', :type => :class do
              'path'    => '/etc/puppetdb/conf.d/jetty.ini',
              'section' => 'jetty',
              'setting' => 'port',
-             'value'   => 8080,
+             'value'   => 8080
              )}
       it { should contain_ini_setting('puppetdb_sslhost').
         with(
@@ -34,7 +34,7 @@ describe 'puppetdb::server::jetty_ini', :type => :class do
              'path'    => '/etc/puppetdb/conf.d/jetty.ini',
              'section' => 'jetty',
              'setting' => 'ssl-host',
-             'value'   => 'test.domain.local',
+             'value'   => 'test.domain.local'
              )}
       it { should contain_ini_setting('puppetdb_sslport').
         with(
@@ -42,7 +42,7 @@ describe 'puppetdb::server::jetty_ini', :type => :class do
              'path'    => '/etc/puppetdb/conf.d/jetty.ini',
              'section' => 'jetty',
              'setting' => 'ssl-port',
-             'value'   => 8081,
+             'value'   => 8081
              )}
     end
 
@@ -58,7 +58,7 @@ describe 'puppetdb::server::jetty_ini', :type => :class do
              'path'    => '/etc/puppetdb/conf.d/jetty.ini',
              'section' => 'jetty',
              'setting' => 'host',
-             'value'   => 'localhost',
+             'value'   => 'localhost'
              )}
       it { should contain_ini_setting('puppetdb_port').
         with(
@@ -66,21 +66,21 @@ describe 'puppetdb::server::jetty_ini', :type => :class do
              'path'    => '/etc/puppetdb/conf.d/jetty.ini',
              'section' => 'jetty',
              'setting' => 'port',
-             'value'   => 8080,
+             'value'   => 8080
              )}
       it { should contain_ini_setting('puppetdb_sslhost').
         with(
              'ensure'  => 'absent',
              'path'    => '/etc/puppetdb/conf.d/jetty.ini',
              'section' => 'jetty',
-             'setting' => 'ssl-host',
+             'setting' => 'ssl-host'
              )}
       it { should contain_ini_setting('puppetdb_sslport').
         with(
              'ensure'  => 'absent',
              'path'    => '/etc/puppetdb/conf.d/jetty.ini',
              'section' => 'jetty',
-             'setting' => 'ssl-port',
+             'setting' => 'ssl-port'
              )}
     end
   end
