@@ -20,14 +20,14 @@
 #                            '0.0.0.0' = all)
 #   ['listen_port']        - The port on which the puppetdb web server should
 #                            accept HTTP requests (defaults to 8080).
-#   ['open_listen_port']   - If true, open the http listen port on the firewall. 
+#   ['open_listen_port']   - If true, open the http listen port on the firewall.
 #                            (defaults to false).
 #   ['ssl_listen_address'] - The address that the web server should bind to
 #                            for HTTPS requests.  (defaults to `$::clientcert`.)
 #                            Set to '0.0.0.0' to listen on all addresses.
 #   ['ssl_listen_port']    - The port on which the puppetdb web server should
 #                            accept HTTPS requests (defaults to 8081).
-#   ['open_ssl_listen_port'] - If true, open the ssl listen port on the firewall. 
+#   ['open_ssl_listen_port'] - If true, open the ssl listen port on the firewall.
 #                            (defaults to true).
 #   ['database']           - Which database backend to use; legal values are
 #                            `postgres` (default) or `embedded`.  (The `embedded`
@@ -105,6 +105,36 @@ class puppetdb(
   $manage_redhat_firewall    = $puppetdb::params::manage_redhat_firewall,
   $confdir                   = $puppetdb::params::confdir
 ) inherits puppetdb::params {
+
+  # Apply necessary suffix if zero is specified.
+  if $node_ttl == '0' {
+    $node_ttl_real = '0s'
+  } else {
+    $node_ttl_real = downcase($node_ttl)
+  }
+
+  # Validate node_ttl
+  validate_re ($node_ttl_real, ['^(\d)+[s,m,d]$'], "node_ttl is <${node_ttl}> which does not match the regex validation")
+
+  # Apply necessary suffix if zero is specified.
+  if $node_purge_ttl == '0' {
+    $node_purge_ttl_real = '0s'
+  } else {
+    $node_purge_ttl_real = downcase($node_purge_ttl)
+  }
+
+  # Validate node_purge_ttl
+  validate_re ($node_purge_ttl_real, ['^(\d)+[s,m,d]$'], "node_purge_ttl is <${node_purge_ttl}> which does not match the regex validation")
+
+  # Apply necessary suffix if zero is specified.
+  if $report_ttl == '0' {
+    $report_ttl_real = '0s'
+  } else {
+    $report_ttl_real = downcase($report_ttl)
+  }
+
+  # Validate report_ttl
+  validate_re ($report_ttl_real, ['^(\d)+[s,m,d]$'], "report_ttl is <${report_ttl}> which does not match the regex validation")
 
   if ($manage_redhat_firewall != undef) {
     notify {'Deprecation notice: `$manage_redhat_firewall` has been deprecated in `puppetdb` class and will be removed in a future versions. Use $open_ssl_listen_port and $open_postgres_port instead.':}
