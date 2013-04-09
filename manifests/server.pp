@@ -27,7 +27,7 @@
 #                            Set to '0.0.0.0' to listen on all addresses.
 #   ['listen_port']        - The port on which the puppetdb web server should
 #                            accept HTTP requests (defaults to 8080).
-#   ['open_listen_port']   - If true, open the http listen port on the firewall. 
+#   ['open_listen_port']   - If true, open the http listen port on the firewall.
 #                            (defaults to false).
 #   ['ssl_listen_address'] - The address that the web server should bind to
 #                            for HTTPS requests.  (defaults to `$::clientcert`.)
@@ -118,6 +118,36 @@ class puppetdb::server(
   $confdir                 = $puppetdb::params::confdir,
 ) inherits puppetdb::params {
 
+  # Apply necessary suffix if zero is specified.
+  if $node_ttl == '0' {
+    $node_ttl_real = '0s'
+  } else {
+    $node_ttl_real = downcase($node_ttl)
+  }
+
+  # Validate node_ttl
+  validate_re ($node_ttl_real, ['^(\d)+[s,m,d]$'], "node_ttl is <${node_ttl}> which does not match the regex validation")
+
+  # Apply necessary suffix if zero is specified.
+  if $node_purge_ttl == '0' {
+    $node_purge_ttl_real = '0s'
+  } else {
+    $node_purge_ttl_real = downcase($node_purge_ttl)
+  }
+
+  # Validate node_purge_ttl
+  validate_re ($node_purge_ttl_real, ['^(\d)+[s,m,d]$'], "node_purge_ttl is <${node_purge_ttl}> which does not match the regex validation")
+
+  # Apply necessary suffix if zero is specified.
+  if $report_ttl == '0' {
+    $report_ttl_real = '0s'
+  } else {
+    $report_ttl_real = downcase($report_ttl)
+  }
+
+  # Validate report_ttl
+  validate_re ($report_ttl_real, ['^(\d)+[s,m,d]$'], "report_ttl is <${report_ttl}> which does not match the regex validation")
+
   package { $puppetdb_package:
     ensure => $puppetdb_version,
     notify => Service[$puppetdb_service],
@@ -138,6 +168,9 @@ class puppetdb::server(
     database_username => $database_username,
     database_password => $database_password,
     database_name     => $database_name,
+    node_ttl          => $node_ttl,
+    node_purge_ttl    => $node_purge_ttl,
+    report_ttl        => $report_ttl,
     confdir           => $confdir,
     notify            => Service[$puppetdb_service],
   }

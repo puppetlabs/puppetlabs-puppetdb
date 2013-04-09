@@ -4,6 +4,20 @@ Release notes for the puppetlabs-puppetdb module.
 
 ------------------------------------------
 
+#### 1.2.1 - 2013/04/08
+
+This is a minor bugfix that solves the PuppetDB startup exception:
+
+    java.lang.AssertionError: Assert failed: (string? s)
+
+This was due to the default `node-ttl` and `node-purge-ttl` settings not having a time suffix by default. These settings required 's', 'm', 'd' etc. to be suffixed, even if they are zero.
+
+#### Changes
+
+* (Ken Barber) Add 's' suffix to period settings to avoid exceptions in PuppetDB
+
+------------------------------------------
+
 #### 1.2.0 - 2013/04/05
 
 This release is primarily about providing full configuration file support in the module for PuppetDB 1.2.0. (The alignment of version is a coincidence I assure you :-).
