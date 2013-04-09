@@ -4,3 +4,4 @@ metadata.json
 .DS_Store
 coverage/
 spec/fixtures/modules/*
+Gemfile.lock
