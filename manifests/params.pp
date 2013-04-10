@@ -16,6 +16,7 @@ class puppetdb::params {
   $open_listen_port          = false
   $ssl_listen_address        = $::clientcert
   $ssl_listen_port           = '8081'
+  $disable_ssl               = false
   # This technically defaults to 'true', but in order to preserve backwards
   # compatibility with the deprecated 'manage_redhat_firewall' parameter, we
   # need to specify 'undef' as the default so that we can tell whether or

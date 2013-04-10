@@ -169,6 +169,10 @@ The address that the web server should bind to for HTTPS requests (defaults to `
 
 The port on which the puppetdb web server should accept HTTPS requests (defaults to '8081').
 
+####`disable_ssl`
+
+If true, the puppetdb web server will only serve HTTP and not HTTPS requests (defaults to false).
+
 ####`open_ssl_listen_port`
 
 If true, open the ssl_listen\_port on the firewall (defaults to true).
