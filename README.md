@@ -276,6 +276,13 @@ If true, the module will overwrite the puppet master's routes file to configure 
 
 If true, the module will manage the puppet master's storeconfig settings (defaults to true).
 
+####`manage_config`
+If true, the module will store values from puppetdb_server and puppetdb_port parameters in the puppetdb configuration file.
+If false, an existing puppetdb configuration file will be used to retrieve server and port values.
+
+####`strict_validation`
+If true, the module will fail if puppetdb is not reachable, otherwise it will preconfigure puppetdb without checking.
+
 ####`puppet_confdir`
 
 Puppet's config directory (defaults to `/etc/puppet`).
