@@ -113,5 +113,5 @@ class puppetdb::params {
   }
 
   $puppet_conf              = "${puppet_confdir}/puppet.conf"
-  $puppetdb_startup_timeout = 15
+  $puppetdb_startup_timeout = 120
 }
