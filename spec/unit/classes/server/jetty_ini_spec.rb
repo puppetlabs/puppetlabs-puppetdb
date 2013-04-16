@@ -44,6 +44,22 @@ describe 'puppetdb::server::jetty_ini', :type => :class do
              'setting' => 'ssl-port',
              'value'   => 8081
              )}
+      it { should contain_ini_setting('puppetdb_key-password').
+        with(
+             'ensure'  => 'present',
+             'path'    => '/etc/puppetdb/conf.d/jetty.ini',
+             'section' => 'jetty',
+             'setting' => 'key-password',
+             'value'   => 'puppetdb'
+             )}
+      it { should contain_ini_setting('puppetdb_trust-password').
+        with(
+             'ensure'  => 'present',
+             'path'    => '/etc/puppetdb/conf.d/jetty.ini',
+             'section' => 'jetty',
+             'setting' => 'trust-password',
+             'value'   => 'puppetdb'
+             )}
     end
 
     describe 'when disabling ssl' do
@@ -81,6 +97,20 @@ describe 'puppetdb::server::jetty_ini', :type => :class do
              'path'    => '/etc/puppetdb/conf.d/jetty.ini',
              'section' => 'jetty',
              'setting' => 'ssl-port'
+             )}
+      it { should contain_ini_setting('puppetdb_key-password').
+        with(
+             'ensure'  => 'absent',
+             'path'    => '/etc/puppetdb/conf.d/jetty.ini',
+             'section' => 'jetty',
+             'setting' => 'key-password'
+             )}
+      it { should contain_ini_setting('puppetdb_trust-password').
+        with(
+             'ensure'  => 'absent',
+             'path'    => '/etc/puppetdb/conf.d/jetty.ini',
+             'section' => 'jetty',
+             'setting' => 'trust-password'
              )}
     end
   end

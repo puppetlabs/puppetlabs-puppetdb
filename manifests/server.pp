@@ -86,6 +86,15 @@
 #                            options specified in PuppetDB package.
 #                            (defaults to `{}`).
 #                            e.g. { '-Xmx' => '512m', '-Xms' => '256m' }
+#   ['puppet_ssldir']      - Puppet's SSL directory.
+#   ['ca_cert']            - The SSL CA certificate used.
+#   ['ssl_cert']           - The SSL certificate for $ssl_listen_address,
+#                            signed by the CA.
+#   ['ssl_private_key']    - The SSL private key for $ssl_listen_address.
+#                            `/etc/puppetdb/conf.d`.
+#   ['key_password']       - The password to use for the keystore.
+#   ['trust_password']     - The password to use for the truststore.
+#
 # Actions:
 # - Creates and manages a puppetdb server
 #
@@ -119,7 +128,13 @@ class puppetdb::server(
   $puppetdb_service        = $puppetdb::params::puppetdb_service,
   $manage_redhat_firewall  = $puppetdb::params::manage_redhat_firewall,
   $confdir                 = $puppetdb::params::confdir,
-  $java_args               = {}
+  $java_args               = {},
+  $puppet_ssldir           = $puppetdb::params::puppet_ssldir,
+  $ca_cert                 = "${puppet_ssldir}/certs/ca.pem",
+  $ssl_cert                = "${puppet_ssldir}/certs/${ssl_listen_address}.pem",
+  $ssl_private_key         = "${puppet_ssldir}/private_keys/${ssl_listen_address}.pem",
+  $key_password            = $puppetdb::params::key_password,
+  $trust_password          = $puppetdb::params::trust_password,
 ) inherits puppetdb::params {
 
   # Apply necessary suffix if zero is specified.
@@ -179,6 +194,17 @@ class puppetdb::server(
     notify            => Service[$puppetdb_service],
   }
 
+  if !$disable_ssl {
+    class {'puppetdb::ssl':
+      ssl_listen_address => $ssl_listen_address,
+      ca_cert            => $ca_cert,
+      trust_password     => $trust_password,
+      key_password       => $key_password,
+      ssl_cert           => $ssl_cert,
+      ssl_private_key    => $ssl_private_key,
+    }
+  }
+
   class { 'puppetdb::server::jetty_ini':
     listen_address      => $listen_address,
     listen_port         => $listen_port,
@@ -186,11 +212,12 @@ class puppetdb::server(
     ssl_listen_port     => $ssl_listen_port,
     disable_ssl         => $disable_ssl,
     confdir             => $confdir,
+    key_password        => $key_password,
+    trust_password      => $trust_password,
     notify              => Service[$puppetdb_service],
   }
 
   if !empty($java_args) {
-    
     create_resources(
       'ini_subsetting',
       puppetdb_create_subsetting_resource_hash(
