@@ -23,16 +23,15 @@ Puppet::Type.type(:puppetdb_conn_validator).provide(:puppet_https) do
     timeout = resource[:timeout]
 
     success = validator.attempt_connection
-    unless success
-      while (Time.now - start_time) < timeout
-        # It can take several seconds for the puppetdb server to start up;
-        # especially on the first install.  Therefore, our first connection attempt
-        # may fail.  Here we have somewhat arbitrarily chosen to retry every 10
-        # seconds until the configurable timeout has expired.
-        Puppet.notice("Failed to connect to puppetdb; sleeping 2 seconds before retry")
-        sleep 2
-        success = validator.attempt_connection
-      end
+
+    while success == false && ((Time.now - start_time) < timeout)
+      # It can take several seconds for the puppetdb server to start up;
+      # especially on the first install.  Therefore, our first connection attempt
+      # may fail.  Here we have somewhat arbitrarily chosen to retry every 2
+      # seconds until the configurable timeout has expired.
+      Puppet.notice("Failed to connect to puppetdb; sleeping 2 seconds before retry")
+      sleep 2
+      success = validator.attempt_connection
     end
 
     unless success
