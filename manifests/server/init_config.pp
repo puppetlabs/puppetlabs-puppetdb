@@ -56,5 +56,6 @@ class puppetdb::server::init_config(
     group   => 'root',
     mode    => '0644',
     content => template("${module_name}/init_config.erb"),
+    notify  => Service['puppetdb'],
   }
 }
