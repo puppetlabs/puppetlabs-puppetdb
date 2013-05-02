@@ -46,7 +46,8 @@ class puppetdb::server::init_config(
   Ini_setting {
     path    => "${init_confdir}/${init_conf_file}",
     ensure  => present,
-    section => 'global',
+    section => '', #Should be blank for 'global' section.
+    notify  => Service['puppetdb'],
   }
 
   ini_setting {'java_args':
