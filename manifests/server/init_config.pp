@@ -42,22 +42,11 @@ class puppetdb::server::init_config(
     $heap_dump_args = ''
   }
 
-  #Set the defaults
-  Ini_setting {
-    path    => "${init_confdir}/${init_conf_file}",
+  file { "${init_confdir}/${init_conf_file}":
     ensure  => present,
-    section => '', #Should be blank for 'global' section.
-    notify  => Service['puppetdb'],
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0644',
+    content => template("${module_name}/init_config.erb"),
   }
-
-  ini_setting {'java_args':
-    setting => 'JAVA_ARGS',
-    value   => "-Xms${java_xms} -Xmx${java_xmx} ${heap_dump_args}",
-  }
-
-  ini_setting {'java_bin':
-    setting => 'JAVA_BIN',
-    value   => $java_bin,
-  }
-
 }
