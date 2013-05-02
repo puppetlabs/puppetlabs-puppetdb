@@ -27,14 +27,14 @@
 #                            Set to '0.0.0.0' to listen on all addresses.
 #   ['listen_port']        - The port on which the puppetdb web server should
 #                            accept HTTP requests (defaults to 8080).
-#   ['open_listen_port']   - If true, open the http listen port on the firewall. 
+#   ['open_listen_port']   - If true, open the http listen port on the firewall.
 #                            (defaults to false).
 #   ['ssl_listen_address'] - The address that the web server should bind to
 #                            for HTTPS requests.  (defaults to `$::clientcert`.)
 #                            Set to '0.0.0.0' to listen on all addresses.
 #   ['ssl_listen_port']    - The port on which the puppetdb web server should
 #                            accept HTTPS requests (defaults to 8081).
-#   ['open_ssl_listen_port'] - If true, open the ssl listen port on the firewall. 
+#   ['open_ssl_listen_port'] - If true, open the ssl listen port on the firewall.
 #                            (defaults to true).
 #   ['database']           - Which database backend to use; legal values are
 #                            `postgres` (default) or `embedded`.  (The `embedded`
@@ -98,6 +98,12 @@ class puppetdb::server(
   $puppetdb_service        = $puppetdb::params::puppetdb_service,
   $manage_redhat_firewall  = $puppetdb::params::manage_redhat_firewall,
   $confdir                 = $puppetdb::params::confdir,
+  $init_confdir            = $puppetdb::params::init_confdir,
+  $init_conf_file          = $puppetdb::params::init_conf_file,
+  $java_xms                = $puppetdb::params::java_xms,
+  $java_xmx                = $puppetdb::params::java_xmx,
+  $heap_dump_on_oom        = $puppetdb::params::heap_dump_on_oom,
+  $java_bin                = $puppetdb::params::java_bin,
 ) inherits puppetdb::params {
 
   package { $puppetdb_package:
@@ -131,6 +137,15 @@ class puppetdb::server(
     ssl_listen_port     => $ssl_listen_port,
     confdir             => $confdir,
     notify              => Service[$puppetdb_service],
+  }
+
+  class { 'puppetdb::server::init_config':
+    init_confdir        => $init_confdir,
+    init_conf_file      => $init_conf_file,
+    java_xms            => $java_xms,
+    java_xmx            => $java_xmx,
+    heap_dump_on_oom    => $heap_dump_on_oom,
+    java_bin            => $java_bin,
   }
 
   service { $puppetdb_service:
