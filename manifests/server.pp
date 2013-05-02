@@ -98,6 +98,7 @@ class puppetdb::server(
   $puppetdb_service        = $puppetdb::params::puppetdb_service,
   $manage_redhat_firewall  = $puppetdb::params::manage_redhat_firewall,
   $confdir                 = $puppetdb::params::confdir,
+  $installdir              = $puppetdb::params::installdir,
   $init_confdir            = $puppetdb::params::init_confdir,
   $init_conf_file          = $puppetdb::params::init_conf_file,
   $java_xms                = $puppetdb::params::java_xms,
@@ -146,6 +147,8 @@ class puppetdb::server(
     java_xmx            => $java_xmx,
     heap_dump_on_oom    => $heap_dump_on_oom,
     java_bin            => $java_bin,
+    confdir             => $confdir,
+    installdir          => $installdir,
   }
 
   service { $puppetdb_service:

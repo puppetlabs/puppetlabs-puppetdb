@@ -34,6 +34,8 @@ class puppetdb::server::init_config(
   $java_xmx                 = $puppetdb::params::java_xmx,
   $heap_dump_on_oom         = $puppetdb::params::heap_dump_on_oom,
   $java_bin                 = $puppetdb::params::java_bin,
+  $confdir                  = $puppetdb::params::confdir,
+  $installdir               = $puppetdb::params::installdir,
 ) inherits puppetdb::params {
 
   if ($heap_dump_on_oom == true) {

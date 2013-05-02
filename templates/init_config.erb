@@ -13,5 +13,5 @@ JAVA_ARGS="-Xms<%=@java_xms %> -Xmx<%=@java_xmx %> <%=@heap_dump_args %>"
 
 # These normally shouldn't need to be edited if using OS packages
 USER="puppetdb"
-INSTALL_DIR="/usr/share/puppetdb"
-CONFIG="/etc/puppetdb/conf.d"
+INSTALL_DIR="<%=@installdir %>"
+CONFIG="<%=@confdir %>"

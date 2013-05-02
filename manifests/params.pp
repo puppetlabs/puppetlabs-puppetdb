@@ -58,20 +58,22 @@ class puppetdb::params {
     $puppetdb_package     = 'pe-puppetdb'
     $puppetdb_service     = 'pe-puppetdb'
     $confdir              = '/etc/puppetlabs/puppetdb/conf.d'
+    $installdir           = '/opt/puppet/share/puppetdb'
     $init_conf_file       = 'pe-puppetdb'
     $puppet_service_name  = 'pe-httpd'
     $puppet_confdir       = '/etc/puppetlabs/puppet'
     $terminus_package     = 'pe-puppetdb-terminus'
-    $embedded_subname     = 'file:/opt/puppet/share/puppetdb/db/db;hsqldb.tx=mvcc;sql.syntax_pgs=true'
+    $embedded_subname     = "file:${installdir}/db/db;hsqldb.tx=mvcc;sql.syntax_pgs=true"
   } else {
     $puppetdb_package     = 'puppetdb'
     $puppetdb_service     = 'puppetdb'
     $confdir              = '/etc/puppetdb/conf.d'
+    $installdir           = '/usr/share/puppetdb'
     $init_conf_file       = 'puppetdb'
     $puppet_service_name  = 'puppetmaster'
     $puppet_confdir       = '/etc/puppet'
     $terminus_package     = 'puppetdb-terminus'
-    $embedded_subname     = 'file:/usr/share/puppetdb/db/db;hsqldb.tx=mvcc;sql.syntax_pgs=true'
+    $embedded_subname     = "file:${installdir}/db/db;hsqldb.tx=mvcc;sql.syntax_pgs=true"
   }
 
   # Init config params
