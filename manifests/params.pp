@@ -45,7 +45,7 @@ class puppetdb::params {
   # These settings manage the various auto-deactivation and auto-purge settings
   $node_ttl               = '0s'
   $node_purge_ttl         = '0s'
-  $report_ttl             = '7d'
+  $report_ttl             = '14d'
 
   $puppetdb_version       = 'present'
 
