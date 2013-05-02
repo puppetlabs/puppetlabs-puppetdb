@@ -1,0 +1,7 @@
+pkg/
+metadata.json
+*.swp
+.DS_Store
+coverage/
+spec/fixtures/modules/*
+Gemfile.lock

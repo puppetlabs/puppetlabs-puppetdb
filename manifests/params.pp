@@ -16,9 +16,22 @@ class puppetdb::params {
   $open_listen_port          = false
   $ssl_listen_address        = $::clientcert
   $ssl_listen_port           = '8081'
-  $open_ssl_listen_port      = false
+  $disable_ssl               = false
+  # This technically defaults to 'true', but in order to preserve backwards
+  # compatibility with the deprecated 'manage_redhat_firewall' parameter, we
+  # need to specify 'undef' as the default so that we can tell whether or
+  # not the user explicitly specified a value.  See implementation in
+  # `firewall.pp`.  We should change this back to `true` when we get rid
+  # of `manage_redhat_firewall`.
+  $open_ssl_listen_port      = undef
   $postgres_listen_addresses = 'localhost'
-  $open_postgres_port        = false
+  # This technically defaults to 'true', but in order to preserve backwards
+  # compatibility with the deprecated 'manage_redhat_firewall' parameter, we
+  # need to specify 'undef' as the default so that we can tell whether or
+  # not the user explicitly specified a value.  See implementation in
+  # `postgresql.pp`.  We should change this back to `true` when we get rid
+  # of `manage_redhat_firewall`.
+  $open_postgres_port        = undef
 
   $database                  = 'postgres'
 
@@ -29,10 +42,15 @@ class puppetdb::params {
   $database_username      = 'puppetdb'
   $database_password      = 'puppetdb'
 
+  # These settings manage the various auto-deactivation and auto-purge settings
+  $node_ttl               = '0s'
+  $node_purge_ttl         = '0s'
+  $report_ttl             = '7d'
+
   $puppetdb_version       = 'present'
 
   # TODO: figure out a way to make this not platform-specific
-  $manage_redhat_firewall = false
+  $manage_redhat_firewall = undef
 
   $gc_interval            = '60'
 
@@ -64,6 +82,7 @@ class puppetdb::params {
     $puppet_confdir       = '/etc/puppetlabs/puppet'
     $terminus_package     = 'pe-puppetdb-terminus'
     $embedded_subname     = "file:${installdir}/db/db;hsqldb.tx=mvcc;sql.syntax_pgs=true"
+    
   } else {
     $puppetdb_package     = 'puppetdb'
     $puppetdb_service     = 'puppetdb'
@@ -83,5 +102,5 @@ class puppetdb::params {
   $heap_dump_on_oom       = true
 
   $puppet_conf              = "${puppet_confdir}/puppet.conf"
-  $puppetdb_startup_timeout = 15
+  $puppetdb_startup_timeout = 120
 }
