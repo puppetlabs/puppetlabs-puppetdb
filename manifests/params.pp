@@ -77,7 +77,7 @@ class puppetdb::params {
   # Init config params
   $java_xms               = '192m'
   $java_xmx               = '192m'
-  $java_bin               = '/usr/java/bin'
+  $java_bin               = '/usr/bin/java'
   $heap_dump_on_oom       = true
 
   $puppet_conf              = "${puppet_confdir}/puppet.conf"
