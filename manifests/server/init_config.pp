@@ -5,26 +5,32 @@
 # and /etc/defaults/puppetdb for Debian-based distributions.
 #
 # Parameters:
-#   ['database']        - Which database backend to use; legal values are
-#                         `postgres` (default) or `embedded`.  (The `embedded`
-#                         db can be used for very small installations or for
-#                         testing, but is not recommended for use in production
-#                         environments.  For more info, see the puppetdb docs.)
-
+#   ['init_confdir']      - The directory where the init configuration file is.
+#                           For Redhat-based distributions this is usually
+#                           `/etc/sysconfig/` and for Debian-based distributions
+#                           it is usually `/etc/defaults`.
+#   ['init_conf_file']    - The file where the init configuration is stored.
+#                           For open-source puppet this is usually `puppetdb` while
+#                           enterprise is `pe-puppetdb`.
+#   ['java_xms']          - The Java XMS memory setting; defaults to `192m`.
+#   ['java_xmx']          - The Java XMX memory setting; defaults to `192m`.
+#   ['heap_dump_on_oom']  - If true, perform heap dump on out of memory. Heap dump
+#                           location is '/var/log/puppetdb/puppetdb-oom.hprof'.
+#   ['java_bin']          - Location of your Java binary (version 6 or higher);
+#                           defaults to '/usr/bin/java'
+#   ['confdir']           - The puppetdb configuration directory; defaults to
+#                           `/etc/puppetdb/conf.d`.
+#   ['installdir']        - The puppetdb install directory; defaults to
+#                           `/usr/share/puppetdb` for open-source installs
+#                           and `/opt/puppet/share/puppetdb` for enterprise.
 #
 # Actions:
 # - Manages puppetdb's init config file
 #
-# Requires:
-# - Inifile
-#
 # Sample Usage:
-#   class { 'puppetdb::server::database_ini':
-#     database_host     => 'my.postgres.host',
-#     database_port     => '5432',
-#     database_username => 'puppetdb_pguser',
-#     database_password => 'puppetdb_pgpasswd',
-#     database_name     => 'puppetdb',
+#   class { 'puppetdb::server::init_config':
+#     java_xms            => '512m',
+#     java_xmx            => '512m',
 #   }
 #
 class puppetdb::server::init_config(
