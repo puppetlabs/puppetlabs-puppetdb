@@ -45,13 +45,8 @@ class puppetdb::server::firewall(
     } 
 
     if ($open_ssl_port or $manage_redhat_firewall) {
-      if ($ssl_port) {
-        $final_ssl_port = $ssl_port
-      } else {
-        $final_ssl_port = $port
-      }
-      firewall { "${final_ssl_port} accept - puppetdb":
-        port   => $final_ssl_port,
+      firewall { "${ssl_port} accept - puppetdb":
+        port   => $ssl_port,
         proto  => 'tcp',
         action => 'accept',
       }
