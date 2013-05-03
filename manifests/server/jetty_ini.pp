@@ -18,8 +18,6 @@
 #                         (defaults to `puppetdb`; ignored for `embedded` db)
 #   ['confdir']         - The puppetdb configuration directory; defaults to
 #                         `/etc/puppetdb/conf.d`.
-#   ['key_password']    - The keystore password.
-#   ['trust_password']  - The truststore password.
 #
 # Actions:
 # - Manages puppetdb's `jetty.ini` file
@@ -40,8 +38,6 @@ class puppetdb::server::jetty_ini(
   $ssl_listen_port    = $puppetdb::params::ssl_listen_port,
   $disable_ssl        = $puppetdb::params::disable_ssl,
   $confdir            = $puppetdb::params::confdir,
-  $key_password       = $puppetdb::params::key_password,
-  $trust_password     = $puppetdb::params::trust_password,
 ) inherits puppetdb::params {
 
   #Set the defaults
@@ -79,17 +75,5 @@ class puppetdb::server::jetty_ini(
     ensure  => $ssl_setting_ensure,
     setting => 'ssl-port',
     value   => $ssl_listen_port,
-  }
-
-  ini_setting {'puppetdb_key-password':
-    ensure  => $ssl_setting_ensure,
-    setting => 'key-password',
-    value   => $key_password,
-  }
-
-  ini_setting {'puppetdb_trust-password':
-    ensure  => $ssl_setting_ensure,
-    setting => 'trust-password',
-    value   => $trust_password,
   }
 }
