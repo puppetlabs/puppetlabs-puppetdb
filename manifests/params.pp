@@ -116,7 +116,5 @@ class puppetdb::params {
   $puppetdb_startup_timeout = 120
 
   # SSL settings
-  $puppet_ssldir  = "${puppet_confdir}/ssl"
-  $key_password   = 'puppetdb'
-  $trust_password = 'puppetdb'
+  $puppet_ssldir  = $settings::ssldir
 }
