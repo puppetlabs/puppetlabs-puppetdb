@@ -2,6 +2,61 @@
 
 Release notes for the puppetlabs-puppetdb module.
 
+
+------------------------------------------
+
+#### 1.3.0 - 2013/05/13
+
+This feature release provides us with a few new features for the PuppetDB
+module.
+
+You can now disable SSL when using the `puppetdb` class by using the new
+parameter `disable_ssl`:
+
+    class { 'puppetdb':
+      disable_ssl => true,
+    }
+
+This will remove the SSL settings from your `jetty.ini` configuration file
+disabling any SSL communication. This is useful when you want to offload SSL
+to another web server, such as Apache or Nginx.
+
+We have now added an option `java_args` for passing in Java options to
+PuppetDB. The format is a hash that is passed in when declaring the use of the
+`puppetdb` class:
+
+    class { 'puppetdb':
+      java_args => {
+        '-Xmx' => '512m',
+        '-Xms' => '256m',
+      }
+    }
+
+Also, the default `report-ttl` was set to `14d` in PuppetDB to align it with an
+upcoming PE release, so we've also reflected that default here now.
+
+And finally we've fixed the issue whereby the options `report_ttl`, `node_ttl`,
+`node_purge_ttl` and `gc_interval` were not making the correct changes. On top
+of that you can now set these values to zero in the module, and the correct
+time modifier (`s`, `m`, `h` etc.) will automatically get applied for you.
+
+Behind the scenes we've also added system and unit testing, which was
+previously non-existent. This should help us reduce regression going forward.
+
+Thanks to all the contributing developers in the list below that made this
+release possible :-).
+
+#### Changes
+
+* Allows for 0 _ttl's without time signifier and enables tests (Garrett Honeycutt)
+* Add option to disable SSL in Jetty, including tests and documentation (Christian Berg)
+* Cleaned up ghoneycutt's code a tad (Ken Barber)
+* the new settings report_ttl, node_ttl and node_purge_ttl were added but they are not working, this fixes it (fsalum)
+* Also fix gc_interval (Ken Barber)
+* Support for remote puppetdb (Filip Hrbek)
+* Added support for Java VM options (Karel Brezina)
+* Add initial rspec-system tests and scaffolding (Ken Barber)
+
 ------------------------------------------
 
 #### 1.2.1 - 2013/04/08
