@@ -53,7 +53,7 @@
 # TODO: finish porting this to use params
 #
 class puppetdb::master::config(
-  $puppetdb_server          = $::clientcert,
+  $puppetdb_server          = $::fqdn,
   $puppetdb_port            = 8081,
   $manage_routes            = true,
   $manage_storeconfigs      = true,

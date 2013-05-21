@@ -5,7 +5,7 @@ describe 'puppetdb::server::jetty_ini', :type => :class do
     let(:facts) do
       {
         :osfamily                 => 'RedHat',
-        :clientcert               => 'test.domain.local',
+        :fqdn                     => 'test.domain.local',
       }
     end
 
