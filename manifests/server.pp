@@ -30,7 +30,7 @@
 #   ['open_listen_port']   - If true, open the http listen port on the firewall.
 #                            (defaults to false).
 #   ['ssl_listen_address'] - The address that the web server should bind to
-#                            for HTTPS requests.  (defaults to `$::clientcert`.)
+#                            for HTTPS requests.  (defaults to `$::fqdn`.)
 #                            Set to '0.0.0.0' to listen on all addresses.
 #   ['ssl_listen_port']    - The port on which the puppetdb web server should
 #                            accept HTTPS requests (defaults to 8081).
