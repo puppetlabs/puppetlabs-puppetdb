@@ -58,12 +58,14 @@ class puppetdb::params {
     'RedHat': {
       $firewall_supported       = true
       $persist_firewall_command = '/sbin/iptables-save > /etc/sysconfig/iptables'
+      $init_confdir             = '/etc/sysconfig'
     }
 
     'Debian': {
       $firewall_supported       = false
       # TODO: not exactly sure yet what the right thing to do for Debian/Ubuntu is.
       #$persist_firewall_command = '/sbin/iptables-save > /etc/iptables/rules.v4'
+      $init_confdir             = '/etc/defaults'
     }
     default: {
       fail("${module_name} supports osfamily's RedHat and Debian. Your osfamily is recognized as ${::osfamily}")
@@ -74,43 +76,30 @@ class puppetdb::params {
     $puppetdb_package     = 'pe-puppetdb'
     $puppetdb_service     = 'pe-puppetdb'
     $confdir              = '/etc/puppetlabs/puppetdb/conf.d'
+    $installdir           = '/opt/puppet/share/puppetdb'
+    $init_conf_file       = 'pe-puppetdb'
     $puppet_service_name  = 'pe-httpd'
     $puppet_confdir       = '/etc/puppetlabs/puppet'
     $terminus_package     = 'pe-puppetdb-terminus'
-    $embedded_subname     = 'file:/opt/puppet/share/puppetdb/db/db;hsqldb.tx=mvcc;sql.syntax_pgs=true'
+    $embedded_subname     = "file:${installdir}/db/db;hsqldb.tx=mvcc;sql.syntax_pgs=true"
     
-    case $::osfamily {
-      'RedHat': {
-        $puppetdb_initconf = '/etc/sysconfig/pe-puppetdb'
-      }
-      'Debian': {
-        $puppetdb_initconf = '/etc/default/pe-puppetdb'
-      }
-      default: {
-        fail("${module_name} supports osfamily's RedHat and Debian. Your osfamily is recognized as ${::osfamily}")
-      }
-    }   
   } else {
     $puppetdb_package     = 'puppetdb'
     $puppetdb_service     = 'puppetdb'
     $confdir              = '/etc/puppetdb/conf.d'
+    $installdir           = '/usr/share/puppetdb'
+    $init_conf_file       = 'puppetdb'
     $puppet_service_name  = 'puppetmaster'
     $puppet_confdir       = '/etc/puppet'
     $terminus_package     = 'puppetdb-terminus'
-    $embedded_subname     = 'file:/usr/share/puppetdb/db/db;hsqldb.tx=mvcc;sql.syntax_pgs=true'
-    
-    case $::osfamily {
-      'RedHat': {
-        $puppetdb_initconf = '/etc/sysconfig/puppetdb'
-      }
-      'Debian': {
-        $puppetdb_initconf = '/etc/default/puppetdb'
-      }
-      default: {
-        fail("${module_name} supports osfamily's RedHat and Debian. Your osfamily is recognized as ${::osfamily}")
-      }
-    }
+    $embedded_subname     = "file:${installdir}/db/db;hsqldb.tx=mvcc;sql.syntax_pgs=true"
   }
+
+  # Init config params
+  $java_xms               = '192m'
+  $java_xmx               = '192m'
+  $java_bin               = '/usr/bin/java'
+  $heap_dump_on_oom       = true
 
   $puppet_conf              = "${puppet_confdir}/puppet.conf"
   $puppetdb_startup_timeout = 120

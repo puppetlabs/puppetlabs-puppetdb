@@ -82,10 +82,23 @@
 #                            all TCP connections).
 #   ['confdir']            - The puppetdb configuration directory; defaults to
 #                            `/etc/puppetdb/conf.d`.
-#   ['java_args']          - Java VM options used for overriding default Java VM
-#                            options specified in PuppetDB package.
-#                            (defaults to `{}`).
-#                            e.g. { '-Xmx' => '512m', '-Xms' => '256m' }
+#   ['installdir']         - The puppetdb install directory; defaults to
+#                            `/usr/share/puppetdb` for open-source installs
+#                            and `/opt/puppet/share/puppetdb` for enterprise.
+#   ['init_confdir']       - The directory where the init configuration file is.
+#                            For Redhat-based distributions this is usually
+#                            `/etc/sysconfig/` and for Debian-based distributions
+#                            it is usually `/etc/defaults`.
+#   ['init_conf_file']     - The file where the init configuration is stored.
+#                            For open-source puppet this is usually `puppetdb` while
+#                            enterprise is `pe-puppetdb`.
+#   ['java_xms']           - The Java XMS memory setting; defaults to `192m`.
+#   ['java_xmx']           - The Java XMX memory setting; defaults to `192m`.
+#   ['heap_dump_on_oom']   - If true, perform heap dump on out of memory. Heap dump
+#                            location is '/var/log/puppetdb/puppetdb-oom.hprof'.
+#   ['java_bin']           - Location of your Java binary (version 6 or higher);
+#                            defaults to '/usr/bin/java'.
+#
 # Actions:
 # - Creates and manages a puppetdb server
 #
@@ -119,7 +132,13 @@ class puppetdb::server(
   $puppetdb_service        = $puppetdb::params::puppetdb_service,
   $manage_redhat_firewall  = $puppetdb::params::manage_redhat_firewall,
   $confdir                 = $puppetdb::params::confdir,
-  $java_args               = {}
+  $installdir              = $puppetdb::params::installdir,
+  $init_confdir            = $puppetdb::params::init_confdir,
+  $init_conf_file          = $puppetdb::params::init_conf_file,
+  $java_xms                = $puppetdb::params::java_xms,
+  $java_xmx                = $puppetdb::params::java_xmx,
+  $heap_dump_on_oom        = $puppetdb::params::heap_dump_on_oom,
+  $java_bin                = $puppetdb::params::java_bin,
 ) inherits puppetdb::params {
 
   # Apply necessary suffix if zero is specified.
@@ -189,21 +208,15 @@ class puppetdb::server(
     notify              => Service[$puppetdb_service],
   }
 
-  if !empty($java_args) {
-    
-    create_resources(
-      'ini_subsetting',
-      puppetdb_create_subsetting_resource_hash(
-        $java_args,
-        { ensure  => present,
-          section => '',
-          key_val_separator => '=',
-          path => $puppetdb::params::puppetdb_initconf,
-          setting => 'JAVA_ARGS',
-          require => Package[$puppetdb_package],
-          notify => Service[$puppetdb_service],
-        })
-    )
+  class { 'puppetdb::server::init_config':
+    init_confdir        => $init_confdir,
+    init_conf_file      => $init_conf_file,
+    java_xms            => $java_xms,
+    java_xmx            => $java_xmx,
+    heap_dump_on_oom    => $heap_dump_on_oom,
+    java_bin            => $java_bin,
+    confdir             => $confdir,
+    installdir          => $installdir,
   }
 
   service { $puppetdb_service:
