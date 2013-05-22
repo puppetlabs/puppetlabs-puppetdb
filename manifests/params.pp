@@ -14,7 +14,7 @@ class puppetdb::params {
   $listen_address            = 'localhost'
   $listen_port               = '8080'
   $open_listen_port          = false
-  $ssl_listen_address        = $::clientcert
+  $ssl_listen_address        = $::fqdn
   $ssl_listen_port           = '8081'
   $disable_ssl               = false
   # This technically defaults to 'true', but in order to preserve backwards
