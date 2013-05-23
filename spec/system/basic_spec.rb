@@ -43,4 +43,27 @@ class { 'puppetdb::master::config': }
       end
     end
   end
+
+  describe 'enabling report processor' do
+    let(:pp) do
+      pp = <<-EOS
+class { 'puppetdb::master::config':
+  manage_report_processor => true,
+  enable_reports => true
+}
+      EOS
+
+      it 'should add the puppetdb report processor to puppet.conf' do
+        puppet_apply(pp) do |r|
+          r[:exit_code].should_not eq(1)
+        end
+
+        system_run("cat /etc/puppet/puppet.conf") do |r|
+          r[:stdout].should =~ /^reports\s*=\s*([^,]+,)*puppetdb(,[^,]+)*$/
+        end
+      end
+
+    end
+  end
+
 end
