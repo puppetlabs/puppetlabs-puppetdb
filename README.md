@@ -282,12 +282,20 @@ If true, the module will overwrite the puppet master's routes file to configure 
 
 If true, the module will manage the puppet master's storeconfig settings (defaults to true).
 
+####`manage_report_processor`
+
+If true, the module will manage the 'reports' field in the puppet.conf file to enable or disable the puppetdb report processor.  Defaults to 'false'.
+
 ####`manage_config`
 If true, the module will store values from puppetdb_server and puppetdb_port parameters in the puppetdb configuration file.
 If false, an existing puppetdb configuration file will be used to retrieve server and port values.
 
 ####`strict_validation`
 If true, the module will fail if puppetdb is not reachable, otherwise it will preconfigure puppetdb without checking.
+
+####`enable_reports`
+
+Ignored unless `manage_report_processor` is `true`, in which case this setting will determine whether or not the puppetdb report processor is enabled (`true`) or disabled (`false`) in the puppet.conf file.
 
 ####`puppet_confdir`
 
