@@ -193,6 +193,8 @@ class puppetdb::server(
       ssl_listen_address => $ssl_listen_address,
       ssl_cert           => $ssl_cert,
       ssl_private_key    => $ssl_private_key,
+      require            => Package[$puppetdb_package],
+      notify             => Service[$puppetdb_service],
     }
   }
 
