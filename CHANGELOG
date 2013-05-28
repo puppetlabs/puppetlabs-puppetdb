@@ -2,6 +2,22 @@
 
 Release notes for the puppetlabs-puppetdb module.
 
+------------------------------------------
+
+#### 1.4.0 - 2013/05/13
+
+This feature release provides support for managing the puppetdb report
+processor on your master.
+
+To enable the report processor, you can do something like this:
+
+    class { 'puppetdb::master::config':
+        manage_report_processor => true,
+        enable_reports => true
+    }
+
+This will add the 'puppetdb' report processor to the list of `reports`
+inside your master's `puppet.conf` file.
 
 ------------------------------------------
 
