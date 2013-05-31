@@ -30,6 +30,7 @@ class { 'puppetdb::master::config': }
       system_run('puppet module install puppetlabs/stdlib')
       system_run('puppet module install puppetlabs/postgresql')
       system_run('puppet module install puppetlabs/firewall')
+      system_run('puppet module install puppetlabs/java_ks')
       system_run('puppet module install cprice404/inifile')
 
       puppet_apply(pp) do |r|
