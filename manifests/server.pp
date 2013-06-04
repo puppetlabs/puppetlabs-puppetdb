@@ -190,7 +190,7 @@ class puppetdb::server(
   }
 
   if !empty($java_args) {
-    
+
     create_resources(
       'ini_subsetting',
       puppetdb_create_subsetting_resource_hash(

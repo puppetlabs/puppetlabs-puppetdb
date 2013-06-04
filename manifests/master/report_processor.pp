@@ -2,7 +2,7 @@
 #
 # This class configures the puppet master to enable the puppetdb report
 # processor
-
+#
 # Parameters:
 #   ['puppet_conf']  - The puppet config file (defaults to /etc/puppet/puppet.conf)
 #
@@ -24,12 +24,15 @@ class puppetdb::master::report_processor(
   $enable      = false
 ) inherits puppetdb::params {
 
-  ini_subsetting { "puppet.conf/reports/puppetdb":
-    path    => $puppet_conf,
-    section => 'master',
-    setting => 'reports',
-    subsetting => 'puppetdb',
-    subsetting_separator => ',',
-    ensure  => $enable ? { true => present, default => absent }
+  ini_subsetting { 'puppet.conf/reports/puppetdb':
+    ensure               => $enable ? {
+      true    => present,
+      default => absent
+    },
+    path                 => $puppet_conf,
+    section              => 'master',
+    setting              => 'reports',
+    subsetting           => 'puppetdb',
+    subsetting_separator => ','
   }
 }
