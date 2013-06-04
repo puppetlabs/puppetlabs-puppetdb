@@ -82,20 +82,20 @@ class puppetdb::master::config(
   }
 
   if ($strict_validation) {
-	  # Validate the puppetdb connection.  If we can't connect to puppetdb then we
-	  # *must* not perform the other configuration steps, or else
-	  puppetdb_conn_validator { 'puppetdb_conn':
-	    puppetdb_server => $manage_config ? { true => $puppetdb_server, default => undef },
-	    puppetdb_port   => $manage_config ? { true => $puppetdb_port, default => undef },
-	    timeout         => $puppetdb_startup_timeout,
-	    require         => Package[$terminus_package],
-	  }
+    # Validate the puppetdb connection.  If we can't connect to puppetdb then we
+    # *must* not perform the other configuration steps, or else
+    puppetdb_conn_validator { 'puppetdb_conn':
+      puppetdb_server => $manage_config ? { true => $puppetdb_server, default => undef },
+      puppetdb_port   => $manage_config ? { true => $puppetdb_port, default => undef },
+      timeout         => $puppetdb_startup_timeout,
+      require         => Package[$terminus_package],
+    }
 
-	  # This is a bit of puppet chicanery that allows us to create a
-	  # conditional dependency.  Basically, we're saying that "if the PuppetDB
-	  # service is being managed in this same catalog, it needs to come before
-	  # this validator."
-	  Service<|title == $puppetdb::params::puppetdb_service|> -> Puppetdb_conn_validator['puppetdb_conn']
+    # This is a bit of puppet chicanery that allows us to create a
+    # conditional dependency.  Basically, we're saying that "if the PuppetDB
+    # service is being managed in this same catalog, it needs to come before
+    # this validator."
+    Service<|title == $puppetdb::params::puppetdb_service|> -> Puppetdb_conn_validator['puppetdb_conn']
   }
 
   # Conditionally manage the `routes.yaml` file.  Restart the puppet service
@@ -122,21 +122,21 @@ class puppetdb::master::config(
   # because it polls it automatically.
   if ($manage_report_processor) {
     class { 'puppetdb::master::report_processor':
-        puppet_conf => $puppet_conf,
-        enable      => $enable_reports,
-        require     => $strict_validation ? { true => Puppetdb_conn_validator['puppetdb_conn'], default => Package[$terminus_package] },
+      puppet_conf => $puppet_conf,
+      enable      => $enable_reports,
+      require     => $strict_validation ? { true => Puppetdb_conn_validator['puppetdb_conn'], default => Package[$terminus_package] },
     }
   }
 
   if ($manage_config) {
-	  # Manage the `puppetdb.conf` file.  Restart the puppet service if changes
-	  # are made.
-	  class { 'puppetdb::master::puppetdb_conf':
-	    server         => $puppetdb_server,
-	    port           => $puppetdb_port,
-	    puppet_confdir => $puppet_confdir,
-	    require        => $strict_validation ? { true => Puppetdb_conn_validator['puppetdb_conn'], default => Package[$terminus_package] },
-	  }
+    # Manage the `puppetdb.conf` file.  Restart the puppet service if changes
+    # are made.
+    class { 'puppetdb::master::puppetdb_conf':
+      server         => $puppetdb_server,
+      port           => $puppetdb_port,
+      puppet_confdir => $puppet_confdir,
+      require        => $strict_validation ? { true => Puppetdb_conn_validator['puppetdb_conn'], default => Package[$terminus_package] },
+    }
   }
 
   if ($restart_puppet) {

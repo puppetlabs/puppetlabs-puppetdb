@@ -78,7 +78,7 @@ class puppetdb::params {
     $puppet_confdir       = '/etc/puppetlabs/puppet'
     $terminus_package     = 'pe-puppetdb-terminus'
     $embedded_subname     = 'file:/opt/puppet/share/puppetdb/db/db;hsqldb.tx=mvcc;sql.syntax_pgs=true'
-    
+
     case $::osfamily {
       'RedHat': {
         $puppetdb_initconf = '/etc/sysconfig/pe-puppetdb'
@@ -89,7 +89,7 @@ class puppetdb::params {
       default: {
         fail("${module_name} supports osfamily's RedHat and Debian. Your osfamily is recognized as ${::osfamily}")
       }
-    }   
+    }
   } else {
     $puppetdb_package     = 'puppetdb'
     $puppetdb_service     = 'puppetdb'
@@ -98,7 +98,7 @@ class puppetdb::params {
     $puppet_confdir       = '/etc/puppet'
     $terminus_package     = 'puppetdb-terminus'
     $embedded_subname     = 'file:/usr/share/puppetdb/db/db;hsqldb.tx=mvcc;sql.syntax_pgs=true'
-    
+
     case $::osfamily {
       'RedHat': {
         $puppetdb_initconf = '/etc/sysconfig/puppetdb'
