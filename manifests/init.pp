@@ -168,7 +168,7 @@ class puppetdb(
     puppetdb_service       => $puppetdb_service,
     manage_redhat_firewall => $manage_redhat_firewall,
     confdir                => $confdir,
-    java_args               => $java_args,
+    java_args              => $java_args,
   }
 
   if ($database == 'postgres') {
