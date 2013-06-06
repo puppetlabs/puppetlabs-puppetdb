@@ -6,9 +6,10 @@ module Puppet
       attr_reader :puppetdb_server
       attr_reader :puppetdb_port
 
-      def initialize(puppetdb_server, puppetdb_port)
+      def initialize(puppetdb_server, puppetdb_port, use_ssl=true)
         @puppetdb_server = puppetdb_server
-        @puppetdb_port = puppetdb_port
+        @puppetdb_port   = puppetdb_port
+        @use_ssl         = use_ssl
       end
 
       # Utility method; attempts to make an https connection to the puppetdb server.
@@ -22,7 +23,16 @@ module Puppet
         # on the puppetdb server.
         path = "/metrics/mbean/java.lang:type=Memory"
         headers = {"Accept" => "application/json"}
-        conn = Puppet::Network::HttpPool.http_instance(@puppetdb_server, @puppetdb_port, true)
+        if @use_ssl
+          conn = Puppet::Network::HttpPool.http_instance(@puppetdb_server, @puppetdb_port, @use_ssl)
+        else
+          # the Puppet httppool only supports disabling ssl in Puppet > 3.x
+          # this code allows ssl to be disabled for the connection on both 2.7 and 3.x
+          conn = Net::HTTP.new(@puppetdb_server, @puppetdb_port)
+          conn.read_timeout = Puppet[:configtimeout]
+          conn.open_timeout = Puppet[:configtimeout]
+        end
+
         response = conn.get(path, headers)
         unless response.kind_of?(Net::HTTPSuccess)
           Puppet.notice "Unable to connect to puppetdb server (#{@puppetdb_server}:#{@puppetdb_port}): [#{response.code}] #{response.msg}"
