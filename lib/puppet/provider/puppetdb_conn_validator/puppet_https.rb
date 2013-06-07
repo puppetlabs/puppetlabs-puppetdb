@@ -50,7 +50,7 @@ Puppet::Type.type(:puppetdb_conn_validator).provide(:puppet_https) do
 
   # @api private
   def validator
-    @validator ||= Puppet::Util::PuppetdbValidator.new(resource[:puppetdb_server], resource[:puppetdb_port])
+    @validator ||= Puppet::Util::PuppetdbValidator.new(resource[:puppetdb_server], resource[:puppetdb_port], resource[:use_ssl])
   end
 
 end
