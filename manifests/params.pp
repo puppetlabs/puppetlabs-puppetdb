@@ -66,7 +66,7 @@ class puppetdb::params {
       #$persist_firewall_command = '/sbin/iptables-save > /etc/iptables/rules.v4'
     }
     default: {
-      fail("${module_name} supports osfamily's RedHat and Debian. Your osfamily is recognized as ${::osfamily}")
+      $firewall_supported       = false
     }
   }
 
@@ -80,7 +80,7 @@ class puppetdb::params {
     $embedded_subname     = 'file:/opt/puppet/share/puppetdb/db/db;hsqldb.tx=mvcc;sql.syntax_pgs=true'
 
     case $::osfamily {
-      'RedHat': {
+      'RedHat', 'Suse': {
         $puppetdb_initconf = '/etc/sysconfig/pe-puppetdb'
       }
       'Debian': {
@@ -100,7 +100,7 @@ class puppetdb::params {
     $embedded_subname     = 'file:/usr/share/puppetdb/db/db;hsqldb.tx=mvcc;sql.syntax_pgs=true'
 
     case $::osfamily {
-      'RedHat': {
+      'RedHat', 'Suse': {
         $puppetdb_initconf = '/etc/sysconfig/puppetdb'
       }
       'Debian': {
