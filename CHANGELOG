@@ -4,6 +4,17 @@ Release notes for the puppetlabs-puppetdb module.
 
 ------------------------------------------
 
+#### 1.5.0 - 2013/07/18
+
+This minor feature release provides the following new functionality:
+
+* The module is now capable of managing PuppetDB on SUSE systems
+  for which PuppetDB packages are available
+* The ruby code for validating the PuppetDB connection now
+  supports validating on a non-SSL HTTP port.
+
+------------------------------------------
+
 #### 1.4.0 - 2013/05/13
 
 This feature release provides support for managing the puppetdb report
