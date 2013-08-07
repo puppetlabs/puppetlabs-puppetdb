@@ -211,31 +211,31 @@ The length of time reports should be stored before being deleted. (defaults to '
 
 ####`gc_interval`
 
-This controls how often, in minutes, to compact the database. The compaction process reclaims space and deletes unnecessary rows. If not supplied, the default is every 60 minutes.
+This controls how often, in minutes, to compact the database. The compaction process reclaims space and deletes unnecessary rows. If not supplied, the default is every 60 minutes. This option is supported in PuppetDB >= 0.9.
 
 ####`log_slow_statements`
 
 This sets the number of seconds before an SQL query is considered "slow." Slow SQL queries are logged as warnings, to assist in debugging and tuning. Note PuppetDB does not interrupt slow queries; it simply reports them after they complete.
 
-The default value is 10 seconds. A value of 0 will disable logging of slow queries.
+The default value is 10 seconds. A value of 0 will disable logging of slow queries. This option is supported in PuppetDB >= 1.1.
 
 ####`conn_max_age`
 
 The maximum time (in minutes), for a pooled connection to remain unused before it is closed off.
 
-If not supplied, we default to 60 minutes.
+If not supplied, we default to 60 minutes. This option is supported in PuppetDB >= 1.1.
 
 ####`conn_keep_alive`
 
 This sets the time (in minutes), for a connection to remain idle before sending a test query to the DB. This is useful to prevent a DB from timing out connections on its end.
 
-If not supplied, we default to 45 minutes.
+If not supplied, we default to 45 minutes. This option is supported in PuppetDB >= 1.1.
 
 ####`conn_lifetime`
 
 The maximum time (in minutes) a pooled connection should remain open. Any connections older than this setting will be closed off. Connections currently in use will not be affected until they are returned to the pool.
 
-If not supplied, we won't terminate connections based on their age alone.
+If not supplied, we won't terminate connections based on their age alone. This option is supported in PuppetDB >= 1.4.
 
 ####`puppetdb_package`
 

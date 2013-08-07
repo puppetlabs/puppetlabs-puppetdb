@@ -4,6 +4,22 @@ Release notes for the puppetlabs-puppetdb module.
 
 ------------------------------------------
 
+#### 1.6.0 - 2013/08/07
+
+This minor feature release provides extra parameters for new configuration
+items available in PuppetDB 1.4, and also provides some older parameters
+that were missed previously:
+
+* gc_interval
+* log_slow_statements
+* conn_max_age
+* conn_keep_alive
+* conn_lifetime
+
+Consult the README.md file, or the PuppetDB documentation for more details.
+
+------------------------------------------
+
 #### 1.5.0 - 2013/07/18
 
 This minor feature release provides the following new functionality:
