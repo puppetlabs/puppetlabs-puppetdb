@@ -1,41 +1,4 @@
-# Class: puppetdb::server::database_ini
-#
 # This class manages puppetdb's `database.ini` file.
-#
-# Parameters:
-#   ['database']        - Which database backend to use; legal values are
-#                         `postgres` (default) or `embedded`.  (The `embedded`
-#                         db can be used for very small installations or for
-#                         testing, but is not recommended for use in production
-#                         environments.  For more info, see the puppetdb docs.)
-#   ['database_host']   - The hostname or IP address of the database server.
-#                         (defaults to `localhost`; ignored for `embedded` db)
-#   ['database_port']   - The port that the database server listens on.
-#                         (defaults to `5432`; ignored for `embedded` db)
-#   ['database_user']   - The name of the database user to connect as.
-#                         (defaults to `puppetdb`; ignored for `embedded` db)
-#   ['database_password'] - The password for the database user.
-#                         (defaults to `puppetdb`; ignored for `embedded` db)
-#   ['database_name']   - The name of the database instance to connect to.
-#                         (defaults to `puppetdb`; ignored for `embedded` db)
-#   ['confdir']         - The puppetdb configuration directory; defaults to
-#                         `/etc/puppetdb/conf.d`.
-#
-# Actions:
-# - Manages puppetdb's `database.ini` file
-#
-# Requires:
-# - Inifile
-#
-# Sample Usage:
-#   class { 'puppetdb::server::database_ini':
-#     database_host     => 'my.postgres.host',
-#     database_port     => '5432',
-#     database_username => 'puppetdb_pguser',
-#     database_password => 'puppetdb_pgpasswd',
-#     database_name     => 'puppetdb',
-#   }
-#
 class puppetdb::server::database_ini(
   $database          = $puppetdb::params::database,
   $database_host     = $puppetdb::params::database_host,
@@ -47,6 +10,10 @@ class puppetdb::server::database_ini(
   $node_purge_ttl    = $puppetdb::params::node_purge_ttl,
   $report_ttl        = $puppetdb::params::report_ttl,
   $gc_interval       = $puppetdb::params::gc_interval,
+  $log_slow_statements = $puppetdb::params::log_slow_statements,
+  $conn_max_age      = $puppetdb::params::conn_max_age,
+  $conn_keep_alive   = $puppetdb::params::conn_keep_alive,
+  $conn_lifetime     = $puppetdb::params::conn_lifetime,
   $confdir           = $puppetdb::params::confdir,
 ) inherits puppetdb::params {
 
@@ -131,5 +98,25 @@ class puppetdb::server::database_ini(
   ini_setting {'puppetdb_report_ttl':
     setting => 'report-ttl',
     value   => $report_ttl,
+  }
+
+  ini_setting {'puppetdb_log_slow_statements':
+    setting => 'log-slow-statements',
+    value   => $log_slow_statements,
+  }
+
+  ini_setting {'puppetdb_conn_max_age':
+    setting => 'conn-max-age',
+    value   => $conn_max_age,
+  }
+
+  ini_setting {'puppetdb_conn_keep_alive':
+    setting => 'conn-keep-alive',
+    value   => $conn_keep_alive,
+  }
+
+  ini_setting {'puppetdb_conn_lifetime':
+    setting => 'conn-lifetime',
+    value   => $conn_lifetime,
   }
 }

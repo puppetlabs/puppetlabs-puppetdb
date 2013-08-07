@@ -1,5 +1,3 @@
-# Class: puppetdb::server
-#
 # This class provides a simple way to get a puppetdb instance up and running
 # with minimal effort.  It will install and configure all necessary packages for
 # the puppetdb server, but will *not* manage the database (e.g., postgres) server
@@ -20,83 +18,6 @@
 #
 # You'll also need to configure your puppet master to use puppetdb.  You can
 # use the `puppetdb::master::config` class to accomplish this.
-#
-# Parameters:
-#   ['listen_address']     - The address that the web server should bind to
-#                            for HTTP requests.  (defaults to `localhost`.)
-#                            Set to '0.0.0.0' to listen on all addresses.
-#   ['listen_port']        - The port on which the puppetdb web server should
-#                            accept HTTP requests (defaults to 8080).
-#   ['open_listen_port']   - If true, open the http listen port on the firewall.
-#                            (defaults to false).
-#   ['ssl_listen_address'] - The address that the web server should bind to
-#                            for HTTPS requests.  (defaults to `$::fqdn`.)
-#                            Set to '0.0.0.0' to listen on all addresses.
-#   ['ssl_listen_port']    - The port on which the puppetdb web server should
-#                            accept HTTPS requests (defaults to 8081).
-#   ['disable_ssl']        - If true, disable HTTPS and only serve
-#                            HTTP requests. Defaults to false.
-#   ['open_ssl_listen_port'] - If true, open the ssl listen port on the firewall.
-#                            (defaults to true).
-#   ['database']           - Which database backend to use; legal values are
-#                            `postgres` (default) or `embedded`.  (The `embedded`
-#                            db can be used for very small installations or for
-#                            testing, but is not recommended for use in production
-#                            environments.  For more info, see the puppetdb docs.)
-#   ['database_host']      - The hostname or IP address of the database server.
-#                            (defaults to `localhost`; ignored for `embedded` db)
-#   ['database_port']      - The port that the database server listens on.
-#                            (defaults to `5432`; ignored for `embedded` db)
-#   ['database_username']  - The name of the database user to connect as.
-#                            (defaults to `puppetdb`; ignored for `embedded` db)
-#   ['database_password']  - The password for the database user.
-#                            (defaults to `puppetdb`; ignored for `embedded` db)
-#   ['database_name']      - The name of the database instance to connect to.
-#                            (defaults to `puppetdb`; ignored for `embedded` db)
-#   ['node_ttl']           - The length of time a node can go without receiving
-#                            any new data before it's automatically deactivated.
-#                            (defaults to '0', which disables auto-deactivation)
-#                            This option is supported in PuppetDB >= 1.1.0.
-#   ['node_purge_ttl']     - The length of time a node can be deactivated before
-#                            it's deleted from the database.
-#                            (defaults to '0', which disables purging)
-#                            This option is supported in PuppetDB >= 1.2.0.
-#   ['report_ttl']         - The length of time reports should be stored before
-#                            being deleted.
-#                            (defaults to '7d', which is a 7-day period)
-#                            This option is supported in PuppetDB >= 1.1.0.
-#   ['puppetdb_package']   - The puppetdb package name in the package manager
-#   ['puppetdb_version']   - The version of the `puppetdb` package that should
-#                            be installed.  You may specify an explicit version
-#                            number, 'present', or 'latest'.  Defaults to
-#                            'present'.
-#   ['puppetdb_service']   - The name of the puppetdb service.
-#   ['manage_redhat_firewall'] - DEPRECATED: Use open_ssl_listen_port instead.
-#                            boolean indicating whether or not the module
-#                            should open a port in the firewall on redhat-based
-#                            systems.  Defaults to `true`.  This parameter is
-#                            likely to change in future versions.  Possible
-#                            changes include support for non-RedHat systems and
-#                            finer-grained control over the firewall rule
-#                            (currently, it simply opens up the postgres port to
-#                            all TCP connections).
-#   ['confdir']            - The puppetdb configuration directory; defaults to
-#                            `/etc/puppetdb/conf.d`.
-#   ['java_args']          - Java VM options used for overriding default Java VM
-#                            options specified in PuppetDB package.
-#                            (defaults to `{}`).
-#                            e.g. { '-Xmx' => '512m', '-Xms' => '256m' }
-# Actions:
-# - Creates and manages a puppetdb server
-#
-# Requires:
-# - `inkling/postgresql`
-#
-# Sample Usage:
-#     class { 'puppetdb::server':
-#         database_host     => 'puppetdb-postgres',
-#     }
-#
 class puppetdb::server(
   $listen_address          = $puppetdb::params::listen_address,
   $listen_port             = $puppetdb::params::listen_port,
@@ -114,6 +35,11 @@ class puppetdb::server(
   $node_ttl                = $puppetdb::params::node_ttl,
   $node_purge_ttl          = $puppetdb::params::node_purge_ttl,
   $report_ttl              = $puppetdb::params::report_ttl,
+  $gc_interval             = $puppetdb::params::gc_interval,
+  $log_slow_statements     = $puppetdb::params::log_slow_statements,
+  $conn_max_age            = $puppetdb::params::conn_max_age,
+  $conn_keep_alive         = $puppetdb::params::conn_keep_alive,
+  $conn_lifetime           = $puppetdb::params::lifetime,
   $puppetdb_package        = $puppetdb::params::puppetdb_package,
   $puppetdb_version        = $puppetdb::params::puppetdb_version,
   $puppetdb_service        = $puppetdb::params::puppetdb_service,
@@ -175,6 +101,11 @@ class puppetdb::server(
     node_ttl          => $node_ttl,
     node_purge_ttl    => $node_purge_ttl,
     report_ttl        => $report_ttl,
+    gc_interval       => $gc_interval,
+    log_slow_statements => $log_slow_statements,
+    conn_max_age      => $conn_max_age,
+    conn_keep_alive   => $conn_keep_alive,
+    conn_lifetime     => $conn_lifetime,
     confdir           => $confdir,
     notify            => Service[$puppetdb_service],
   }
