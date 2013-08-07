@@ -1,15 +1,4 @@
-# Class: puppetdb::params
-#
-#   The puppetdb configuration settings.
-#
-# Parameters:
-#
-# Actions:
-#
-# Requires:
-#
-# Sample Usage:
-#
+# The puppetdb default configuration settings.
 class puppetdb::params {
   $listen_address            = 'localhost'
   $listen_port               = '8080'
@@ -53,6 +42,11 @@ class puppetdb::params {
   $manage_redhat_firewall = undef
 
   $gc_interval            = '60'
+
+  $log_slow_statements    = '10'
+  $conn_max_age           = '60'
+  $conn_keep_alive        = '45'
+  $conn_lifetime          = '0'
 
   case $::osfamily {
     'RedHat': {
