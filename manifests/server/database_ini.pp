@@ -54,9 +54,11 @@ class puppetdb::server::database_ini(
       value   => $database_username,
     }
 
-    ini_setting {'puppetdb_psdatabase_password':
-      setting => 'password',
-      value   => $database_password,
+    if $database_password != undef {
+      ini_setting {'puppetdb_psdatabase_password':
+        setting => 'password',
+        value   => $database_password,
+      }
     }
   }
 
