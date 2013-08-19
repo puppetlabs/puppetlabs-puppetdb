@@ -94,7 +94,7 @@ class puppetdb::params {
     $embedded_subname     = 'file:/usr/share/puppetdb/db/db;hsqldb.tx=mvcc;sql.syntax_pgs=true'
 
     case $::osfamily {
-      'RedHat', 'Suse': {
+      'RedHat', 'Suse', 'Archlinux': {
         $puppetdb_initconf = '/etc/sysconfig/puppetdb'
       }
       'Debian': {
