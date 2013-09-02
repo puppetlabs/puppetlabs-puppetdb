@@ -108,4 +108,5 @@ class puppetdb::params {
 
   $puppet_conf              = "${puppet_confdir}/puppet.conf"
   $puppetdb_startup_timeout = 120
+  $puppetdb_service_status  = 'running'
 }
