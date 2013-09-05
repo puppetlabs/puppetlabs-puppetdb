@@ -7,6 +7,6 @@ summary 'PuppetDB resource types'
 license 'Apache'
 project_page 'https://github.com/puppetlabs-puppet/puppetlabs-puppetdb'
 
-dependency 'cprice404/inifile', '>= 0.9.0'
+dependency 'puppetlabs/inifile', '>= 1.0.0'
 dependency 'puppetlabs/postgresql', '2.x'
 dependency 'puppetlabs/firewall', '>= 0.0.4'
