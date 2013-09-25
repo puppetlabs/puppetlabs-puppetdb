@@ -35,6 +35,7 @@ class puppetdb(
   $puppetdb_package          = $puppetdb::params::puppetdb_package,
   $puppetdb_version          = $puppetdb::params::puppetdb_version,
   $puppetdb_service          = $puppetdb::params::puppetdb_service,
+  $puppetdb_service_status   = $puppetdb::params::puppetdb_service_status,
   $open_postgres_port        = $puppetdb::params::open_postgres_port,
   $manage_redhat_firewall    = $puppetdb::params::manage_redhat_firewall,
   $confdir                   = $puppetdb::params::confdir,
@@ -71,33 +72,39 @@ class puppetdb(
   # Validate report_ttl
   validate_re ($report_ttl_real, ['^(\d)+[s,m,d]$'], "report_ttl is <${report_ttl}> which does not match the regex validation")
 
+  # Validate puppetdb_service_status
+  if !($puppetdb_service_status in ['true', 'running', 'false', 'stopped']) {
+    fail("puppetdb_service_status valid values are 'true', 'running', 'false', and 'stopped'. You provided '${puppetdb_service_status}'")
+  }
+
   if ($manage_redhat_firewall != undef) {
     notify {'Deprecation notice: `$manage_redhat_firewall` has been deprecated in `puppetdb` class and will be removed in a future version. Use $open_ssl_listen_port and $open_postgres_port instead.':}
   }
 
   class { 'puppetdb::server':
-    listen_address         => $listen_address,
-    listen_port            => $listen_port,
-    open_listen_port       => $open_listen_port,
-    ssl_listen_address     => $ssl_listen_address,
-    ssl_listen_port        => $ssl_listen_port,
-    disable_ssl            => $disable_ssl,
-    open_ssl_listen_port   => $open_ssl_listen_port,
-    database               => $database,
-    database_port          => $database_port,
-    database_username      => $database_username,
-    database_password      => $database_password,
-    database_name          => $database_name,
-    node_ttl               => $node_ttl,
-    node_purge_ttl         => $node_purge_ttl,
-    report_ttl             => $report_ttl,
-    gc_interval            => $gc_interval,
-    puppetdb_package       => $puppetdb_package,
-    puppetdb_version       => $puppetdb_version,
-    puppetdb_service       => $puppetdb_service,
-    manage_redhat_firewall => $manage_redhat_firewall,
-    confdir                => $confdir,
-    java_args              => $java_args,
+    listen_address          => $listen_address,
+    listen_port             => $listen_port,
+    open_listen_port        => $open_listen_port,
+    ssl_listen_address      => $ssl_listen_address,
+    ssl_listen_port         => $ssl_listen_port,
+    disable_ssl             => $disable_ssl,
+    open_ssl_listen_port    => $open_ssl_listen_port,
+    database                => $database,
+    database_port           => $database_port,
+    database_username       => $database_username,
+    database_password       => $database_password,
+    database_name           => $database_name,
+    node_ttl                => $node_ttl,
+    node_purge_ttl          => $node_purge_ttl,
+    report_ttl              => $report_ttl,
+    gc_interval             => $gc_interval,
+    puppetdb_package        => $puppetdb_package,
+    puppetdb_version        => $puppetdb_version,
+    puppetdb_service        => $puppetdb_service,
+    puppetdb_service_status => $puppetdb_service_status,
+    manage_redhat_firewall  => $manage_redhat_firewall,
+    confdir                 => $confdir,
+    java_args               => $java_args,
   }
 
   if ($database == 'postgres') {

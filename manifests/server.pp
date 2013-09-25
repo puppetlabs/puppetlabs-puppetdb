@@ -43,6 +43,7 @@ class puppetdb::server(
   $puppetdb_package        = $puppetdb::params::puppetdb_package,
   $puppetdb_version        = $puppetdb::params::puppetdb_version,
   $puppetdb_service        = $puppetdb::params::puppetdb_service,
+  $puppetdb_service_status = $puppetdb::params::puppetdb_service_status,
   $manage_redhat_firewall  = $puppetdb::params::manage_redhat_firewall,
   $confdir                 = $puppetdb::params::confdir,
   $java_args               = {}
@@ -77,6 +78,12 @@ class puppetdb::server(
 
   # Validate report_ttl
   validate_re ($report_ttl_real, ['^(\d)+[s,m,d]$'], "report_ttl is <${report_ttl}> which does not match the regex validation")
+
+  # Validate puppetdb_service_status
+  if !($puppetdb_service_status in ['true', 'running', 'false', 'stopped']) {
+    fail("puppetdb_service_status valid values are 'true', 'running', 'false', and 'stopped'. You provided '${puppetdb_service_status}'")
+  }
+
 
   package { $puppetdb_package:
     ensure => $puppetdb_version,
@@ -137,9 +144,16 @@ class puppetdb::server(
     )
   }
 
+  $service_enabled = $puppetdb_service_status ? {
+    /(running|true)/  => true,
+    /(stopped|false)/ => false,
+    default           => true,
+  }
+
   service { $puppetdb_service:
-    ensure => running,
-    enable => true,
+    ensure => $puppetdb_service_status,
+    enable => $service_enabled,
+
   }
 
   Package[$puppetdb_package] ->
