@@ -30,7 +30,7 @@ class { 'puppetdb::master::config': }
       system_run('puppet module install puppetlabs/stdlib')
       system_run('puppet module install puppetlabs/postgresql')
       system_run('puppet module install puppetlabs/firewall')
-      system_run('puppet module install cprice404/inifile')
+      system_run('puppet module install puppetlabs/inifile')
 
       puppet_apply(pp) do |r|
         r[:exit_code].should_not eq(1)
