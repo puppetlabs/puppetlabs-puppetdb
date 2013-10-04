@@ -7,7 +7,7 @@ summary 'PuppetDB resource types'
 license 'ASL 2.0'
 project_page 'https://github.com/puppetlabs/puppetlabs-puppetdb'
 
-dependency 'cprice404/inifile', '>= 0.10.3'
+dependency 'puppetlabs/inifile', '1.x'
 dependency 'puppetlabs/postgresql', '2.x'
 dependency 'puppetlabs/firewall', '>= 0.0.4'
 dependency 'puppetlabs/stdlib', '>= 2.2.0'
