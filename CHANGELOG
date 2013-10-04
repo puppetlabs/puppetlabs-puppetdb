@@ -4,6 +4,32 @@ Release notes for the puppetlabs-puppetdb module.
 
 ------------------------------------------
 
+#### 2.0.0 - 2013/10/04
+
+This major release changes the main dependency for the inifile module from
+the deprecated `cprice404/inifile` to `puppetlabs/inifile` to remove
+deprecation warnings and to move onto the latest and greatest implementation
+of that code.
+
+Its a major release, because it may affect other dependencies since modules
+cannot have overlapping second part dependencies (that is inifile cannot be from
+two different locations).
+
+It also adds the parameter `puppetdb_service_status` to the class `puppetdb` to
+allow users to specify whether the module manages the puppetdb service for you.
+
+The `database_password` parameter is now optional, and initial Arch Linux
+support has been added.
+
+Detailed Changes:
+
+* (GH-73) Switch to puppetlabs/inifile from cprice/inifile (Ken Barber)
+* Make database_password an optional parameter (Nick Lewis)
+* add archlinux support (Niels Abspoel)
+* Added puppetdb service control (Akos Hencz)
+
+------------------------------------------
+
 #### 1.6.0 - 2013/08/07
 
 This minor feature release provides extra parameters for new configuration

@@ -6,6 +6,7 @@ puppetdb
 1. [Overview - What is the PuppetDB module?](#overview)
 2. [Module Description - What does the module do?](#module-description)
 3. [Setup - The basics of getting started with PuppetDB module](#setup)
+4. [Upgrading - Guide for upgrading from older revisions of this module](#upgrading)
 4. [Usage - The classes and parameters available for configuration](#usage)
 5. [Implementation - An under-the-hood peek at what the module is doing](#implementation)
 6. [Limitations - OS compatibility, etc.](#limitations)
@@ -134,6 +135,18 @@ When your puppet master node checks in, it will validate the connectivity to the
 Hence the failed puppet runs. These failures should be limited to 1 failed run on the puppetdb node, and up to 2 failed runs on the puppet master node. After that, all of the dependencies should be satisfied and your puppet runs should start to succeed again.
 
 You can also manually trigger puppet runs on the nodes in the correct order (Postgres, PuppetDB, puppet master), which will avoid any failed runs.
+
+Upgrading
+---------
+
+###Upgrading from 1.x to version 2.x
+
+A major dependency has been changed, so now when you upgrade to 2.0 the dependency `cprice404/inifile` has been replaced with `puppetlabs/inifile`. This may interfer with other modules as they may depend on the old `cprice404/inifile` instead, so upgrading should be done with caution. Check that your other modules use the newer `puppetlabs/inifile` module as interoperation with the old `cprice404/inifile` module will no longer be supported by this module.
+
+Depending on how you install your modules, changing the dependency may require manual intervention. Double check your modules contains the newer `puppetlabs/inifile` after installing this latest module.
+
+Otherwise, all existing parameters from 1.x should still work correctly.
+
 
 Usage
 ------
