@@ -28,7 +28,7 @@ class { 'puppetdb::master::config': }
 
     it 'make sure it runs without error' do
       system_run('puppet module install puppetlabs/stdlib')
-      system_run('puppet module install puppetlabs/postgresql')
+      system_run('puppet module install puppetlabs/postgresql --version 2.5.0')
       system_run('puppet module install puppetlabs/firewall')
       system_run('puppet module install puppetlabs/inifile')
 
