@@ -319,6 +319,10 @@ The dns name or ip of the puppetdb server (defaults to the certname of the curre
 
 The port that the puppetdb server is running on (defaults to 8081).
 
+####`puppetdb_soft_write_failure`
+
+Boolean to fail in a soft-manner if PuppetDB is not accessable for command submission (defaults to false).
+
 ####`manage_routes`
 
 If true, the module will overwrite the puppet master's routes file to configure it to use PuppetDB (defaults to true).

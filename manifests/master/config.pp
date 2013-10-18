@@ -13,6 +13,8 @@
 #   ['puppetdb_server'] - The dns name or ip of the puppetdb server
 #                          (defaults to the certname of the current node)
 #   ['puppetdb_port']   - The port that the puppetdb server is running on (defaults to 8081)
+#   ['puppetdb_soft_write_failure'] - Boolean to fail in a soft-manner if PuppetDB is not
+#                         accessable for command submission (defaults to false)
 #   ['manage_routes']   - If true, the module will overwrite the puppet master's routes
 #                         file to configure it to use puppetdb (defaults to true)
 #   ['manage_storeconfigs'] - If true, the module will manage the puppet master's
@@ -60,21 +62,22 @@
 # TODO: finish porting this to use params
 #
 class puppetdb::master::config(
-  $puppetdb_server          = $::fqdn,
-  $puppetdb_port            = 8081,
-  $manage_routes            = true,
-  $manage_storeconfigs      = true,
-  $manage_report_processor  = false,
-  $manage_config            = true,
-  $strict_validation        = true,
-  $enable_reports           = false,
-  $puppet_confdir           = $puppetdb::params::puppet_confdir,
-  $puppet_conf              = $puppetdb::params::puppet_conf,
-  $puppetdb_version         = $puppetdb::params::puppetdb_version,
-  $terminus_package         = $puppetdb::params::terminus_package,
-  $puppet_service_name      = $puppetdb::params::puppet_service_name,
-  $puppetdb_startup_timeout = $puppetdb::params::puppetdb_startup_timeout,
-  $restart_puppet           = true
+  $puppetdb_server             = $::fqdn,
+  $puppetdb_port               = 8081,
+  $puppetdb_soft_write_failure = false,
+  $manage_routes               = true,
+  $manage_storeconfigs         = true,
+  $manage_report_processor     = false,
+  $manage_config               = true,
+  $strict_validation           = true,
+  $enable_reports              = false,
+  $puppet_confdir              = $puppetdb::params::puppet_confdir,
+  $puppet_conf                 = $puppetdb::params::puppet_conf,
+  $puppetdb_version            = $puppetdb::params::puppetdb_version,
+  $terminus_package            = $puppetdb::params::terminus_package,
+  $puppet_service_name         = $puppetdb::params::puppet_service_name,
+  $puppetdb_startup_timeout    = $puppetdb::params::puppetdb_startup_timeout,
+  $restart_puppet              = true
 ) inherits puppetdb::params {
 
   package { $terminus_package:
@@ -132,10 +135,11 @@ class puppetdb::master::config(
     # Manage the `puppetdb.conf` file.  Restart the puppet service if changes
     # are made.
     class { 'puppetdb::master::puppetdb_conf':
-      server         => $puppetdb_server,
-      port           => $puppetdb_port,
-      puppet_confdir => $puppet_confdir,
-      require        => $strict_validation ? { true => Puppetdb_conn_validator['puppetdb_conn'], default => Package[$terminus_package] },
+      server             => $puppetdb_server,
+      port               => $puppetdb_port,
+      soft_write_failure => $puppetdb_soft_write_failure,
+      puppet_confdir     => $puppet_confdir,
+      require            => $strict_validation ? { true => Puppetdb_conn_validator['puppetdb_conn'], default => Package[$terminus_package] },
     }
   }
 
