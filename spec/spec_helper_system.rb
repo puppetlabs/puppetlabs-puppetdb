@@ -1,6 +1,8 @@
 require 'rspec-system/spec_helper'
 require 'rspec-system-puppet/helpers'
 
+include RSpecSystemPuppet::Helpers
+
 RSpec.configure do |c|
   # Project root for the firewall code
   proj_root = File.expand_path(File.join(File.dirname(__FILE__), '..'))
@@ -8,11 +10,12 @@ RSpec.configure do |c|
   # Enable colour in Jenkins
   c.tty = true
 
-  # This is where we 'setup' the nodes before running our tests
-  c.system_setup_block = proc do
-    # TODO: find a better way of importing this into this namespace
-    include RSpecSystemPuppet::Helpers
+  # Import puppet helpers
+  c.include RSpecSystemPuppet::Helpers
+  c.extend RSpecSystemPuppet::Helpers
 
+  # This is where we 'setup' the nodes before running our tests
+  c.before :suite do
     # Install puppet
     puppet_install
     puppet_master_install

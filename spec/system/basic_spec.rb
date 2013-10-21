@@ -3,7 +3,7 @@ require 'spec_helper_system'
 describe 'basic tests:' do
   it 'make sure we have copied the module across' do
     # No point diagnosing any more if the module wasn't copied properly
-    system_run("ls /etc/puppet/modules/puppetdb") do |r|
+    shell("ls /etc/puppet/modules/puppetdb") do |r|
       r[:exit_code].should == 0
       r[:stdout].should =~ /Modulefile/
       r[:stderr].should == ''
@@ -27,10 +27,10 @@ class { 'puppetdb::master::config': }
     end
 
     it 'make sure it runs without error' do
-      system_run('puppet module install puppetlabs/stdlib')
-      system_run('puppet module install puppetlabs/postgresql --version 2.5.0')
-      system_run('puppet module install puppetlabs/firewall')
-      system_run('puppet module install puppetlabs/inifile')
+      shell('puppet module install puppetlabs/stdlib')
+      shell('puppet module install puppetlabs/postgresql --version 2.5.0')
+      shell('puppet module install puppetlabs/firewall')
+      shell('puppet module install puppetlabs/inifile')
 
       puppet_apply(pp) do |r|
         r[:exit_code].should_not eq(1)
@@ -59,7 +59,7 @@ class { 'puppetdb::master::config':
         r[:exit_code].should_not eq(1)
       end
 
-      system_run("cat /etc/puppet/puppet.conf") do |r|
+      shell("cat /etc/puppet/puppet.conf") do |r|
         r[:stdout].should =~ /^reports\s*=\s*([^,]+,)*puppetdb(,[^,]+)*$/
       end
     end
