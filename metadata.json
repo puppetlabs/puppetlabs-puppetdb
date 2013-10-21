@@ -8,9 +8,6 @@
     "license": "Apache-2.0",
     "operatingsystem_support": [
         "RedHat",
-        "OpenSUSE",
-        "SLES",
-        "SLED",
         "Debian",
         "Ubuntu"
     ],
@@ -23,20 +20,20 @@
     ],
     "dependencies": [
         {
-            "name": "puppetlabs/stdlib",
-            "version_requirement": ">=2.2.0"
-        },
-        {
-            "name": "puppetlabs/postgresql",
-            "version_requirement": "2.x"
-        },
-        {
             "name": "puppetlabs/inifile",
             "version_requirement": "1.x"
         },
         {
+            "name": "puppetlabs/postgresql",
+            "version_requirement": ">=3.0.0 <4.0.0"
+        },
+        {
             "name": "puppetlabs/firewall",
             "version_requirement": ">= 0.0.4"
+        },
+        {
+            "name": "puppetlabs/stdlib",
+            "version_requirement": ">=2.2.0"
         }
     ]
 }

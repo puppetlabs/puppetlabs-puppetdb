@@ -1,23 +1,4 @@
-# This class provides a simple way to get a puppetdb instance up and running
-# with minimal effort.  It will install and configure all necessary packages for
-# the puppetdb server, but will *not* manage the database (e.g., postgres) server
-# or instance (unless you are using the embedded database, in which case there
-# is not much to manage).
-#
-# This class is intended as a high-level abstraction to help simplify the process
-# of getting your puppetdb server up and running; it manages the puppetdb
-# package and service, as well as several puppetdb configuration files.  For
-# maximum configurability, you may choose not to use this class.  You may prefer to
-# manage the puppetdb package / service on your own, and perhaps use the
-# individual classes inside of the `puppetdb::server` namespace to manage some
-# or all of your configuration files.
-#
-# In addition to this class, you'll need to configure your puppetdb postgres
-# database if you are using postgres.  You can optionally do by using the
-# `puppetdb::database::postgresql` class.
-#
-# You'll also need to configure your puppet master to use puppetdb.  You can
-# use the `puppetdb::master::config` class to accomplish this.
+# Class to configure a PuppetDB server. See README.md for more details.
 class puppetdb::server(
   $listen_address          = $puppetdb::params::listen_address,
   $listen_port             = $puppetdb::params::listen_port,
@@ -40,12 +21,11 @@ class puppetdb::server(
   $log_slow_statements     = $puppetdb::params::log_slow_statements,
   $conn_max_age            = $puppetdb::params::conn_max_age,
   $conn_keep_alive         = $puppetdb::params::conn_keep_alive,
-  $conn_lifetime           = $puppetdb::params::lifetime,
+  $conn_lifetime           = $puppetdb::params::conn_lifetime,
   $puppetdb_package        = $puppetdb::params::puppetdb_package,
   $puppetdb_version        = $puppetdb::params::puppetdb_version,
   $puppetdb_service        = $puppetdb::params::puppetdb_service,
   $puppetdb_service_status = $puppetdb::params::puppetdb_service_status,
-  $manage_redhat_firewall  = $puppetdb::params::manage_redhat_firewall,
   $confdir                 = $puppetdb::params::confdir,
   $java_args               = {}
 ) inherits puppetdb::params {
@@ -85,7 +65,6 @@ class puppetdb::server(
     fail("puppetdb_service_status valid values are 'true', 'running', 'false', and 'stopped'. You provided '${puppetdb_service_status}'")
   }
 
-
   package { $puppetdb_package:
     ensure => $puppetdb_version,
     notify => Service[$puppetdb_service],
@@ -96,7 +75,6 @@ class puppetdb::server(
     open_http_port         => $open_listen_port,
     ssl_port               => $ssl_listen_port,
     open_ssl_port          => $open_ssl_listen_port,
-    manage_redhat_firewall => $manage_redhat_firewall
   }
 
   class { 'puppetdb::server::database_ini':

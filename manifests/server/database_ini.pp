@@ -1,4 +1,4 @@
-# This class manages puppetdb's `database.ini` file.
+# PRIVATE CLASS - do not use directly
 class puppetdb::server::database_ini(
   $database          = $puppetdb::params::database,
   $database_host     = $puppetdb::params::database_host,
