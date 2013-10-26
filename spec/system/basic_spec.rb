@@ -28,7 +28,7 @@ class { 'puppetdb::master::config': }
 
     it 'make sure it runs without error' do
       shell('puppet module install puppetlabs/stdlib --version ">= 2.2.0"')
-      shell('puppet module install puppetlabs/postgresql --version ">= 3.0.0 <4.0.0"')
+      shell('puppet module install puppetlabs/postgresql --version ">= 3.1.0 <4.0.0"')
       shell('puppet module install puppetlabs/inifile --version "1.x"')
 
       puppet_apply(pp) do |r|
