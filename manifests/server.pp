@@ -133,7 +133,6 @@ class puppetdb::server(
   service { $puppetdb_service:
     ensure => $puppetdb_service_status,
     enable => $service_enabled,
-
   }
 
   Package[$puppetdb_package] ->
