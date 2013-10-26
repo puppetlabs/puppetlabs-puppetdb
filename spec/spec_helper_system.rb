@@ -16,6 +16,9 @@ RSpec.configure do |c|
 
   # This is where we 'setup' the nodes before running our tests
   c.before :suite do
+    # Time sync
+    shell('ntpdate -u pool.ntp.org')
+
     # Install puppet
     puppet_install
     puppet_master_install
