@@ -4,6 +4,43 @@ Release notes for the puppetlabs-puppetdb module.
 
 ------------------------------------------
 
+#### 3.0.0 - 2013/10/27
+
+This major release changes the main dependency for the postgresql module from
+version 2.5.x to 3.x. Since the postgresql module is not backwards compatible,
+this release is also not backwards compatible. As a consequence we have taken
+some steps to deprecate some of the older functionality:
+
+* The parameter manage_redhat_firewall for the class puppetdb has now been removed completely in favor of open_postgres_port and open_ssl_listen_port.
+* The parameter manage_redhat_firewall for the class puppetdb::database::postgresql, has now been renamed to manage_firewall.
+* The parameter manage_redhat_firewall for the class puppetdb::server has now been removed completely in favor of open_listen_port and open_ssl_listen_port.
+* The internal class: puppetdb::database::postgresql_db has been removed. If you were using this, it is now defunct.
+* The class puppetdb::server::firewall has been marked as private, do not use it directly.
+* The class puppetdb::server::jetty_ini and puppetdb::server::database_ini have been marked as private, do not use it directly.
+
+All of this is documented in the upgrade portion of the README.
+
+Additionally some features have been included in this release as well:
+
+* soft_write_failure can now be enabled in your puppetdb.conf with this
+  module to handle failing silently when your PuppetDB is not available
+  during writes.
+* There is a new switch to enable SSL connectivity to PostgreSQL. While this
+  functionality is only in its infancy this is a good start.
+
+Detailed Changes:
+
+* FM-103: Add metadata.json to all modules. (Ashley Penney)
+* Add soft_write_failure to puppetdb.conf (Garrett Honeycutt)
+* Add switch to configure database SSL connection (Stefan Dietrich)
+* (GH-91) Update to use rspec-system-puppet 2.x (Ken Barber)
+* (GH-93) Switch to using puppetlabs-postgresql 3.x (Ken Barber)
+* Fix copyright and project notice (Ken Barber)
+* Adjust memory for PuppetDB tests to avoid OOM killer (Ken Barber)
+* Ensure ntpdate executes early during testing (Ken Barber)
+
+------------------------------------------
+
 #### 2.0.0 - 2013/10/04
 
 This major release changes the main dependency for the inifile module from
