@@ -4,16 +4,16 @@ describe 'basic tests:' do
   it 'make sure we have copied the module across' do
     # No point diagnosing any more if the module wasn't copied properly
     shell("ls /etc/puppet/modules/puppetdb") do |r|
-      r[:exit_code].should == 0
-      r[:stdout].should =~ /Modulefile/
-      r[:stderr].should == ''
+      r.exit_code.should == 0
+      r.stdout.should =~ /Modulefile/
+      r.stderr.should == ''
     end
   end
 
   it 'make sure a puppet agent has ran' do
     puppet_agent do |r|
-      r[:stderr].should == ''
-      r[:exit_code].should == 0
+      r.stderr.should == ''
+      r.exit_code.should == 0
     end
   end
 
@@ -27,19 +27,14 @@ class { 'puppetdb::master::config': }
     end
 
     it 'make sure it runs without error' do
-      shell('puppet module install puppetlabs/stdlib')
-      shell('puppet module install puppetlabs/postgresql --version 2.5.0')
-      shell('puppet module install puppetlabs/firewall')
-      shell('puppet module install puppetlabs/inifile')
+      shell('puppet module install puppetlabs/stdlib --version ">= 2.2.0"')
+      shell('puppet module install puppetlabs/postgresql --version ">= 3.1.0 <4.0.0"')
+      shell('puppet module install puppetlabs/inifile --version "1.x"')
 
       puppet_apply(pp) do |r|
-        r[:exit_code].should_not eq(1)
-      end
-    end
-
-    it 'should be idempotent' do
-      puppet_apply(:code => pp, :debug => true) do |r|
-        r[:exit_code].should == 0
+        r.exit_code.should_not eq(1)
+        r.refresh
+        r.exit_code.should == 0
       end
     end
   end
@@ -56,7 +51,9 @@ class { 'puppetdb::master::config':
 
     it 'should add the puppetdb report processor to puppet.conf' do
       puppet_apply(pp) do |r|
-        r[:exit_code].should_not eq(1)
+        r.exit_code.should_not eq(1)
+        r.refresh
+        r.exit_code.should == 0
       end
 
       shell("cat /etc/puppet/puppet.conf") do |r|
