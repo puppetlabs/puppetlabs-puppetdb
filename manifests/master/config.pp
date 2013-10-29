@@ -2,6 +2,7 @@
 class puppetdb::master::config(
   $puppetdb_server             = $::fqdn,
   $puppetdb_port               = 8081,
+  $use_ssl                     = true,
   $puppetdb_soft_write_failure = false,
   $manage_routes               = true,
   $manage_storeconfigs         = true,
@@ -28,6 +29,7 @@ class puppetdb::master::config(
     puppetdb_conn_validator { 'puppetdb_conn':
       puppetdb_server => $manage_config ? { true => $puppetdb_server, default => undef },
       puppetdb_port   => $manage_config ? { true => $puppetdb_port, default => undef },
+      use_ssl         => $manage_config ? { true => $use_ssl, default => undef },
       timeout         => $puppetdb_startup_timeout,
       require         => Package[$terminus_package],
     }
