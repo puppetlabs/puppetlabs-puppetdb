@@ -11,35 +11,35 @@ describe 'puppetdb::master::config', :type => :class do
     end
 
     describe 'when validating the puppetdb connection' do
-      context 'with manage config set to true' do
+      context 'with validate using ssl' do
         let(:params) do
           {
-            'manage_config' => true,
+            'validate_using_ssl' => true,
           }
         end
 
         it { should contain_puppetdb_conn_validator('puppetdb_conn').with(
-          'puppetdb_server'     => 'test.domain.local',
-          'puppetdb_port'       => 8081,
-          'use_ssl'             => true,
-          'timeout'             => 120,
-          'require'             => 'Package[puppetdb-terminus]'
+          'puppetdb_server'      => 'test.domain.local',
+          'puppetdb_port'        => 8081,
+          'use_ssl'              => true,
+          'timeout'              => 120,
+          'require'              => 'Package[puppetdb-terminus]'
         )}
       end
 
-      context 'with manage config set to false' do
+      context 'without validate using ssl' do
         let(:params) do
           {
-            'manage_config' => false,
+            'validate_using_ssl' => false,
           }
         end
 
         it { should contain_puppetdb_conn_validator('puppetdb_conn').with(
-          'puppetdb_server'     => nil,
-          'puppetdb_port'       => nil,
-          'use_ssl'             => nil,
-          'timeout'             => 120,
-          'require'             => 'Package[puppetdb-terminus]'
+          'puppetdb_server'      => 'test.domain.local',
+          'puppetdb_port'        => 8081,
+          'use_ssl'              => false,
+          'timeout'              => 120,
+          'require'              => 'Package[puppetdb-terminus]'
         )}
       end
     end
