@@ -8,6 +8,7 @@ class puppetdb::master::config(
   $manage_report_processor     = false,
   $manage_config               = true,
   $strict_validation           = true,
+  $validate_using_ssl          = true,
   $enable_reports              = false,
   $puppet_confdir              = $puppetdb::params::puppet_confdir,
   $puppet_conf                 = $puppetdb::params::puppet_conf,
@@ -28,6 +29,7 @@ class puppetdb::master::config(
     puppetdb_conn_validator { 'puppetdb_conn':
       puppetdb_server => $manage_config ? { true => $puppetdb_server, default => undef },
       puppetdb_port   => $manage_config ? { true => $puppetdb_port, default => undef },
+      use_ssl         => $validate_using_ssl,
       timeout         => $puppetdb_startup_timeout,
       require         => Package[$terminus_package],
     }
