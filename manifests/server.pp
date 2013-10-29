@@ -38,7 +38,7 @@ class puppetdb::server(
   }
 
   # Validate node_ttl
-  validate_re ($node_ttl_real, ['^(\d)+[s,m,d]$'], "node_ttl is <${node_ttl}> which does not match the regex validation")
+  validate_re ($node_ttl_real, ['^\d+(d|h|m|s|ms)$'], "node_ttl is <${node_ttl}> which does not match the regex validation")
 
   # Apply necessary suffix if zero is specified.
   if $node_purge_ttl == '0' {
@@ -48,7 +48,7 @@ class puppetdb::server(
   }
 
   # Validate node_purge_ttl
-  validate_re ($node_purge_ttl_real, ['^(\d)+[s,m,d]$'], "node_purge_ttl is <${node_purge_ttl}> which does not match the regex validation")
+  validate_re ($node_purge_ttl_real, ['^\d+(d|h|m|s|ms)$'], "node_purge_ttl is <${node_purge_ttl}> which does not match the regex validation")
 
   # Apply necessary suffix if zero is specified.
   if $report_ttl == '0' {
@@ -58,7 +58,7 @@ class puppetdb::server(
   }
 
   # Validate report_ttl
-  validate_re ($report_ttl_real, ['^(\d)+[s,m,d]$'], "report_ttl is <${report_ttl}> which does not match the regex validation")
+  validate_re ($report_ttl_real, ['^\d+(d|h|m|s|ms)$'], "report_ttl is <${report_ttl}> which does not match the regex validation")
 
   # Validate puppetdb_service_status
   if !($puppetdb_service_status in ['true', 'running', 'false', 'stopped']) {
