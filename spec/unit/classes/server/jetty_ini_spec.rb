@@ -46,6 +46,44 @@ describe 'puppetdb::server::jetty_ini', :type => :class do
              )}
     end
 
+    describe 'when disabling nonssl' do
+      let(:params) do
+        {
+          'disable_nonssl' => true
+        }
+      end
+      it { should contain_ini_setting('puppetdb_host').
+        with(
+             'ensure'  => 'absent',
+             'path'    => '/etc/puppetdb/conf.d/jetty.ini',
+             'section' => 'jetty',
+             'setting' => 'host',
+             )}
+      it { should contain_ini_setting('puppetdb_port').
+        with(
+             'ensure'  => 'absent',
+             'path'    => '/etc/puppetdb/conf.d/jetty.ini',
+             'section' => 'jetty',
+             'setting' => 'port',
+             )}
+      it { should contain_ini_setting('puppetdb_sslhost').
+        with(
+             'ensure'  => 'present',
+             'path'    => '/etc/puppetdb/conf.d/jetty.ini',
+             'section' => 'jetty',
+             'setting' => 'ssl-host'
+             'value'   => 'localhost'
+             )}
+      it { should contain_ini_setting('puppetdb_sslport').
+        with(
+             'ensure'  => 'present',
+             'path'    => '/etc/puppetdb/conf.d/jetty.ini',
+             'section' => 'jetty',
+             'setting' => 'ssl-port'
+             'value'   => 8081
+             )}
+    end
+
     describe 'when disabling ssl' do
       let(:params) do
         {

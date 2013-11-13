@@ -2,6 +2,7 @@
 class puppetdb::server::jetty_ini(
   $listen_address     = $puppetdb::params::listen_address,
   $listen_port        = $puppetdb::params::listen_port,
+  $disable_nonssl     = $puppetdb::params::disable_nonssl,
   $ssl_listen_address = $puppetdb::params::ssl_listen_address,
   $ssl_listen_port    = $puppetdb::params::ssl_listen_port,
   $disable_ssl        = $puppetdb::params::disable_ssl,
@@ -18,12 +19,23 @@ class puppetdb::server::jetty_ini(
   # TODO: figure out some way to make sure that the ini_file module is installed,
   #  because otherwise these will silently fail to do anything.
 
+  if $disable_nonssl and $disable_ssl {
+    fail('either non-ssl or ssl must be enabled')
+  }
+
+  $nonssl_setting_ensure = $disable_nonssl ? {
+    true    => 'absent',
+    default => 'present',
+  }
+
   ini_setting {'puppetdb_host':
+    ensure  => $nonssl_setting_ensure,
     setting => 'host',
     value   => $listen_address,
   }
 
   ini_setting {'puppetdb_port':
+    ensure  => $nonssl_setting_ensure,
     setting => 'port',
     value   => $listen_port,
   }

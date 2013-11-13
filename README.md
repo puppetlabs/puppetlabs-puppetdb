@@ -186,6 +186,10 @@ The port on which the puppetdb web server should accept HTTP requests (defaults 
 
 If true, open the http_listen\_port on the firewall (defaults to false).
 
+####`disable_nonssl`
+
+If true, the puppetdb web server will only serve HTTPS and not HTTP requests (defaults to false).
+
 ####`ssl_listen_address`
 
 The address that the web server should bind to for HTTPS requests (defaults to `$::clientcert`). Set to '0.0.0.0' to listen on all addresses.
