@@ -3,6 +3,7 @@ class puppetdb::server(
   $listen_address          = $puppetdb::params::listen_address,
   $listen_port             = $puppetdb::params::listen_port,
   $open_listen_port        = $puppetdb::params::open_listen_port,
+  $disable_nonssl          = $puppetdb::params::disable_nonssl,
   $ssl_listen_address      = $puppetdb::params::ssl_listen_address,
   $ssl_listen_port         = $puppetdb::params::ssl_listen_port,
   $disable_ssl             = $puppetdb::params::disable_ssl,
@@ -100,6 +101,7 @@ class puppetdb::server(
   class { 'puppetdb::server::jetty_ini':
     listen_address      => $listen_address,
     listen_port         => $listen_port,
+    disable_nonssl      => $disable_nonssl,
     ssl_listen_address  => $ssl_listen_address,
     ssl_listen_port     => $ssl_listen_port,
     disable_ssl         => $disable_ssl,

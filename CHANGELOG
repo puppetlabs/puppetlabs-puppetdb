@@ -2,6 +2,10 @@
 
 Release notes for the puppetlabs-puppetdb module.
 
+#### 2013/11/12
+
+The option to disable HTTP was added to allow exclusive use of HTTPS.
+
 ------------------------------------------
 
 #### 3.0.0 - 2013/10/27
