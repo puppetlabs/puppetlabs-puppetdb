@@ -9,7 +9,7 @@ describe 'puppetdb::server::jetty_ini', :type => :class do
       }
     end
 
-    it { should include_class('puppetdb::server::jetty_ini') }
+    it { should contain_class('puppetdb::server::jetty_ini') }
 
     describe 'when using default values' do
       it { should contain_ini_setting('puppetdb_host').
