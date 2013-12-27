@@ -9,7 +9,7 @@ describe 'puppetdb::master::report_processor', :type => :class do
       }
     end
 
-    it { should include_class('puppetdb::master::report_processor') }
+    it { should contain_class('puppetdb::master::report_processor') }
 
     describe 'when using default values' do
       it { should contain_ini_subsetting('puppet.conf/reports/puppetdb').
