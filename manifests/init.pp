@@ -14,6 +14,7 @@ class puppetdb(
   $database_password         = $puppetdb::params::database_password,
   $database_name             = $puppetdb::params::database_name,
   $database_ssl              = $puppetdb::params::database_ssl,
+  $database_listen_address   = $puppetdb::params::postgres_listen_addresses,
   $node_ttl                  = $puppetdb::params::node_ttl,
   $node_purge_ttl            = $puppetdb::params::node_purge_ttl,
   $report_ttl                = $puppetdb::params::report_ttl,
@@ -99,7 +100,7 @@ class puppetdb(
   if ($database == 'postgres') {
     class { 'puppetdb::database::postgresql':
       manage_firewall        => $open_postgres_port,
-      listen_addresses       => $puppetdb::params::postgres_listen_addresses,
+      listen_addresses       => $database_listen_address,
       database_name          => $database_name,
       database_username      => $database_username,
       database_password      => $database_password,
