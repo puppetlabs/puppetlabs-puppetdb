@@ -12,12 +12,12 @@ describe 'Puppet::Util::PuppetdbValidator' do
     response_not_found.stubs(:msg).returns('Not found')
 
     conn_ok = stub()
-    conn_ok.stubs(:get).with('/metrics/mbean/java.lang:type=Memory', {"Accept" => "application/json"}).returns(response_ok)
+    conn_ok.stubs(:get).with('/v2/metrics/mbean/java.lang:type=Memory', {"Accept" => "application/json"}).returns(response_ok)
     conn_ok.stubs(:read_timeout=).with(2)
     conn_ok.stubs(:open_timeout=).with(2)
 
     conn_not_found = stub()
-    conn_not_found.stubs(:get).with('/metrics/mbean/java.lang:type=Memory', {"Accept" => "application/json"}).returns(response_not_found)
+    conn_not_found.stubs(:get).with('/v2/metrics/mbean/java.lang:type=Memory', {"Accept" => "application/json"}).returns(response_not_found)
 
     Puppet::Network::HttpPool.stubs(:http_instance).raises('Unknown host')
     Puppet::Network::HttpPool.stubs(:http_instance).with('mypuppetdb.com', 8080, true).raises('Connection refused')
