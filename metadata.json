@@ -1,6 +1,6 @@
 {
     "name": "puppetlabs/puppetdb",
-    "version": "3.0.0",
+    "version": "3.0.1",
     "summary": "PuppetDB resource types",
     "source": "git@github.com/puppetlabs/puppetlabs-puppetdb.git",
     "project_page": "http://github.com/puppetlabs/puppetlabs-puppetdb",

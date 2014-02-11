@@ -4,6 +4,26 @@ Release notes for the puppetlabs-puppetdb module.
 
 ------------------------------------------
 
+#### 3.0.1 - 2014/02/11
+
+This release contains only minor bug fixes.
+
+Detailed Changes:
+
+* Add missing PUBLISHER_LOGIN variable for auto-publish. (Ashley Penney)
+* fix validation regular expressions for time configs (Scott Duckworth)
+* update ripienaar/concat -> puppetlabs/concat (Joshua Hoblitt)
+* Fix issue with validator when disable_ssl = true (Elliott Barrere)
+* Enable soft_write_failure setting when $puppetdb::disablessl = true (Elliott Barrere)
+* Support rspec-puppet v1.0.0 (Garrett Honeycutt)
+* Pin rspec-puppet to 1.x releases (Ken Barber)
+* Define parameter in puppetdb class to define postgres listen address (Adrian Lopez)
+* Enable fast finish in Travis (Garrett Honeycutt)
+* Convert tests to beaker (Ashley Penney)
+* Use the /v2 metrics endpoint instead of /metrics (Ken Barber)
+
+------------------------------------------
+
 #### 3.0.0 - 2013/10/27
 
 This major release changes the main dependency for the postgresql module from
