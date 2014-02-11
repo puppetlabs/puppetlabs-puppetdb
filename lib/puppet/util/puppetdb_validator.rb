@@ -21,7 +21,7 @@ module Puppet
         # All that we care about is that we are able to connect successfully via
         # https, so here we're simpling hitting a somewhat arbitrary low-impact URL
         # on the puppetdb server.
-        path = "/metrics/mbean/java.lang:type=Memory"
+        path = "/v2/metrics/mbean/java.lang:type=Memory"
         headers = {"Accept" => "application/json"}
         if @use_ssl
           conn = Puppet::Network::HttpPool.http_instance(@puppetdb_server, @puppetdb_port, @use_ssl)
