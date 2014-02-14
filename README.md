@@ -412,6 +412,10 @@ Creates a user for access the database. Defaults to `puppetdb`.
 
 Sets the password for the database user above. Defaults to `puppetdb`.
 
+####`manage_firewall`
+
+Conditionally manages the firewall for the PuppetDB host. Defaults to `true`.
+
 Implementation
 ---------------
 
