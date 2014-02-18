@@ -27,6 +27,7 @@ class puppetdb::server(
   $puppetdb_service        = $puppetdb::params::puppetdb_service,
   $puppetdb_service_status = $puppetdb::params::puppetdb_service_status,
   $confdir                 = $puppetdb::params::confdir,
+  $manage_firewall         = true,
   $java_args               = {}
 ) inherits puppetdb::params {
 
@@ -70,11 +71,14 @@ class puppetdb::server(
     notify => Service[$puppetdb_service],
   }
 
-  class { 'puppetdb::server::firewall':
-    http_port              => $listen_port,
-    open_http_port         => $open_listen_port,
-    ssl_port               => $ssl_listen_port,
-    open_ssl_port          => $open_ssl_listen_port,
+  if $manage_firewall {
+
+    class { 'puppetdb::server::firewall':
+      http_port              => $listen_port,
+      open_http_port         => $open_listen_port,
+      ssl_port               => $ssl_listen_port,
+      open_ssl_port          => $open_ssl_listen_port,
+    }
   }
 
   class { 'puppetdb::server::database_ini':
@@ -135,9 +139,16 @@ class puppetdb::server(
     enable => $service_enabled,
   }
 
-  Package[$puppetdb_package] ->
-  Class['puppetdb::server::firewall'] ->
-  Class['puppetdb::server::database_ini'] ->
-  Class['puppetdb::server::jetty_ini'] ->
-  Service[$puppetdb_service]
+  if $manage_firewall { 
+    Package[$puppetdb_package] ->
+    Class['puppetdb::server::firewall'] ->
+    Class['puppetdb::server::database_ini'] ->
+    Class['puppetdb::server::jetty_ini'] ->
+    Service[$puppetdb_service]
+  } else {
+    Package[$puppetdb_package] ->
+    Class['puppetdb::server::database_ini'] ->
+    Class['puppetdb::server::jetty_ini'] ->
+    Service[$puppetdb_service]
+  }
 }
