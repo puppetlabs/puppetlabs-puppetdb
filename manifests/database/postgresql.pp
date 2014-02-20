@@ -6,13 +6,16 @@ class puppetdb::database::postgresql(
   $database_name     = $puppetdb::params::database_name,
   $database_username = $puppetdb::params::database_username,
   $database_password = $puppetdb::params::database_password,
+  $manage_server     = true,
 ) inherits puppetdb::params {
 
+  if $manage_server == true {
   # get the pg server up and running
-  class { '::postgresql::server':
-    ip_mask_allow_all_users => '0.0.0.0/0',
-    listen_addresses        => $listen_addresses,
-    manage_firewall         => $manage_firewall,
+    class { '::postgresql::server':
+      ip_mask_allow_all_users => '0.0.0.0/0',
+      listen_addresses        => $listen_addresses,
+      manage_firewall         => $manage_firewall,
+    }
   }
 
   # create the puppetdb database
