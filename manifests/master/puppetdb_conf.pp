@@ -3,7 +3,7 @@
 class puppetdb::master::puppetdb_conf (
   $server             = 'localhost',
   $port               = '8081',
-  $soft_write_failure = $puppetdb::disable_ssl ? { true => true, default => false, },
+  $soft_write_failure = false,
   $puppet_confdir     = $puppetdb::params::puppet_confdir,
 ) inherits puppetdb::params {
 
