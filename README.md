@@ -431,6 +431,19 @@ Configures the puppet master to use PuppetDB as the facts terminus. *WARNING*: t
       puppet_confdir => '/etc/puppet'
     }
 
+The optional parameter routes can be used to specify a custom route configuration. For example to configure routes for masterless puppet.
+
+    class { 'puppetdb::master::routes':
+      routes => {
+        'apply' => {
+          'facts' => {
+            'terminus' => 'facter',
+            'cache'    => 'puppetdb_apply',
+          }
+        }
+      }
+    }
+
 **puppetdb::master::storeconfigs**
 
 Configures the puppet master to enable storeconfigs and to use PuppetDB as the storeconfigs backend.
