@@ -182,6 +182,10 @@ The address that the web server should bind to for HTTP requests (defaults to `l
 
 The port on which the puppetdb web server should accept HTTP requests (defaults to '8080').
 
+####`max_threads`
+
+This sets the maximum number of threads assigned to responding to HTTP and HTTPS requests, effectively changing how many concurrent requests can be made at one time. (defaults to 50).
+
 ####`open_listen_port`
 
 If true, open the http_listen\_port on the firewall (defaults to false).

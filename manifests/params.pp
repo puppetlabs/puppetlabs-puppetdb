@@ -2,6 +2,7 @@
 class puppetdb::params {
   $listen_address            = 'localhost'
   $listen_port               = '8080'
+  $max_threads               = '50'
   $open_listen_port          = false
   $ssl_listen_address        = $::fqdn
   $ssl_listen_port           = '8081'

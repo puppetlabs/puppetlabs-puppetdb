@@ -28,6 +28,14 @@ describe 'puppetdb::server::jetty_ini', :type => :class do
              'setting' => 'port',
              'value'   => 8080
              )}
+      it { should contain_ini_setting('puppetdb_maxthreads').
+        with(
+             'ensure'  => 'present',
+             'path'    => '/etc/puppetdb/conf.d/jetty.ini',
+             'section' => 'jetty',
+             'setting' => 'max-threads',
+             'value'   => 50
+             )}
       it { should contain_ini_setting('puppetdb_sslhost').
         with(
              'ensure'  => 'present',
