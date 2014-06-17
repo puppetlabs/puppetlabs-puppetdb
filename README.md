@@ -412,9 +412,9 @@ Creates a user for access the database. Defaults to `puppetdb`.
 
 Sets the password for the database user above. Defaults to `puppetdb`.
 
-####`manage_firewall`
+####`manage_server`
 
-Conditionally manages the firewall for the PuppetDB host. Defaults to `true`.
+Conditionally manages the PostgresQL server via `postgresql::server`. Defaults to `true`. If set to false, this class will create the database and user via `postgresql::server::db` but not attempt to install or manage the server itself.
 
 Implementation
 ---------------
