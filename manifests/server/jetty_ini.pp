@@ -2,6 +2,7 @@
 class puppetdb::server::jetty_ini(
   $listen_address     = $puppetdb::params::listen_address,
   $listen_port        = $puppetdb::params::listen_port,
+  $max_threads        = $puppetdb::params::max_threads,
   $ssl_listen_address = $puppetdb::params::ssl_listen_address,
   $ssl_listen_port    = $puppetdb::params::ssl_listen_port,
   $disable_ssl        = $puppetdb::params::disable_ssl,
@@ -26,6 +27,11 @@ class puppetdb::server::jetty_ini(
   ini_setting {'puppetdb_port':
     setting => 'port',
     value   => $listen_port,
+  }
+
+  ini_setting {'puppetdb_maxthreads':
+    setting => 'max-threads',
+    value   => $max_threads,
   }
 
   $ssl_setting_ensure = $disable_ssl ? {
