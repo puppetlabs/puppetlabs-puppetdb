@@ -29,7 +29,8 @@ class puppetdb(
   $puppetdb_service_status   = $puppetdb::params::puppetdb_service_status,
   $open_postgres_port        = $puppetdb::params::open_postgres_port,
   $confdir                   = $puppetdb::params::confdir,
-  $java_args                 = {}
+  $java_args                 = {},
+  $max_threads               = $puppetdb::params::max_threads
 ) inherits puppetdb::params {
 
   # Apply necessary suffix if zero is specified.
@@ -95,6 +96,7 @@ class puppetdb(
     puppetdb_service_status => $puppetdb_service_status,
     confdir                 => $confdir,
     java_args               => $java_args,
+    max_threads             => $max_threads,
   }
 
   if ($database == 'postgres') {

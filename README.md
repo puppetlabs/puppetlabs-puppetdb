@@ -293,6 +293,11 @@ Java VM options used for overriding default Java VM options specified in PuppetD
 
 Example: to set `-Xmx512m -Xms256m` options use `{ '-Xmx' => '512m', '-Xms' => '256m' }`
 
+####`max_threads`
+
+Jetty option to explicetly set max-thread. The default is undef, so the jetty default is used (might be `120`). 
+
+
 ### puppetdb:server
 
 The `puppetdb::server` class manages the puppetdb server independently of the underlying database that it depends on. It will manage the puppetdb package, service, config files, etc., but will still allow you to manage the database (e.g. postgresql) however you see fit.

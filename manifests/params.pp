@@ -34,6 +34,8 @@ class puppetdb::params {
   $conn_keep_alive        = '45'
   $conn_lifetime          = '0'
 
+  $max_threads            = undef
+
   case $::osfamily {
     'RedHat': {
       $firewall_supported       = true

@@ -28,7 +28,8 @@ class puppetdb::server(
   $puppetdb_service_status = $puppetdb::params::puppetdb_service_status,
   $confdir                 = $puppetdb::params::confdir,
   $manage_firewall         = true,
-  $java_args               = {}
+  $java_args               = {},
+  $max_threads             = $puppetdb::params::max_threads
 ) inherits puppetdb::params {
 
   # Apply necessary suffix if zero is specified.
@@ -108,6 +109,7 @@ class puppetdb::server(
     ssl_listen_port     => $ssl_listen_port,
     disable_ssl         => $disable_ssl,
     confdir             => $confdir,
+    max_threads         => $max_threads,
     notify              => Service[$puppetdb_service],
   }
 
