@@ -2,6 +2,14 @@
 # details.
 class puppetdb::master::routes(
   $puppet_confdir = $puppetdb::params::puppet_confdir,
+  $routes = {
+    'master' => {
+      'facts' => {
+        'terminus' => 'puppetdb',
+        'cache'    => 'yaml',
+      }
+    }
+  }
 ) inherits puppetdb::params {
 
   # TODO: this will overwrite any existing routes.yaml;
@@ -10,7 +18,7 @@ class puppetdb::master::routes(
   #  to parse the yaml file and rewrite it, dealing with indentation issues etc.
   #  I don't think there is currently a puppet module or an augeas lens for this.
   file { "${puppet_confdir}/routes.yaml":
-    ensure => file,
-    source => 'puppet:///modules/puppetdb/routes.yaml',
+    ensure  => file,
+    content => template('puppetdb/routes.yaml.erb'),
   }
 }
