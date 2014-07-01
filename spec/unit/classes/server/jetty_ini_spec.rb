@@ -83,5 +83,21 @@ describe 'puppetdb::server::jetty_ini', :type => :class do
              'setting' => 'ssl-port'
              )}
     end
+
+    describe 'when setting max_threads' do
+      let(:params) do
+        {
+          'max_threads' => 150
+        }
+      end
+      it { should contain_ini_setting('puppetdb_max_threads').
+        with(
+             'ensure'  => 'present',
+             'path'    => '/etc/puppetdb/conf.d/jetty.ini',
+             'section' => 'jetty',
+             'setting' => 'max-threads',
+             'value'   => '150'
+             )}
+    end
   end
 end
