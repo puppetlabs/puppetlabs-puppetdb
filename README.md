@@ -202,6 +202,10 @@ If true, the puppetdb web server will only serve HTTP and not HTTPS requests (de
 
 If true, open the ssl_listen\_port on the firewall (defaults to true).
 
+###`manage_dbserver`
+
+If true, the PostgreSQL server will be managed by this module (defaults to true).
+
 ####`database`
 
 Which database backend to use; legal values are `postgres` (default) or `embedded`. The `embedded` db can be used for very small installations or for testing, but is not recommended for use in production environments. For more info, see the [puppetdb docs](http://docs.puppetlabs.com/puppetdb/).

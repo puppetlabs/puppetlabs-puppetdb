@@ -8,6 +8,7 @@ class puppetdb(
   $ssl_listen_port           = $puppetdb::params::ssl_listen_port,
   $disable_ssl               = $puppetdb::params::disable_ssl,
   $open_ssl_listen_port      = $puppetdb::params::open_ssl_listen_port,
+  $manage_dbserver           = $puppetdb::params::manage_dbserver,
   $database                  = $puppetdb::params::database,
   $database_port             = $puppetdb::params::database_port,
   $database_username         = $puppetdb::params::database_username,
@@ -106,6 +107,7 @@ class puppetdb(
       database_name          => $database_name,
       database_username      => $database_username,
       database_password      => $database_password,
+      manage_server          => $manage_dbserver,
       before                 => [Class['puppetdb::server'],Class['puppetdb::server::validate_db']],
     }
   }
