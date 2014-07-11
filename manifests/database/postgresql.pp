@@ -6,7 +6,7 @@ class puppetdb::database::postgresql(
   $database_name     = $puppetdb::params::database_name,
   $database_username = $puppetdb::params::database_username,
   $database_password = $puppetdb::params::database_password,
-  $manage_server     = true,
+  $manage_server     = $puppetdb::params::manage_dbserver,
 ) inherits puppetdb::params {
 
   if $manage_server == true {
