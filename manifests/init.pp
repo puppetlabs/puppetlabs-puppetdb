@@ -107,7 +107,7 @@ class puppetdb(
       database_name          => $database_name,
       database_username      => $database_username,
       database_password      => $database_password,
-      manage_server          => $manage_server,
+      manage_server          => $manage_dbserver,
       before                 => [Class['puppetdb::server'],Class['puppetdb::server::validate_db']],
     }
   }
