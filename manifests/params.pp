@@ -37,6 +37,19 @@ class puppetdb::params {
 
   $max_threads            = undef
 
+  # These settings are for the read database
+  $read_database            = 'postgres'
+  $read_database_host       = undef
+  $read_database_port       = '5432'
+  $read_database_name       = 'puppetdb'
+  $read_database_username   = 'puppetdb'
+  $read_database_password   = 'puppetdb'
+  $read_database_ssl        = false
+  $read_log_slow_statements = '10'
+  $read_conn_max_age        = '60'
+  $read_conn_keep_alive     = '45'
+  $read_conn_lifetime       = '0'
+
   case $::osfamily {
     'RedHat': {
       $firewall_supported       = true

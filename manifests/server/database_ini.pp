@@ -21,6 +21,11 @@ class puppetdb::server::database_ini(
   # Validate the database connection.  If we can't connect, we want to fail
   # and skip the rest of the configuration, so that we don't leave puppetdb
   # in a broken state.
+  #
+  # NOTE:
+  # Because of a limitation in the postgres module this will break with
+  # a duplicate declaration if read and write database host+name are the
+  # same.
   class { 'puppetdb::server::validate_db':
     database          => $database,
     database_host     => $database_host,
