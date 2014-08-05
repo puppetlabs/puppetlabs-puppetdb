@@ -301,6 +301,61 @@ Example: to set `-Xmx512m -Xms256m` options use `{ '-Xmx' => '512m', '-Xms' => '
 
 Jetty option to explicetly set max-thread. The default is undef, so the PuppetDB-jetty default is used. 
 
+####`read_database`
+
+Which database backend to use for the read database; Currently only supports `postgres` (default). This option is supported in PuppetDB >= 1.6.
+
+####`read_database_host`
+*This parameter must be set to enable the puppetdb read-database.*
+
+The hostname or IP address of the read database server (defaults to `undef`).
+The default is to use the regular database for reads and writes. This option is supported in PuppetDB >= 1.6.
+
+####`read_database_port`
+
+The port that the read database server listens on (defaults to `5432`). This option is supported in PuppetDB >= 1.6.
+
+####`read_database_username`
+
+The name of the read database user to connect as (defaults to `puppetdb`). This option is supported in PuppetDB >= 1.6.
+
+####`read_database_password`
+
+The password for the read database user (defaults to `puppetdb`). This option is supported in PuppetDB >= 1.6.
+
+####`read_database_name`
+
+The name of the read database instance to connect to (defaults to `puppetdb`). This option is supported in PuppetDB >= 1.6.
+
+####`read_database_ssl`
+
+If true, puppetdb will use SSL to connect to the postgres read database (defaults to false).
+Setting up proper trust- and keystores has to be managed outside of the puppetdb module. This option is supported in PuppetDB >= 1.6.
+
+####`read_log_slow_statements`
+
+This sets the number of seconds before an SQL query to the read database is considered "slow." Slow SQL queries are logged as warnings, to assist in debugging and tuning. Note PuppetDB does not interrupt slow queries; it simply reports them after they complete.
+
+The default value is 10 seconds. A value of 0 will disable logging of slow queries. This option is supported in PuppetDB >= 1.6.
+
+####`read_conn_max_age`
+
+The maximum time (in minutes), for a pooled read database connection to remain unused before it is closed off.
+
+If not supplied, we default to 60 minutes. This option is supported in PuppetDB >= 1.6.
+
+####`read_conn_keep_alive`
+
+This sets the time (in minutes), for a read database connection to remain idle before sending a test query to the DB. This is useful to prevent a DB from timing out connections on its end.
+
+If not supplied, we default to 45 minutes. This option is supported in PuppetDB >= 1.6.
+
+####`read_conn_lifetime`
+
+The maximum time (in minutes) a pooled read database connection should remain open. Any connections older than this setting will be closed off. Connections currently in use will not be affected until they are returned to the pool.
+
+If not supplied, we won't terminate connections based on their age alone. This option is supported in PuppetDB >= 1.6.
+
 
 ### puppetdb:server
 
