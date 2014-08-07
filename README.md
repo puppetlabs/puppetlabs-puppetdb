@@ -541,8 +541,8 @@ Currently, PuppetDB is compatible with:
     Puppet Version: 2.7+
 
 Platforms:
-* RHEL6
-* Debian6
+* EL 6
+* Debian 6
 * Ubuntu 10.04
 * Archlinux
 
