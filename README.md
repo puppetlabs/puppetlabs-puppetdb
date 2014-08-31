@@ -545,6 +545,7 @@ Platforms:
 * Debian 6
 * Ubuntu 10.04
 * Archlinux
+* OpenBSD 5.6-current and newer
 
 Development
 ------------
