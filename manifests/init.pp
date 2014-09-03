@@ -39,7 +39,6 @@ class puppetdb(
   $read_conn_max_age         = $puppetdb::params::read_conn_max_age,
   $read_conn_keep_alive      = $puppetdb::params::read_conn_keep_alive,
   $read_conn_lifetime        = $puppetdb::params::read_conn_lifetime,
-  $open_postgres_port        = $puppetdb::params::open_postgres_port,
   $confdir                   = $puppetdb::params::confdir,
   $java_args                 = {},
   $max_threads               = $puppetdb::params::max_threads
@@ -124,7 +123,6 @@ class puppetdb(
 
   if ($database == 'postgres') {
     class { 'puppetdb::database::postgresql':
-      manage_firewall        => $open_postgres_port,
       listen_addresses       => $database_listen_address,
       database_name          => $database_name,
       database_username      => $database_username,

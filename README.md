@@ -460,10 +460,6 @@ The `puppetdb::database::postgresql` class manages a postgresql server for use b
 
 The `listen_address` is a comma-separated list of hostnames or IP addresses on which the postgres server should listen for incoming connections. This defaults to `localhost`. This parameter maps directly to postgresql's `listen_addresses` config option; use a `*` to allow connections on any accessible address.
 
-####`manage_firewall`
-
-If set to `true` this will enable open the local firewall for PostgreSQL protocol access. Defaults to `false`.
-
 ####`database_name`
 
 Sets the name of the database. Defaults to `puppetdb`.
