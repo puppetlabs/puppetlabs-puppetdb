@@ -74,7 +74,7 @@ class puppetdb::server(
   validate_re ($report_ttl_real, ['^\d+(d|h|m|s|ms)$'], "report_ttl is <${report_ttl}> which does not match the regex validation")
 
   # Validate puppetdb_service_status
-  if !($puppetdb_service_status in ['true', 'running', 'false', 'stopped']) {
+  if !($puppetdb_service_status in [true, 'running', false, 'stopped']) {
     fail("puppetdb_service_status valid values are 'true', 'running', 'false', and 'stopped'. You provided '${puppetdb_service_status}'")
   }
 
@@ -91,10 +91,10 @@ class puppetdb::server(
   if $manage_firewall {
 
     class { 'puppetdb::server::firewall':
-      http_port              => $listen_port,
-      open_http_port         => $open_listen_port,
-      ssl_port               => $ssl_listen_port,
-      open_ssl_port          => $open_ssl_listen_port,
+      http_port      => $listen_port,
+      open_http_port => $open_listen_port,
+      ssl_port       => $ssl_listen_port,
+      open_ssl_port  => $open_ssl_listen_port,
     }
   }
 
@@ -135,14 +135,14 @@ class puppetdb::server(
   }
 
   class { 'puppetdb::server::jetty_ini':
-    listen_address      => $listen_address,
-    listen_port         => $listen_port,
-    ssl_listen_address  => $ssl_listen_address,
-    ssl_listen_port     => $ssl_listen_port,
-    disable_ssl         => $disable_ssl,
-    confdir             => $confdir,
-    max_threads         => $max_threads,
-    notify              => Service[$puppetdb_service],
+    listen_address     => $listen_address,
+    listen_port        => $listen_port,
+    ssl_listen_address => $ssl_listen_address,
+    ssl_listen_port    => $ssl_listen_port,
+    disable_ssl        => $disable_ssl,
+    confdir            => $confdir,
+    max_threads        => $max_threads,
+    notify             => Service[$puppetdb_service],
   }
 
   if !empty($java_args) {
@@ -173,7 +173,7 @@ class puppetdb::server(
     enable => $service_enabled,
   }
 
-  if $manage_firewall { 
+  if $manage_firewall {
     Package[$puppetdb_package] ->
     Class['puppetdb::server::firewall'] ->
     Class['puppetdb::server::database_ini'] ->
