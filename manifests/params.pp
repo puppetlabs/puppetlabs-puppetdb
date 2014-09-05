@@ -7,6 +7,15 @@ class puppetdb::params {
   $ssl_listen_port           = '8081'
   $disable_ssl               = false
   $open_ssl_listen_port      = undef
+  $ssl_dir                   = '/etc/puppetdb/ssl'
+  $ssl_set_cert_paths        = false
+  $ssl_cert_path             = "${ssl_dir}/public.pem"
+  $ssl_key_path              = "${ssl_dir}/private.pem"
+  $ssl_ca_cert_path          = "${ssl_dir}/ca.pem"
+  $ssl_deploy_certs          = false
+  $ssl_key                   = undef
+  $ssl_cert                  = undef
+  $ssl_ca_cert               = undef
   $postgres_listen_addresses = 'localhost'
 
   $database                  = 'postgres'
@@ -68,6 +77,8 @@ class puppetdb::params {
   if defined('$is_pe') and str2bool($::is_pe) == true {
     $puppetdb_package     = 'pe-puppetdb'
     $puppetdb_service     = 'pe-puppetdb'
+    $puppetdb_user        = 'pe-puppetdb'
+    $puppetdb_group       = 'pe-puppetdb'
     $confdir              = '/etc/puppetlabs/puppetdb/conf.d'
     $puppet_service_name  = 'pe-httpd'
     $puppet_confdir       = '/etc/puppetlabs/puppet'
@@ -88,6 +99,8 @@ class puppetdb::params {
   } else {
     $puppetdb_package     = 'puppetdb'
     $puppetdb_service     = 'puppetdb'
+    $puppetdb_user        = 'puppetdb'
+    $puppetdb_group       = 'puppetdb'
     $confdir              = '/etc/puppetdb/conf.d'
     $puppet_confdir       = '/etc/puppet'
     $terminus_package     = 'puppetdb-terminus'
