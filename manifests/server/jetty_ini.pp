@@ -5,6 +5,10 @@ class puppetdb::server::jetty_ini(
   $ssl_listen_address = $puppetdb::params::ssl_listen_address,
   $ssl_listen_port    = $puppetdb::params::ssl_listen_port,
   $disable_ssl        = $puppetdb::params::disable_ssl,
+  $ssl_set_cert_paths = $puppetdb::params::set_ssl_cert_paths,
+  $ssl_cert_path      = $puppetdb::params::ssl_cert_path,
+  $ssl_key_path       = $puppetdb::params::ssl_key_path,
+  $ssl_ca_cert_path   = $puppetdb::params::ssl_ca_cert_path,
   $confdir            = $puppetdb::params::confdir,
   $max_threads        = $puppetdb::params::max_threads,
 ) inherits puppetdb::params {
@@ -32,6 +36,25 @@ class puppetdb::server::jetty_ini(
   $ssl_setting_ensure = $disable_ssl ? {
     true    => 'absent',
     default => 'present',
+  }
+
+  if str2bool($ssl_set_cert_paths) == true {
+    # assume paths have been validated in calling class
+    ini_setting {'puppetdb_ssl_key':
+      ensure  => present,
+      setting => 'ssl-key',
+      value   => $ssl_key_path,
+    }
+    ini_setting {'puppetdb_ssl_cert':
+      ensure  => present,
+      setting => 'ssl-cert',
+      value   => $ssl_cert_path,
+    }
+    ini_setting {'puppetdb_ssl_ca_cert':
+      ensure  => present,
+      setting => 'ssl-ca-cert',
+      value   => $ssl_ca_cert_path,
+    }
   }
 
   ini_setting {'puppetdb_sslhost':

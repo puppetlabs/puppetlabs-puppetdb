@@ -7,6 +7,15 @@ class puppetdb::params {
   $ssl_listen_port           = '8081'
   $disable_ssl               = false
   $open_ssl_listen_port      = undef
+  $ssl_dir                   = '/etc/puppetdb/ssl'
+  $ssl_set_cert_paths        = false
+  $ssl_cert_path             = "${ssl_dir}/public.pem"
+  $ssl_key_path              = "${ssl_dir}/private.pem"
+  $ssl_ca_cert_path          = "${ssl_dir}/ca.pem"
+  $ssl_deploy_certs          = false
+  $ssl_key                   = undef
+  $ssl_cert                  = undef
+  $ssl_ca_cert               = undef
   $postgres_listen_addresses = 'localhost'
 
   $database                  = 'postgres'

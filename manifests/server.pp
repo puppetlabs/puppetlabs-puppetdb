@@ -7,6 +7,15 @@ class puppetdb::server(
   $ssl_listen_port         = $puppetdb::params::ssl_listen_port,
   $disable_ssl             = $puppetdb::params::disable_ssl,
   $open_ssl_listen_port    = $puppetdb::params::open_ssl_listen_port,
+  $ssl_dir                 = $puppetdb::params::ssl_dir,
+  $ssl_set_cert_paths      = $puppetdb::params::ssl_set_cert_paths,
+  $ssl_cert_path           = $puppetdb::params::ssl_cert_path,
+  $ssl_key_path            = $puppetdb::params::ssl_key_path,
+  $ssl_ca_cert_path        = $puppetdb::params::ssl_ca_cert_path,
+  $ssl_deploy_certs        = $puppetdb::params::ssl_deploy_certs,
+  $ssl_key                 = $puppetdb::params::ssl_key,
+  $ssl_cert                = $puppetdb::params::ssl_cert,
+  $ssl_ca_cert             = $puppetdb::params::ssl_ca_cert,
   $database                = $puppetdb::params::database,
   $database_host           = $puppetdb::params::database_host,
   $database_port           = $puppetdb::params::database_port,
@@ -91,10 +100,10 @@ class puppetdb::server(
   if $manage_firewall {
 
     class { 'puppetdb::server::firewall':
-      http_port      => $listen_port,
-      open_http_port => $open_listen_port,
-      ssl_port       => $ssl_listen_port,
-      open_ssl_port  => $open_ssl_listen_port,
+      http_port              => $listen_port,
+      open_http_port         => $open_listen_port,
+      ssl_port               => $ssl_listen_port,
+      open_ssl_port          => $open_ssl_listen_port,
     }
   }
 
@@ -134,11 +143,50 @@ class puppetdb::server(
     notify              => Service[$puppetdb_service],
   }
 
+  if str2bool($ssl_set_cert_paths) == true or str2bool($ssl_deploy_certs) == true {
+    validate_absolute_path($ssl_key_path)
+    validate_absolute_path($ssl_cert_path)
+    validate_absolute_path($ssl_ca_cert_path)
+  }
+
+  if str2bool($ssl_deploy_certs) == true {
+    validate_absolute_path($ssl_dir)
+    file{
+      $ssl_dir:
+	ensure => directory,
+	owner   => 'puppetdb',
+	group   => 'puppetdb',
+	mode    => '0700';
+      $ssl_key_path:
+	ensure  => file,
+	content => $ssl_key,
+	owner   => 'puppetdb',
+	group   => 'puppetdb',
+	mode    => '0600';
+      $ssl_cert_path:
+	ensure  => file,
+	content => $ssl_cert,
+	owner   => 'puppetdb',
+	group   => 'puppetdb',
+	mode    => '0600';
+      $ssl_ca_cert_path:
+	ensure  => file,
+	content => $ssl_ca_cert,
+	owner   => 'puppetdb',
+	group   => 'puppetdb',
+	mode    => '0600';
+    }
+  }
+
   class { 'puppetdb::server::jetty_ini':
     listen_address     => $listen_address,
     listen_port        => $listen_port,
     ssl_listen_address => $ssl_listen_address,
     ssl_listen_port    => $ssl_listen_port,
+    ssl_set_cert_paths => $ssl_set_cert_paths,
+    ssl_key_path       => $ssl_key_path,
+    ssl_cert_path      => $ssl_cert_path,
+    ssl_ca_cert_path   => $ssl_ca_cert_path,
     disable_ssl        => $disable_ssl,
     confdir            => $confdir,
     max_threads        => $max_threads,
