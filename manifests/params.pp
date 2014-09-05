@@ -89,17 +89,24 @@ class puppetdb::params {
     $puppetdb_package     = 'puppetdb'
     $puppetdb_service     = 'puppetdb'
     $confdir              = '/etc/puppetdb/conf.d'
-    $puppet_service_name  = 'puppetmaster'
     $puppet_confdir       = '/etc/puppet'
     $terminus_package     = 'puppetdb-terminus'
-    $embedded_subname     = 'file:/usr/share/puppetdb/db/db;hsqldb.tx=mvcc;sql.syntax_pgs=true'
 
     case $::osfamily {
       'RedHat', 'Suse', 'Archlinux': {
-        $puppetdb_initconf = '/etc/sysconfig/puppetdb'
+        $puppetdb_initconf    = '/etc/sysconfig/puppetdb'
+        $puppet_service_name  = 'puppetmaster'
+        $embedded_subname     = 'file:/usr/share/puppetdb/db/db;hsqldb.tx=mvcc;sql.syntax_pgs=true'
       }
       'Debian': {
-        $puppetdb_initconf = '/etc/default/puppetdb'
+        $puppetdb_initconf    = '/etc/default/puppetdb'
+        $puppet_service_name  = 'puppetmaster'
+        $embedded_subname     = 'file:/usr/share/puppetdb/db/db;hsqldb.tx=mvcc;sql.syntax_pgs=true'
+      }
+      'OpenBSD': {
+        $puppetdb_initconf    = undef
+        $puppet_service_name  = 'puppetmasterd'
+        $embedded_subname     = 'file:/var/db/puppetdb/db/db;hsqldb.tx=mvcc;sql.syntax_pgs=true'
       }
       default: {
         fail("${module_name} supports osfamily's RedHat and Debian. Your osfamily is recognized as ${::osfamily}")
