@@ -29,9 +29,18 @@ class puppetdb::master::config(
     # Validate the puppetdb connection.  If we can't connect to puppetdb then we
     # *must* not perform the other configuration steps, or else
     puppetdb_conn_validator { 'puppetdb_conn':
-      puppetdb_server => $manage_config ? { true => $puppetdb_server, default => undef },
-      puppetdb_port   => $manage_config ? { true => $puppetdb_port, default => undef },
-      use_ssl         => $puppetdb_port ? { 8080 => false, default => true },
+      puppetdb_server => $manage_config ? {
+        true    => $puppetdb_server,
+        default => undef,
+      },
+      puppetdb_port   => $manage_config ? {
+        true    => $puppetdb_port,
+        default => undef,
+      },
+      use_ssl         => $puppetdb_port ? {
+        8080    => false,
+        default => true,
+      },
       timeout         => $puppetdb_startup_timeout,
       require         => Package[$terminus_package],
     }
@@ -48,7 +57,10 @@ class puppetdb::master::config(
   if ($manage_routes) {
     class { 'puppetdb::master::routes':
       puppet_confdir => $puppet_confdir,
-      require        => $strict_validation ? { true => Puppetdb_conn_validator['puppetdb_conn'], default => Package[$terminus_package] },
+      require        => $strict_validation ? {
+        true    => Puppetdb_conn_validator['puppetdb_conn'],
+        default => Package[$terminus_package],
+      },
     }
   }
 
@@ -58,7 +70,10 @@ class puppetdb::master::config(
   if ($manage_storeconfigs) {
     class { 'puppetdb::master::storeconfigs':
       puppet_conf => $puppet_conf,
-      require     => $strict_validation ? { true => Puppetdb_conn_validator['puppetdb_conn'], default => Package[$terminus_package] },
+      require     => $strict_validation ? {
+        true    => Puppetdb_conn_validator['puppetdb_conn'],
+        default => Package[$terminus_package],
+      },
     }
   }
 
@@ -69,7 +84,10 @@ class puppetdb::master::config(
     class { 'puppetdb::master::report_processor':
       puppet_conf => $puppet_conf,
       enable      => $enable_reports,
-      require     => $strict_validation ? { true => Puppetdb_conn_validator['puppetdb_conn'], default => Package[$terminus_package] },
+      require     => $strict_validation ? {
+        true    => Puppetdb_conn_validator['puppetdb_conn'],
+        default => Package[$terminus_package],
+      },
     }
   }
 
@@ -81,7 +99,10 @@ class puppetdb::master::config(
       port               => $puppetdb_port,
       soft_write_failure => $puppetdb_soft_write_failure,
       puppet_confdir     => $puppet_confdir,
-      require            => $strict_validation ? { true => Puppetdb_conn_validator['puppetdb_conn'], default => Package[$terminus_package] },
+      require            => $strict_validation ? {
+        true    => Puppetdb_conn_validator['puppetdb_conn'],
+        default => Package[$terminus_package],
+      },
     }
   }
 
