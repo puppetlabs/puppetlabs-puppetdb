@@ -40,9 +40,9 @@ RSpec.configure do |c|
 
   # Configure all nodes in nodeset
   c.before :suite do
-    # Install module and dependencies
-    puppet_module_install(:source => proj_root, :module_name => 'puppetdb')
     hosts.each do |host|
+    # Install module and dependencies
+      copy_module_to(host, :source => proj_root, :module_name => 'puppetdb')
       on host, puppet('module', 'install', 'puppetlabs-ntp'), { :acceptable_exit_codes => [0,1] }
       on host, puppet('module', 'install', 'puppetlabs-postgresql', '--version', '">= 3.1.0 <4.0.0"'), { :acceptable_exit_codes => [0,1] }
       on host, puppet('module', 'install', 'puppetlabs-inifile', '--version', '1.x'), { :acceptable_exit_codes => [0,1] }
