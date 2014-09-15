@@ -5,7 +5,7 @@ class puppetdb::server::jetty_ini(
   $ssl_listen_address = $puppetdb::params::ssl_listen_address,
   $ssl_listen_port    = $puppetdb::params::ssl_listen_port,
   $disable_ssl        = $puppetdb::params::disable_ssl,
-  $ssl_set_cert_paths = $puppetdb::params::set_ssl_cert_paths,
+  $ssl_set_cert_paths = $puppetdb::params::ssl_set_cert_paths,
   $ssl_cert_path      = $puppetdb::params::ssl_cert_path,
   $ssl_key_path       = $puppetdb::params::ssl_key_path,
   $ssl_ca_cert_path   = $puppetdb::params::ssl_ca_cert_path,
