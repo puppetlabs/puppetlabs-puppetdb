@@ -65,7 +65,7 @@ class puppetdb::params {
     }
   }
 
-  if defined('$::is_pe') and $::is_pe == true {
+  if defined('$::is_pe') and str2bool($::is_pe) == true {
     $puppetdb_package     = 'pe-puppetdb'
     $puppetdb_service     = 'pe-puppetdb'
     $confdir              = '/etc/puppetlabs/puppetdb/conf.d'

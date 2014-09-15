@@ -75,7 +75,7 @@ class puppetdb(
   validate_re ($report_ttl_real, ['^\d+(d|h|m|s|ms)$'], "report_ttl is <${report_ttl}> which does not match the regex validation")
 
   # Validate puppetdb_service_status
-  if !($puppetdb_service_status in [true, 'running', false, 'stopped']) {
+  if !($puppetdb_service_status in ['true', 'running', 'false', 'stopped']) {
     fail("puppetdb_service_status valid values are 'true', 'running', 'false', and 'stopped'. You provided '${puppetdb_service_status}'")
   }
 
