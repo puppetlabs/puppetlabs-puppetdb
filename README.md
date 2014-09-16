@@ -313,7 +313,7 @@ Example: to set `-Xmx512m -Xms256m` options use `{ '-Xmx' => '512m', '-Xms' => '
 
 ####`max_threads`
 
-Jetty option to explicetly set max-thread. The default is undef, so the PuppetDB-jetty default is used.
+Jetty option to explicitly set max-thread. The default is undef, so the PuppetDB-jetty default is used.
 
 ####`read_database`
 
