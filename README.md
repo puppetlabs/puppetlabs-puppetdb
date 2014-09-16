@@ -139,6 +139,20 @@ You can also manually trigger puppet runs on the nodes in the correct order (Pos
 Upgrading
 ---------
 
+###Upgrading from 3.x to version 4.x
+
+For this release, all dependency versions have been bumped to their latest. Significant parameter changes are listed below:
+
+* The PuppetDB module now only supports Puppet 3.7.1 or later
+* 'puppetlabs/postgresql' 4.0.0 or later is now required
+* 'puppetlabs/inifile' 1.1.3 or later is now required
+* 'puppetlabs/firewall' 1.1.3 or later is now required
+* 'puppetlabs/stdlib' 4.2.2 or later is now required
+* The parameter `manage_firewall` for the class `puppetdb::database::postgresql` has now been removed, since the postgresql module no longer supports this.
+* The parameter `open_postgres_port` for the class `puppetdb` has also been removed, due to postgresql changes.
+
+See the CHANGELOG file for more detailed information on changes for each release.
+
 ###Upgrading from 2.x to version 3.x
 
 For this release a major dependency has changed. The module `pupppetlabs/postgresql` must now be version 3.x. Upgrading the module should upgrade the `puppetlabs/postgresql` module for you, but if another module has a fixed dependency that module will have to be fixed before you can continue.
@@ -299,7 +313,7 @@ Example: to set `-Xmx512m -Xms256m` options use `{ '-Xmx' => '512m', '-Xms' => '
 
 ####`max_threads`
 
-Jetty option to explicetly set max-thread. The default is undef, so the PuppetDB-jetty default is used. 
+Jetty option to explicitly set max-thread. The default is undef, so the PuppetDB-jetty default is used.
 
 ####`read_database`
 
@@ -534,14 +548,17 @@ Limitations
 
 Currently, PuppetDB is compatible with:
 
-    Puppet Version: 2.7+
+    Puppet Version: 3.7.1+
 
 Platforms:
-* EL 6
-* Debian 6
-* Ubuntu 10.04
+* EL 5, 6, 7
+* Debian 6, 7
+* Ubuntu 10.04, 12.04, 14.04
+
+Community Maintained Platforms:
 * Archlinux
 * OpenBSD 5.6-current and newer
+* SLES 11 SP1
 
 Development
 ------------
