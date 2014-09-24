@@ -371,7 +371,7 @@ The maximum time (in minutes) a pooled read database connection should remain op
 If not supplied, we won't terminate connections based on their age alone. This option is supported in PuppetDB >= 1.6.
 
 
-### puppetdb:server
+### puppetdb::server
 
 The `puppetdb::server` class manages the puppetdb server independently of the underlying database that it depends on. It will manage the puppetdb package, service, config files, etc., but will still allow you to manage the database (e.g. postgresql) however you see fit.
 
