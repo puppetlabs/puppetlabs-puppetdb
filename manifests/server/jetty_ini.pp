@@ -16,7 +16,7 @@ class puppetdb::server::jetty_ini(
     section => 'jetty',
   }
 
-  # TODO: figure out some way to make sure that the ini_file module is installed,
+  # TODO: figure out some way to make sure that the inifile module is installed,
   #  because otherwise these will silently fail to do anything.
 
   ini_setting {'puppetdb_host':
