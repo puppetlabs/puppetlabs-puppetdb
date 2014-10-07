@@ -1,6 +1,6 @@
-# Manages the installation of the report processor on the master. See README.md
+# Manage the installation of the report processor on the master. See README.md
 # for more details.
-class puppetdb::master::report_processor(
+class puppetdb::master::report_processor (
   $puppet_conf = $puppetdb::params::puppet_conf,
   $enable      = false
 ) inherits puppetdb::params {
@@ -13,6 +13,6 @@ class puppetdb::master::report_processor(
     section              => 'master',
     setting              => 'reports',
     subsetting           => 'puppetdb',
-    subsetting_separator => ','
+    subsetting_separator => ',',
   }
 }

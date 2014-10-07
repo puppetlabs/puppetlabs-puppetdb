@@ -28,6 +28,10 @@ Puppet::Type.newtype(:puppetdb_conn_validator) do
     defaultto true
   end
 
+  newparam(:test_url) do
+    desc 'URL to use for testing if the PuppetDB database is up'
+  end
+
   newparam(:timeout) do
     desc 'The max number of seconds that the validator should wait before giving up and deciding that puppetdb is not running; defaults to 15 seconds.'
     defaultto 15

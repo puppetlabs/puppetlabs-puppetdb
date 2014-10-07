@@ -9,7 +9,7 @@ class puppetdb::database::postgresql(
 ) inherits puppetdb::params {
 
   if $manage_server == true {
-  # get the pg server up and running
+    # get the pg server up and running
     class { '::postgresql::server':
       ip_mask_allow_all_users => '0.0.0.0/0',
       listen_addresses        => $listen_addresses,

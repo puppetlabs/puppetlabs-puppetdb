@@ -14,10 +14,19 @@ require 'puppet/util/puppetdb_validator'
 
 Puppet::Type.type(:puppetdb_conn_validator).provide(:puppet_https) do
   desc "A provider for the resource type `puppetdb_conn_validator`,
-        which validates the puppetdb connection by attempting an https
+        which validates the puppetdb connection by attempting an http(s)
         connection to the puppetdb server.  Uses the puppet SSL certificate
-        setup from the local puppet environment to authenticate."
+        setup from the local puppet environment to authenticate if use_ssl
+        is set to true."
 
+  # Test to see if the resource exists, returns true if it does, false if it
+  # does not.
+  #
+  # Here we simply monopolize the resource API, to execute a test to see if the
+  # database is connectable. When we return a state of `false` it triggers the
+  # create method where we can return an error message.
+  #
+  # @return [bool] did the test succeed?
   def exists?
     start_time = Time.now
     timeout = resource[:timeout]
@@ -41,6 +50,9 @@ Puppet::Type.type(:puppetdb_conn_validator).provide(:puppet_https) do
     success
   end
 
+  # This method is called when the exists? method returns false.
+  #
+  # @return [void]
   def create
     # If `#create` is called, that means that `#exists?` returned false, which
     # means that the connection could not be established... so we need to
@@ -48,6 +60,9 @@ Puppet::Type.type(:puppetdb_conn_validator).provide(:puppet_https) do
     raise Puppet::Error, "Unable to connect to puppetdb server! (#{@validator.puppetdb_server}:#{@validator.puppetdb_port})"
   end
 
+  # Returns the existing validator, if one exists otherwise creates a new object
+  # from the class.
+  #
   # @api private
   def validator
     @validator ||= Puppet::Util::PuppetdbValidator.new(resource[:puppetdb_server], resource[:puppetdb_port], resource[:use_ssl])

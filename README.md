@@ -224,6 +224,10 @@ If true, the PostgreSQL server will be managed by this module (defaults to true)
 
 Which database backend to use; legal values are `postgres` (default) or `embedded`. The `embedded` db can be used for very small installations or for testing, but is not recommended for use in production environments. For more info, see the [puppetdb docs](http://docs.puppetlabs.com/puppetdb/).
 
+####`database_host`
+
+Hostname to use for the database connection. For single case installations this should be left as the default. (defaults to `localhost`; ignored for `embedded` db).
+
 ####`database_port`
 
 The port that the database server listens on (defaults to `5432`; ignored for `embedded` db).
@@ -370,22 +374,50 @@ The maximum time (in minutes) a pooled read database connection should remain op
 
 If not supplied, we won't terminate connections based on their age alone. This option is supported in PuppetDB >= 1.6.
 
+####`ssl_dir`
+
+Base directory for PuppetDB SSL configuration. Defaults to `/etc/puppetdb/ssl` or `/etc/puppetlabs/puppetdb/ssl` for FOSS and PE respectively.
+
+####`ssl_set_cert_paths`
+
+A switch to enable or disable the management of SSL certificates in your `jetty.ini` configuration file.
+
+####`ssl_cert_path`
+
+Path to your SSL certificate for populating `jetty.ini`.
+
+####`ssl_key_path`
+
+Path to your SSL key for populating `jetty.ini`.
+
+####`ssl_ca_cert_path`
+
+Path to your SSL CA for populating `jetty.ini`.
+
+####`ssl_deploy_certs`
+
+A boolean switch to enable or disable the management of SSL keys in your `ssl_dir`. Default is `false`.
+
+####`ssl_key`
+
+Contents of your SSL key, as a string.
+
+####`ssl_cert`
+
+Contents of your SSL certificate, as a string.
+
+####`ssl_ca_cert`
+
+Contents of your SSL CA certificate, as a string.
+
 
 ### puppetdb::server
 
 The `puppetdb::server` class manages the puppetdb server independently of the underlying database that it depends on. It will manage the puppetdb package, service, config files, etc., but will still allow you to manage the database (e.g. postgresql) however you see fit.
 
     class { 'puppetdb::server':
-      database_host => 'puppetdb-postgres',
+      database_host => 'pg1.mydomain.com',
     }
-
-**Parameters within `puppetdb::server`:**
-
-Uses the same parameters as `puppetdb`, with one addition:
-
-####`database_host`
-
-The hostname or IP address of the database server (defaults to `localhost`; ignored for `embedded` db).
 
 ### puppetdb::master::config
 
@@ -490,6 +522,10 @@ Sets the password for the database user above. Defaults to `puppetdb`.
 
 Conditionally manages the PostgresQL server via `postgresql::server`. Defaults to `true`. If set to false, this class will create the database and user via `postgresql::server::db` but not attempt to install or manage the server itself.
 
+####`test_url`
+
+The URL to use for testing if the PuppetDB instance is running. Defaults to `/v3/version`.
+
 Implementation
 ---------------
 
@@ -567,4 +603,4 @@ Puppet Labs modules on the Puppet Forge are open projects, and community contrib
 
 We want to keep it as easy as possible to contribute changes so that our modules work in your environment. There are a few guidelines that we need contributors to follow so that we can have a chance of keeping on top of things.
 
-You can read the complete module contribution guide [on the Puppet Labs wiki.](http://projects.puppetlabs.com/projects/module-site/wiki/Module_contributing)
+You can read the complete contribution guide [on the Puppet Labs documentation website](https://docs.puppetlabs.com/contribute.html)

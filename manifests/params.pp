@@ -1,3 +1,5 @@
+# PRIVATE CLASS - do not use directly
+#
 # The puppetdb default configuration settings.
 class puppetdb::params {
   $listen_address            = 'localhost'
@@ -7,15 +9,6 @@ class puppetdb::params {
   $ssl_listen_port           = '8081'
   $disable_ssl               = false
   $open_ssl_listen_port      = undef
-  $ssl_dir                   = '/etc/puppetdb/ssl'
-  $ssl_set_cert_paths        = false
-  $ssl_cert_path             = "${ssl_dir}/public.pem"
-  $ssl_key_path              = "${ssl_dir}/private.pem"
-  $ssl_ca_cert_path          = "${ssl_dir}/ca.pem"
-  $ssl_deploy_certs          = false
-  $ssl_key                   = undef
-  $ssl_cert                  = undef
-  $ssl_ca_cert               = undef
   $postgres_listen_addresses = 'localhost'
 
   $database                  = 'postgres'
@@ -58,6 +51,10 @@ class puppetdb::params {
   $read_conn_keep_alive     = '45'
   $read_conn_lifetime       = '0'
 
+  $manage_firewall = true
+  $java_args       = {}
+  $test_url        = '/v3/version'
+
   case $::osfamily {
     'RedHat': {
       $firewall_supported       = true
@@ -84,6 +81,7 @@ class puppetdb::params {
     $puppet_confdir       = '/etc/puppetlabs/puppet'
     $terminus_package     = 'pe-puppetdb-terminus'
     $embedded_subname     = 'file:/opt/puppet/share/puppetdb/db/db;hsqldb.tx=mvcc;sql.syntax_pgs=true'
+    $ssl_dir              = '/etc/puppetlabs/puppetdb/ssl'
 
     case $::osfamily {
       'RedHat', 'Suse': {
@@ -104,6 +102,7 @@ class puppetdb::params {
     $confdir              = '/etc/puppetdb/conf.d'
     $puppet_confdir       = '/etc/puppet'
     $terminus_package     = 'puppetdb-terminus'
+    $ssl_dir              = '/etc/puppetdb/ssl'
 
     case $::osfamily {
       'RedHat', 'Suse', 'Archlinux': {
@@ -130,4 +129,13 @@ class puppetdb::params {
   $puppet_conf              = "${puppet_confdir}/puppet.conf"
   $puppetdb_startup_timeout = 120
   $puppetdb_service_status  = 'running'
+
+  $ssl_set_cert_paths        = false
+  $ssl_cert_path             = "${ssl_dir}/public.pem"
+  $ssl_key_path              = "${ssl_dir}/private.pem"
+  $ssl_ca_cert_path          = "${ssl_dir}/ca.pem"
+  $ssl_deploy_certs          = false
+  $ssl_key                   = undef
+  $ssl_cert                  = undef
+  $ssl_ca_cert               = undef
 }
