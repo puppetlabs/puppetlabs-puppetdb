@@ -1,17 +1,19 @@
 # PRIVATE CLASS - do not use directly
 class puppetdb::server::read_database_ini(
-  $database          = $puppetdb::params::read_database,
-  $database_host     = $puppetdb::params::read_database_host,
-  $database_port     = $puppetdb::params::read_database_port,
-  $database_username = $puppetdb::params::read_database_username,
-  $database_password = $puppetdb::params::read_database_password,
-  $database_name     = $puppetdb::params::read_database_name,
-  $database_ssl      = $puppetdb::params::read_database_ssl,
+  $database            = $puppetdb::params::read_database,
+  $database_host       = $puppetdb::params::read_database_host,
+  $database_port       = $puppetdb::params::read_database_port,
+  $database_username   = $puppetdb::params::read_database_username,
+  $database_password   = $puppetdb::params::read_database_password,
+  $database_name       = $puppetdb::params::read_database_name,
+  $database_ssl        = $puppetdb::params::read_database_ssl,
   $log_slow_statements = $puppetdb::params::read_log_slow_statements,
-  $conn_max_age      = $puppetdb::params::read_conn_max_age,
-  $conn_keep_alive   = $puppetdb::params::read_conn_keep_alive,
-  $conn_lifetime     = $puppetdb::params::read_conn_lifetime,
-  $confdir           = $puppetdb::params::confdir,
+  $conn_max_age        = $puppetdb::params::read_conn_max_age,
+  $conn_keep_alive     = $puppetdb::params::read_conn_keep_alive,
+  $conn_lifetime       = $puppetdb::params::read_conn_lifetime,
+  $confdir             = $puppetdb::params::confdir,
+  $puppetdb_user       = $puppetdb::params::puppetdb_user,
+  $puppetdb_group      = $puppetdb::params::puppetdb_group,
 ) inherits puppetdb::params {
 
   # Only add the read database configuration if database host is defined.
@@ -35,8 +37,8 @@ class puppetdb::server::read_database_ini(
 
     file { "${confdir}/read_database.ini":
       ensure => file,
-      owner  => 'puppetdb',
-      group  => 'puppetdb',
+      owner  => $puppetdb_user,
+      group  => $puppetdb_group,
       mode   => '0600';
     }
 
