@@ -1,8 +1,11 @@
 # Manage puppet configuration. See README.md for more details.
-class puppetdb::master::config(
+class puppetdb::master::config (
   $puppetdb_server             = $::fqdn,
   $puppetdb_port               = defined('$puppetdb::disable_ssl') ? {
-    true    => $puppetdb::disable_ssl ? { true => 8080, default => 8081, },
+    true    => $puppetdb::disable_ssl ? {
+      true => 8080,
+      default => 8081,
+    },
     default => 8081,
   },
   $puppetdb_soft_write_failure = false,
@@ -18,7 +21,8 @@ class puppetdb::master::config(
   $terminus_package            = $puppetdb::params::terminus_package,
   $puppet_service_name         = $puppetdb::params::puppet_service_name,
   $puppetdb_startup_timeout    = $puppetdb::params::puppetdb_startup_timeout,
-  $restart_puppet              = true
+  $test_url                    = $puppetdb::params::test_url,
+  $restart_puppet              = true,
 ) inherits puppetdb::params {
 
   package { $terminus_package:
@@ -43,6 +47,7 @@ class puppetdb::master::config(
       },
       timeout         => $puppetdb_startup_timeout,
       require         => Package[$terminus_package],
+      test_url        => $test_url,
     }
 
     # This is a bit of puppet chicanery that allows us to create a

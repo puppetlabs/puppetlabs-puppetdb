@@ -1,5 +1,5 @@
 # PRIVATE CLASS - do not use directly
-class puppetdb::server::database_ini(
+class puppetdb::server::database_ini (
   $database          = $puppetdb::params::database,
   $database_host     = $puppetdb::params::database_host,
   $database_port     = $puppetdb::params::database_port,
@@ -35,7 +35,7 @@ class puppetdb::server::database_ini(
     database_name     => $database_name,
   }
 
-  #Set the defaults
+  # Set the defaults
   Ini_setting {
     path    => "${confdir}/database.ini",
     ensure  => present,
@@ -43,7 +43,7 @@ class puppetdb::server::database_ini(
     require => Class['puppetdb::server::validate_db'],
   }
 
-  if $database == 'embedded'{
+  if $database == 'embedded' {
 
     $classname   = 'org.hsqldb.jdbcDriver'
     $subprotocol = 'hsqldb'
@@ -72,62 +72,62 @@ class puppetdb::server::database_ini(
     }
   }
 
-  ini_setting {'puppetdb_classname':
+  ini_setting { 'puppetdb_classname':
     setting => 'classname',
     value   => $classname,
   }
 
-  ini_setting {'puppetdb_subprotocol':
+  ini_setting { 'puppetdb_subprotocol':
     setting => 'subprotocol',
     value   => $subprotocol,
   }
 
-  ini_setting {'puppetdb_pgs':
+  ini_setting { 'puppetdb_pgs':
     setting => 'syntax_pgs',
     value   => true,
   }
 
-  ini_setting {'puppetdb_subname':
+  ini_setting { 'puppetdb_subname':
     setting => 'subname',
     value   => $subname,
   }
 
-  ini_setting {'puppetdb_gc_interval':
+  ini_setting { 'puppetdb_gc_interval':
     setting => 'gc-interval',
     value   => $gc_interval,
   }
 
-  ini_setting {'puppetdb_node_ttl':
+  ini_setting { 'puppetdb_node_ttl':
     setting => 'node-ttl',
     value   => $node_ttl,
   }
 
-  ini_setting {'puppetdb_node_purge_ttl':
+  ini_setting { 'puppetdb_node_purge_ttl':
     setting => 'node-purge-ttl',
     value   => $node_purge_ttl,
   }
 
-  ini_setting {'puppetdb_report_ttl':
+  ini_setting { 'puppetdb_report_ttl':
     setting => 'report-ttl',
     value   => $report_ttl,
   }
 
-  ini_setting {'puppetdb_log_slow_statements':
+  ini_setting { 'puppetdb_log_slow_statements':
     setting => 'log-slow-statements',
     value   => $log_slow_statements,
   }
 
-  ini_setting {'puppetdb_conn_max_age':
+  ini_setting { 'puppetdb_conn_max_age':
     setting => 'conn-max-age',
     value   => $conn_max_age,
   }
 
-  ini_setting {'puppetdb_conn_keep_alive':
+  ini_setting { 'puppetdb_conn_keep_alive':
     setting => 'conn-keep-alive',
     value   => $conn_keep_alive,
   }
 
-  ini_setting {'puppetdb_conn_lifetime':
+  ini_setting { 'puppetdb_conn_lifetime':
     setting => 'conn-lifetime',
     value   => $conn_lifetime,
   }

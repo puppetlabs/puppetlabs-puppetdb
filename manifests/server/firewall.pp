@@ -1,5 +1,5 @@
 # PRIVATE CLASS - do not use directly
-class puppetdb::server::firewall(
+class puppetdb::server::firewall (
   $http_port      = $puppetdb::params::listen_port,
   $open_http_port = $puppetdb::params::open_listen_port,
   $ssl_port       = $puppetdb::params::ssl_listen_port,

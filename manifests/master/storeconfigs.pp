@@ -1,10 +1,10 @@
 # This class configures the puppet master to enable storeconfigs and to use
 # puppetdb as the storeconfigs backend. See README.md for more details.
-class puppetdb::master::storeconfigs(
-  $puppet_conf = $puppetdb::params::puppet_conf
+class puppetdb::master::storeconfigs (
+  $puppet_conf = $puppetdb::params::puppet_conf,
 ) inherits puppetdb::params {
 
-  Ini_setting{
+  Ini_setting {
     section => 'master',
     path    => $puppet_conf,
     ensure  => present,

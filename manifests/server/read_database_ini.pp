@@ -1,5 +1,5 @@
 # PRIVATE CLASS - do not use directly
-class puppetdb::server::read_database_ini(
+class puppetdb::server::read_database_ini (
   $database            = $puppetdb::params::read_database,
   $database_host       = $puppetdb::params::read_database_host,
   $database_port       = $puppetdb::params::read_database_port,
@@ -42,7 +42,7 @@ class puppetdb::server::read_database_ini(
       mode   => '0600';
     }
 
-    #Set the defaults
+    # Set the defaults
     Ini_setting {
       path    => "${confdir}/read_database.ini",
       ensure  => present,
@@ -59,55 +59,55 @@ class puppetdb::server::read_database_ini(
         default => "//${database_host}:${database_port}/${database_name}",
       }
 
-      ini_setting {'puppetdb_read_psdatabase_username':
+      ini_setting { 'puppetdb_read_psdatabase_username':
         setting => 'username',
         value   => $database_username,
       }
 
       if $database_password != undef {
-        ini_setting {'puppetdb_read_psdatabase_password':
+        ini_setting { 'puppetdb_read_psdatabase_password':
           setting => 'password',
           value   => $database_password,
         }
       }
     }
 
-    ini_setting {'puppetdb_read_classname':
+    ini_setting { 'puppetdb_read_classname':
       setting => 'classname',
       value   => $classname,
     }
 
-    ini_setting {'puppetdb_read_subprotocol':
+    ini_setting { 'puppetdb_read_subprotocol':
       setting => 'subprotocol',
       value   => $subprotocol,
     }
 
-    ini_setting {'puppetdb_read_pgs':
+    ini_setting { 'puppetdb_read_pgs':
       setting => 'syntax_pgs',
       value   => true,
     }
 
-    ini_setting {'puppetdb_read_subname':
+    ini_setting { 'puppetdb_read_subname':
       setting => 'subname',
       value   => $subname,
     }
 
-    ini_setting {'puppetdb_read_log_slow_statements':
+    ini_setting { 'puppetdb_read_log_slow_statements':
       setting => 'log-slow-statements',
       value   => $log_slow_statements,
     }
 
-    ini_setting {'puppetdb_read_conn_max_age':
+    ini_setting { 'puppetdb_read_conn_max_age':
       setting => 'conn-max-age',
       value   => $conn_max_age,
     }
 
-    ini_setting {'puppetdb_read_conn_keep_alive':
+    ini_setting { 'puppetdb_read_conn_keep_alive':
       setting => 'conn-keep-alive',
       value   => $conn_keep_alive,
     }
 
-    ini_setting {'puppetdb_read_conn_lifetime':
+    ini_setting { 'puppetdb_read_conn_lifetime':
       setting => 'conn-lifetime',
       value   => $conn_lifetime,
     }

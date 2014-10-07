@@ -1,6 +1,6 @@
 # Manages the routes configuration file on the master. See README.md for more
 # details.
-class puppetdb::master::routes(
+class puppetdb::master::routes (
   $puppet_confdir = $puppetdb::params::puppet_confdir,
   $routes = {
     'master' => {
