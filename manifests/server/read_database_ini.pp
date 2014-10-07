@@ -12,8 +12,8 @@ class puppetdb::server::read_database_ini(
   $conn_keep_alive     = $puppetdb::params::read_conn_keep_alive,
   $conn_lifetime       = $puppetdb::params::read_conn_lifetime,
   $confdir             = $puppetdb::params::confdir,
-  $puppetdb_user       = $puppetdb::params::user,
-  $puppetdb_group      = $puppetdb::params::group,
+  $puppetdb_user       = $puppetdb::params::puppetdb_user,
+  $puppetdb_group      = $puppetdb::params::puppetdb_group,
 ) inherits puppetdb::params {
 
   # Only add the read database configuration if database host is defined.
