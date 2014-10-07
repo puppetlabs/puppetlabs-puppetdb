@@ -77,6 +77,8 @@ class puppetdb::params {
   if defined('$is_pe') and str2bool($::is_pe) == true {
     $puppetdb_package     = 'pe-puppetdb'
     $puppetdb_service     = 'pe-puppetdb'
+    $puppetdb_user        = 'pe-puppetdb'
+    $puppetdb_group       = 'pe-puppetdb'
     $confdir              = '/etc/puppetlabs/puppetdb/conf.d'
     $puppet_service_name  = 'pe-httpd'
     $puppet_confdir       = '/etc/puppetlabs/puppet'
@@ -97,6 +99,8 @@ class puppetdb::params {
   } else {
     $puppetdb_package     = 'puppetdb'
     $puppetdb_service     = 'puppetdb'
+    $puppetdb_user        = 'puppetdb'
+    $puppetdb_group       = 'puppetdb'
     $confdir              = '/etc/puppetdb/conf.d'
     $puppet_confdir       = '/etc/puppet'
     $terminus_package     = 'puppetdb-terminus'

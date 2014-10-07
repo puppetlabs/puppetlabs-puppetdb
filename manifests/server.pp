@@ -45,6 +45,8 @@ class puppetdb::server(
   $puppetdb_package        = $puppetdb::params::puppetdb_package,
   $puppetdb_version        = $puppetdb::params::puppetdb_version,
   $puppetdb_service        = $puppetdb::params::puppetdb_service,
+  $puppetdb_user           = $puppetdb::params::puppetdb_user,
+  $puppetdb_group          = $puppetdb::params::puppetdb_group,
   $puppetdb_service_status = $puppetdb::params::puppetdb_service_status,
   $confdir                 = $puppetdb::params::confdir,
   $manage_firewall         = true,
@@ -98,12 +100,11 @@ class puppetdb::server(
   }
 
   if $manage_firewall {
-
     class { 'puppetdb::server::firewall':
-      http_port              => $listen_port,
-      open_http_port         => $open_listen_port,
-      ssl_port               => $ssl_listen_port,
-      open_ssl_port          => $open_ssl_listen_port,
+      http_port      => $listen_port,
+      open_http_port => $open_listen_port,
+      ssl_port       => $ssl_listen_port,
+      open_ssl_port  => $open_ssl_listen_port,
     }
   }
 
@@ -153,28 +154,28 @@ class puppetdb::server(
     validate_absolute_path($ssl_dir)
     file{
       $ssl_dir:
-	ensure => directory,
-	owner   => 'puppetdb',
-	group   => 'puppetdb',
-	mode    => '0700';
+        ensure => directory,
+        owner   => $puppetdb_user,
+        group   => $puppetdb_group,
+        mode    => '0700';
       $ssl_key_path:
-	ensure  => file,
-	content => $ssl_key,
-	owner   => 'puppetdb',
-	group   => 'puppetdb',
-	mode    => '0600';
+        ensure  => file,
+        content => $ssl_key,
+        owner   => $puppetdb_user,
+        group   => $puppetdb_group,
+        mode    => '0600';
       $ssl_cert_path:
-	ensure  => file,
-	content => $ssl_cert,
-	owner   => 'puppetdb',
-	group   => 'puppetdb',
-	mode    => '0600';
+        ensure  => file,
+        content => $ssl_cert,
+        owner   => $puppetdb_user,
+        group   => $puppetdb_group,
+        mode    => '0600';
       $ssl_ca_cert_path:
-	ensure  => file,
-	content => $ssl_ca_cert,
-	owner   => 'puppetdb',
-	group   => 'puppetdb',
-	mode    => '0600';
+        ensure  => file,
+        content => $ssl_ca_cert,
+        owner   => $puppetdb_user,
+        group   => $puppetdb_group,
+        mode    => '0600';
     }
   }
 
