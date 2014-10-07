@@ -1,9 +1,13 @@
 # Manage puppet configuration. See README.md for more details.
 class puppetdb::master::config(
   $puppetdb_server             = $::fqdn,
-  $puppetdb_port               = defined('$puppetdb::disable_ssl') ? {
-    true    => $puppetdb::disable_ssl ? { true => 8080, default => 8081, },
+  $puppetdb_port               = defined(Class['puppetdb']) ? {
+    true    => $::puppetdb::disable_ssl ? { true => 8080, default => 8081, },
     default => 8081,
+  },
+  $puppetdb_disable_ssl        = defined(Class['puppetdb']) ? {
+    true    => $::puppetdb::disable_ssl,
+    default => false,
   },
   $puppetdb_soft_write_failure = false,
   $manage_routes               = true,
@@ -26,6 +30,7 @@ class puppetdb::master::config(
   }
 
   if ($strict_validation) {
+
     # Validate the puppetdb connection.  If we can't connect to puppetdb then we
     # *must* not perform the other configuration steps, or else
     puppetdb_conn_validator { 'puppetdb_conn':
@@ -37,8 +42,8 @@ class puppetdb::master::config(
         true    => $puppetdb_port,
         default => undef,
       },
-      use_ssl         => $puppetdb_port ? {
-        8080    => false,
+      use_ssl         => $puppetdb_disable_ssl ? {
+        true    => false,
         default => true,
       },
       timeout         => $puppetdb_startup_timeout,

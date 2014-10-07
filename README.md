@@ -408,6 +408,11 @@ The dns name or ip of the puppetdb server (defaults to the certname of the curre
 
 The port that the puppetdb server is running on (defaults to 8081).
 
+####`puppetdb_disable_ssl`
+
+If true, use plain HTTP to talk to PuppetDB. Defaults to the value of disable_ssl if PuppetDB is on the same server as the Puppet Master, or else false.
+If you set this, you probably need to set puppetdb_port to match the HTTP port of the PuppetDB.
+
 ####`puppetdb_soft_write_failure`
 
 Boolean to fail in a soft-manner if PuppetDB is not accessable for command submission (defaults to false).
