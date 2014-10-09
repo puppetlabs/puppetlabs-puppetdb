@@ -6,6 +6,7 @@ class puppetdb::database::postgresql(
   $database_username    = $puppetdb::params::database_username,
   $database_password    = $puppetdb::params::database_password,
   $manage_server        = $puppetdb::params::manage_dbserver,
+  $manage_db            = $puppetdb::params::manage_db,
   $manage_package_repo  = $puppetdb::params::manage_pg_repo,
   $postgres_version     = $puppetdb::params::postgres_version,
 ) inherits puppetdb::params {
@@ -24,10 +25,13 @@ class puppetdb::database::postgresql(
     }
   }
 
-  # create the puppetdb database
-  postgresql::server::db { $database_name:
-    user     => $database_username,
-    password => $database_password,
-    grant    => 'all',
+  if $manage_db == true {
+    # create the puppetdb database
+    postgresql::server::db { $database_name:
+      user     => $database_username,
+      password => $database_password,
+      grant    => 'all',
+    }
   }
+
 }
