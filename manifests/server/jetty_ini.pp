@@ -48,7 +48,7 @@ class puppetdb::server::jetty_ini (
   }
 
   if str2bool($ssl_set_cert_paths) == true {
-    # assume paths have been validated in calling class
+    # assume paths have been validated in calling class
     ini_setting { 'puppetdb_ssl_key':
       ensure  => present,
       setting => 'ssl-key',
