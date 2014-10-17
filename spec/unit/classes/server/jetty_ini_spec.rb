@@ -44,6 +44,7 @@ describe 'puppetdb::server::jetty_ini', :type => :class do
              'setting' => 'ssl-port',
              'value'   => 8081
              )}
+      it { should_not contain_ini_setting('puppetdb_sslprotocols') }
     end
 
     describe 'when disabling ssl' do
@@ -98,6 +99,32 @@ describe 'puppetdb::server::jetty_ini', :type => :class do
              'setting' => 'max-threads',
              'value'   => '150'
              )}
+    end
+
+    describe 'when setting ssl_protocols' do
+      context 'to a valid string' do
+        let(:params) { { 'ssl_protocols' => 'TLSv1, TLSv1.1, TLSv1.2' } }
+
+        it {
+          should contain_ini_setting('puppetdb_sslprotocols').with(
+            'ensure' => 'present',
+            'path' => '/etc/puppetdb/conf.d/jetty.ini',
+            'section' => 'jetty',
+            'setting' => 'ssl-protocols',
+            'value' => 'TLSv1, TLSv1.1, TLSv1.2'
+          )
+        }
+      end
+
+      context 'to an invalid type (non-string)' do
+        let(:params) { { 'ssl_protocols' => ['invalid','type'] } }
+
+        it 'should fail' do
+          expect {
+            should contain_class('puppetdb::server::jetty_ini')
+          }.to raise_error(Puppet::Error)
+        end
+      end
     end
   end
 end
