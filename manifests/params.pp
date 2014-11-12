@@ -109,12 +109,12 @@ class puppetdb::params {
       'RedHat', 'Suse', 'Archlinux': {
         $puppetdb_initconf    = '/etc/sysconfig/puppetdb'
         $puppet_service_name  = 'puppetmaster'
-        $embedded_subname     = 'file:/usr/share/puppetdb/db/db;hsqldb.tx=mvcc;sql.syntax_pgs=true'
+        $embedded_subname     = 'file:/var/lib/puppetdb/db/db;hsqldb.tx=mvcc;sql.syntax_pgs=true'
       }
       'Debian': {
         $puppetdb_initconf    = '/etc/default/puppetdb'
         $puppet_service_name  = 'puppetmaster'
-        $embedded_subname     = 'file:/usr/share/puppetdb/db/db;hsqldb.tx=mvcc;sql.syntax_pgs=true'
+        $embedded_subname     = 'file:/var/lib/puppetdb/db/db;hsqldb.tx=mvcc;sql.syntax_pgs=true'
       }
       'OpenBSD': {
         $puppetdb_initconf    = undef
