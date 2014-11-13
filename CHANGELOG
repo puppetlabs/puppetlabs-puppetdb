@@ -4,6 +4,38 @@ Release notes for the puppetlabs-puppetdb module.
 
 ------------------------------------------
 
+#### 4.1.0 - 2014/11/13
+
+This is a minor feature release.
+
+Detailed Changes:
+
+* New capabilities added for installing SSL certificates and keys.
+* New parameter `puppetdb_disable_ssl` to enable validation to use cleartext.
+* `ssl_protocols` now provided to allow users to fine tune what protocols they want to support for PuppetDB.
+* Lots of documentation and parameter cleanups, to ensure consistency.
+* test_url is now supported for `puppetdb::master::config` to allow the URL one users to be overridden.
+* Corrected PE detection support.
+* Correct the path for HSQLDB to use /var/lib/puppetdb/db instead of /usr/share/puppetdb/db as is standard in PuppetDB core.
+
+------------------------------------------
+
+#### 4.0.0 - 2014/09/16
+
+For this release, all dependency versions have been bumped to their latest.
+
+Detailed Changes:
+
+* The PuppetDB module now only supports Puppet 3.7.1 or later
+* 'puppetlabs/postgresql' 4.0.0 or later is now required
+* 'puppetlabs/inifile' 1.1.3 or later is now required
+* 'puppetlabs/firewall' 1.1.3 or later is now required
+* 'puppetlabs/stdlib' 4.2.2 or later is now required
+* The parameter `manage_firewall` for the class `puppetdb::database::postgresql` has now been removed, since the postgresql module no longer supports this.
+* The parameter `open_postgres_port` for the class `puppetdb` has also been removed, due to postgresql changes.
+
+------------------------------------------
+
 #### 3.0.1 - 2014/02/11
 
 This release contains only minor bug fixes.
