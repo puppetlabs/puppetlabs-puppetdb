@@ -216,6 +216,10 @@ If true, the puppetdb web server will only serve HTTP and not HTTPS requests (de
 
 If true, open the ssl_listen\_port on the firewall (defaults to true).
 
+####`ssl_protocols`
+
+specify the supported SSL protocols for PuppetDB (e.g. TLSv1, TLSv1.1, TLSv1.2.)
+
 ###`manage_dbserver`
 
 If true, the PostgreSQL server will be managed by this module (defaults to true).
