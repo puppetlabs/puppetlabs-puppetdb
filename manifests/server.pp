@@ -16,6 +16,7 @@ class puppetdb::server (
   $ssl_key                  = $puppetdb::params::ssl_key,
   $ssl_cert                 = $puppetdb::params::ssl_cert,
   $ssl_ca_cert              = $puppetdb::params::ssl_ca_cert,
+  $ssl_protocols            = $puppetdb::params::ssl_protocols,
   $database                 = $puppetdb::params::database,
   $database_host            = $puppetdb::params::database_host,
   $database_port            = $puppetdb::params::database_port,
@@ -185,18 +186,19 @@ class puppetdb::server (
   }
 
   class { 'puppetdb::server::jetty_ini':
-    listen_address     => $listen_address,
-    listen_port        => $listen_port,
-    ssl_listen_address => $ssl_listen_address,
-    ssl_listen_port    => $ssl_listen_port,
-    ssl_set_cert_paths => $ssl_set_cert_paths,
-    ssl_key_path       => $ssl_key_path,
-    ssl_cert_path      => $ssl_cert_path,
-    ssl_ca_cert_path   => $ssl_ca_cert_path,
-    disable_ssl        => $disable_ssl,
-    confdir            => $confdir,
-    max_threads        => $max_threads,
-    notify             => Service[$puppetdb_service],
+    listen_address      => $listen_address,
+    listen_port         => $listen_port,
+    ssl_listen_address  => $ssl_listen_address,
+    ssl_listen_port     => $ssl_listen_port,
+    ssl_set_cert_paths  => $ssl_set_cert_paths,
+    ssl_key_path        => $ssl_key_path,
+    ssl_cert_path       => $ssl_cert_path,
+    ssl_ca_cert_path    => $ssl_ca_cert_path,
+    ssl_protocols       => $ssl_protocols,
+    disable_ssl         => $disable_ssl,
+    confdir             => $confdir,
+    max_threads         => $max_threads,
+    notify              => Service[$puppetdb_service],
   }
 
   if !empty($java_args) {
