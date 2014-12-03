@@ -41,7 +41,7 @@ describe 'Puppet::Util::PuppetdbValidator' do
     puppetdb_server = 'mypuppetdb.com'
     puppetdb_port = 8080
     validator = Puppet::Util::PuppetdbValidator.new(puppetdb_server, puppetdb_port)
-    Puppet.expects(:notice).with("Unable to connect to puppetdb server (#{puppetdb_server}:#{puppetdb_port}): Connection refused")
+    Puppet.expects(:notice).with("Unable to connect to puppetdb server (https://#{puppetdb_server}:#{puppetdb_port}): Connection refused")
     validator.attempt_connection.should be false
   end
 
@@ -49,7 +49,7 @@ describe 'Puppet::Util::PuppetdbValidator' do
     puppetdb_server = 'wrongserver.com'
     puppetdb_port = 8081
     validator = Puppet::Util::PuppetdbValidator.new(puppetdb_server, puppetdb_port)
-    Puppet.expects(:notice).with("Unable to connect to puppetdb server (#{puppetdb_server}:#{puppetdb_port}): [404] Not found")
+    Puppet.expects(:notice).with("Unable to connect to puppetdb server (https://#{puppetdb_server}:#{puppetdb_port}): [404] Not found")
     validator.attempt_connection.should be false
   end
 
@@ -57,7 +57,7 @@ describe 'Puppet::Util::PuppetdbValidator' do
     puppetdb_server = 'non-existing.com'
     puppetdb_port = nil
     validator = Puppet::Util::PuppetdbValidator.new(puppetdb_server, puppetdb_port)
-    Puppet.expects(:notice).with("Unable to connect to puppetdb server (#{puppetdb_server}:#{puppetdb_port}): Unknown host")
+    Puppet.expects(:notice).with("Unable to connect to puppetdb server (https://#{puppetdb_server}:#{puppetdb_port}): Unknown host")
     validator.attempt_connection.should be false
   end
 
