@@ -22,6 +22,7 @@ class puppetdb::params {
   $database_username      = 'puppetdb'
   $database_password      = 'puppetdb'
   $database_ssl           = false
+  $database_validate      = true
 
   # These settings manage the various auto-deactivation and auto-purge settings
   $node_ttl               = '0s'
@@ -47,6 +48,7 @@ class puppetdb::params {
   $read_database_username   = 'puppetdb'
   $read_database_password   = 'puppetdb'
   $read_database_ssl        = false
+  $read_database_validate   = true
   $read_log_slow_statements = '10'
   $read_conn_max_age        = '60'
   $read_conn_keep_alive     = '45'
@@ -98,4 +100,5 @@ class puppetdb::params {
   $ssl_key                   = undef
   $ssl_cert                  = undef
   $ssl_ca_cert               = undef
+
 }

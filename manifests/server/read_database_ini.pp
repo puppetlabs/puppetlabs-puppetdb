@@ -7,6 +7,7 @@ class puppetdb::server::read_database_ini (
   $database_password   = $puppetdb::params::read_database_password,
   $database_name       = $puppetdb::params::read_database_name,
   $database_ssl        = $puppetdb::params::read_database_ssl,
+  $database_validate   = $puppetdb::params::read_database_validate,
   $log_slow_statements = $puppetdb::params::read_log_slow_statements,
   $conn_max_age        = $puppetdb::params::read_conn_max_age,
   $conn_keep_alive     = $puppetdb::params::read_conn_keep_alive,
@@ -18,21 +19,23 @@ class puppetdb::server::read_database_ini (
 
   # Only add the read database configuration if database host is defined.
   if $database_host != undef {
-    # Validate the database connection.  If we can't connect, we want to fail
-    # and skip the rest of the configuration, so that we don't leave puppetdb
-    # in a broken state.
-    #
-    # NOTE:
-    # Because of a limitation in the postgres module this will break with
-    # a duplicate declaration if read and write database host+name are the
-    # same.
-    class { 'puppetdb::server::validate_read_db':
-      database          => $database,
-      database_host     => $database_host,
-      database_port     => $database_port,
-      database_username => $database_username,
-      database_password => $database_password,
-      database_name     => $database_name,
+    if str2bool($database_validate) {
+      # Validate the database connection.  If we can't connect, we want to fail
+      # and skip the rest of the configuration, so that we don't leave puppetdb
+      # in a broken state.
+      #
+      # NOTE:
+      # Because of a limitation in the postgres module this will break with
+      # a duplicate declaration if read and write database host+name are the
+      # same.
+      class { 'puppetdb::server::validate_read_db':
+        database          => $database,
+        database_host     => $database_host,
+        database_port     => $database_port,
+        database_username => $database_username,
+        database_password => $database_password,
+        database_name     => $database_name,
+      }
     }
 
     file { "${confdir}/read_database.ini":
@@ -42,12 +45,16 @@ class puppetdb::server::read_database_ini (
       mode   => '0600';
     }
 
+    $ini_setting_require = str2bool($database_validate) ? {
+      false => undef,
+      default  => Class['puppetdb::server::validate_read_db'],
+    }
     # Set the defaults
     Ini_setting {
       path    => "${confdir}/read_database.ini",
       ensure  => present,
       section => 'read-database',
-      require => Class['puppetdb::server::validate_db'],
+      require => $ini_setting_require,
     }
 
     if $database == 'postgres' {
