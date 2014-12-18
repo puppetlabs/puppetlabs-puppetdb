@@ -169,19 +169,22 @@ class puppetdb::server (
         content => $ssl_key,
         owner   => $puppetdb_user,
         group   => $puppetdb_group,
-        mode    => '0600';
+        mode    => '0600',
+        notify  => Service[$puppetdb_service];
       $ssl_cert_path:
         ensure  => file,
         content => $ssl_cert,
         owner   => $puppetdb_user,
         group   => $puppetdb_group,
-        mode    => '0600';
+        mode    => '0600',
+        notify  => Service[$puppetdb_service];
       $ssl_ca_cert_path:
         ensure  => file,
         content => $ssl_ca_cert,
         owner   => $puppetdb_user,
         group   => $puppetdb_group,
-        mode    => '0600';
+        mode    => '0600',
+        notify  => Service[$puppetdb_service];
     }
   }
 
