@@ -56,22 +56,6 @@ class puppetdb::params {
   $java_args       = {}
   $test_url        = '/v3/version'
 
-  case $::osfamily {
-    'RedHat': {
-      $firewall_supported       = true
-      $persist_firewall_command = '/sbin/iptables-save > /etc/sysconfig/iptables'
-    }
-
-    'Debian': {
-      $firewall_supported       = false
-      # TODO: not exactly sure yet what the right thing to do for Debian/Ubuntu is.
-      #$persist_firewall_command = '/sbin/iptables-save > /etc/iptables/rules.v4'
-    }
-    default: {
-      $firewall_supported       = false
-    }
-  }
-
   $puppetdb_package     = 'puppetdb'
   $puppetdb_service     = 'puppetdb'
   $puppetdb_user        = 'puppetdb'
