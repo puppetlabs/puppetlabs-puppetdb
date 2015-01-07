@@ -414,6 +414,10 @@ Contents of your SSL certificate, as a string.
 
 Contents of your SSL CA certificate, as a string.
 
+####`manage_firewall`
+
+if true, puppet will manage your iptables rules for puppetdb via the [puppetlabs-firewall](https://forge.puppetlabs.com/puppetlabs/firewall) class.
+
 
 ### puppetdb::server
 

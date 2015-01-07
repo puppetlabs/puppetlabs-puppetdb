@@ -111,6 +111,7 @@ class puppetdb (
     read_conn_lifetime       => $read_conn_lifetime,
     puppetdb_user            => $puppetdb_user,
     puppetdb_group           => $puppetdb_group,
+    manage_firewall          => $manage_firewall,
   }
 
   if ($database == 'postgres') {
