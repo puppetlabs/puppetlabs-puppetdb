@@ -253,6 +253,10 @@ The name of the database instance to connect to (defaults to `puppetdb`; ignored
 If true, puppetdb will use SSL to connect to the postgres database (defaults to false; ignored for `embedded` db).
 Setting up proper trust- and keystores has to be managed outside of the puppetdb module.
 
+####`database_validate`
+
+If true, the module will attempt to connect to the database using the specified settings and fail if it is not able to do so. (defaults to true)
+
 ####`node_ttl`
 
 The length of time a node can go without receiving any new data before it's automatically deactivated.  (defaults to '0', which disables auto-deactivation). This option is supported in PuppetDB >= 1.1.0.
