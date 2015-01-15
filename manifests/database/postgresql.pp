@@ -15,7 +15,6 @@ class puppetdb::database::postgresql(
       class { '::postgresql::globals':
         manage_package_repo => true,
         version             => $postgres_version,
-        before              => Class['::postgresql::server'],
       }
     }
     # get the pg server up and running
