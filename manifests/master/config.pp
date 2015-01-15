@@ -12,6 +12,7 @@ class puppetdb::master::config (
     true    => $::puppetdb::disable_ssl,
     default => false,
   },
+  $masterless                  = $puppetdb::params::masterless,
   $puppetdb_soft_write_failure = false,
   $manage_routes               = true,
   $manage_storeconfigs         = true,
@@ -67,6 +68,7 @@ class puppetdb::master::config (
   if ($manage_routes) {
     class { 'puppetdb::master::routes':
       puppet_confdir => $puppet_confdir,
+      masterless     => $masterless,
       require        => $strict_validation ? {
         true    => Puppetdb_conn_validator['puppetdb_conn'],
         default => Package[$terminus_package],
@@ -80,6 +82,7 @@ class puppetdb::master::config (
   if ($manage_storeconfigs) {
     class { 'puppetdb::master::storeconfigs':
       puppet_conf => $puppet_conf,
+      masterless  => $masterless,
       require     => $strict_validation ? {
         true    => Puppetdb_conn_validator['puppetdb_conn'],
         default => Package[$terminus_package],
@@ -93,6 +96,7 @@ class puppetdb::master::config (
   if ($manage_report_processor) {
     class { 'puppetdb::master::report_processor':
       puppet_conf => $puppet_conf,
+      masterless  => $masterless,
       enable      => $enable_reports,
       require     => $strict_validation ? {
         true    => Puppetdb_conn_validator['puppetdb_conn'],
