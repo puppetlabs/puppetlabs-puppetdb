@@ -33,6 +33,15 @@ describe 'puppetdb::master::config', :type => :class do
         :puppetdb_server => 'puppetdb.example.com',
         :puppetdb_port => '8081',
         :use_ssl => 'true') }
+
+      it { should contain_package('puppetdb_termini').with( :ensure => 'present', )}
+    end
+
+    context 'when using an older puppetdb version' do
+
+      let(:pre_condition) { 'class { "puppetdb": puppetdb_version => "2.2.0" }' }
+      let(:params) do { :puppetdb_port => '1234' } end
+      it { should contain_package('puppetdb_terminus').with( :ensure => 'present', )}
     end
 
     context 'when puppetdb class is declared with disable_ssl => true' do
@@ -43,7 +52,7 @@ describe 'puppetdb::master::config', :type => :class do
         :puppetdb_port => '8080',
         :use_ssl => 'false')
       }
-      
+
     end
 
     context 'when puppetdb_port => 1234' do
@@ -72,6 +81,17 @@ describe 'puppetdb::master::config', :type => :class do
         :use_ssl => 'false')
       }
 
+    end
+
+    context 'when using default values' do
+      let(:pre_condition) { 'class { "puppetdb": }' }
+      it { should contain_package('puppetdb_termini').with( :ensure => 'present' )}
+    end
+
+    context 'when using an older puppetdb version' do
+      let(:pre_condition) { 'class { "puppetdb": puppetdb_version => "2.2.0", }' }
+      let(:params) do { :puppetdb_version => '2.2.0' } end
+      it { should contain_package('puppetdb_terminus').with( :ensure => 'present' )}
     end
 
   end

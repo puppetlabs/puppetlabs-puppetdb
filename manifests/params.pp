@@ -64,7 +64,6 @@ class puppetdb::params {
   $puppetdb_group       = 'puppetdb'
   $confdir              = '/etc/puppetdb/conf.d'
   $puppet_confdir       = '/etc/puppet'
-  $terminus_package     = 'puppetdb-terminus'
   $ssl_dir              = '/etc/puppetdb/ssl'
 
   case $::osfamily {
