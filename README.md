@@ -543,6 +543,14 @@ Conditionally manages the PostgresQL server via `postgresql::server`. Defaults t
 
 The URL to use for testing if the PuppetDB instance is running. Defaults to `/v3/version`.
 
+####`manage_package_repo`
+
+if this is true, the official postgres.org repo will be added and postgres won't be installed from the regular repository.
+
+####`postgres_version`
+
+if the postgres.org repo is installed, you can install several versions of postgres, this currently defaults to 9.4 which is the latest stable version.
+
 Implementation
 ---------------
 
