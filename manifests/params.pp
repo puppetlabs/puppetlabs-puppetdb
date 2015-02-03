@@ -16,13 +16,15 @@ class puppetdb::params {
   $manage_dbserver           = true
 
   # The remaining database settings are not used for an embedded database
-  $database_host          = 'localhost'
-  $database_port          = '5432'
-  $database_name          = 'puppetdb'
-  $database_username      = 'puppetdb'
-  $database_password      = 'puppetdb'
-  $database_ssl           = false
-  $database_validate      = true
+  $database_host      = 'localhost'
+  $database_port      = '5432'
+  $database_name      = 'puppetdb'
+  $database_username  = 'puppetdb'
+  $database_password  = 'puppetdb'
+  $database_ssl       = false
+  $database_validate  = true
+  $postgres_version   = '9.4'
+  $manage_pg_repo     = false
 
   # These settings manage the various auto-deactivation and auto-purge settings
   $node_ttl               = '0s'
