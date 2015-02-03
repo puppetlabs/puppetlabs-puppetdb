@@ -22,12 +22,19 @@ class puppetdb::master::config (
   $puppet_confdir              = $puppetdb::params::puppet_confdir,
   $puppet_conf                 = $puppetdb::params::puppet_conf,
   $puppetdb_version            = $puppetdb::params::puppetdb_version,
-  $terminus_package            = $puppetdb::params::terminus_package,
   $puppet_service_name         = $puppetdb::params::puppet_service_name,
   $puppetdb_startup_timeout    = $puppetdb::params::puppetdb_startup_timeout,
   $test_url                    = $puppetdb::params::test_url,
   $restart_puppet              = true,
 ) inherits puppetdb::params {
+
+  $terminus_package = $puppetdb_version ? {
+    'latest', 'present', 'absent' => 'puppetdb_termini',
+    default   => versioncmp($puppetdb_version, '2.3.0') ? {
+      -1      => 'puppetdb-terminus',
+      default => 'puppetdb-termini',
+    }
+  }
 
   package { $terminus_package:
     ensure => $puppetdb_version,
