@@ -2,7 +2,8 @@
 # details.
 class puppetdb::master::routes (
   $puppet_confdir = $puppetdb::params::puppet_confdir,
-  $routes = {
+  $masterless     = $puppetdb::params::masterless,
+  $routes         = {
     'master' => {
       'facts' => {
         'terminus' => 'puppetdb',
@@ -11,6 +12,23 @@ class puppetdb::master::routes (
     }
   }
 ) inherits puppetdb::params {
+
+  if $masterless {
+    $routes_real = {
+      'apply' => {
+        'catalog' => {
+          'terminus' => 'compiler',
+          'cache'    => 'puppetdb',
+        },
+        'facts'   => {
+          'terminus' => 'facter',
+          'cache'    => 'puppetdb_apply',
+        }
+      }
+    }
+  } else {
+    $routes_real = $routes
+  }
 
   # TODO: this will overwrite any existing routes.yaml;
   #  to handle this properly we should just be ensuring

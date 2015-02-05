@@ -492,6 +492,10 @@ Puppet's config directory (defaults to `/etc/puppet`).
 
 Puppet's config file (defaults to `/etc/puppet/puppet.conf`).
 
+####`masterless`
+
+A boolean switch to enable or disable the masterless setup of PuppetDB.
+
 ####`puppetdb_version`
 
 The version of the `puppetdb` package that should be installed. You may specify an explicit version number, 'present', or 'latest' (defaults to 'present').
