@@ -13,6 +13,7 @@ class puppetdb::params {
   $postgres_listen_addresses = 'localhost'
 
   $database                  = 'postgres'
+  $manage_db                 = true
   $manage_dbserver           = true
 
   # The remaining database settings are not used for an embedded database
