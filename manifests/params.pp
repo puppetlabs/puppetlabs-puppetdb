@@ -22,6 +22,7 @@ class puppetdb::params {
   $database_username  = 'puppetdb'
   $database_password  = 'puppetdb'
   $database_ssl       = false
+  $database_subparam  = ''
   $database_validate  = true
   $postgres_version   = '9.4'
   $manage_pg_repo     = false
@@ -50,6 +51,7 @@ class puppetdb::params {
   $read_database_username   = 'puppetdb'
   $read_database_password   = 'puppetdb'
   $read_database_ssl        = false
+  $read_database_subparam   = ''
   $read_database_validate   = true
   $read_log_slow_statements = '10'
   $read_conn_max_age        = '60'

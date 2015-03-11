@@ -7,6 +7,7 @@ class puppetdb::server::read_database_ini (
   $database_password   = $puppetdb::params::read_database_password,
   $database_name       = $puppetdb::params::read_database_name,
   $database_ssl        = $puppetdb::params::read_database_ssl,
+  $database_subparam   = $puppetdb::params::read_database_subparam,
   $database_validate   = $puppetdb::params::read_database_validate,
   $log_slow_statements = $puppetdb::params::read_log_slow_statements,
   $conn_max_age        = $puppetdb::params::read_conn_max_age,
@@ -62,7 +63,7 @@ class puppetdb::server::read_database_ini (
       $subprotocol = 'postgresql'
 
       $subname = $database_ssl ? {
-        true    => "//${database_host}:${database_port}/${database_name}?ssl=true",
+        true    => "//${database_host}:${database_port}/${database_name}?ssl=true${database_subparam}",
         default => "//${database_host}:${database_port}/${database_name}",
       }
 
