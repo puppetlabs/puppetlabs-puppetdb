@@ -64,30 +64,44 @@ class puppetdb::params {
   $puppetdb_service     = 'puppetdb'
   $puppetdb_user        = 'puppetdb'
   $puppetdb_group       = 'puppetdb'
-  $confdir              = '/etc/puppetdb/conf.d'
-  $puppet_confdir       = '/etc/puppet'
   $masterless           = false
   $terminus_package     = 'puppetdb-terminus'
-  $ssl_dir              = '/etc/puppetdb/ssl'
 
   case $::osfamily {
     'RedHat', 'Suse', 'Archlinux': {
-      $puppetdb_initconf    = '/etc/sysconfig/puppetdb'
-      $puppet_service_name  = 'puppetmaster'
+      $confdir              = '/etc/puppetdb/conf.d'
       $embedded_subname     = 'file:/var/lib/puppetdb/db/db;hsqldb.tx=mvcc;sql.syntax_pgs=true'
+      $puppetdb_initconf    = '/etc/sysconfig/puppetdb'
+      $puppet_confdir       = '/etc/puppet'
+      $puppet_service_name  = 'puppetmaster'
+      $ssl_dir              = '/etc/puppetdb/ssl'
     }
     'Debian': {
-      $puppetdb_initconf    = '/etc/default/puppetdb'
-      $puppet_service_name  = 'puppetmaster'
+      $confdir              = '/etc/puppetdb/conf.d'
       $embedded_subname     = 'file:/var/lib/puppetdb/db/db;hsqldb.tx=mvcc;sql.syntax_pgs=true'
+      $puppetdb_initconf    = '/etc/default/puppetdb'
+      $puppet_confdir       = '/etc/puppet'
+      $puppet_service_name  = 'puppetmaster'
+      $ssl_dir              = '/etc/puppetdb/ssl'
     }
     'OpenBSD': {
-      $puppetdb_initconf    = undef
-      $puppet_service_name  = 'puppetmasterd'
+      $confdir              = '/etc/puppetdb/conf.d'
       $embedded_subname     = 'file:/var/db/puppetdb/db/db;hsqldb.tx=mvcc;sql.syntax_pgs=true'
+      $puppetdb_initconf    = undef
+      $puppet_confdir       = '/etc/puppet'
+      $puppet_service_name  = 'puppetmasterd'
+      $ssl_dir              = '/etc/puppetdb/ssl'
+    }
+    'FreeBSD': {
+      $confdir              = '/usr/local/etc/puppetdb/conf.d'
+      $embedded_subname     = 'file:/var/db/puppetdb/db/db;hsqldb.tx=mvcc;sql.syntax_pgs=true'
+      $puppetdb_initconf    = undef
+      $puppet_confdir       = '/usr/local/etc/puppet'
+      $puppet_service_name  = 'puppetmaster'
+      $ssl_dir              = '/usr/local/etc/puppetdb/ssl'
     }
     default: {
-      fail("${module_name} supports osfamily's RedHat and Debian. Your osfamily is recognized as ${::osfamily}")
+      fail("${module_name} does not support your osfamily ${::osfamily}")
     }
   }
 
