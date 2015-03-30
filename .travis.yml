@@ -1,7 +1,7 @@
 ---
 language: ruby
 bundler_args: --without system_tests
-script: "bundle exec rake spec SPEC_OPTS='--format documentation'"
+script: "bundle exec metadata-json-lint --strict-license --fail-on-warnings metadata.json && bundle exec rake spec SPEC_OPTS='--format documentation'"
 after_success:
   - git clone -q git://github.com/puppetlabs/ghpublisher.git .forge-release
   - .forge-release/publish

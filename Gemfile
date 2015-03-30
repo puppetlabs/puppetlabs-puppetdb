@@ -7,6 +7,7 @@ group :development, :test do
   gem 'rspec-core', '3.1.7'
   gem 'rspec-puppet', '~> 1.0'
   gem 'puppet-lint',  '~> 1.1'
+  gem 'metadata-json-lint'
 end
 
 group :system_tests do
