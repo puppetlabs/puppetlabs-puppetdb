@@ -72,7 +72,11 @@ class puppetdb::params {
       $confdir              = '/etc/puppetdb/conf.d'
       $embedded_subname     = 'file:/var/lib/puppetdb/db/db;hsqldb.tx=mvcc;sql.syntax_pgs=true'
       $puppetdb_initconf    = '/etc/sysconfig/puppetdb'
-      $puppet_confdir       = '/etc/puppet'
+      if $settings::confdir != undef {
+        $puppet_confdir       = $settings::confdir
+      } else {
+        $puppet_confdir       = '/etc/puppet'
+      }
       $puppet_service_name  = 'puppetmaster'
       $ssl_dir              = '/etc/puppetdb/ssl'
     }
@@ -80,7 +84,11 @@ class puppetdb::params {
       $confdir              = '/etc/puppetdb/conf.d'
       $embedded_subname     = 'file:/var/lib/puppetdb/db/db;hsqldb.tx=mvcc;sql.syntax_pgs=true'
       $puppetdb_initconf    = '/etc/default/puppetdb'
-      $puppet_confdir       = '/etc/puppet'
+      if $settings::confdir != undef {
+        $puppet_confdir       = $settings::confdir
+      } else {
+        $puppet_confdir       = '/etc/puppet'
+      }
       $puppet_service_name  = 'puppetmaster'
       $ssl_dir              = '/etc/puppetdb/ssl'
     }
@@ -88,7 +96,11 @@ class puppetdb::params {
       $confdir              = '/etc/puppetdb/conf.d'
       $embedded_subname     = 'file:/var/db/puppetdb/db/db;hsqldb.tx=mvcc;sql.syntax_pgs=true'
       $puppetdb_initconf    = undef
-      $puppet_confdir       = '/etc/puppet'
+      if $settings::confdir != undef {
+        $puppet_confdir       = $settings::confdir
+      } else {
+        $puppet_confdir       = '/etc/puppet'
+      }
       $puppet_service_name  = 'puppetmasterd'
       $ssl_dir              = '/etc/puppetdb/ssl'
     }
@@ -96,7 +108,11 @@ class puppetdb::params {
       $confdir              = '/usr/local/etc/puppetdb/conf.d'
       $embedded_subname     = 'file:/var/db/puppetdb/db/db;hsqldb.tx=mvcc;sql.syntax_pgs=true'
       $puppetdb_initconf    = undef
-      $puppet_confdir       = '/usr/local/etc/puppet'
+      if $settings::confdir != undef {
+        $puppet_confdir       = $settings::confdir
+      } else {
+        $puppet_confdir       = '/usr/local/etc/puppet'
+      }
       $puppet_service_name  = 'puppetmaster'
       $ssl_dir              = '/usr/local/etc/puppetdb/ssl'
     }
