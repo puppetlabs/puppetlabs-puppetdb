@@ -4,6 +4,27 @@ Release notes for the puppetlabs-puppetdb module.
 
 ------------------------------------------
 
+#### 4.2.0 - 2014/04/02
+
+This is a minor feature release.
+
+Detailed Changes:
+
+* Added Puppet 4 compatibility by introspecting the value for `$puppet_confdir`.
+* Added `masterless` param switch to enable or disable the masterless setup of PuppetDB.
+* Added `manage_package_repo` param which will setup the official PostgreSQL repositories on your host.
+* Added FreeBSD support.
+* The puppetdb service now restarts if the certificates change.
+* `manage_firewall` and `ssl_protocols` are now configurable through the top-level puppetdb class.
+* Show the puppetdb server URI scheme in connection errors.
+* `test_url` param is now properly passed from the resource to the provider.
+* Removed dead PE code and unused variables from the module.
+* New parameter `puppetdb_disable_ssl` to enable validation to use cleartext.
+* Database validation is now optional via the `database_validate` and `read_database_validate` params.
+* Documentation updates to the README and metadata.json.
+
+------------------------------------------
+
 #### 4.1.0 - 2014/11/13
 
 This is a minor feature release.
