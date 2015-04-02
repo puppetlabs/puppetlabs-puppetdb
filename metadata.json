@@ -1,6 +1,6 @@
 {
     "name": "puppetlabs-puppetdb",
-    "version": "4.1.0",
+    "version": "4.2.0",
     "summary": "Installs PostgreSQL and PuppetDB, sets up the connection to Puppet master.",
     "source": "git://github.com/puppetlabs/puppetlabs-puppetdb.git",
     "project_page": "http://github.com/puppetlabs/puppetlabs-puppetdb",
