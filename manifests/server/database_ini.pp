@@ -7,6 +7,7 @@ class puppetdb::server::database_ini (
   $database_password = $puppetdb::params::database_password,
   $database_name     = $puppetdb::params::database_name,
   $database_ssl      = $puppetdb::params::database_ssl,
+  $database_subparam = $puppetdb::params::database_subparam,
   $database_validate = $puppetdb::params::database_validate,
   $node_ttl          = $puppetdb::params::node_ttl,
   $node_purge_ttl    = $puppetdb::params::node_purge_ttl,
@@ -61,7 +62,7 @@ class puppetdb::server::database_ini (
     $subprotocol = 'postgresql'
 
     $subname = $database_ssl ? {
-      true    => "//${database_host}:${database_port}/${database_name}?ssl=true",
+      true => "//${database_host}:${database_port}/${database_name}?ssl=true${database_subparam}",
       default => "//${database_host}:${database_port}/${database_name}",
     }
 
