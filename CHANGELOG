@@ -4,7 +4,17 @@ Release notes for the puppetlabs-puppetdb module.
 
 ------------------------------------------
 
-#### 4.2.0 - 2014/04/02
+#### 4.2.1 - 2015/04/07
+
+This is a minor bugfix release.
+
+Detailed Changes:
+
+* Ignore `._foo` files when building the `.tar.gz` of the module.
+
+------------------------------------------
+
+#### 4.2.0 - 2015/04/02
 
 This is a minor feature release.
 
