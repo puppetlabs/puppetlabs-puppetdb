@@ -5,7 +5,7 @@ group :development, :test do
   gem 'puppetlabs_spec_helper', :require => false
   # Pinning due to bug in newer rspec with Ruby 1.8.7
   gem 'rspec-core', '3.1.7'
-  gem 'rspec-puppet', '~> 1.0'
+  gem 'rspec-puppet', '~> 2.0'
   gem 'puppet-lint',  '~> 1.1'
   gem 'metadata-json-lint'
 end

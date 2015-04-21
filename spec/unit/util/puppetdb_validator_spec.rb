@@ -28,13 +28,13 @@ describe 'Puppet::Util::PuppetdbValidator' do
 
   it 'returns true if connection succeeds' do
     validator = Puppet::Util::PuppetdbValidator.new('mypuppetdb.com', 8081)
-    validator.attempt_connection.should be true
+    expect(validator.attempt_connection).to be true
   end
 
   it 'should still validate without ssl' do
     Puppet[:configtimeout] = 2
     validator = Puppet::Util::PuppetdbValidator.new('mypuppetdb.com', 8080, false)
-    validator.attempt_connection.should be true
+    expect(validator.attempt_connection).to be true
   end
 
   it 'returns false and issues an appropriate notice if connection is refused' do
@@ -42,7 +42,7 @@ describe 'Puppet::Util::PuppetdbValidator' do
     puppetdb_port = 8080
     validator = Puppet::Util::PuppetdbValidator.new(puppetdb_server, puppetdb_port)
     Puppet.expects(:notice).with("Unable to connect to puppetdb server (https://#{puppetdb_server}:#{puppetdb_port}): Connection refused")
-    validator.attempt_connection.should be false
+    expect(validator.attempt_connection).to be false
   end
 
   it 'returns false and issues an appropriate notice if connection succeeds but puppetdb is not available' do
@@ -50,7 +50,7 @@ describe 'Puppet::Util::PuppetdbValidator' do
     puppetdb_port = 8081
     validator = Puppet::Util::PuppetdbValidator.new(puppetdb_server, puppetdb_port)
     Puppet.expects(:notice).with("Unable to connect to puppetdb server (https://#{puppetdb_server}:#{puppetdb_port}): [404] Not found")
-    validator.attempt_connection.should be false
+    expect(validator.attempt_connection).to be false
   end
 
   it 'returns false and issues an appropriate notice if host:port is unreachable or does not exist' do
@@ -58,7 +58,7 @@ describe 'Puppet::Util::PuppetdbValidator' do
     puppetdb_port = nil
     validator = Puppet::Util::PuppetdbValidator.new(puppetdb_server, puppetdb_port)
     Puppet.expects(:notice).with("Unable to connect to puppetdb server (https://#{puppetdb_server}:#{puppetdb_port}): Unknown host")
-    validator.attempt_connection.should be false
+    expect(validator.attempt_connection).to be false
   end
 
 end
