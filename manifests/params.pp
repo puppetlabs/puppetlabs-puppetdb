@@ -125,6 +125,10 @@ class puppetdb::params {
   $puppetdb_startup_timeout = 120
   $puppetdb_service_status  = 'running'
 
+  $command_threads          = undef
+  $store_usage              = undef
+  $temp_usage               = undef
+
   $ssl_set_cert_paths        = false
   $ssl_cert_path             = "${ssl_dir}/public.pem"
   $ssl_key_path              = "${ssl_dir}/private.pem"

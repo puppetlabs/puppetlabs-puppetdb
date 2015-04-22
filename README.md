@@ -422,6 +422,18 @@ Contents of your SSL CA certificate, as a string.
 
 if true, puppet will manage your iptables rules for puppetdb via the [puppetlabs-firewall](https://forge.puppetlabs.com/puppetlabs/firewall) class.
 
+####`command_threads`
+
+The number of command processing threads to use. Defaults to undef, using the PuppetDB built-in default.
+
+####`store_usage`
+
+The amount of disk space (in MB) to allow for persistent message storage. Defaults to undef, using the PuppetDB built-in default.
+
+####`temp_usage`
+
+The amount of disk space (in MB) to allow for temporary message storage. Defaults to undef, using the PuppetDB built-in default.
+
 
 ### puppetdb::server
 

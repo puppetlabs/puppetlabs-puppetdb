@@ -55,6 +55,9 @@ class puppetdb::server (
   $manage_firewall          = $puppetdb::params::manage_firewall,
   $java_args                = $puppetdb::params::java_args,
   $max_threads              = $puppetdb::params::max_threads,
+  $command_threads          = $puppetdb::params::command_threads,
+  $store_usage              = $puppetdb::params::store_usage,
+  $temp_usage               = $puppetdb::params::temp_usage,
 ) inherits puppetdb::params {
 
   # Apply necessary suffix if zero is specified.
@@ -114,6 +117,13 @@ class puppetdb::server (
       ssl_port       => $ssl_listen_port,
       open_ssl_port  => $open_ssl_listen_port,
     }
+  }
+
+  class { 'puppetdb::server::config_ini':
+    command_threads => $command_threads,
+    store_usage     => $store_usage,
+    temp_usage      => $temp_usage,
+    confdir         => $confdir,
   }
 
   class { 'puppetdb::server::database_ini':
@@ -238,11 +248,13 @@ class puppetdb::server (
   if $manage_firewall {
     Package[$puppetdb_package] ->
     Class['puppetdb::server::firewall'] ->
+    Class['puppetdb::server::config_ini'] ->
     Class['puppetdb::server::database_ini'] ->
     Class['puppetdb::server::jetty_ini'] ->
     Service[$puppetdb_service]
   } else {
     Package[$puppetdb_package] ->
+    Class['puppetdb::server::config_ini'] ->
     Class['puppetdb::server::database_ini'] ->
     Class['puppetdb::server::jetty_ini'] ->
     Service[$puppetdb_service]
