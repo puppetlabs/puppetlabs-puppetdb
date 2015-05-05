@@ -144,6 +144,7 @@ class puppetdb::server (
     conn_keep_alive     => $conn_keep_alive,
     conn_lifetime       => $conn_lifetime,
     confdir             => $confdir,
+    require             => Package[$puppetdb_package],
     notify              => Service[$puppetdb_service],
   }
 
@@ -161,6 +162,7 @@ class puppetdb::server (
     conn_keep_alive     => $read_conn_keep_alive,
     conn_lifetime       => $read_conn_lifetime,
     confdir             => $confdir,
+    require             => Package[$puppetdb_package],
     notify              => Service[$puppetdb_service],
   }
 
@@ -178,12 +180,14 @@ class puppetdb::server (
         owner   => $puppetdb_user,
         group   => $puppetdb_group,
         mode    => '0700';
+        require => Package[$puppetdb_package],
       $ssl_key_path:
         ensure  => file,
         content => $ssl_key,
         owner   => $puppetdb_user,
         group   => $puppetdb_group,
         mode    => '0600',
+        require => Package[$puppetdb_package],
         notify  => Service[$puppetdb_service];
       $ssl_cert_path:
         ensure  => file,
@@ -191,6 +195,7 @@ class puppetdb::server (
         owner   => $puppetdb_user,
         group   => $puppetdb_group,
         mode    => '0600',
+        require => Package[$puppetdb_package],
         notify  => Service[$puppetdb_service];
       $ssl_ca_cert_path:
         ensure  => file,
@@ -198,6 +203,7 @@ class puppetdb::server (
         owner   => $puppetdb_user,
         group   => $puppetdb_group,
         mode    => '0600',
+        require => Package[$puppetdb_package],
         notify  => Service[$puppetdb_service];
     }
   }
