@@ -124,6 +124,7 @@ class puppetdb::server (
     store_usage     => $store_usage,
     temp_usage      => $temp_usage,
     confdir         => $confdir,
+    notify          => Service[$puppetdb_service],
   }
 
   class { 'puppetdb::server::database_ini':
@@ -250,12 +251,14 @@ class puppetdb::server (
     Class['puppetdb::server::firewall'] ->
     Class['puppetdb::server::config_ini'] ->
     Class['puppetdb::server::database_ini'] ->
+    Class['puppetdb::server::read_database_ini'] ->
     Class['puppetdb::server::jetty_ini'] ->
     Service[$puppetdb_service]
   } else {
     Package[$puppetdb_package] ->
     Class['puppetdb::server::config_ini'] ->
     Class['puppetdb::server::database_ini'] ->
+    Class['puppetdb::server::read_database_ini'] ->
     Class['puppetdb::server::jetty_ini'] ->
     Service[$puppetdb_service]
   }
