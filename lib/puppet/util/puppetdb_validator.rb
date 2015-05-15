@@ -10,7 +10,7 @@ module Puppet
       attr_reader :test_path
       attr_reader :test_headers
 
-      def initialize(puppetdb_server, puppetdb_port, use_ssl=true, test_path = "/v3/version")
+      def initialize(puppetdb_server, puppetdb_port, use_ssl=true, test_path = "/pdb/meta/v1/version")
         @puppetdb_server = puppetdb_server
         @puppetdb_port   = puppetdb_port
         @use_ssl         = use_ssl

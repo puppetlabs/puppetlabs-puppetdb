@@ -139,6 +139,15 @@ You can also manually trigger puppet runs on the nodes in the correct order (Pos
 Upgrading
 ---------
 
+###Upgrading from 4.x to version 5.x
+
+Significant parameter changes are listed below:
+
+* The PuppetDB module now supports PuppetDB 3.0.0 by default
+* If you want to use 5.x of the module with PuppetDB 2.x, you'll need to set the `test_url => /v3/version` and either `puppetdb_version => 2.y.z` or `terminus_package => 2.y.z`
+
+See the CHANGELOG file for more detailed information on changes for each release.
+
 ###Upgrading from 3.x to version 4.x
 
 For this release, all dependency versions have been bumped to their latest. Significant parameter changes are listed below:
@@ -557,7 +566,7 @@ Conditionally manages the PostgresQL server via `postgresql::server`. Defaults t
 
 ####`test_url`
 
-The URL to use for testing if the PuppetDB instance is running. Defaults to `/v3/version`.
+The URL to use for testing if the PuppetDB instance is running. Defaults to `/pdb/meta/v1/version`.
 
 ####`manage_package_repo`
 

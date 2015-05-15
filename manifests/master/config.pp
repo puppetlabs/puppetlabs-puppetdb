@@ -23,14 +23,27 @@ class puppetdb::master::config (
   $puppet_confdir              = $puppetdb::params::puppet_confdir,
   $puppet_conf                 = $puppetdb::params::puppet_conf,
   $puppetdb_version            = $puppetdb::params::puppetdb_version,
-  $terminus_package            = $puppetdb::params::terminus_package,
+  $terminus_package            = '',
   $puppet_service_name         = $puppetdb::params::puppet_service_name,
   $puppetdb_startup_timeout    = $puppetdb::params::puppetdb_startup_timeout,
   $test_url                    = $puppetdb::params::test_url,
   $restart_puppet              = true,
 ) inherits puppetdb::params {
 
-  package { $terminus_package:
+  if empty($terminus_package) {
+    $old_terminus_name = versioncmp($puppetdb_version, '3.0.0') < 0
+    $terminus_package_name = $puppetdb_version ? {
+      /(latest|present|absent)/ => 'puppetdb-termini',
+      default                   =>  $old_terminus_name ? {
+        true   => 'puppetdb-terminus',
+        false  => 'puppetdb-termini'
+      }
+    }
+  } else {
+    $terminus_package_name = $terminus_package
+  }
+
+  package { $terminus_package_name:
     ensure => $puppetdb_version,
   }
 
@@ -52,7 +65,7 @@ class puppetdb::master::config (
         default => true,
       },
       timeout         => $puppetdb_startup_timeout,
-      require         => Package[$terminus_package],
+      require         => Package[$terminus_package_name],
       test_url        => $test_url,
     }
 
@@ -71,7 +84,7 @@ class puppetdb::master::config (
       masterless     => $masterless,
       require        => $strict_validation ? {
         true    => Puppetdb_conn_validator['puppetdb_conn'],
-        default => Package[$terminus_package],
+        default => Package[$terminus_package_name],
       },
     }
   }
@@ -85,7 +98,7 @@ class puppetdb::master::config (
       masterless  => $masterless,
       require     => $strict_validation ? {
         true    => Puppetdb_conn_validator['puppetdb_conn'],
-        default => Package[$terminus_package],
+        default => Package[$terminus_package_name],
       },
     }
   }
@@ -100,7 +113,7 @@ class puppetdb::master::config (
       enable      => $enable_reports,
       require     => $strict_validation ? {
         true    => Puppetdb_conn_validator['puppetdb_conn'],
-        default => Package[$terminus_package],
+        default => Package[$terminus_package_name],
       },
     }
   }
@@ -115,7 +128,7 @@ class puppetdb::master::config (
       puppet_confdir     => $puppet_confdir,
       require            => $strict_validation ? {
         true    => Puppetdb_conn_validator['puppetdb_conn'],
-        default => Package[$terminus_package],
+        default => Package[$terminus_package_name],
       },
     }
   }
