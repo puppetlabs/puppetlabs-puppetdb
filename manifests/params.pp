@@ -5,7 +5,7 @@ class puppetdb::params {
   $listen_address            = 'localhost'
   $listen_port               = '8080'
   $open_listen_port          = false
-  $ssl_listen_address        = $::fqdn
+  $ssl_listen_address        = '0.0.0.0'
   $ssl_listen_port           = '8081'
   $ssl_protocols             = undef
   $disable_ssl               = false
