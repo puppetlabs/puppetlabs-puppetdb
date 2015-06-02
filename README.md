@@ -202,7 +202,7 @@ If true, open the http_listen\_port on the firewall (defaults to false).
 
 ####`ssl_listen_address`
 
-The address that the web server should bind to for HTTPS requests (defaults to `$::clientcert`). Set to '0.0.0.0' to listen on all addresses.
+The address that the web server should bind to for HTTPS requests (defaults to '0.0.0.0' to listen on all addresses).
 
 ####`ssl_listen_port`
 
