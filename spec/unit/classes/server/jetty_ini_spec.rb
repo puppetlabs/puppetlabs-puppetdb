@@ -34,7 +34,7 @@ describe 'puppetdb::server::jetty_ini', :type => :class do
              'path'    => '/etc/puppetdb/conf.d/jetty.ini',
              'section' => 'jetty',
              'setting' => 'ssl-host',
-             'value'   => 'test.domain.local'
+             'value'   => '0.0.0.0'
              )}
       it { should contain_ini_setting('puppetdb_sslport').
         with(
