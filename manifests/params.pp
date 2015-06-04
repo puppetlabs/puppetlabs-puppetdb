@@ -58,14 +58,13 @@ class puppetdb::params {
 
   $manage_firewall = true
   $java_args       = {}
-  $test_url        = '/v3/version'
+  $test_url        = '/pdb/meta/v1/version'
 
   $puppetdb_package     = 'puppetdb'
   $puppetdb_service     = 'puppetdb'
   $puppetdb_user        = 'puppetdb'
   $puppetdb_group       = 'puppetdb'
   $masterless           = false
-  $terminus_package     = 'puppetdb-terminus'
 
   case $::osfamily {
     'RedHat', 'Suse', 'Archlinux': {
