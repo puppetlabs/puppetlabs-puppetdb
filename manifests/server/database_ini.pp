@@ -1,22 +1,23 @@
 # PRIVATE CLASS - do not use directly
 class puppetdb::server::database_ini (
-  $database          = $puppetdb::params::database,
-  $database_host     = $puppetdb::params::database_host,
-  $database_port     = $puppetdb::params::database_port,
-  $database_username = $puppetdb::params::database_username,
-  $database_password = $puppetdb::params::database_password,
-  $database_name     = $puppetdb::params::database_name,
-  $database_ssl      = $puppetdb::params::database_ssl,
-  $database_validate = $puppetdb::params::database_validate,
-  $node_ttl          = $puppetdb::params::node_ttl,
-  $node_purge_ttl    = $puppetdb::params::node_purge_ttl,
-  $report_ttl        = $puppetdb::params::report_ttl,
-  $gc_interval       = $puppetdb::params::gc_interval,
-  $log_slow_statements = $puppetdb::params::log_slow_statements,
-  $conn_max_age      = $puppetdb::params::conn_max_age,
-  $conn_keep_alive   = $puppetdb::params::conn_keep_alive,
-  $conn_lifetime     = $puppetdb::params::conn_lifetime,
-  $confdir           = $puppetdb::params::confdir,
+  $database               = $puppetdb::params::database,
+  $database_host          = $puppetdb::params::database_host,
+  $database_port          = $puppetdb::params::database_port,
+  $database_username      = $puppetdb::params::database_username,
+  $database_password      = $puppetdb::params::database_password,
+  $database_name          = $puppetdb::params::database_name,
+  $database_ssl           = $puppetdb::params::database_ssl,
+  $database_validate      = $puppetdb::params::database_validate,
+  $database_embedded_path = $puppetdb::params::database_embedded_path,
+  $node_ttl               = $puppetdb::params::node_ttl,
+  $node_purge_ttl         = $puppetdb::params::node_purge_ttl,
+  $report_ttl             = $puppetdb::params::report_ttl,
+  $gc_interval            = $puppetdb::params::gc_interval,
+  $log_slow_statements    = $puppetdb::params::log_slow_statements,
+  $conn_max_age           = $puppetdb::params::conn_max_age,
+  $conn_keep_alive        = $puppetdb::params::conn_keep_alive,
+  $conn_lifetime          = $puppetdb::params::conn_lifetime,
+  $confdir                = $puppetdb::params::confdir,
 ) inherits puppetdb::params {
 
   if str2bool($database_validate) {
@@ -54,7 +55,7 @@ class puppetdb::server::database_ini (
 
     $classname   = 'org.hsqldb.jdbcDriver'
     $subprotocol = 'hsqldb'
-    $subname     = $puppetdb::params::embedded_subname
+    $subname     = "file:${database_embedded_path};hsqldb.tx=mvcc;sql.syntax_pgs=true"
 
   } elsif $database == 'postgres' {
     $classname = 'org.postgresql.Driver'
