@@ -4,6 +4,20 @@ Release notes for the puppetlabs-puppetdb module.
 
 ------------------------------------------
 
+#### 4.3.0 - 2015/06/10
+
+This is a minor feature release.
+
+Detailed changes:
+
+* Feature: Provide `database_embedded_path` option for overriding HSQLDB file path.
+* Feature: Add ability to manage `command_threads`, `store_usage` and `temp_usage`.
+* Bug: allow database_validation to be false
+* Bug: Fix ordering issues with read_database_ini
+* Testing: Fix file_concat dependency and fix rspec warnings
+
+------------------------------------------
+
 #### 4.2.1 - 2015/04/07
 
 This is a minor bugfix release.
