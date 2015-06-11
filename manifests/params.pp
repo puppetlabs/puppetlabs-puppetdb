@@ -68,52 +68,52 @@ class puppetdb::params {
 
   case $::osfamily {
     'RedHat', 'Suse', 'Archlinux': {
-      $confdir              = '/etc/puppetdb/conf.d'
-      $embedded_subname     = 'file:/var/lib/puppetdb/db/db;hsqldb.tx=mvcc;sql.syntax_pgs=true'
-      $puppetdb_initconf    = '/etc/sysconfig/puppetdb'
+      $confdir                = '/etc/puppetdb/conf.d'
+      $database_embedded_path = '/var/lib/puppetdb/db/db'
+      $puppetdb_initconf      = '/etc/sysconfig/puppetdb'
       if $settings::confdir != undef {
         $puppet_confdir       = $settings::confdir
       } else {
         $puppet_confdir       = '/etc/puppet'
       }
-      $puppet_service_name  = 'puppetmaster'
-      $ssl_dir              = '/etc/puppetdb/ssl'
+      $puppet_service_name    = 'puppetmaster'
+      $ssl_dir                = '/etc/puppetdb/ssl'
     }
     'Debian': {
-      $confdir              = '/etc/puppetdb/conf.d'
-      $embedded_subname     = 'file:/var/lib/puppetdb/db/db;hsqldb.tx=mvcc;sql.syntax_pgs=true'
-      $puppetdb_initconf    = '/etc/default/puppetdb'
+      $confdir                = '/etc/puppetdb/conf.d'
+      $database_embedded_path = '/var/lib/puppetdb/db/db'
+      $puppetdb_initconf      = '/etc/default/puppetdb'
       if $settings::confdir != undef {
         $puppet_confdir       = $settings::confdir
       } else {
         $puppet_confdir       = '/etc/puppet'
       }
-      $puppet_service_name  = 'puppetmaster'
-      $ssl_dir              = '/etc/puppetdb/ssl'
+      $puppet_service_name    = 'puppetmaster'
+      $ssl_dir                = '/etc/puppetdb/ssl'
     }
     'OpenBSD': {
-      $confdir              = '/etc/puppetdb/conf.d'
-      $embedded_subname     = 'file:/var/db/puppetdb/db/db;hsqldb.tx=mvcc;sql.syntax_pgs=true'
-      $puppetdb_initconf    = undef
+      $confdir                = '/etc/puppetdb/conf.d'
+      $database_embedded_path = '/var/db/puppetdb/db/db'
+      $puppetdb_initconf      = undef
       if $settings::confdir != undef {
         $puppet_confdir       = $settings::confdir
       } else {
         $puppet_confdir       = '/etc/puppet'
       }
-      $puppet_service_name  = 'puppetmasterd'
-      $ssl_dir              = '/etc/puppetdb/ssl'
+      $puppet_service_name    = 'puppetmasterd'
+      $ssl_dir                = '/etc/puppetdb/ssl'
     }
     'FreeBSD': {
-      $confdir              = '/usr/local/etc/puppetdb/conf.d'
-      $embedded_subname     = 'file:/var/db/puppetdb/db/db;hsqldb.tx=mvcc;sql.syntax_pgs=true'
-      $puppetdb_initconf    = undef
+      $confdir                = '/usr/local/etc/puppetdb/conf.d'
+      $database_embedded_path = '/var/db/puppetdb/db/db'
+      $puppetdb_initconf      = undef
       if $settings::confdir != undef {
         $puppet_confdir       = $settings::confdir
       } else {
         $puppet_confdir       = '/usr/local/etc/puppet'
       }
-      $puppet_service_name  = 'puppetmaster'
-      $ssl_dir              = '/usr/local/etc/puppetdb/ssl'
+      $puppet_service_name    = 'puppetmaster'
+      $ssl_dir                = '/usr/local/etc/puppetdb/ssl'
     }
     default: {
       fail("${module_name} does not support your osfamily ${::osfamily}")

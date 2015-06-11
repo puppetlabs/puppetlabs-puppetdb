@@ -266,6 +266,10 @@ Setting up proper trust- and keystores has to be managed outside of the puppetdb
 
 If true, the module will attempt to connect to the database using the specified settings and fail if it is not able to do so. (defaults to true)
 
+####`database_embedded_path`
+
+*Embedded Database Only* Changes the path location for the HSQLDB database. Does not provide migration for old data, so if you change this value and you have an existing database you will need to manually move the content also. (defaults to package default for 2.x release).
+
 ####`node_ttl`
 
 The length of time a node can go without receiving any new data before it's automatically deactivated.  (defaults to '0', which disables auto-deactivation). This option is supported in PuppetDB >= 1.1.0.
