@@ -59,7 +59,7 @@ Detailed Changes:
 * New parameter `puppetdb_disable_ssl` to enable validation to use cleartext.
 * `ssl_protocols` now provided to allow users to fine tune what protocols they want to support for PuppetDB.
 * Lots of documentation and parameter cleanups, to ensure consistency.
-* test_url is now supported for `puppetdb::master::config` to allow the URL one users to be overridden.
+* test_url is now supported for `puppetdb::master::config` to allow the URL one uses to be overridden.
 * Corrected PE detection support.
 * Correct the path for HSQLDB to use /var/lib/puppetdb/db instead of /usr/share/puppetdb/db as is standard in PuppetDB core.
 
