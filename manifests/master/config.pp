@@ -26,7 +26,7 @@ class puppetdb::master::config (
   $terminus_package            = '',
   $puppet_service_name         = $puppetdb::params::puppet_service_name,
   $puppetdb_startup_timeout    = $puppetdb::params::puppetdb_startup_timeout,
-  $test_url                    = $puppetdb::params::test_url,
+  $test_url                    = '',
   $restart_puppet              = true,
 ) inherits puppetdb::params {
 
@@ -45,6 +45,16 @@ class puppetdb::master::config (
 
   package { $terminus_package_name:
     ensure => $puppetdb_version,
+  }
+
+  if empty($test_url) {
+    if $terminus_package_name == 'puppetdb-terminus' {
+      $terminus_test_url = '/v3/version'
+    } else {
+      $terminus_test_url = '/pdb/meta/v1/version'
+    }
+  } else {
+    $terminus_test_url = $test_url
   }
 
   if ($strict_validation) {
@@ -66,7 +76,7 @@ class puppetdb::master::config (
       },
       timeout         => $puppetdb_startup_timeout,
       require         => Package[$terminus_package_name],
-      test_url        => $test_url,
+      test_url        => $terminus_test_url,
     }
 
     # This is a bit of puppet chicanery that allows us to create a

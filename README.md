@@ -144,9 +144,23 @@ Upgrading
 Significant parameter changes are listed below:
 
 * The PuppetDB module now supports PuppetDB 3.0.0 by default
-* If you want to use 5.x of the module with PuppetDB 2.x, you'll need to set the `test_url => /v3/version` and either `puppetdb_version => 2.y.z` or `terminus_package => 2.y.z`
-* The `puppetdb::master:puppetdb_conf` class has added a `$legacy_terminus` parameter which will be set the correct default if you set `puppetdb_version => 2.y.z` or `terminus_package => 2.y.z` like above but if you use the class directly *and* you're using PuppetDB 2.x, you will need to change `$legacy_terminus` to true.
-
+* If you want to use 5.x of the module with PuppetDB 2.x, you'll need to set `puppetdb_version => 2.y.z` or `terminus_package => 2.y.z`
+* The `puppetdb::master:puppetdb_conf` class has added a `$legacy_terminus` parameter which will be set the correct default if you set `puppetdb_version => 2.y.z` or `terminus_package => 2.y.z`.
+* The default `test_url` for the `PuppetDBConnValidator` has also been chaged to `/pdb/meta/v1/version` but will also be set the correct default if you set `puppetdb_version => 2.y.z` or `terminus_package => 2.y.z`.
+For example if your config looked like this before:
+~~~ruby
+class { 'puppetdb::master::config':
+      puppetdb_server => 'foo.example.com',
+      puppetdb_version => present,
+}
+~~~
+and you'd still like to use the module with PuppetDB 2.3.5, all you'd have to change would be:
+~~~ruby
+class { 'puppetdb::master::config':
+      puppetdb_server => 'foo.example.com',
+      terminus_package => '2.3.5',
+}
+~~~
 
 See the CHANGELOG file for more detailed information on changes for each release.
 
