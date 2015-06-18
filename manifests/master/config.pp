@@ -22,39 +22,16 @@ class puppetdb::master::config (
   $enable_reports              = false,
   $puppet_confdir              = $puppetdb::params::puppet_confdir,
   $puppet_conf                 = $puppetdb::params::puppet_conf,
-  $puppetdb_version            = $puppetdb::params::puppetdb_version,
-  $terminus_package            = '',
+  $terminus_package            = $puppetdb::params::terminus_package,
   $puppet_service_name         = $puppetdb::params::puppet_service_name,
   $puppetdb_startup_timeout    = $puppetdb::params::puppetdb_startup_timeout,
-  $test_url                    = '',
+  $test_url                    = $puppetdb::params::test_url,
   $restart_puppet              = true,
 ) inherits puppetdb::params {
 
-  if empty($terminus_package) {
-    $old_terminus_name = versioncmp($puppetdb_version, '3.0.0') < 0
-    $terminus_package_name = $puppetdb_version ? {
-      /(latest|present|absent)/ => 'puppetdb-termini',
-      default                   =>  $old_terminus_name ? {
-        true   => 'puppetdb-terminus',
-        false  => 'puppetdb-termini'
-      }
-    }
-  } else {
-    $terminus_package_name = $terminus_package
-  }
 
-  package { $terminus_package_name:
-    ensure => $puppetdb_version,
-  }
-
-  if empty($test_url) {
-    if $terminus_package_name == 'puppetdb-terminus' {
-      $terminus_test_url = '/v3/version'
-    } else {
-      $terminus_test_url = '/pdb/meta/v1/version'
-    }
-  } else {
-    $terminus_test_url = $test_url
+  package { $terminus_package:
+    ensure => $puppetdb::params::puppetdb_version,
   }
 
   if ($strict_validation) {
@@ -75,8 +52,8 @@ class puppetdb::master::config (
         default => true,
       },
       timeout         => $puppetdb_startup_timeout,
-      require         => Package[$terminus_package_name],
-      test_url        => $terminus_test_url,
+      require         => Package[$terminus_package],
+      test_url        => $test_url,
     }
 
     # This is a bit of puppet chicanery that allows us to create a
@@ -94,7 +71,7 @@ class puppetdb::master::config (
       masterless     => $masterless,
       require        => $strict_validation ? {
         true    => Puppetdb_conn_validator['puppetdb_conn'],
-        default => Package[$terminus_package_name],
+        default => Package[$terminus_package],
       },
     }
   }
@@ -108,7 +85,7 @@ class puppetdb::master::config (
       masterless  => $masterless,
       require     => $strict_validation ? {
         true    => Puppetdb_conn_validator['puppetdb_conn'],
-        default => Package[$terminus_package_name],
+        default => Package[$terminus_package],
       },
     }
   }
@@ -123,7 +100,7 @@ class puppetdb::master::config (
       enable      => $enable_reports,
       require     => $strict_validation ? {
         true    => Puppetdb_conn_validator['puppetdb_conn'],
-        default => Package[$terminus_package_name],
+        default => Package[$terminus_package],
       },
     }
   }
@@ -136,10 +113,10 @@ class puppetdb::master::config (
       port               => $puppetdb_port,
       soft_write_failure => $puppetdb_soft_write_failure,
       puppet_confdir     => $puppet_confdir,
-      legacy_terminus    => $terminus_package_name == 'puppetdb-terminus',
+      legacy_terminus    => $puppetdb::params::terminus_package == 'puppetdb-terminus',
       require            => $strict_validation ? {
         true    => Puppetdb_conn_validator['puppetdb_conn'],
-        default => Package[$terminus_package_name],
+        default => Package[$terminus_package],
       },
     }
   }

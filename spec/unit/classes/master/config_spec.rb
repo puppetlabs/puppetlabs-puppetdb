@@ -62,16 +62,12 @@ describe 'puppetdb::master::config', :type => :class do
     end
     
     context 'when using default values' do
-      let (:pre_condition) { 'class { "puppetdb": }' }
-      
       it { should contain_package('puppetdb-termini').with( :ensure => 'present' )}
       it { should contain_puppetdb_conn_validator('puppetdb_conn').with(:test_url => '/pdb/meta/v1/version')}
     end
     
     context 'when using an older puppetdb version' do
-      let (:pre_condition) { 'class { "puppetdb": puppetdb_version => "2.2.0", }' }
-      let (:params) do { :puppetdb_version => '2.2.0' } end
-      
+      let (:pre_condition) { 'class { "puppetdb::globals": version => "2.2.0", }' }
       it { should contain_package('puppetdb-terminus').with( :ensure => '2.2.0' )}
       it { should contain_puppetdb_conn_validator('puppetdb_conn').with(:test_url => '/v3/version')}
     end
