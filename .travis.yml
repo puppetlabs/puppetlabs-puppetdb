@@ -14,6 +14,8 @@ env:
   matrix:
   - PUPPET_GEM_VERSION="~> 3.7.1"
   - PUPPET_GEM_VERSION="~> 3.7"
+  - PUPPET_GEM_VERSION="~> 3"
+  - PUPPET_GEM_VERSION="~> 3" PARSER="future"
   global:
   - PUBLISHER_LOGIN=puppetlabs
   -  secure: "FInoEwh3G4Auqp+OOdIc20lDLqrV6FHzWsM8ercHWjhDRD23VI49B1qqehWjaI8lKM3D5mTvdup23IVQBJo8M0rR/yfju1NhMYFTQ5bcJIrbQ3fn4n/zSaE8gLTOtHwzjSlqTJAYjxOAnp1VdMZngqpU/RYfSk68zJD34NqfovA="

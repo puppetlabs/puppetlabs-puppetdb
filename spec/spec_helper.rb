@@ -4,6 +4,9 @@ RSpec.configure do |c|
   c.include PuppetlabsSpec::Files
 
   c.before :each do
+    # optionally use the future parser based on an environment variable
+    Puppet[:parser] = 'future' if ENV['PARSER'] == 'future'
+
     # Ensure that we don't accidentally cache facts and environment
     # between test cases.
     Facter::Util::Loader.any_instance.stubs(:load_all)
