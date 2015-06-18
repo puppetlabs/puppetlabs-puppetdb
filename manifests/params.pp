@@ -58,7 +58,6 @@ class puppetdb::params {
 
   $manage_firewall = true
   $java_args       = {}
-  $test_url        = '/pdb/meta/v1/version'
 
   $puppetdb_package     = 'puppetdb'
   $puppetdb_service     = 'puppetdb'

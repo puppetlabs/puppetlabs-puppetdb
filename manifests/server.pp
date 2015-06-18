@@ -96,7 +96,7 @@ class puppetdb::server (
     fail("puppetdb_service_status valid values are 'true', 'running', 'false', and 'stopped'. You provided '${puppetdb_service_status}'")
   }
 
-  # Validate read-database type (Currently only postgres is supported)
+  # Validate database type (Currently only postgres and embedded are supported)
   if !($database in ['postgres', 'embedded']) {
     fail("database must must be 'postgres' or 'embedded'. You provided '${database}'")
   }
