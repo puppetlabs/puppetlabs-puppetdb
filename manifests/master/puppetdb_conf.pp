@@ -8,8 +8,11 @@ class puppetdb::master::puppetdb_conf (
     default => false,
   },
   $puppet_confdir     = $puppetdb::params::puppet_confdir,
-  $legacy_terminus    = false,
-) inherits puppetdb::params {
+  $legacy_terminus    = $puppetdb::params::terminus_package ? {
+    /(puppetdb-terminus)/ => true,
+    default               => false,
+  },
+  ) inherits puppetdb::params {
 
   Ini_setting {
     ensure  => present,
