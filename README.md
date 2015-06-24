@@ -144,23 +144,26 @@ Upgrading
 Significant parameter changes are listed below:
 
 * The PuppetDB module now supports PuppetDB 3.0.0 by default
-* If you want to use 5.x of the module with PuppetDB 2.x, you'll need to set `puppetdb_version => 2.y.z` or `terminus_package => 2.y.z`
-* The `puppetdb::master:puppetdb_conf` class has added a `$legacy_terminus` parameter which will be set the correct default if you set `puppetdb_version => 2.y.z` or `terminus_package => 2.y.z`.
-* The default `test_url` for the `PuppetDBConnValidator` has also been chaged to `/pdb/meta/v1/version` but will also be set the correct default if you set `puppetdb_version => 2.y.z` or `terminus_package => 2.y.z`.
+* If you want to use 5.x of the module with PuppetDB 2.x, you'll need to use the new `puppetdb::globals` class to set the version of PuppetDB you're using explicitly. The ability to configure the version has been therefore moved out of the `puppetdb` and `puppetdb::server` classes.
 For example if your config looked like this before:
 ~~~ruby
-class { 'puppetdb::master::config':
-      puppetdb_server => 'foo.example.com',
-      puppetdb_version => present,
+class {'puppetdb':
+  puppetdb_version => '2.3.5-1.e7',
 }
+class { 'puppetdb::master::config': }
 ~~~
 and you'd still like to use the module with PuppetDB 2.3.5, all you'd have to change would be:
 ~~~ruby
-class { 'puppetdb::master::config':
-      puppetdb_server => 'foo.example.com',
-      terminus_package => '2.3.5',
+class { 'puppetdb::globals':
+  version => '2.3.5-1.e7',
 }
+class { 'puppetdb' : }
+class { 'puppetdb::master::config' : }
 ~~~
+The `globals` class above takes into account the following PuppetDB 3 and Puppet 4 related changes:
+* The `puppetdb::master:puppetdb_conf` class has added a `$legacy_terminus` to support the PuppetDB 2.x terminus configuration.
+* The default `test_url` for the `PuppetDBConnValidator` has also been chaged to `/pdb/meta/v1/version` but will default to `/v3/version` when using a PuppetDB 2.x version.
+* The configuration pathing for Puppet and PuppetDB has changed with Puppet 4 and PuppetDB 3, using PuppetDB 2.x or older assumes the old configuration pathing.
 
 See the CHANGELOG file for more detailed information on changes for each release.
 
@@ -203,6 +206,19 @@ Usage
 ------
 
 PuppetDB supports a large number of configuration options for both configuring the puppetdb service and connecting that service to the puppet master.
+
+### puppetdb::globals
+The `puppetdb::globals` class is intended to provide similar functionality to the `postgresql::globals` class in the `puppetlabs-postgresql` module by exposing a top-level entry-point into the module so that we can properly set defaults for the `puppetdb::params` class based on the version of `puppetdb` you are using. This setting defaults to `present`. 
+
+You must declare the class to use it:
+
+    class { 'puppetdb::globals': }
+
+**Parameters within `puppetdb::globals`:**
+
+####`version`
+
+The version of the `puppetdb` package that should be installed.  You may specify an explicit version number, 'present', or 'latest' (defaults to 'present').
 
 ### puppetdb
 The `puppetdb` class is intended as a high-level abstraction (sort of an 'all-in-one' class) to help simplify the process of getting your puppetdb server up and running. It wraps the slightly-lower-level classes `puppetdb::server` and `puppetdb::database::*`, and it'll get you up and running with everything you need (including database setup and management) on the server side.  For maximum configurability, you may choose not to use this class.  You may prefer to use the `puppetdb::server` class directly, or manage your puppetdb setup on your own.
@@ -329,10 +345,6 @@ If not supplied, we won't terminate connections based on their age alone. This o
 ####`puppetdb_package`
 
 The puppetdb package name in the package manager.
-
-####`puppetdb_version`
-
-The version of the `puppetdb` package that should be installed.  You may specify an explicit version number, 'present', or 'latest' (defaults to 'present').
 
 ####`puppetdb_service`
 
@@ -536,10 +548,6 @@ Puppet's config file (defaults to `/etc/puppet/puppet.conf`).
 ####`masterless`
 
 A boolean switch to enable or disable the masterless setup of PuppetDB.
-
-####`puppetdb_version`
-
-The version of the `puppetdb` package that should be installed. You may specify an explicit version number, 'present', or 'latest' (defaults to 'present').
 
 ####`terminus_package`
 
