@@ -11,11 +11,9 @@ class puppetdb::database::postgresql(
 ) inherits puppetdb::params {
 
   if $manage_server {
-    if $manage_package_repo {
-      class { '::postgresql::globals':
-        manage_package_repo => true,
-        version             => $postgres_version,
-      }
+    class { '::postgresql::globals':
+      manage_package_repo => $manage_package_repo,
+      version             => $postgres_version,
     }
     # get the pg server up and running
     class { '::postgresql::server':

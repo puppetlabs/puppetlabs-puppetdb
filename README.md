@@ -144,6 +144,7 @@ Upgrading
 Significant parameter changes are listed below:
 
 * The PuppetDB module now supports PuppetDB 3.0.0 by default
+* The PuppetDB module now manages Postgres repos by default. To turn this behavior off, set `manage_package_repo` to false.
 * If you want to use 5.x of the module with PuppetDB 2.x, you'll need to use the new `puppetdb::globals` class to set the version of PuppetDB you're using explicitly. The ability to configure the version has been therefore moved out of the `puppetdb` and `puppetdb::server` classes.
 For example if your config looked like this before:
 ~~~ruby
@@ -598,11 +599,11 @@ The URL to use for testing if the PuppetDB instance is running. Defaults to `/pd
 
 ####`manage_package_repo`
 
-if this is true, the official postgres.org repo will be added and postgres won't be installed from the regular repository.
+If this is true, the official postgres.org repo will be added and postgres won't be installed from the regular repository. This setting defaults to `true`.
 
 ####`postgres_version`
 
-if the postgres.org repo is installed, you can install several versions of postgres, this currently defaults to 9.4 which is the latest stable version.
+If the postgres.org repo is installed, you can install several versions of postgres. This currently defaults to 9.4 which is the latest stable version.
 
 Implementation
 ---------------

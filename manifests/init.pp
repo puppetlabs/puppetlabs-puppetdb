@@ -127,12 +127,12 @@ class puppetdb (
   }
 
   if ($database == 'postgres') {
-    
+
     $database_before = str2bool($database_validate) ? {
       false => Class['::puppetdb::server'],
       default => [Class['::puppetdb::server'], Class['::puppetdb::server::validate_db']],
     }
-    
+
     class { '::puppetdb::database::postgresql':
       listen_addresses    => $database_listen_address,
       database_name       => $database_name,

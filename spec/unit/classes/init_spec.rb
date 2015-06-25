@@ -11,6 +11,8 @@ describe 'puppetdb', :type => :class do
         :operatingsystemrelease => '6.0',
         :kernel => 'Linux',
         :concat_basedir => '/var/lib/puppet/concat',
+        :lsbdistid => 'Debian',
+        :lsbdistcodename => 'foo',
         :id => 'root',
         :path => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
       }
