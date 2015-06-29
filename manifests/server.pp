@@ -39,6 +39,7 @@ class puppetdb::server (
   $puppetdb_service_status  = $puppetdb::params::puppetdb_service_status,
   $puppetdb_user            = $puppetdb::params::puppetdb_user,
   $puppetdb_group           = $puppetdb::params::puppetdb_group,
+  $puppetdb_version         = $puppetdb::params::puppetdb_version,
   $read_database            = $puppetdb::params::read_database,
   $read_database_host       = $puppetdb::params::read_database_host,
   $read_database_port       = $puppetdb::params::read_database_port,
@@ -108,7 +109,7 @@ class puppetdb::server (
   }
 
   package { $puppetdb_package:
-    ensure => $puppetdb::params::puppetdb_version,
+    ensure => $puppetdb_version,
     notify => Service[$puppetdb_service],
   }
 
