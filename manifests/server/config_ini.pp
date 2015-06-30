@@ -4,7 +4,8 @@ class puppetdb::server::config_ini (
   $store_usage     = $puppetdb::params::store_usage,
   $temp_usage      = $puppetdb::params::temp_usage,
   $confdir         = $puppetdb::params::confdir,
-) inherits puppetdb::params {
+) {
+  include puppetdb::params
 
 
   file { "${confdir}/config.ini":

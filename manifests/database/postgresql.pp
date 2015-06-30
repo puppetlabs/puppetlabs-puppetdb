@@ -8,8 +8,8 @@ class puppetdb::database::postgresql(
   $manage_server        = $puppetdb::params::manage_dbserver,
   $manage_package_repo  = $puppetdb::params::manage_pg_repo,
   $postgres_version     = $puppetdb::params::postgres_version,
-) inherits puppetdb::params {
-
+) {
+  include puppetdb::params
   if $manage_server {
     class { '::postgresql::globals':
       manage_package_repo => $manage_package_repo,

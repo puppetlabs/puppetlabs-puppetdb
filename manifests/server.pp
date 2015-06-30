@@ -58,7 +58,8 @@ class puppetdb::server (
   $command_threads          = $puppetdb::params::command_threads,
   $store_usage              = $puppetdb::params::store_usage,
   $temp_usage               = $puppetdb::params::temp_usage,
-) inherits puppetdb::params {
+) {
+  include puppetdb::params
 
   # Apply necessary suffix if zero is specified.
   if $node_ttl == '0' {

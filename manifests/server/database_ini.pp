@@ -18,8 +18,8 @@ class puppetdb::server::database_ini (
   $conn_keep_alive        = $puppetdb::params::conn_keep_alive,
   $conn_lifetime          = $puppetdb::params::conn_lifetime,
   $confdir                = $puppetdb::params::confdir,
-) inherits puppetdb::params {
-
+) {
+  include puppetdb::params
   if str2bool($database_validate) {
     # Validate the database connection.  If we can't connect, we want to fail
     # and skip the rest of the configuration, so that we don't leave puppetdb

@@ -27,8 +27,8 @@ class puppetdb::master::config (
   $puppetdb_startup_timeout    = $puppetdb::params::puppetdb_startup_timeout,
   $test_url                    = $puppetdb::params::test_url,
   $restart_puppet              = true,
-) inherits puppetdb::params {
-
+) {
+  include puppetdb::params
 
   package { $terminus_package:
     ensure => $puppetdb::params::puppetdb_version,

@@ -12,8 +12,8 @@ class puppetdb::server::jetty_ini (
   $ssl_protocols      = $puppetdb::params::ssl_protocols,
   $confdir            = $puppetdb::params::confdir,
   $max_threads        = $puppetdb::params::max_threads,
-) inherits puppetdb::params {
-
+) {
+  include puppetdb::params
   # Set the defaults
   Ini_setting {
     path    => "${confdir}/jetty.ini",
