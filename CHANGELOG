@@ -4,6 +4,28 @@ Release notes for the puppetlabs-puppetdb module.
 
 ------------------------------------------
 
+#### 5.0.0 - 2015/xx/xx
+
+This is a major release to provide default support for PuppetDB 3.0.0, so
+lots of changes have been introduced. Ensure you read the upgrade guide
+provided in the README before upgrading to this release.
+
+Detailed changes:
+
+* Packaging paths by default favour the PDB 3.0.0 AIO paths now.
+* Added legacy handling for old terminus & service versions (see upgrade guide
+  in README for details)
+* PDB 3.0.0 introduces new pathing for the API requests, so all the defaults
+  for this module are switched to use that now.
+* Support for Puppet 4 added.
+* manage_pg_repo is now on by default when using the puppetlabs/postgresql module,
+  as PDB 3.0.0 supports only 9.4. This enables the use of the upstream PGDG
+  PostgreSQL repos for all distros to obtain a working version of 9.4. The
+  option can be disabled if required.
+* Default ssl-host is now 0.0.0.0
+
+------------------------------------------
+
 #### 4.3.0 - 2015/06/10
 
 This is a minor feature release.
