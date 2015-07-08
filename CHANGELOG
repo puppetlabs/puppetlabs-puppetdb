@@ -4,7 +4,7 @@ Release notes for the puppetlabs-puppetdb module.
 
 ------------------------------------------
 
-#### 5.0.0 - 2015/xx/xx
+#### 5.0.0 - 2015/07/08
 
 This is a major release to provide default support for PuppetDB 3.0.0, so
 lots of changes have been introduced. Ensure you read the upgrade guide
