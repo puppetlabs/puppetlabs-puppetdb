@@ -149,14 +149,14 @@ Significant parameter changes are listed below:
 For example if your config looked like this before:
 ~~~ruby
 class {'puppetdb':
-  puppetdb_version => '2.3.5-1.e7',
+  puppetdb_version => '2.3.5-1.el7',
 }
 class { 'puppetdb::master::config': }
 ~~~
 and you'd still like to use the module with PuppetDB 2.3.5, all you'd have to change would be:
 ~~~ruby
 class { 'puppetdb::globals':
-  version => '2.3.5-1.e7',
+  version => '2.3.5-1.el7',
 }
 class { 'puppetdb' : }
 class { 'puppetdb::master::config' : }
