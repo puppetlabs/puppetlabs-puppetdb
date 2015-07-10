@@ -7,8 +7,8 @@ class puppetdb::server::validate_read_db (
   $database_password = $puppetdb::params::database_password,
   $database_name     = $puppetdb::params::database_name,
   $database_ssl      = $puppetdb::params::database_ssl,
-) inherits puppetdb::params {
-
+) {
+  include puppetdb::params
   # Currently we only support postgres
   if (
     $database == 'postgres' and

@@ -11,7 +11,8 @@ class puppetdb::master::routes (
       }
     }
   }
-) inherits puppetdb::params {
+) {
+  include puppetdb::params
 
   if $masterless {
     $routes_real = {

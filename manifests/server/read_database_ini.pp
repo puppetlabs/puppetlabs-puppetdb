@@ -15,7 +15,8 @@ class puppetdb::server::read_database_ini (
   $confdir             = $puppetdb::params::confdir,
   $puppetdb_user       = $puppetdb::params::puppetdb_user,
   $puppetdb_group      = $puppetdb::params::puppetdb_group,
-) inherits puppetdb::params {
+) {
+  include puppetdb::params
 
   # Only add the read database configuration if database host is defined.
   if $database_host != undef {

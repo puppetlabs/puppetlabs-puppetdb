@@ -87,6 +87,9 @@ class puppetdb::params inherits puppetdb::globals {
         $puppet_service_name    = 'puppetmaster'
         $ssl_dir                = '/usr/local/etc/puppetdb/ssl'
       }
+      default: {
+        fail('Unsupported distro!')
+      }
     }
     $terminus_package = 'puppetdb-terminus'
     $test_url         = '/v3/version'
@@ -110,6 +113,9 @@ class puppetdb::params inherits puppetdb::globals {
         $puppet_service_name    = undef
         $ssl_dir                = '/usr/local/etc/puppetlabs/puppetdb/ssl'
       }
+      default: {
+        fail('Unsupported distro!')
+      }
     }
     $terminus_package       = 'puppetdb-termini'
     $test_url               = '/pdb/meta/v1/version'
@@ -125,6 +131,9 @@ class puppetdb::params inherits puppetdb::globals {
     }
     'OpenBSD','FreeBSD': {
       $puppetdb_initconf      = undef
+    }
+    default: {
+      fail('Unsupported distro!')
     }
   }
 

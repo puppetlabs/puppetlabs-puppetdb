@@ -4,8 +4,8 @@ class puppetdb::master::report_processor (
   $puppet_conf = $puppetdb::params::puppet_conf,
   $masterless  = $puppetdb::params::masterless,
   $enable      = false
-) inherits puppetdb::params {
-
+) {
+  include puppetdb::params
   if $masterless {
     $puppet_conf_section = 'main'
   } else {
