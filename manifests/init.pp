@@ -40,6 +40,7 @@ class puppetdb (
   $conn_keep_alive          = $puppetdb::params::conn_keep_alive,
   $conn_lifetime            = $puppetdb::params::conn_lifetime,
   $puppetdb_package         = $puppetdb::params::puppetdb_package,
+  $puppetdb_version         = $puppetdb::params::puppetdb_version,
   $puppetdb_service         = $puppetdb::params::puppetdb_service,
   $puppetdb_service_status  = $puppetdb::params::puppetdb_service_status,
   $puppetdb_user            = $puppetdb::params::puppetdb_user,
