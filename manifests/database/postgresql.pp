@@ -5,6 +5,7 @@ class puppetdb::database::postgresql(
   $database_name        = $puppetdb::params::database_name,
   $database_username    = $puppetdb::params::database_username,
   $database_password    = $puppetdb::params::database_password,
+  $database_port        = $puppetdb::params::database_port,
   $manage_server        = $puppetdb::params::manage_dbserver,
   $manage_package_repo  = $puppetdb::params::manage_pg_repo,
   $postgres_version     = $puppetdb::params::postgres_version,
@@ -19,6 +20,7 @@ class puppetdb::database::postgresql(
     class { '::postgresql::server':
       ip_mask_allow_all_users => '0.0.0.0/0',
       listen_addresses        => $listen_addresses,
+      port                    => $database_port,
     }
   }
 
