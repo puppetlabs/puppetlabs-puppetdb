@@ -138,6 +138,7 @@ class puppetdb (
       database_name       => $database_name,
       database_username   => $database_username,
       database_password   => $database_password,
+      database_port       => $database_port,
       manage_server       => $manage_dbserver,
       manage_package_repo => $manage_package_repo,
       postgres_version    => $postgres_version,
