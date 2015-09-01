@@ -7,6 +7,7 @@ class puppetdb::server::database_ini (
   $database_password      = $puppetdb::params::database_password,
   $database_name          = $puppetdb::params::database_name,
   $database_ssl           = $puppetdb::params::database_ssl,
+  $jdbc_ssl_properties    = $puppetdb::params::jdbc_ssl_properties,
   $database_validate      = $puppetdb::params::database_validate,
   $database_embedded_path = $puppetdb::params::database_embedded_path,
   $node_ttl               = $puppetdb::params::node_ttl,
@@ -61,10 +62,17 @@ class puppetdb::server::database_ini (
     $classname = 'org.postgresql.Driver'
     $subprotocol = 'postgresql'
 
-    $subname = $database_ssl ? {
-      true    => "//${database_host}:${database_port}/${database_name}?ssl=true",
-      default => "//${database_host}:${database_port}/${database_name}",
+    if !empty($jdbc_ssl_properties) {
+      $database_suffix = $jdbc_ssl_properties
     }
+    elsif $database_ssl {
+      $database_suffix = "?ssl=true"
+    }
+    else {
+      $database_suffix = ''
+    }
+
+    $subname = "//${database_host}:${database_port}/${database_name}${database_suffix}"
 
     ##Only setup for postgres
     ini_setting {'puppetdb_psdatabase_username':
