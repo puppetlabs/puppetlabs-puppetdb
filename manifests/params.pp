@@ -19,13 +19,14 @@ class puppetdb::params inherits puppetdb::globals {
   $postgres_version          = '9.4'
 
   # The remaining database settings are not used for an embedded database
-  $database_host      = 'localhost'
-  $database_port      = '5432'
-  $database_name      = 'puppetdb'
-  $database_username  = 'puppetdb'
-  $database_password  = 'puppetdb'
-  $database_ssl       = false
-  $database_validate  = true
+  $database_host       = 'localhost'
+  $database_port       = '5432'
+  $database_name       = 'puppetdb'
+  $database_username   = 'puppetdb'
+  $database_password   = 'puppetdb'
+  $database_ssl        = undef
+  $jdbc_ssl_properties = ''
+  $database_validate   = true
 
   # These settings manage the various auto-deactivation and auto-purge settings
   $node_ttl               = '0s'
@@ -42,18 +43,19 @@ class puppetdb::params inherits puppetdb::globals {
   $max_threads            = undef
 
   # These settings are for the read database
-  $read_database            = 'postgres'
-  $read_database_host       = undef
-  $read_database_port       = '5432'
-  $read_database_name       = 'puppetdb'
-  $read_database_username   = 'puppetdb'
-  $read_database_password   = 'puppetdb'
-  $read_database_ssl        = false
-  $read_database_validate   = true
-  $read_log_slow_statements = '10'
-  $read_conn_max_age        = '60'
-  $read_conn_keep_alive     = '45'
-  $read_conn_lifetime       = '0'
+  $read_database                     = 'postgres'
+  $read_database_host                = undef
+  $read_database_port                = '5432'
+  $read_database_name                = 'puppetdb'
+  $read_database_username            = 'puppetdb'
+  $read_database_password            = 'puppetdb'
+  $read_database_ssl                 = undef
+  $read_database_jdbc_ssl_properties = ''
+  $read_database_validate            = true
+  $read_log_slow_statements          = '10'
+  $read_conn_max_age                 = '60'
+  $read_conn_keep_alive              = '45'
+  $read_conn_lifetime                = '0'
 
   $manage_firewall = true
   $java_args       = {}

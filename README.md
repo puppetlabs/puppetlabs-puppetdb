@@ -290,10 +290,22 @@ The password for the database user (defaults to `puppetdb`; ignored for `embedde
 
 The name of the database instance to connect to (defaults to `puppetdb`; ignored for `embedded` db).
 
-####`database_ssl`
+####`database_ssl` (DEPRECATED)
 
 If true, puppetdb will use SSL to connect to the postgres database (defaults to false; ignored for `embedded` db).
 Setting up proper trust- and keystores has to be managed outside of the puppetdb module.
+
+This parameter is deprecated and will be retired in a future release. Please use
+the `jdbc_ssl_properties` parameter with the value `?ssl=true`.
+
+####`jdbc_ssl_properties`
+
+The text to append to the JDBC connection URI. This should begin with a '?'
+character. For example, to use SSL for the PostgreSQL connection, set this
+parameter's value to `?ssl=true`.
+
+This setting is only available when using PostgreSQL; when using HyperSQL (the
+'embedded' database), it does nothing.
 
 ####`database_validate`
 
