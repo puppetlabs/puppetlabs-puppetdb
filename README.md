@@ -609,6 +609,10 @@ Conditionally manages the PostgresQL server via `postgresql::server`. Defaults t
 
 The URL to use for testing if the PuppetDB instance is running. Defaults to `/pdb/meta/v1/version`.
 
+####`postgres_datadir`
+
+This setting will override the default postgresql data directory, e.g. `/pgdata`.  The default is to let the postgresql module use whatever directory is the default for your OS distro.
+
 ####`manage_package_repo`
 
 If this is true, the official postgres.org repo will be added and postgres won't be installed from the regular repository. This setting defaults to `true`.
