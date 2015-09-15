@@ -131,7 +131,7 @@ class puppetdb::server (
     }
   }
 
-  class { 'puppetdb::server::config_ini':
+  class { 'puppetdb::server::command_processing':
     command_threads => $command_threads,
     store_usage     => $store_usage,
     temp_usage      => $temp_usage,
@@ -139,7 +139,7 @@ class puppetdb::server (
     notify          => Service[$puppetdb_service],
   }
 
-  class { 'puppetdb::server::database_ini':
+  class { 'puppetdb::server::database':
     database               => $database,
     database_host          => $database_host,
     database_port          => $database_port,
@@ -162,7 +162,7 @@ class puppetdb::server (
     notify                 => Service[$puppetdb_service],
   }
 
-  class { 'puppetdb::server::read_database_ini':
+  class { 'puppetdb::server::read_database':
     database            => $read_database,
     database_host       => $read_database_host,
     database_port       => $read_database_port,
@@ -218,7 +218,7 @@ class puppetdb::server (
     }
   }
 
-  class { 'puppetdb::server::jetty_ini':
+  class { 'puppetdb::server::jetty':
     listen_address     => $listen_address,
     listen_port        => $listen_port,
     ssl_listen_address => $ssl_listen_address,
@@ -258,17 +258,17 @@ class puppetdb::server (
   if $manage_firewall {
     Package[$puppetdb_package] ->
     Class['puppetdb::server::firewall'] ->
-    Class['puppetdb::server::config_ini'] ->
-    Class['puppetdb::server::database_ini'] ->
-    Class['puppetdb::server::read_database_ini'] ->
-    Class['puppetdb::server::jetty_ini'] ->
+    Class['puppetdb::server::command_processing'] ->
+    Class['puppetdb::server::database'] ->
+    Class['puppetdb::server::read_database'] ->
+    Class['puppetdb::server::jetty'] ->
     Service[$puppetdb_service]
   } else {
     Package[$puppetdb_package] ->
-    Class['puppetdb::server::config_ini'] ->
-    Class['puppetdb::server::database_ini'] ->
-    Class['puppetdb::server::read_database_ini'] ->
-    Class['puppetdb::server::jetty_ini'] ->
+    Class['puppetdb::server::command_processing'] ->
+    Class['puppetdb::server::database'] ->
+    Class['puppetdb::server::read_database'] ->
+    Class['puppetdb::server::jetty'] ->
     Service[$puppetdb_service]
   }
 }

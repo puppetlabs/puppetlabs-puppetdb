@@ -1,5 +1,5 @@
 # PRIVATE CLASS - do not use directly
-class puppetdb::server::database_ini (
+class puppetdb::server::database (
   $database               = $puppetdb::params::database,
   $database_host          = $puppetdb::params::database_host,
   $database_port          = $puppetdb::params::database_port,

@@ -70,21 +70,24 @@ class puppetdb::params inherits puppetdb::globals {
     case $::osfamily {
       'RedHat', 'Suse', 'Archlinux','Debian': {
         $confdir                = '/etc/puppetdb/conf.d'
-        $database_embedded_path = '/var/lib/puppetdb/db/db'
+        $vardir                 = '/var/lib/puppetdb'
+        $database_embedded_path = '${vardir}/db/db'
         $puppet_confdir         = pick($settings::confdir,'/etc/puppet')
         $puppet_service_name    = 'puppetmaster'
         $ssl_dir                = '/etc/puppetdb/ssl'
       }
       'OpenBSD': {
         $confdir                = '/etc/puppetdb/conf.d'
-        $database_embedded_path = '/var/db/puppetdb/db/db'
+        $vardir                 = '/var/db/puppetdb'
+        $database_embedded_path = '${vardir}/db/db'
         $puppet_confdir         = pick($settings::confdir,'/etc/puppet')
         $puppet_service_name    = 'puppetmasterd'
         $ssl_dir                = '/etc/puppetdb/ssl'
       }
       'FreeBSD': {
         $confdir                = '/usr/local/etc/puppetdb/conf.d'
-        $database_embedded_path = '/var/db/puppetdb/db/db'
+        $vardir                 = '/var/db/puppetdb'
+        $database_embedded_path = '${vardir}/db/db'
         $puppet_confdir         = pick($settings::confdir,'/usr/local/etc/puppet')
         $puppet_service_name    = 'puppetmaster'
         $ssl_dir                = '/usr/local/etc/puppetdb/ssl'
@@ -115,7 +118,8 @@ class puppetdb::params inherits puppetdb::globals {
     }
     $terminus_package       = 'puppetdb-termini'
     $test_url               = '/pdb/meta/v1/version'
-    $database_embedded_path = '/opt/puppetlabs/server/data/puppetdb/db/db'
+    $vardir                 = '/opt/puppetlabs/server/data/puppetdb'
+    $database_embedded_path = '${vardir}/db/db'
   }
 
   case $::osfamily {

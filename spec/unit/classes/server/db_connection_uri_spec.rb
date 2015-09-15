@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'puppetdb::server::database_ini', :type => :class do
+describe 'puppetdb::server::database', :type => :class do
   context 'on a supported platform' do
     let(:facts) do
       {
@@ -56,7 +56,7 @@ describe 'puppetdb::server::database_ini', :type => :class do
   end
 end
 
-describe 'puppetdb::server::read_database_ini', :type => :class do
+describe 'puppetdb::server::read_database', :type => :class do
   context 'on a supported platform' do
     let(:facts) do
       {
