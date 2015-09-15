@@ -695,3 +695,5 @@ Puppet Labs modules on the Puppet Forge are open projects, and community contrib
 We want to keep it as easy as possible to contribute changes so that our modules work in your environment. There are a few guidelines that we need contributors to follow so that we can have a chance of keeping on top of things.
 
 You can read the complete contribution guide [on the Puppet Labs documentation website](https://docs.puppetlabs.com/contribute.html)
+
+
