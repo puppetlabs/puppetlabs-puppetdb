@@ -1,5 +1,5 @@
 # PRIVATE CLASS - do not use directly
-class puppetdb::server::jetty_ini (
+class puppetdb::server::jetty (
   $listen_address     = $puppetdb::params::listen_address,
   $listen_port        = $puppetdb::params::listen_port,
   $ssl_listen_address = $puppetdb::params::ssl_listen_address,

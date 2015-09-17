@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'puppetdb::server::database_ini', :type => :class do
+describe 'puppetdb::server::database', :type => :class do
   context 'on a supported platform' do
     let(:facts) do
       {
@@ -11,7 +11,7 @@ describe 'puppetdb::server::database_ini', :type => :class do
       }
     end
 
-    it { should contain_class('puppetdb::server::database_ini') }
+    it { should contain_class('puppetdb::server::database') }
 
     describe 'when using default values' do
       it { should contain_ini_setting('puppetdb_psdatabase_username').
