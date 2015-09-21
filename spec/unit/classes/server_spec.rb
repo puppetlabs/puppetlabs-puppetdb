@@ -44,5 +44,25 @@ describe 'puppetdb::server', :type => :class do
       end
 
     end
+
+    describe 'when specifying JAVA_ARGS with merge_default_java_args false' do
+      let (:params) do
+        {
+          'java_args' => {'-Xms' => '2g'},
+          'merge_default_java_args' => false,
+        }
+      end
+
+      context 'on standard PuppetDB' do
+        it { should contain_ini_setting('java_args').
+          with(
+            'ensure' => 'present',
+            'path' => '/etc/sysconfig/puppetdb',
+            'section' => '',
+            'setting' => 'JAVA_ARGS',
+            'value' => '"-Xms2g"'
+        )}
+      end
+    end
   end
 end
