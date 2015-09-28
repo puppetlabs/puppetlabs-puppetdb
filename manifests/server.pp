@@ -56,6 +56,7 @@ class puppetdb::server (
   $confdir                           = $puppetdb::params::confdir,
   $manage_firewall                   = $puppetdb::params::manage_firewall,
   $java_args                         = $puppetdb::params::java_args,
+  $merge_default_java_args           = $puppetdb::params::merge_default_java_args,
   $max_threads                       = $puppetdb::params::max_threads,
   $command_threads                   = $puppetdb::params::command_threads,
   $store_usage                       = $puppetdb::params::store_usage,
@@ -235,19 +236,30 @@ class puppetdb::server (
   }
 
   if !empty($java_args) {
-    create_resources(
-      'ini_subsetting',
-      puppetdb_create_subsetting_resource_hash(
-        $java_args,
-        { ensure  => present,
-          section => '',
-          key_val_separator => '=',
-          path => $puppetdb::params::puppetdb_initconf,
-          setting => 'JAVA_ARGS',
-          require => Package[$puppetdb_package],
-          notify => Service[$puppetdb_service],
-        })
-    )
+    if $merge_default_java_args {
+      create_resources(
+        'ini_subsetting',
+        puppetdb_create_subsetting_resource_hash(
+          $java_args,
+          {ensure  => present,
+           section => '',
+           key_val_separator => '=',
+           path => $puppetdb::params::puppetdb_initconf,
+           setting => 'JAVA_ARGS',
+           require => Package[$puppetdb_package],
+           notify => Service[$puppetdb_service],
+          }))
+    } else {
+      ini_setting {'java_args':
+        ensure => present,
+        section => '',
+        path => $puppetdb::params::puppetdb_initconf,
+        setting => 'JAVA_ARGS',
+        require => Package[$puppetdb_package],
+        notify => Service[$puppetdb_service],
+        value => puppetdb_flatten_java_args($java_args),
+      }
+    }
   }
 
   service { $puppetdb_service:

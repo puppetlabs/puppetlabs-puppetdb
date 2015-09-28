@@ -57,8 +57,9 @@ class puppetdb::params inherits puppetdb::globals {
   $read_conn_keep_alive              = '45'
   $read_conn_lifetime                = '0'
 
-  $manage_firewall = true
-  $java_args       = {}
+  $manage_firewall         = true
+  $java_args               = {}
+  $merge_default_java_args = true
 
   $puppetdb_package     = 'puppetdb'
   $puppetdb_service     = 'puppetdb'

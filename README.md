@@ -377,6 +377,13 @@ Java VM options used for overriding default Java VM options specified in PuppetD
 
 Example: to set `-Xmx512m -Xms256m` options use `{ '-Xmx' => '512m', '-Xms' => '256m' }`
 
+####`merge_default_java_args`
+
+Sets whether the provided java args should be merged with the defaults, or
+should override the defaults. This setting is necessary if any of the defaults
+are to be removed. Defaults to true. If false, the `java_args` in the puppetdb
+init config file will reflect only what is passed via the `java_args` param.
+
 ####`max_threads`
 
 Jetty option to explicitly set max-thread. The default is undef, so the PuppetDB-jetty default is used.
