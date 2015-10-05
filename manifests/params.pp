@@ -72,7 +72,7 @@ class puppetdb::params inherits puppetdb::globals {
       'RedHat', 'Suse', 'Archlinux','Debian': {
         $confdir                = '/etc/puppetdb/conf.d'
         $vardir                 = '/var/lib/puppetdb'
-        $database_embedded_path = '${vardir}/db/db'
+        $database_embedded_path = "${vardir}/db/db"
         $puppet_confdir         = pick($settings::confdir,'/etc/puppet')
         $puppet_service_name    = 'puppetmaster'
         $ssl_dir                = '/etc/puppetdb/ssl'
@@ -80,7 +80,7 @@ class puppetdb::params inherits puppetdb::globals {
       'OpenBSD': {
         $confdir                = '/etc/puppetdb/conf.d'
         $vardir                 = '/var/db/puppetdb'
-        $database_embedded_path = '${vardir}/db/db'
+        $database_embedded_path = "${vardir}/db/db"
         $puppet_confdir         = pick($settings::confdir,'/etc/puppet')
         $puppet_service_name    = 'puppetmasterd'
         $ssl_dir                = '/etc/puppetdb/ssl'
@@ -88,10 +88,13 @@ class puppetdb::params inherits puppetdb::globals {
       'FreeBSD': {
         $confdir                = '/usr/local/etc/puppetdb/conf.d'
         $vardir                 = '/var/db/puppetdb'
-        $database_embedded_path = '${vardir}/db/db'
+        $database_embedded_path = "${vardir}/db/db"
         $puppet_confdir         = pick($settings::confdir,'/usr/local/etc/puppet')
         $puppet_service_name    = 'puppetmaster'
         $ssl_dir                = '/usr/local/etc/puppetdb/ssl'
+      }
+      default: {
+        fail("The fact 'osfamily' is set to ${::osfamily} which is not supported by the puppetdb module.")
       }
     }
     $terminus_package = 'puppetdb-terminus'
@@ -99,39 +102,45 @@ class puppetdb::params inherits puppetdb::globals {
   } else {
     case $::osfamily {
       'RedHat', 'Suse', 'Archlinux','Debian': {
-        $confdir                = '/etc/puppetlabs/puppetdb/conf.d'
-        $puppet_confdir         = pick($settings::confdir,'/etc/puppetlabs/puppet')
-        $puppet_service_name    = 'puppetserver'
-        $ssl_dir                = '/etc/puppetlabs/puppetdb/ssl'
+        $confdir             = '/etc/puppetlabs/puppetdb/conf.d'
+        $puppet_confdir      = pick($settings::confdir,'/etc/puppetlabs/puppet')
+        $puppet_service_name = 'puppetserver'
+        $ssl_dir             = '/etc/puppetlabs/puppetdb/ssl'
       }
       'OpenBSD': {
-        $confdir                = '/etc/puppetlabs/puppetdb/conf.d'
-        $puppet_confdir         = pick($settings::confdir,'/etc/puppetlabs/puppet')
-        $puppet_service_name    = undef
-        $ssl_dir                = '/etc/puppetlabs/puppetdb/ssl'
+        $confdir             = '/etc/puppetlabs/puppetdb/conf.d'
+        $puppet_confdir      = pick($settings::confdir,'/etc/puppetlabs/puppet')
+        $puppet_service_name = undef
+        $ssl_dir             = '/etc/puppetlabs/puppetdb/ssl'
       }
       'FreeBSD': {
-        $confdir                = '/usr/local/etc/puppetlabs/puppetdb/conf.d'
-        $puppet_confdir         = pick($settings::confdir,'/usr/local/etc/puppetlabs/puppet')
-        $puppet_service_name    = undef
-        $ssl_dir                = '/usr/local/etc/puppetlabs/puppetdb/ssl'
+        $confdir             = '/usr/local/etc/puppetlabs/puppetdb/conf.d'
+        $puppet_confdir      = pick($settings::confdir,'/usr/local/etc/puppetlabs/puppet')
+        $puppet_service_name = undef
+        $ssl_dir             = '/usr/local/etc/puppetlabs/puppetdb/ssl'
+      }
+      default: {
+        fail("The fact 'osfamily' is set to ${::osfamily} which is not supported by the puppetdb module.")
       }
     }
     $terminus_package       = 'puppetdb-termini'
     $test_url               = '/pdb/meta/v1/version'
     $vardir                 = '/opt/puppetlabs/server/data/puppetdb'
-    $database_embedded_path = '${vardir}/db/db'
+    $database_embedded_path = "${vardir}/db/db"
   }
 
   case $::osfamily {
     'RedHat', 'Suse', 'Archlinux': {
-      $puppetdb_initconf      = '/etc/sysconfig/puppetdb'
+      $puppetdb_initconf = '/etc/sysconfig/puppetdb'
     }
     'Debian': {
-      $puppetdb_initconf      = '/etc/default/puppetdb'
+      $puppetdb_initconf = '/etc/default/puppetdb'
     }
     'OpenBSD','FreeBSD': {
-      $puppetdb_initconf      = undef
+      $puppetdb_initconf = undef
+    }
+    default: {
+      fail("The fact 'osfamily' is set to ${::osfamily} which is not supported by the puppetdb module.")
     }
   }
 
@@ -143,13 +152,12 @@ class puppetdb::params inherits puppetdb::globals {
   $store_usage              = undef
   $temp_usage               = undef
 
-  $ssl_set_cert_paths        = false
-  $ssl_cert_path             = "${ssl_dir}/public.pem"
-  $ssl_key_path              = "${ssl_dir}/private.pem"
-  $ssl_ca_cert_path          = "${ssl_dir}/ca.pem"
-  $ssl_deploy_certs          = false
-  $ssl_key                   = undef
-  $ssl_cert                  = undef
-  $ssl_ca_cert               = undef
-
+  $ssl_set_cert_paths       = false
+  $ssl_cert_path            = "${ssl_dir}/public.pem"
+  $ssl_key_path             = "${ssl_dir}/private.pem"
+  $ssl_ca_cert_path         = "${ssl_dir}/ca.pem"
+  $ssl_deploy_certs         = false
+  $ssl_key                  = undef
+  $ssl_cert                 = undef
+  $ssl_ca_cert              = undef
 }

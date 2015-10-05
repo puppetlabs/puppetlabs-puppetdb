@@ -136,7 +136,8 @@ class puppetdb (
 
     $database_before = str2bool($database_validate) ? {
       false => Class['::puppetdb::server'],
-      default => [Class['::puppetdb::server'], Class['::puppetdb::server::validate_db']],
+      default => [Class['::puppetdb::server'],
+                  Class['::puppetdb::server::validate_db']],
     }
 
     class { '::puppetdb::database::postgresql':
