@@ -66,7 +66,7 @@ class puppetdb::server::read_database (
         $database_suffix = $jdbc_ssl_properties
       }
       elsif $database_ssl {
-        $database_suffix = "?ssl=true"
+        $database_suffix = '?ssl=true'
       }
       else {
         $database_suffix = ''
