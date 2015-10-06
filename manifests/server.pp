@@ -181,7 +181,8 @@ class puppetdb::server (
     notify              => Service[$puppetdb_service],
   }
 
-  if str2bool($ssl_set_cert_paths) == true or str2bool($ssl_deploy_certs) == true {
+  if str2bool($ssl_set_cert_paths) == true
+  or str2bool($ssl_deploy_certs) == true {
     validate_absolute_path($ssl_key_path)
     validate_absolute_path($ssl_cert_path)
     validate_absolute_path($ssl_ca_cert_path)
@@ -240,24 +241,24 @@ class puppetdb::server (
       create_resources(
         'ini_subsetting',
         puppetdb_create_subsetting_resource_hash(
-          $java_args,
-          {ensure  => present,
-           section => '',
-           key_val_separator => '=',
-           path => $puppetdb::params::puppetdb_initconf,
-           setting => 'JAVA_ARGS',
-           require => Package[$puppetdb_package],
-           notify => Service[$puppetdb_service],
+          $java_args, {
+            ensure            => present,
+            section           => '',
+            key_val_separator => '=',
+            path              => $puppetdb::params::puppetdb_initconf,
+            setting           => 'JAVA_ARGS',
+            require           => Package[$puppetdb_package],
+            notify            => Service[$puppetdb_service],
           }))
     } else {
-      ini_setting {'java_args':
-        ensure => present,
+      ini_setting { 'java_args':
+        ensure  => present,
         section => '',
-        path => $puppetdb::params::puppetdb_initconf,
+        path    => $puppetdb::params::puppetdb_initconf,
         setting => 'JAVA_ARGS',
         require => Package[$puppetdb_package],
-        notify => Service[$puppetdb_service],
-        value => puppetdb_flatten_java_args($java_args),
+        notify  => Service[$puppetdb_service],
+        value   => puppetdb_flatten_java_args($java_args),
       }
     }
   }
