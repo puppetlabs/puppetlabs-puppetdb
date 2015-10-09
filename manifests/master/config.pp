@@ -113,7 +113,7 @@ class puppetdb::master::config (
       port               => $puppetdb_port,
       soft_write_failure => $puppetdb_soft_write_failure,
       puppet_confdir     => $puppet_confdir,
-      legacy_terminus    => $puppetdb::params::terminus_package == 'puppetdb-terminus',
+      legacy_terminus    => $terminus_package == 'puppetdb-terminus',
       require            => $strict_validation ? {
         true    => Puppetdb_conn_validator['puppetdb_conn'],
         default => Package[$terminus_package],
