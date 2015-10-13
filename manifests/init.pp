@@ -3,6 +3,7 @@
 class puppetdb (
   $listen_address                    = $puppetdb::params::listen_address,
   $listen_port                       = $puppetdb::params::listen_port,
+  $disable_cleartext                 = $puppetdb::params::disable_cleartext,
   $open_listen_port                  = $puppetdb::params::open_listen_port,
   $ssl_listen_address                = $puppetdb::params::ssl_listen_address,
   $ssl_listen_port                   = $puppetdb::params::ssl_listen_port,
@@ -71,6 +72,7 @@ class puppetdb (
   class { '::puppetdb::server':
     listen_address                    => $listen_address,
     listen_port                       => $listen_port,
+    disable_cleartext                 => $disable_cleartext,
     open_listen_port                  => $open_listen_port,
     ssl_listen_address                => $ssl_listen_address,
     ssl_listen_port                   => $ssl_listen_port,

@@ -238,6 +238,10 @@ The address that the web server should bind to for HTTP requests (defaults to `l
 
 The port on which the puppetdb web server should accept HTTP requests (defaults to '8080').
 
+####`disable_cleartext`
+
+If true, the puppetdb web server will only serve HTTPS and not HTTP requests (defaults to false).
+
 ####`open_listen_port`
 
 If true, open the http_listen\_port on the firewall (defaults to false).

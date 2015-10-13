@@ -163,5 +163,29 @@ describe 'puppetdb::server::jetty', :type => :class do
         end
       end
     end
+
+    describe 'when disabling the cleartext HTTP port' do
+      let(:params) do
+        {
+          'disable_cleartext' => true
+        }
+      end
+      it { should contain_ini_setting('puppetdb_host').
+        with(
+             'ensure'  => 'absent',
+             'path'    => '/etc/puppetlabs/puppetdb/conf.d/jetty.ini',
+             'section' => 'jetty',
+             'setting' => 'host',
+             'value'   => 'localhost'
+             )}
+      it { should contain_ini_setting('puppetdb_port').
+        with(
+             'ensure'  => 'absent',
+             'path'    => '/etc/puppetlabs/puppetdb/conf.d/jetty.ini',
+             'section' => 'jetty',
+             'setting' => 'port',
+             'value'   => 8080
+             )}
+    end
   end
 end
