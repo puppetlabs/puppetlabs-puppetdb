@@ -61,6 +61,8 @@ class puppetdb::server (
   $command_threads                   = $puppetdb::params::command_threads,
   $store_usage                       = $puppetdb::params::store_usage,
   $temp_usage                        = $puppetdb::params::temp_usage,
+  $certificate_whitelist_file        = $puppetdb::params::certificate_whitelist_file,
+  $certificate_whitelist             = $puppetdb::params::certificate_whitelist,
 ) inherits puppetdb::params {
   # deprecation warnings
   if $database_ssl != undef {
@@ -236,6 +238,13 @@ class puppetdb::server (
     notify             => Service[$puppetdb_service],
   }
 
+  class { 'puppetdb::server::puppetdb':
+    certificate_whitelist_file => $certificate_whitelist_file,
+    certificate_whitelist      => $certificate_whitelist,
+    confdir                    => $confdir,
+    notify                     => Service[$puppetdb_service],
+  }
+
   if !empty($java_args) {
     if $merge_default_java_args {
       create_resources(
@@ -275,6 +284,7 @@ class puppetdb::server (
     Class['puppetdb::server::database'] ->
     Class['puppetdb::server::read_database'] ->
     Class['puppetdb::server::jetty'] ->
+    Class['puppetdb::server::puppetdb'] ->
     Service[$puppetdb_service]
   } else {
     Package[$puppetdb_package] ->
@@ -282,6 +292,7 @@ class puppetdb::server (
     Class['puppetdb::server::database'] ->
     Class['puppetdb::server::read_database'] ->
     Class['puppetdb::server::jetty'] ->
+    Class['puppetdb::server::puppetdb'] ->
     Service[$puppetdb_service]
   }
 }
