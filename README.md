@@ -668,6 +668,14 @@ Defaults to `undef`, using the PuppetDB built-in default.
 The amount of disk space (in MB) to allow for temporary message storage.
 Defaults to `undef`, using the PuppetDB built-in default.
 
+####`certificate_whitelist_file`
+
+The name of the certificate whitelist file to set up and configure in PuppetDB. Defaults to `/etc/puppetdb/certificate-whitelist` or `/etc/puppetlabs/puppetdb/certificate-whitelist` for FOSS and PE respectively.
+
+####`certificate_whitelist`
+
+Array of the X.509 certificate Common Names of clients allowed to connect to PuppetDB. Defaults to empty. Be aware that this permits full access to all Puppet clients to download anything contained in PuppetDB, including the full catalogs of all nodes, which possibly contain sensitive information. Set to `[ $::servername ]` to allow access only from your (single) Puppet master, which is enough for normal operation. Set to a list of Puppet masters if you have multiple.
+
 
 ### puppetdb::server
 

@@ -66,7 +66,9 @@ class puppetdb (
   $max_threads                       = $puppetdb::params::max_threads,
   $command_threads                   = $puppetdb::params::command_threads,
   $store_usage                       = $puppetdb::params::store_usage,
-  $temp_usage                        = $puppetdb::params::temp_usage
+  $temp_usage                        = $puppetdb::params::temp_usage,
+  $certificate_whitelist_file        = $puppetdb::params::certificate_whitelist_file,
+  $certificate_whitelist             = $puppetdb::params::certificate_whitelist,
 ) inherits puppetdb::params {
 
   class { '::puppetdb::server':
@@ -132,6 +134,8 @@ class puppetdb (
     command_threads                   => $command_threads,
     store_usage                       => $store_usage,
     temp_usage                        => $temp_usage,
+    certificate_whitelist_file        => $certificate_whitelist_file,
+    certificate_whitelist             => $certificate_whitelist,
   }
 
   if ($database == 'postgres') {
