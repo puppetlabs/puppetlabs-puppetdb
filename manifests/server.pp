@@ -2,6 +2,7 @@
 class puppetdb::server (
   $listen_address                    = $puppetdb::params::listen_address,
   $listen_port                       = $puppetdb::params::listen_port,
+  $disable_cleartext                 = $puppetdb::params::disable_cleartext,
   $open_listen_port                  = $puppetdb::params::open_listen_port,
   $ssl_listen_address                = $puppetdb::params::ssl_listen_address,
   $ssl_listen_port                   = $puppetdb::params::ssl_listen_port,
@@ -223,6 +224,7 @@ class puppetdb::server (
   class { 'puppetdb::server::jetty':
     listen_address     => $listen_address,
     listen_port        => $listen_port,
+    disable_cleartext  => $disable_cleartext,
     ssl_listen_address => $ssl_listen_address,
     ssl_listen_port    => $ssl_listen_port,
     ssl_set_cert_paths => $ssl_set_cert_paths,

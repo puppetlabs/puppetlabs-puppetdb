@@ -2,6 +2,7 @@
 class puppetdb::server::jetty (
   $listen_address     = $puppetdb::params::listen_address,
   $listen_port        = $puppetdb::params::listen_port,
+  $disable_cleartext  = $puppetdb::params::disable_cleartext,
   $ssl_listen_address = $puppetdb::params::ssl_listen_address,
   $ssl_listen_port    = $puppetdb::params::ssl_listen_port,
   $disable_ssl        = $puppetdb::params::disable_ssl,
@@ -21,12 +22,19 @@ class puppetdb::server::jetty (
     section => 'jetty',
   }
 
+  $cleartext_setting_ensure = $disable_cleartext ? {
+    true    => 'absent',
+    default => 'present',
+  }
+
   ini_setting { 'puppetdb_host':
+    ensure  => $cleartext_setting_ensure,
     setting => 'host',
     value   => $listen_address,
   }
 
   ini_setting { 'puppetdb_port':
+    ensure  => $cleartext_setting_ensure,
     setting => 'port',
     value   => $listen_port,
   }
