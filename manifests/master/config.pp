@@ -124,9 +124,11 @@ class puppetdb::master::config (
   if ($restart_puppet) {
     # We will need to restart the puppet master service if certain config
     # files are changed, so here we make sure it's in the catalog.
-    if ! defined(Service[$puppet_service_name]) {
-      service { $puppet_service_name:
-        ensure => running,
+    if $puppet_service_name == 'puppetmaster' {
+        if ! defined(Service[$puppet_service_name]) {
+        service { $puppet_service_name:
+          ensure => running,
+        }
       }
     }
 
