@@ -12,11 +12,13 @@ class puppetdb::master::report_processor (
     $puppet_conf_section = 'master'
   }
 
+  $puppetdb_ensure = $enable ? {
+    true    => present,
+    default => absent,
+  }
+
   ini_subsetting { 'puppet.conf/reports/puppetdb':
-    ensure               => $enable ? {
-      true    => present,
-      default => absent
-    },
+    ensure               => $puppetdb_ensure,
     path                 => $puppet_conf,
     section              => $puppet_conf_section,
     setting              => 'reports',
