@@ -2,6 +2,23 @@
 
 Release notes for the puppetlabs-puppetdb module.
 
+#### 5.1.0 - 2016/02/09
+
+This is a minor feature release.
+
+Detailed changes:
+
+* Use 'puppetdb-terminus' as the terminus package on RHEL, to avoid packaging
+  conflicts that could occur on upgrades from 2.x to 3.x. The
+  'puppetdb-terminus' version 3.x package on RHEL will install
+  'puppetdb-termini' as a dependency.
+* Add jdbc_ssl_properties parameter.
+* Pass 'dport' parameter to puppetlabs/firewall instead of the deprecated 'port'.
+* Pass database_port parameter to the postgresql class.
+* Manage the puppetdb vardir.
+* Allow default java_args to be overridden.
+* Linting fixes.
+
 ------------------------------------------
 
 #### 5.0.0 - 2015/07/08
