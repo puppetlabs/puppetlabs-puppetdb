@@ -2,8 +2,10 @@ require 'spec_helper'
 
 describe 'puppetdb::master::config', :type => :class do
 
-  let(:facts) do
-    {
+  before :each do
+
+    @facter_facts =
+      {
       :fqdn => 'puppetdb.example.com',
       :osfamily => 'Debian',
       :operatingsystem => 'Debian',
@@ -16,6 +18,8 @@ describe 'puppetdb::master::config', :type => :class do
       :path => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
     }
   end
+
+  let (:facts) {@facter_facts}
 
   context 'when PuppetDB on remote server' do
 
@@ -31,17 +35,17 @@ describe 'puppetdb::master::config', :type => :class do
       let(:pre_condition) { 'class { "puppetdb": }' }
 
       it { should contain_puppetdb_conn_validator('puppetdb_conn').with(
-                    :puppetdb_server => 'puppetdb.example.com',
-                    :puppetdb_port => '8081',
-                    :use_ssl => 'true') }
+        :puppetdb_server => 'puppetdb.example.com',
+        :puppetdb_port => '8081',
+        :use_ssl => 'true') }
     end
 
     context 'when puppetdb class is declared with disable_ssl => true' do
       let(:pre_condition) { 'class { "puppetdb": disable_ssl => true }' }
 
       it { should contain_puppetdb_conn_validator('puppetdb_conn').with(
-                    :puppetdb_port => '8080',
-                    :use_ssl => 'false')}
+        :puppetdb_port => '8080',
+        :use_ssl => 'false')}
     end
 
     context 'when puppetdb_port => 1234' do
@@ -49,8 +53,8 @@ describe 'puppetdb::master::config', :type => :class do
       let(:params) do { :puppetdb_port => '1234' } end
 
       it { should contain_puppetdb_conn_validator('puppetdb_conn').with(
-                    :puppetdb_port => '1234',
-                    :use_ssl => 'true')}
+        :puppetdb_port => '1234',
+        :use_ssl => 'true')}
     end
 
     context 'when puppetdb_port => 1234 AND the puppetdb class is declared with disable_ssl => true' do
@@ -58,22 +62,33 @@ describe 'puppetdb::master::config', :type => :class do
       let(:params) do {:puppetdb_port => '1234'} end
 
       it { should contain_puppetdb_conn_validator('puppetdb_conn').with(
-                    :puppetdb_port => '1234',
-                    :use_ssl => 'false')}
+        :puppetdb_port => '1234',
+        :use_ssl => 'false')}
 
     end
-    
+
     context 'when using default values' do
       it { should contain_package('puppetdb-termini').with( :ensure => 'present' )}
       it { should contain_puppetdb_conn_validator('puppetdb_conn').with(:test_url => '/pdb/meta/v1/version')}
     end
-    
+
     context 'when using an older puppetdb version' do
       let (:pre_condition) { 'class { "puppetdb::globals": version => "2.2.0", }' }
       it { should contain_package('puppetdb-terminus').with( :ensure => '2.2.0' )}
       it { should contain_puppetdb_conn_validator('puppetdb_conn').with(:test_url => '/v3/version')}
     end
 
+    context 'when using puppetdb 3+' do
+      let (:pre_condition) { 'class { "puppetdb::globals": version => "3.2.0", }'}
+      it { should contain_package('puppetdb-termini').with( :ensure => '3.2.0' )}
+    end
   end
 
+  context 'when using puppetdb 3+' do
+    before :each do
+      @facter_facts[:osfamily] = "RedHat"
+    end
+    let (:pre_condition) { 'class {"puppetdb::globals": version => "3.2.0", }' }
+    it { should contain_package('puppetdb-terminus').with( :ensure => '3.2.0' )}
+  end
 end
