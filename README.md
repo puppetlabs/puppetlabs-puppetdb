@@ -375,6 +375,11 @@ Specify the supported SSL protocols for PuppetDB (e.g. TLSv1, TLSv1.1, TLSv1.2.)
 
 If true, the PostgreSQL server will be managed by this module. Defaults to `true`.
 
+###`manage_db`
+
+If true, the PostgreSQL database in the PostgreSQL instance will be managed by
+this module. Defaults to `true`.
+
 ####`database`
 
 Which database backend to use; legal values are `postgres` (default) or
