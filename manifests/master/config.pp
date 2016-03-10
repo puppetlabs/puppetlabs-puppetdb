@@ -29,6 +29,33 @@ class puppetdb::master::config (
   $restart_puppet              = true,
 ) inherits puppetdb::params {
 
+  # **WARNING**: Ugly hack to work around a yum bug with metadata parsing. This
+  # should not be copied, replicated or even looked at. In short, never rename
+  # your packages...
+  #
+  # With `yum` we can't have the termini package override the terminus package
+  # because that would prevent users from installing v2.3 of the terminus in
+  # PC1. We tried using a dummy terminus-3 metadata package which pulled in
+  # termini-3.latest as a dependency and put a requires terminus >= 3, <4. The
+  # idea was that doing `yum install puppetdb-termini-3.x.y-1.el7` would pull up
+  # the terminus package to the dummy 3 version, but `yum` has a bug which
+  # requires that both the dummy package and termini be installed in the same
+  # transaction, i.e. `yum install puppetdb-termini-3.x.y-1.el7
+  # puppetdb-terminus-3` which is impossible to do via Puppet.
+  #
+  # This will orphan some old terminus files (from pre-puppet-agent, i.e. puppet
+  # 3.x) that we're orphaned anyways and some of the new terminus files
+  # temporarily. If this exec fails all you need to do is reinstall whatever 2.3
+  # version of the terminus was already installed to revert the change.
+  if !($puppetdb::params::puppetdb_version in ['present','absent'])
+  and versioncmp($puppetdb::params::puppetdb_version, '3.0.0') >= 0
+  and $::osfamily in ['RedHat','Suse'] {
+    exec { 'Remove puppetdb-terminus metadata for upgrade':
+      command => 'rpm -e --justdb puppetdb-terminus',
+      path    => '/sbin/:/bin/',
+      onlyif  => 'rpm -q puppetdb-terminus',
+    }
+  }
 
   package { $terminus_package:
     ensure => $puppetdb::params::puppetdb_version,
