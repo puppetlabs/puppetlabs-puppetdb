@@ -1,21 +1,20 @@
 require 'spec_helper'
 
 describe 'puppetdb::master::config', :type => :class do
-  basefacts = {
-    :fqdn => 'puppetdb.example.com',
-    :osfamily => 'Debian',
-    :operatingsystem => 'Debian',
-    :operatingsystemrelease => '6.0',
-    :kernel => 'Linux',
-    :lsbdistid => 'Debian',
-    :lsbdistcodename => 'foo',
-    :concat_basedir => '/var/lib/puppet/concat',
-    :id => 'root',
-    :path => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
-  }
 
   let(:facts) do
-    basefacts
+    {
+      :fqdn => 'puppetdb.example.com',
+      :osfamily => 'Debian',
+      :operatingsystem => 'Debian',
+      :operatingsystemrelease => '6.0',
+      :kernel => 'Linux',
+      :lsbdistid => 'Debian',
+      :lsbdistcodename => 'foo',
+      :concat_basedir => '/var/lib/puppet/concat',
+      :id => 'root',
+      :path => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
+    }
   end
 
   context 'when PuppetDB on remote server' do
