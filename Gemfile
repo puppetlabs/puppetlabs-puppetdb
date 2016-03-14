@@ -1,7 +1,8 @@
 source ENV['GEM_SOURCE'] || "https://rubygems.org"
 
 group :development, :test do
-  gem 'rake'
+  # Pinning `rake` because `v11` doesn't support Ruby 1.8.7
+  gem 'rake', '10.5.0'
   gem 'puppetlabs_spec_helper', :require => false
   # Pinning due to bug in newer rspec with Ruby 1.8.7
   gem 'rspec-core', '3.1.7'

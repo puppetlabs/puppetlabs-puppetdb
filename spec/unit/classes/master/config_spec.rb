@@ -62,16 +62,31 @@ describe 'puppetdb::master::config', :type => :class do
                     :use_ssl => 'false')}
 
     end
-    
+
     context 'when using default values' do
       it { should contain_package('puppetdb-termini').with( :ensure => 'present' )}
       it { should contain_puppetdb_conn_validator('puppetdb_conn').with(:test_url => '/pdb/meta/v1/version')}
     end
-    
+
     context 'when using an older puppetdb version' do
       let (:pre_condition) { 'class { "puppetdb::globals": version => "2.2.0", }' }
       it { should contain_package('puppetdb-terminus').with( :ensure => '2.2.0' )}
       it { should contain_puppetdb_conn_validator('puppetdb_conn').with(:test_url => '/v3/version')}
+    end
+
+    context 'when upgrading to from v2 to v3 of PuppetDB on RedHat' do
+      let(:facts) do
+        {
+          :osfamily => 'RedHat',
+          :operatingsystem => 'RedHat',
+          :operatingsystemrelease => '7.0',
+          :kernel => 'Linux',
+          :concat_basedir => '/var/lib/puppet/concat',
+        }
+      end
+      let (:pre_condition) { 'class { "puppetdb::globals": version => "3.1.1-1.el7", }' }
+
+      it { should contain_exec('Remove puppetdb-terminus metadata for upgrade').with(:command => 'rpm -e --justdb puppetdb-terminus')}
     end
 
   end
