@@ -164,8 +164,8 @@ It is worth noting that there are some cross-node dependencies, which means that
 the first time you add the module's configurations to your manifests, you may
 see a few failed puppet runs on the affected nodes.
 
-PuppetDB handles cross-node dependencies by taking a sort of “eventual
-consistency” approach. There’s nothing that the module can do to control the
+PuppetDB handles cross-node dependencies by taking a sort of "eventual
+consistency" approach. There’s nothing that the module can do to control the
 order in which your nodes check in, but the module can check to verify that the
 services it depends on are up and running before it makes configuration
 changes--so that’s what it does.
@@ -190,29 +190,31 @@ You can also manually trigger puppet runs on the nodes in the correct order
 Upgrading
 ---------
 
-###Upgrading from 4.x to version 5.x
+### Upgrading from 4.x to 5.x
 
 Significant parameter changes are listed below:
 
-* The PuppetDB module now supports PuppetDB 3.0.0 by default
-* The PuppetDB module now manages Postgres repos by default. To turn this
-  behavior off, set `manage_package_repo` to false.
-* If you want to use 5.x of the module with PuppetDB 2.x, you'll need to use the
-  new `puppetdb::globals` class to set the version of PuppetDB you're using
-  explicitly. The ability to configure the version has been therefore moved out
-  of the `puppetdb` and `puppetdb::server` classes.
+* The PuppetDB module defaults to Puppet 4 pathing and assumes `puppetserver`
+  is the master service by default
+* The PuppetDB module manages Postgres repos by default. To turn this behavior
+  off, set `manage_package_repo` to `false`.
+* To specify a specific version of PuppetDB to manage, you'll need to use the
+  `puppetdb::globals` class to set the version of PuppetDB you're using
+  explicitly. The ability to configure the version in the `puppetdb::server` and
+  `puppetdb` class have been removed.
 
 For example if your config looked like this before:
 
     class {'puppetdb':
-        puppetdb_version => '2.3.5-1.el7',
+        puppetdb_version => '3.2.4-1.el7',
     }
     class { 'puppetdb::master::config': }
 
-and you'd still like to use the module with PuppetDB 2.3.5, all you'd have to change would be:
+and you'd still like to use the module with PuppetDB 3.2.4, all you'd have to
+change would be:
 
     class { 'puppetdb::globals':
-        version => '2.3.5-1.el7',
+        version => '3.2.4-1.el7',
     }
     class { 'puppetdb' : }
     class { 'puppetdb::master::config' : }
@@ -230,7 +232,7 @@ The `globals` class above takes into account the following PuppetDB 3 and Puppet
 
 See the CHANGELOG file for more detailed information on changes for each release.
 
-###Upgrading from 3.x to version 4.x
+### Upgrading from 3.x to 4.x
 
 For this release, all dependency versions have been bumped to their latest.
 Significant parameter changes are listed below:
@@ -247,7 +249,7 @@ Significant parameter changes are listed below:
 
 See the CHANGELOG file for more detailed information on changes for each release.
 
-###Upgrading from 2.x to version 3.x
+### Upgrading from 2.x to 3.x
 
 For this release a major dependency has changed. The module
 `pupppetlabs/postgresql` must now be version 3.x. Upgrading the module should
@@ -271,7 +273,7 @@ Some other changes include:
 * The class `puppetdb::server::jetty_ini` and `puppetdb::server::database_ini`
   have been marked as private, do not use it directly.
 
-###Upgrading from 1.x to version 2.x
+### Upgrading from 1.x to 2.x
 
 A major dependency has been changed, so now when you upgrade to 2.0 the
 dependency `cprice404/inifile` has been replaced with `puppetlabs/inifile`. This

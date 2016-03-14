@@ -2,6 +2,17 @@
 
 Release notes for the puppetlabs-puppetdb module.
 
+#### 5.1.2 - 2016/03/14
+
+This is a minor bugfix release.
+
+Detailed changes:
+
+* Support RHEL upgrades from the `puppetdb-terminus` (<= PuppetDB 2) to the
+`puppetdb-termini` (>= PuppetDB 3).
+
+------------------------------------------
+
 #### 5.1.1 - 2016/02/09
 
 This is a minor bugfix release.
