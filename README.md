@@ -365,7 +365,7 @@ Defaults to `false`.
 
 ####`open_ssl_listen_port`
 
-If true, open the `ssl_listen_port` on the firewall. Defaults to `true`.
+If true, open the `ssl_listen_port` on the firewall. Defaults to `undef`.
 
 ####`ssl_protocols`
 
