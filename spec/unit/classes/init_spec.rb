@@ -15,6 +15,8 @@ describe 'puppetdb', :type => :class do
         :lsbdistcodename => 'foo',
         :id => 'root',
         :path => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
+        :selinux => false,
+        :iptables_persistent_version => '0.5.7',
       }
     end
 
@@ -31,6 +33,8 @@ describe 'puppetdb', :type => :class do
         :operatingsystemrelease => '6.0',
         :kernel => 'Linux',
         :concat_basedir => '/var/lib/puppet/concat',
+        :selinux => true,
+        :iptables_persistent_version => '0.5.7',
       }
     end
     ttl_args.each do |ttl_arg|
