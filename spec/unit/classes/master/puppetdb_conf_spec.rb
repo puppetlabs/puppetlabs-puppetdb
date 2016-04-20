@@ -14,6 +14,8 @@ describe 'puppetdb::master::puppetdb_conf', :type => :class do
       :concat_basedir => '/var/lib/puppet/concat',
       :id => 'root',
       :path => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
+      :selinux => false,
+      :iptables_persistent_version => '0.5.7',
     }
   end
   

@@ -8,6 +8,7 @@ describe 'puppetdb::server', :type => :class do
         :operatingsystemrelease   => '6.5',
         :fqdn                     => 'test.domain.local',
         :kernel                   => 'Linux',
+        :selinux                  => true,
       }
 
   context 'on a supported platform' do

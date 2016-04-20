@@ -14,6 +14,8 @@ describe 'puppetdb::master::config', :type => :class do
       :concat_basedir => '/var/lib/puppet/concat',
       :id => 'root',
       :path => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
+      :selinux => true,
+      :iptables_persistent_version => '0.5.7',
     }
   end
 
@@ -82,6 +84,7 @@ describe 'puppetdb::master::config', :type => :class do
           :operatingsystemrelease => '7.0',
           :kernel => 'Linux',
           :concat_basedir => '/var/lib/puppet/concat',
+          :selinux => true,
         }
       end
       let (:pre_condition) { 'class { "puppetdb::globals": version => "3.1.1-1.el7", }' }
