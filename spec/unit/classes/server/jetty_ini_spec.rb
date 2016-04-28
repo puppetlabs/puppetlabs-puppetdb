@@ -12,6 +12,13 @@ describe 'puppetdb::server::jetty', :type => :class do
     it { should contain_class('puppetdb::server::jetty') }
 
     describe 'when using default values' do
+      it { should contain_file('/etc/puppetlabs/puppetdb/conf.d/jetty.ini').
+        with(
+             'ensure'  => 'file',
+             'owner'   => 'puppetdb',
+             'group'   => 'puppetdb',
+             'mode'    => '0600'
+             )}
       it { should contain_ini_setting('puppetdb_host').
         with(
              'ensure'  => 'present',

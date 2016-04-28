@@ -14,6 +14,13 @@ describe 'puppetdb::server::database', :type => :class do
     it { should contain_class('puppetdb::server::database') }
 
     describe 'when using default values' do
+      it { should contain_file('/etc/puppetlabs/puppetdb/conf.d/database.ini').
+        with(
+             'ensure'  => 'file',
+             'owner'   => 'puppetdb',
+             'group'   => 'puppetdb',
+             'mode'    => '0600'
+             )}
       it { should contain_ini_setting('puppetdb_psdatabase_username').
         with(
              'ensure'  => 'present',

@@ -135,6 +135,14 @@ class puppetdb::server (
     }
   }
 
+  class { 'puppetdb::server::global':
+    vardir         => $vardir,
+    confdir        => $confdir,
+    puppetdb_user  => $puppetdb_user,
+    puppetdb_group => $puppetdb_group,
+    notify         => Service[$puppetdb_service],
+  }
+
   class { 'puppetdb::server::command_processing':
     command_threads => $command_threads,
     store_usage     => $store_usage,
@@ -163,6 +171,8 @@ class puppetdb::server (
     conn_keep_alive        => $conn_keep_alive,
     conn_lifetime          => $conn_lifetime,
     confdir                => $confdir,
+    puppetdb_user          => $puppetdb_user,
+    puppetdb_group         => $puppetdb_group,
     notify                 => Service[$puppetdb_service],
   }
 
@@ -181,6 +191,8 @@ class puppetdb::server (
     conn_keep_alive     => $read_conn_keep_alive,
     conn_lifetime       => $read_conn_lifetime,
     confdir             => $confdir,
+    puppetdb_user       => $puppetdb_user,
+    puppetdb_group      => $puppetdb_group,
     notify              => Service[$puppetdb_service],
   }
 
@@ -193,7 +205,7 @@ class puppetdb::server (
 
   if str2bool($ssl_deploy_certs) == true {
     validate_absolute_path($ssl_dir)
-    file{
+    file {
       $ssl_dir:
         ensure  => directory,
         owner   => $puppetdb_user,
@@ -238,12 +250,16 @@ class puppetdb::server (
     confdir            => $confdir,
     max_threads        => $max_threads,
     notify             => Service[$puppetdb_service],
+    puppetdb_user      => $puppetdb_user,
+    puppetdb_group     => $puppetdb_group,
   }
 
   class { 'puppetdb::server::puppetdb':
     certificate_whitelist_file => $certificate_whitelist_file,
     certificate_whitelist      => $certificate_whitelist,
     confdir                    => $confdir,
+    puppetdb_user              => $puppetdb_user,
+    puppetdb_group             => $puppetdb_group,
     notify                     => Service[$puppetdb_service],
   }
 

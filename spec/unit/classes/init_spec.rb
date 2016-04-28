@@ -22,6 +22,8 @@ describe 'puppetdb', :type => :class do
 
     describe 'when using default values for puppetdb class' do
       it { should contain_class('puppetdb') }
+      it { should contain_class('puppetdb::server') }
+      it { should contain_class('puppetdb::database::postgresql') }
     end
   end
 

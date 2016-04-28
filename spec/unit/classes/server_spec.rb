@@ -16,7 +16,15 @@ describe 'puppetdb::server', :type => :class do
       basefacts
     end
 
-    it { should contain_class('puppetdb::server') }
+    describe 'when using default values' do
+      it { should contain_class('puppetdb::server') }
+      it { should contain_class('puppetdb::server::global') }
+      it { should contain_class('puppetdb::server::command_processing') }
+      it { should contain_class('puppetdb::server::database') }
+      it { should contain_class('puppetdb::server::read_database') }
+      it { should contain_class('puppetdb::server::jetty') }
+      it { should contain_class('puppetdb::server::puppetdb') }
+    end
 
     describe 'when not specifying JAVA_ARGS' do
       it { should_not contain_ini_subsetting('Xms') }

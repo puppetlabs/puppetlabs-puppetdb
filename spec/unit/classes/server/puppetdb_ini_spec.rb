@@ -28,6 +28,13 @@ describe 'puppetdb::server::puppetdb', :type => :class do
              'mode'    => '0644',
              'content' => ''
              )}
+      it { should contain_file('/etc/puppetlabs/puppetdb/conf.d/puppetdb.ini').
+        with(
+             'ensure'  => 'file',
+             'owner'   => 'puppetdb',
+             'group'   => 'puppetdb',
+             'mode'    => '0600'
+             )}
     end
 
     describe 'when restricting access to puppetdb' do
