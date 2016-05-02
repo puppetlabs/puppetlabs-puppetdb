@@ -19,6 +19,7 @@ class puppetdb::server::database (
   $conn_keep_alive        = $puppetdb::params::conn_keep_alive,
   $conn_lifetime          = $puppetdb::params::conn_lifetime,
   $confdir                = $puppetdb::params::confdir,
+  $database_max_pool_size = $puppetdb::params::database_max_pool_size,
 ) inherits puppetdb::params {
 
   if str2bool($database_validate) {
@@ -146,5 +147,10 @@ class puppetdb::server::database (
   ini_setting { 'puppetdb_conn_lifetime':
     setting => 'conn-lifetime',
     value   => $conn_lifetime,
+  }
+
+  ini_setting { 'puppetdb_database_max_pool_size':
+    setting => 'maximum-pool-size',
+    value   => $database_max_pool_size,
   }
 }
