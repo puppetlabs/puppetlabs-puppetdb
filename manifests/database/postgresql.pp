@@ -22,6 +22,11 @@ class puppetdb::database::postgresql(
       listen_addresses        => $listen_addresses,
       port                    => $database_port,
     }
+    # get the pg contrib to use pg_trgm extension
+    class { '::postgresql::server::contrib': }
+    postgresql::server::extension { 'pg_trgm':
+      database  => $database_name,
+    }
   }
 
   # create the puppetdb database
