@@ -6,12 +6,6 @@ class puppetdb::server::command_processing (
   $confdir         = $puppetdb::params::confdir,
 ) inherits puppetdb::params {
 
-
-  file { "${confdir}/config.ini":
-    ensure => 'present',
-    mode   => '0644',
-  }
-
   # Set the defaults
   Ini_setting {
     path    => "${confdir}/config.ini",

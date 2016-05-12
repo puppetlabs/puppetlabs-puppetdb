@@ -1,9 +1,23 @@
+# Final publish location for module build
 pkg/
+
+# VIM files
 *.swp
+
+# Mac files
 .DS_Store
+
+# Generated directory for coverage results
 coverage/
-spec/fixtures/modules/*
+
+# Gem & bundler related files we do not want persisted to the repository
 Gemfile.lock
 .bundle
 vendor/
-.rspec_system/
+
+# Used by rake spec, for temp modules and other test requirements
+spec/fixtures/
+
+# RVM files that are specific to developers implementation
+.ruby-version
+.ruby-gemset

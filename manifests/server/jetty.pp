@@ -13,13 +13,23 @@ class puppetdb::server::jetty (
   $ssl_protocols      = $puppetdb::params::ssl_protocols,
   $confdir            = $puppetdb::params::confdir,
   $max_threads        = $puppetdb::params::max_threads,
+  $puppetdb_user      = $puppetdb::params::puppetdb_user,
+  $puppetdb_group     = $puppetdb::params::puppetdb_group,
 ) inherits puppetdb::params {
+
+  file { "${confdir}/jetty.ini":
+    ensure => file,
+    owner => $puppetdb_user,
+    group => $puppetdb_group,
+    mode => '0600',
+  }
 
   # Set the defaults
   Ini_setting {
     path    => "${confdir}/jetty.ini",
     ensure  => present,
     section => 'jetty',
+    require => File["${confdir}/puppetdb.ini"],
   }
 
   $cleartext_setting_ensure = $disable_cleartext ? {

@@ -21,7 +21,13 @@ describe 'puppetdb::server::global', :type => :class do
           'setting' => 'vardir',
           'value' => '/opt/puppetlabs/server/data/puppetdb'
       )}
-
+      it { should contain_file('/etc/puppetlabs/puppetdb/conf.d/config.ini').
+        with(
+             'ensure'  => 'file',
+             'owner'   => 'puppetdb',
+             'group'   => 'puppetdb',
+             'mode'    => '0600'
+      )}
     end
 
     describe 'when using a legacy puppetdb version' do

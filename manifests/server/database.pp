@@ -19,6 +19,8 @@ class puppetdb::server::database (
   $conn_keep_alive        = $puppetdb::params::conn_keep_alive,
   $conn_lifetime          = $puppetdb::params::conn_lifetime,
   $confdir                = $puppetdb::params::confdir,
+  $puppetdb_user          = $puppetdb::params::puppetdb_user,
+  $puppetdb_group         = $puppetdb::params::puppetdb_group,
 ) inherits puppetdb::params {
 
   if str2bool($database_validate) {
@@ -40,9 +42,17 @@ class puppetdb::server::database (
     }
   }
 
+  file { "${confdir}/database.ini":
+    ensure => file,
+    owner => $puppetdb_user,
+    group => $puppetdb_group,
+    mode => '0600',
+  }
+
+  $file_require = File["${confdir}/database.ini"]
   $ini_setting_require = str2bool($database_validate) ? {
-    false => undef,
-    default  => Class['puppetdb::server::validate_db'],
+    false => $file_require,
+    default  => [$file_require, Class['puppetdb::server::validate_db']],
   }
   # Set the defaults
   Ini_setting {
