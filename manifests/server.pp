@@ -64,6 +64,8 @@ class puppetdb::server (
   $temp_usage                        = $puppetdb::params::temp_usage,
   $certificate_whitelist_file        = $puppetdb::params::certificate_whitelist_file,
   $certificate_whitelist             = $puppetdb::params::certificate_whitelist,
+  $database_max_pool_size            = $puppetdb::params::database_max_pool_size,
+  $read_database_max_pool_size       = $puppetdb::params::read_database_max_pool_size,
 ) inherits puppetdb::params {
   # deprecation warnings
   if $database_ssl != undef {
@@ -151,6 +153,7 @@ class puppetdb::server (
     database_password      => $database_password,
     database_name          => $database_name,
     database_ssl           => $database_ssl,
+    database_max_pool_size => $database_max_pool_size,
     jdbc_ssl_properties    => $jdbc_ssl_properties,
     database_validate      => $database_validate,
     database_embedded_path => $database_embedded_path,
@@ -167,21 +170,22 @@ class puppetdb::server (
   }
 
   class { 'puppetdb::server::read_database':
-    database            => $read_database,
-    database_host       => $read_database_host,
-    database_port       => $read_database_port,
-    database_username   => $read_database_username,
-    database_password   => $read_database_password,
-    database_name       => $read_database_name,
-    database_ssl        => $read_database_ssl,
-    jdbc_ssl_properties => $read_database_jdbc_ssl_properties,
-    database_validate   => $read_database_validate,
-    log_slow_statements => $read_log_slow_statements,
-    conn_max_age        => $read_conn_max_age,
-    conn_keep_alive     => $read_conn_keep_alive,
-    conn_lifetime       => $read_conn_lifetime,
-    confdir             => $confdir,
-    notify              => Service[$puppetdb_service],
+    database               => $read_database,
+    database_host          => $read_database_host,
+    database_port          => $read_database_port,
+    database_username      => $read_database_username,
+    database_password      => $read_database_password,
+    database_name          => $read_database_name,
+    database_ssl           => $read_database_ssl,
+    database_max_pool_size => $read_database_max_pool_size,
+    jdbc_ssl_properties    => $read_database_jdbc_ssl_properties,
+    database_validate      => $read_database_validate,
+    log_slow_statements    => $read_log_slow_statements,
+    conn_max_age           => $read_conn_max_age,
+    conn_keep_alive        => $read_conn_keep_alive,
+    conn_lifetime          => $read_conn_lifetime,
+    confdir                => $confdir,
+    notify                 => Service[$puppetdb_service],
   }
 
   if str2bool($ssl_set_cert_paths) == true
