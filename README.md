@@ -513,6 +513,10 @@ service doesn't start on boot either. Valid values are `true`, `running`,
 
 The PuppetDB configuration directory. Defaults to `/etc/puppetdb/conf.d`.
 
+####`vardir`
+
+The parent directory for the MQ's data directory.
+
 ####`java_args`
 
 Java VM options used for overriding default Java VM options specified in

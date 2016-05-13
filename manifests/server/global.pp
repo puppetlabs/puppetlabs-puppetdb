@@ -6,19 +6,21 @@ class puppetdb::server::global (
   $puppetdb_group = $puppetdb::params::puppetdb_group,
 ) inherits puppetdb::params {
 
-  file { "${confdir}/config.ini":
+  $config_ini = "${confdir}/config.ini"
+
+  file { $config_ini:
     ensure => file,
-    owner => $puppetdb_user,
-    group => $puppetdb_group,
-    mode => '0600',
+    owner  => $puppetdb_user,
+    group  => $puppetdb_group,
+    mode   => '0600',
   }
 
   # Set the defaults
   Ini_setting {
-    path    => "${confdir}/config.ini",
+    path    => $config_ini,
     ensure  => 'present',
     section => 'global',
-    require => File["${confdir}/config.ini"],
+    require => File[$config_ini],
   }
 
   if $vardir {
