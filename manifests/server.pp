@@ -55,6 +55,7 @@ class puppetdb::server (
   $read_conn_keep_alive              = $puppetdb::params::read_conn_keep_alive,
   $read_conn_lifetime                = $puppetdb::params::read_conn_lifetime,
   $confdir                           = $puppetdb::params::confdir,
+  $vardir                            = $puppetdb::params::vardir,
   $manage_firewall                   = $puppetdb::params::manage_firewall,
   $java_args                         = $puppetdb::params::java_args,
   $merge_default_java_args           = $puppetdb::params::merge_default_java_args,
@@ -298,6 +299,7 @@ class puppetdb::server (
   if $manage_firewall {
     Package[$puppetdb_package] ->
     Class['puppetdb::server::firewall'] ->
+    Class['puppetdb::server::global'] ->
     Class['puppetdb::server::command_processing'] ->
     Class['puppetdb::server::database'] ->
     Class['puppetdb::server::read_database'] ->
@@ -306,6 +308,7 @@ class puppetdb::server (
     Service[$puppetdb_service]
   } else {
     Package[$puppetdb_package] ->
+    Class['puppetdb::server::global'] ->
     Class['puppetdb::server::command_processing'] ->
     Class['puppetdb::server::database'] ->
     Class['puppetdb::server::read_database'] ->

@@ -6,12 +6,14 @@ class puppetdb::server::command_processing (
   $confdir         = $puppetdb::params::confdir,
 ) inherits puppetdb::params {
 
+  $config_ini = "${confdir}/config.ini"
+
   # Set the defaults
   Ini_setting {
-    path    => "${confdir}/config.ini",
+    path    => $config_ini,
     ensure  => 'present',
     section => 'command-processing',
-    require => File["${confdir}/config.ini"],
+    require => File[$config_ini],
   }
 
   if $command_threads {

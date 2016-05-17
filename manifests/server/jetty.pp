@@ -17,19 +17,21 @@ class puppetdb::server::jetty (
   $puppetdb_group     = $puppetdb::params::puppetdb_group,
 ) inherits puppetdb::params {
 
-  file { "${confdir}/jetty.ini":
+  $jetty_ini = "${confdir}/jetty.ini"
+
+  file { $jetty_ini:
     ensure => file,
-    owner => $puppetdb_user,
-    group => $puppetdb_group,
-    mode => '0600',
+    owner  => $puppetdb_user,
+    group  => $puppetdb_group,
+    mode   => '0600',
   }
 
   # Set the defaults
   Ini_setting {
-    path    => "${confdir}/jetty.ini",
+    path    => $jetty_ini,
     ensure  => present,
     section => 'jetty',
-    require => File["${confdir}/puppetdb.ini"],
+    require => File[$jetty_ini],
   }
 
   $cleartext_setting_ensure = $disable_cleartext ? {

@@ -39,21 +39,23 @@ class puppetdb::server::read_database (
       }
     }
 
-    file { "${confdir}/read_database.ini":
+    $read_database_ini = "${confdir}/read_database.ini"
+
+    file { $read_database_ini:
       ensure => file,
       owner  => $puppetdb_user,
       group  => $puppetdb_group,
       mode   => '0600',
     }
 
-    $file_require = File["${confdir}/read_database.ini"]
+    $file_require = File[$read_database_ini]
     $ini_setting_require = str2bool($database_validate) ? {
       false   => $file_require,
       default => [$file_require, Class['puppetdb::server::validate_read_db']],
     }
     # Set the defaults
     Ini_setting {
-      path    => "${confdir}/read_database.ini",
+      path    => $read_database_ini,
       ensure  => present,
       section => 'read-database',
       require => $ini_setting_require,
