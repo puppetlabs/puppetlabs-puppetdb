@@ -259,7 +259,7 @@ describe 'puppetdb::server::database', :type => :class do
         describe 'to a numeric value' do
           let(:params) do
             {
-              'database_max_pool_size': 12345
+              'database_max_pool_size' => 12345
             }
           end
           it { should contain_ini_setting('puppetdb_database_max_pool_size').
@@ -275,7 +275,7 @@ describe 'puppetdb::server::database', :type => :class do
         describe 'to absent' do
           let(:params) do
             {
-              'database_max_pool_size': 'absent'
+              'database_max_pool_size' => 'absent'
             }
           end
           it { should contain_ini_setting('puppetdb_database_max_pool_size').
@@ -293,7 +293,7 @@ describe 'puppetdb::server::database', :type => :class do
         describe 'to a numeric value' do
           let(:params) do
             {
-              'database_max_pool_size': 12345
+              'database_max_pool_size' => 12345
             }
           end
           it { should contain_ini_setting('puppetdb_database_max_pool_size').
@@ -309,7 +309,7 @@ describe 'puppetdb::server::database', :type => :class do
         describe 'to absent' do
           let(:params) do
             {
-              'database_max_pool_size': 'absent'
+              'database_max_pool_size' => 'absent'
             }
           end
           it { should contain_ini_setting('puppetdb_database_max_pool_size').
@@ -327,7 +327,7 @@ describe 'puppetdb::server::database', :type => :class do
         describe 'to a numeric value' do
           let(:params) do
             {
-              'database_max_pool_size': 12345
+              'database_max_pool_size' => 12345
             }
           end
           it { should_not contain_ini_setting('puppetdb_database_max_pool_size') }
@@ -336,7 +336,7 @@ describe 'puppetdb::server::database', :type => :class do
         describe 'to absent' do
           let(:params) do
             {
-              'database_max_pool_size': 'absent'
+              'database_max_pool_size' => 'absent'
             }
           end
           it { should_not contain_ini_setting('puppetdb_database_max_pool_size') }
