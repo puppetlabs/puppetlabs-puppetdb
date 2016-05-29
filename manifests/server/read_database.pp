@@ -130,6 +130,20 @@ class puppetdb::server::read_database (
       setting => 'conn-lifetime',
       value   => $conn_lifetime,
     }
+
+    if $puppetdb::params::database_max_pool_size_setting_name != undef {
+      if $database_max_pool_size == 'absent' {
+        ini_setting { 'puppetdb_read_database_max_pool_size':
+          ensure  => absent,
+          setting => $puppetdb::params::database_max_pool_size_setting_name,
+        }
+      } elsif $database_max_pool_size != undef {
+        ini_setting { 'puppetdb_read_database_max_pool_size':
+          setting => $puppetdb::params::database_max_pool_size_setting_name,
+          value   => $database_max_pool_size,
+        }
+      }
+    }
   } else {
     file { "${confdir}/read_database.ini":
       ensure => absent,

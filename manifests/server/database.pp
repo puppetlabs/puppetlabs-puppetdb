@@ -161,8 +161,17 @@ class puppetdb::server::database (
     value   => $conn_lifetime,
   }
 
-  ini_setting { 'puppetdb_database_max_pool_size':
-    setting => 'maximum-pool-size',
-    value   => $database_max_pool_size,
+  if $puppetdb::params::database_max_pool_size_setting_name != undef {
+    if $database_max_pool_size == 'absent' {
+      ini_setting { 'puppetdb_database_max_pool_size':
+        ensure  => absent,
+        setting => $puppetdb::params::database_max_pool_size_setting_name,
+      }
+    } elsif $database_max_pool_size != undef {
+      ini_setting { 'puppetdb_database_max_pool_size':
+        setting => $puppetdb::params::database_max_pool_size_setting_name,
+        value   => $database_max_pool_size,
+      }
+    }
   }
 }
