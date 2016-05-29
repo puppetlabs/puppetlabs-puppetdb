@@ -125,6 +125,14 @@ describe 'puppetdb::server::database', :type => :class do
              'setting' => 'conn-lifetime',
              'value'   => '0'
              )}
+      it { should contain_ini_setting('puppetdb_database_max_pool_size').
+        with(
+             'ensure'  => 'present',
+             'path'    => '/etc/puppetlabs/puppetdb/conf.d/database.ini',
+             'section' => 'database',
+             'setting' => 'maximum-pool-size',
+             'value'   => '25'
+             )}
     end
 
     describe 'when using a legacy PuppetDB version' do
@@ -232,6 +240,14 @@ describe 'puppetdb::server::database', :type => :class do
              'section' => 'database',
              'setting' => 'conn-lifetime',
              'value'   => '0'
+             )}
+      it { should contain_ini_setting('puppetdb_database_max_pool_size').
+        with(
+             'ensure'  => 'present',
+             'path'    => '/etc/puppetdb/conf.d/database.ini',
+             'section' => 'database',
+             'setting' => 'maximum-pool-size',
+             'value'   => '25'
              )}
     end
 
