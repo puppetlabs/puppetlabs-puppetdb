@@ -64,8 +64,6 @@ class puppetdb::params inherits puppetdb::globals {
 
   $puppetdb_package     = 'puppetdb'
   $puppetdb_service     = 'puppetdb'
-  $puppetdb_user        = 'puppetdb'
-  $puppetdb_group       = 'puppetdb'
   $masterless           = false
 
   if !($puppetdb_version in ['latest','present','absent']) and versioncmp($puppetdb_version, '3.0.0') < 0 {
@@ -129,12 +127,23 @@ class puppetdb::params inherits puppetdb::globals {
 
   case $::osfamily {
     'RedHat', 'Suse', 'Archlinux': {
+      $puppetdb_user     = 'puppetdb'
+      $puppetdb_group    = 'puppetdb'
       $puppetdb_initconf = '/etc/sysconfig/puppetdb'
     }
     'Debian': {
+      $puppetdb_user     = 'puppetdb'
+      $puppetdb_group    = 'puppetdb'
       $puppetdb_initconf = '/etc/default/puppetdb'
     }
-    'OpenBSD','FreeBSD': {
+    'OpenBSD': {
+      $puppetdb_user     = '_puppetdb'
+      $puppetdb_group    = '_puppetdb'
+      $puppetdb_initconf = undef
+    }
+    'FreeBSD': {
+      $puppetdb_user     = 'puppetdb'
+      $puppetdb_group    = 'puppetdb'
       $puppetdb_initconf = undef
     }
     default: {
