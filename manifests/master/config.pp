@@ -179,6 +179,10 @@ class puppetdb::master::config (
     if ($manage_routes) {
       Class['puppetdb::master::routes'] ~> Service[$puppet_service_name]
     }
+
+    if ($manage_report_processor) {
+      Class['puppetdb::master::report_processor'] ~> Service[$puppet_service_name]
+    }
   }
 
 }
