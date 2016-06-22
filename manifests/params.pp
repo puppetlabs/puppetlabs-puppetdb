@@ -170,7 +170,7 @@ class puppetdb::params inherits puppetdb::globals {
   # Get the parameter name for the database connection pool tuning
   if $puppetdb_version in ['latest','present'] or versioncmp($puppetdb_version, '4.0.0') >= 0 {
     $database_max_pool_size_setting_name = 'maximum-pool-size'
-  } elsif versioncmp($puppetdb_version, '3.2.0') >= 0 {
+  } elsif versioncmp($puppetdb_version, '2.8.0') >= 0 {
     $database_max_pool_size_setting_name = 'partition-conn-max'
   } else {
     $database_max_pool_size_setting_name = undef
