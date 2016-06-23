@@ -20,14 +20,15 @@ class puppetdb::params inherits puppetdb::globals {
   $postgres_version          = '9.4'
 
   # The remaining database settings are not used for an embedded database
-  $database_host       = 'localhost'
-  $database_port       = '5432'
-  $database_name       = 'puppetdb'
-  $database_username   = 'puppetdb'
-  $database_password   = 'puppetdb'
-  $database_ssl        = undef
-  $jdbc_ssl_properties = ''
-  $database_validate   = true
+  $database_host          = 'localhost'
+  $database_port          = '5432'
+  $database_name          = 'puppetdb'
+  $database_username      = 'puppetdb'
+  $database_password      = 'puppetdb'
+  $database_ssl           = undef
+  $jdbc_ssl_properties    = ''
+  $database_validate      = true
+  $database_max_pool_size = undef
 
   # These settings manage the various auto-deactivation and auto-purge settings
   $node_ttl               = '0s'
@@ -57,6 +58,7 @@ class puppetdb::params inherits puppetdb::globals {
   $read_conn_max_age                 = '60'
   $read_conn_keep_alive              = '45'
   $read_conn_lifetime                = '0'
+  $read_database_max_pool_size       = undef
 
   $manage_firewall         = true
   $java_args               = {}
@@ -173,4 +175,13 @@ class puppetdb::params inherits puppetdb::globals {
   $certificate_whitelist      = [ ]
   # change to this to only allow access by the puppet master by default:
   #$certificate_whitelist      = [ $::servername ]
+
+  # Get the parameter name for the database connection pool tuning
+  if $puppetdb_version in ['latest','present'] or versioncmp($puppetdb_version, '4.0.0') >= 0 {
+    $database_max_pool_size_setting_name = 'maximum-pool-size'
+  } elsif versioncmp($puppetdb_version, '2.8.0') >= 0 {
+    $database_max_pool_size_setting_name = 'partition-conn-max'
+  } else {
+    $database_max_pool_size_setting_name = undef
+  }
 }

@@ -125,6 +125,7 @@ describe 'puppetdb::server::database', :type => :class do
              'setting' => 'conn-lifetime',
              'value'   => '0'
              )}
+      it { should_not contain_ini_setting('puppetdb_database_max_pool_size') }
     end
 
     describe 'when using a legacy PuppetDB version' do
@@ -233,6 +234,7 @@ describe 'puppetdb::server::database', :type => :class do
              'setting' => 'conn-lifetime',
              'value'   => '0'
              )}
+      it { should_not contain_ini_setting('puppetdb_database_max_pool_size') }
     end
 
     describe 'when overriding database_path for embedded' do
@@ -250,6 +252,96 @@ describe 'puppetdb::server::database', :type => :class do
              'setting' => 'subname',
              'value'   => 'file:/tmp/foo;hsqldb.tx=mvcc;sql.syntax_pgs=true'
              )}
+    end
+
+    describe 'when setting max pool size' do
+      context 'on current PuppetDB' do
+        describe 'to a numeric value' do
+          let(:params) do
+            {
+              'database_max_pool_size' => 12345
+            }
+          end
+          it { should contain_ini_setting('puppetdb_database_max_pool_size').
+            with(
+              'ensure'  => 'present',
+              'path'    => '/etc/puppetlabs/puppetdb/conf.d/database.ini',
+              'section' => 'database',
+              'setting' => 'maximum-pool-size',
+              'value'   => '12345'
+            )}
+        end
+
+        describe 'to absent' do
+          let(:params) do
+            {
+              'database_max_pool_size' => 'absent'
+            }
+          end
+          it { should contain_ini_setting('puppetdb_database_max_pool_size').
+            with(
+              'ensure'  => 'absent',
+              'path'    => '/etc/puppetlabs/puppetdb/conf.d/database.ini',
+              'section' => 'database',
+              'setting' => 'maximum-pool-size'
+            )}
+        end
+      end
+
+      context 'on PuppetDB 3.2' do
+        let (:pre_condition) { 'class { "puppetdb::globals": version => "3.2.0", }' }
+        describe 'to a numeric value' do
+          let(:params) do
+            {
+              'database_max_pool_size' => 12345
+            }
+          end
+          it { should contain_ini_setting('puppetdb_database_max_pool_size').
+            with(
+              'ensure'  => 'present',
+              'path'    => '/etc/puppetlabs/puppetdb/conf.d/database.ini',
+              'section' => 'database',
+              'setting' => 'partition-conn-max',
+              'value'   => '12345'
+            )}
+        end
+
+        describe 'to absent' do
+          let(:params) do
+            {
+              'database_max_pool_size' => 'absent'
+            }
+          end
+          it { should contain_ini_setting('puppetdb_database_max_pool_size').
+            with(
+              'ensure'  => 'absent',
+              'path'    => '/etc/puppetlabs/puppetdb/conf.d/database.ini',
+              'section' => 'database',
+              'setting' => 'partition-conn-max'
+            )}
+        end
+      end
+
+      context 'on a legacy PuppetDB version' do
+        let (:pre_condition) { 'class { "puppetdb::globals": version => "2.2.0", }' }
+        describe 'to a numeric value' do
+          let(:params) do
+            {
+              'database_max_pool_size' => 12345
+            }
+          end
+          it { should_not contain_ini_setting('puppetdb_database_max_pool_size') }
+        end
+
+        describe 'to absent' do
+          let(:params) do
+            {
+              'database_max_pool_size' => 'absent'
+            }
+          end
+          it { should_not contain_ini_setting('puppetdb_database_max_pool_size') }
+        end
+      end
     end
   end
 end

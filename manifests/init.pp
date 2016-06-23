@@ -70,6 +70,8 @@ class puppetdb (
   $temp_usage                        = $puppetdb::params::temp_usage,
   $certificate_whitelist_file        = $puppetdb::params::certificate_whitelist_file,
   $certificate_whitelist             = $puppetdb::params::certificate_whitelist,
+  $database_max_pool_size            = $puppetdb::params::database_max_pool_size,
+  $read_database_max_pool_size       = $puppetdb::params::read_database_max_pool_size,
 ) inherits puppetdb::params {
 
   class { '::puppetdb::server':
@@ -138,6 +140,8 @@ class puppetdb (
     temp_usage                        => $temp_usage,
     certificate_whitelist_file        => $certificate_whitelist_file,
     certificate_whitelist             => $certificate_whitelist,
+    database_max_pool_size            => $database_max_pool_size,
+    read_database_max_pool_size       => $read_database_max_pool_size,
   }
 
   if ($database == 'postgres') {
