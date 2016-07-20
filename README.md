@@ -103,7 +103,6 @@ scenario might look like:
 
 **This is an example of a very basic 3-node setup for PuppetDB.**
 
-    $master_host = 'master.example.lan'
     $puppetdb_host = 'puppetdb.example.lan'
     $postgres_host = 'postgres.example.lan'
     node 'master.example.lan' {
