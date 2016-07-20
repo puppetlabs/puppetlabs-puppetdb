@@ -106,14 +106,14 @@ scenario might look like:
     $master_host = 'master.example.lan'
     $puppetdb_host = 'puppetdb.example.lan'
     $postgres_host = 'postgres.example.lan'
-    node $master_host {
+    node 'master.example.lan' {
       # Here we configure the Puppet master to use PuppetDB,
       # telling it the hostname of the PuppetDB node
       class { 'puppetdb::master::config':
         puppetdb_server => $puppetdb_host,
       }
     }
-    node $postgres_host {
+    node 'postgres.example.lan' {
       # Here we install and configure PostgreSQL and the PuppetDB
       # database instance, and tell PostgreSQL that it should
       # listen for connections to the `$postgres_host`
@@ -121,7 +121,7 @@ scenario might look like:
         listen_addresses => $postgres_host,
       }
     }
-    node $puppetdb_host {
+    node 'puppetdb.example.lan' {
       # Here we install and configure PuppetDB, and tell it where to
       # find the PostgreSQL database.
       class { 'puppetdb::server':
