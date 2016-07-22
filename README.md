@@ -55,9 +55,10 @@ To begin using PuppetDB, you’ll have to make a few decisions:
 * Which database back-end should I use?
   * PostgreSQL (default) or our embedded database
   * Embedded database
-    * **note:** We suggest using the embedded database only for experimental
-      environments rather than production, as it does not scale well and can
-      cause difficulty in migrating to PostgreSQL.
+    * **note:** As of PuppetDB 4.0, the embedded database is no longer supported as
+      an option. When running PuppetDB 3.x, we suggest using the embedded database
+      only for experimental environments rather than production, as it does not scale
+      well and can cause difficulty in migrating to PostgreSQL.
 * Should I run the database on the same node that I run PuppetDB on?
 * Should I run PuppetDB on the same node that I run my master on?
 
