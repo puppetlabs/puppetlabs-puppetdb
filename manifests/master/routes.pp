@@ -39,5 +39,6 @@ class puppetdb::master::routes (
   file { "${puppet_confdir}/routes.yaml":
     ensure  => file,
     content => template('puppetdb/routes.yaml.erb'),
+    mode    => '0644',
   }
 }
