@@ -70,11 +70,13 @@ class puppetdb::server (
 ) inherits puppetdb::params {
   # deprecation warnings
   if $database_ssl != undef {
-    warning('$database_ssl is deprecated and will be removed in the next major release. Please use $jdbc_ssl_properties = "?ssl=true" instead.')
+    warning('$database_ssl is deprecated and will be removed in the next major release.
+     Please use $jdbc_ssl_properties = "?ssl=true" instead.')
   }
 
   if $read_database_ssl != undef {
-    warning('$read_database_ssl is deprecated and will be removed in the next major release. Please use $read_database_jdbc_ssl_properties = "?ssl=true" instead.')
+    warning('$read_database_ssl is deprecated and will be removed in the next major release.
+     Please use $read_database_jdbc_ssl_properties = "?ssl=true" instead.')
   }
 
   # Apply necessary suffix if zero is specified.
@@ -95,7 +97,8 @@ class puppetdb::server (
   }
 
   # Validate node_purge_ttl
-  validate_re ($node_purge_ttl_real, ['^\d+(d|h|m|s|ms)$'], "node_purge_ttl is <${node_purge_ttl}> which does not match the regex validation")
+  validate_re ($node_purge_ttl_real, ['^\d+(d|h|m|s|ms)$'], "node_purge_ttl is <${node_purge_ttl}>
+   which does not match the regex validation")
 
   # Apply necessary suffix if zero is specified.
   if $report_ttl == '0' {
@@ -111,7 +114,8 @@ class puppetdb::server (
   $service_enabled = $puppetdb_service_status ? {
     /(running|true)/  => true,
     /(stopped|false)/ => false,
-    default           => fail("puppetdb_service_status valid values are 'true', 'running', 'false', and 'stopped'. You provided '${puppetdb_service_status}'"),
+    default           => fail("puppetdb_service_status valid values are 'true', 'running', 'false', and 'stopped'.
+     You provided '${puppetdb_service_status}'"),
   }
 
   # Validate database type (Currently only postgres and embedded are supported)
@@ -212,10 +216,10 @@ class puppetdb::server (
     validate_absolute_path($ssl_dir)
     file {
       $ssl_dir:
-        ensure  => directory,
-        owner   => $puppetdb_user,
-        group   => $puppetdb_group,
-        mode    => '0700';
+        ensure => directory,
+        owner  => $puppetdb_user,
+        group  => $puppetdb_group,
+        mode   => '0700';
       $ssl_key_path:
         ensure  => file,
         content => $ssl_key,
