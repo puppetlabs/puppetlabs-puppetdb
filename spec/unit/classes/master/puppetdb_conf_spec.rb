@@ -7,6 +7,7 @@ describe 'puppetdb::master::puppetdb_conf', :type => :class do
       :fqdn => 'puppetdb.example.com',
       :osfamily => 'Debian',
       :operatingsystem => 'Debian',
+      :puppetversion => Puppet.version,
       :operatingsystemrelease => '6.0',
       :lsbdistid => 'Debian',
       :lsbdistcodename => 'foo',

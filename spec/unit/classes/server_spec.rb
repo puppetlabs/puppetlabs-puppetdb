@@ -6,6 +6,7 @@ describe 'puppetdb::server', :type => :class do
         :osfamily                 => 'RedHat',
         :operatingsystem          => 'RedHat',
         :operatingsystemrelease   => '6.5',
+        :puppetversion            => Puppet.version,
         :fqdn                     => 'test.domain.local',
         :kernel                   => 'Linux',
         :selinux                  => true,
