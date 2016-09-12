@@ -28,6 +28,11 @@ describe 'puppetdb::master::config', :type => :class do
 
   end
 
+  context 'when PuppetDB has more than one server' do
+    let (:params) {{ :puppetdb_servers => ["https://puppetdb1.mycompany.com:8081/", "https://puppetdb2.mycompany.com:8081/"] }}
+    it { should contain_ini_setting('puppetdbserver_urls').with_value("https://puppetdb1.mycompany.com:8081/,https://puppetdb2.mycompany.com:8081/") }
+  end
+
   context 'when PuppetDB and Puppet Master are on the same server' do
 
     context 'when using default values' do

@@ -3,6 +3,7 @@
 class puppetdb::master::puppetdb_conf (
   $server             = 'localhost',
   $port               = '8081',
+  $servers            = [],
   $soft_write_failure = $puppetdb::disable_ssl ? {
     true => true,
     default => false,
@@ -30,9 +31,16 @@ class puppetdb::master::puppetdb_conf (
       value   => $port,
     }
   } else {
-    ini_setting { 'puppetdbserver_urls':
-      setting => 'server_urls',
-      value   => "https://${server}:${port}/",
+    unless $servers {
+      ini_setting { 'puppetdbserver_urls':
+        setting => 'server_urls',
+        value   => "https://${server}:${port}/",
+      }
+    } else {
+      ini_setting {'puppetdbserver_urls':
+        setting => 'server_urls',
+        value   => join($servers, ',')
+      }
     }
   }
 
