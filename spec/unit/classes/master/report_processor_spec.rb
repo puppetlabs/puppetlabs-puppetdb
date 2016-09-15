@@ -5,6 +5,7 @@ describe 'puppetdb::master::report_processor', :type => :class do
     let(:facts) do
       {
           :osfamily                 => 'RedHat',
+          :puppetversion            => Puppet.version,
           :clientcert               => 'test.domain.local',
       }
     end

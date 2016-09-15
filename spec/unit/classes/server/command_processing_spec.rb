@@ -4,7 +4,8 @@ describe 'puppetdb::server::command_processing', :type => :class do
   context 'on a supported platform' do
     let(:facts) do
       {
-        :osfamily                 => 'OpenBSD',
+        :osfamily => 'OpenBSD',
+        :puppetversion => Puppet.version,
       }
     end
 

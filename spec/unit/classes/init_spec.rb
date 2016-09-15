@@ -7,6 +7,7 @@ describe 'puppetdb', :type => :class do
     let(:facts) do
       {
         :osfamily => 'Debian',
+        :puppetversion => Puppet.version,
         :operatingsystem => 'Debian',
         :operatingsystemrelease => '6.0',
         :kernel => 'Linux',
@@ -32,6 +33,7 @@ describe 'puppetdb', :type => :class do
       {
         :osfamily => 'RedHat',
         :operatingsystem => 'Debian',
+        :puppetversion => Puppet.version,
         :operatingsystemrelease => '6.0',
         :kernel => 'Linux',
         :concat_basedir => '/var/lib/puppet/concat',

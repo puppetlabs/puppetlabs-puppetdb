@@ -6,6 +6,7 @@ describe 'puppetdb::master::config', :type => :class do
     {
       :fqdn => 'puppetdb.example.com',
       :osfamily => 'Debian',
+      :puppetversion => Puppet.version,
       :operatingsystem => 'Debian',
       :operatingsystemrelease => '6.0',
       :kernel => 'Linux',
@@ -81,6 +82,7 @@ describe 'puppetdb::master::config', :type => :class do
         {
           :osfamily => 'RedHat',
           :operatingsystem => 'RedHat',
+          :puppetversion => Puppet.version,
           :operatingsystemrelease => '7.0',
           :kernel => 'Linux',
           :concat_basedir => '/var/lib/puppet/concat',
