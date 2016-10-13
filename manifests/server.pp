@@ -61,6 +61,7 @@ class puppetdb::server (
   $merge_default_java_args           = $puppetdb::params::merge_default_java_args,
   $max_threads                       = $puppetdb::params::max_threads,
   $command_threads                   = $puppetdb::params::command_threads,
+  $concurrent_writes                 = $puppetdb::params::concurrent_writes,
   $store_usage                       = $puppetdb::params::store_usage,
   $temp_usage                        = $puppetdb::params::temp_usage,
   $certificate_whitelist_file        = $puppetdb::params::certificate_whitelist_file,
@@ -147,11 +148,12 @@ class puppetdb::server (
   }
 
   class { 'puppetdb::server::command_processing':
-    command_threads => $command_threads,
-    store_usage     => $store_usage,
-    temp_usage      => $temp_usage,
-    confdir         => $confdir,
-    notify          => Service[$puppetdb_service],
+    command_threads   => $command_threads,
+    concurrent_writes => $concurrent_writes,
+    store_usage       => $store_usage,
+    temp_usage        => $temp_usage,
+    confdir           => $confdir,
+    notify            => Service[$puppetdb_service],
   }
 
   class { 'puppetdb::server::database':

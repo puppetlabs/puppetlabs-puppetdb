@@ -158,6 +158,7 @@ class puppetdb::params inherits puppetdb::globals {
   $puppetdb_service_status  = 'running'
 
   $command_threads          = undef
+  $concurrent_writes        = undef
   $store_usage              = undef
   $temp_usage               = undef
 

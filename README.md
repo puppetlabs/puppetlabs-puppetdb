@@ -664,6 +664,11 @@ If `true`, puppet will manage your iptables rules for PuppetDB via the
 The number of command processing threads to use. Defaults to `undef`, using the
 PuppetDB built-in default.
 
+####`concurrent_writes`
+
+The number of threads allowed to write to disk at any one time. Defaults to
+`undef`, which uses the PuppetDB built-in default.
+
 ####`store_usage`
 
 The amount of disk space (in MB) to allow for persistent message storage.
