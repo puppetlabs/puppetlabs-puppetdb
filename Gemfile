@@ -8,7 +8,8 @@ group :development, :test do
   gem 'rspec-core', '3.1.7'
   gem 'rspec-puppet', '~> 2.0'
   gem 'puppet-lint',  '~> 1.1'
-  gem 'metadata-json-lint'
+  gem 'metadata-json-lint', '0.0.11' if RUBY_VERSION < '1.9'
+  gem 'metadata-json-lint'           if RUBY_VERSION >= '1.9'
   gem 'json_pure', '~> 1.8'
 end
 

@@ -10,6 +10,7 @@ rvm:
   - 1.9.3
   - 2.0.0
   - 2.1.1
+  - 2.3.1
 env:
   matrix:
   - PUPPET_GEM_VERSION="~> 3.7.1"
@@ -25,5 +26,13 @@ matrix:
   exclude:
     - rvm: 1.8.7
       env: PUPPET_GEM_VERSION="~> 4"
+    - rvm: 2.3.1
+      env: PUPPET_GEM_VERSION="~> 3.7.1"
+    - rvm: 2.3.1
+      env: PUPPET_GEM_VERSION="~> 3.7"
+    - rvm: 2.3.1
+      env: PUPPET_GEM_VERSION="~> 3"
+    - rvm: 2.3.1
+      env: PUPPET_GEM_VERSION="~> 3" PARSER="future"
 notifications:
   email: false
