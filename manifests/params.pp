@@ -12,8 +12,7 @@ class puppetdb::params inherits puppetdb::globals {
   $disable_ssl               = false
   $open_ssl_listen_port      = undef
   $postgres_listen_addresses = 'localhost'
-  $postgres_datadir          = '/var/lib/postgresql/9.4/main'
-
+  
   $puppetdb_version          = $puppetdb::globals::version
   $database                  = $puppetdb::globals::database
   $manage_dbserver           = true
