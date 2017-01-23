@@ -32,7 +32,7 @@ class puppetdb::database::postgresql(
   # create the puppetdb database
   postgresql::server::db { $database_name:
     user     => $database_username,
-    password => $database_password,
+    password => postgresql_password($database_username, $database_password),
     grant    => 'all',
   }
 }
