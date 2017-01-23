@@ -371,6 +371,11 @@ If true, open the `ssl_listen_port` on the firewall. Defaults to `undef`.
 
 Specify the supported SSL protocols for PuppetDB (e.g. TLSv1, TLSv1.1, TLSv1.2.)
 
+####`cipher_suites`
+
+Configure jetty's supported `cipher-suites` (e.g. `SSL_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384`).
+Defaults to `undef`.
+
 ###`manage_dbserver`
 
 If true, the PostgreSQL server will be managed by this module. Defaults to `true`.
