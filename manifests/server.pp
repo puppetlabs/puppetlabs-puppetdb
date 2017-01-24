@@ -18,6 +18,7 @@ class puppetdb::server (
   $ssl_cert                          = $puppetdb::params::ssl_cert,
   $ssl_ca_cert                       = $puppetdb::params::ssl_ca_cert,
   $ssl_protocols                     = $puppetdb::params::ssl_protocols,
+  $cipher_suites                     = $puppetdb::params::cipher_suites,
   $database                          = $puppetdb::params::database,
   $database_host                     = $puppetdb::params::database_host,
   $database_port                     = $puppetdb::params::database_port,
@@ -61,6 +62,7 @@ class puppetdb::server (
   $merge_default_java_args           = $puppetdb::params::merge_default_java_args,
   $max_threads                       = $puppetdb::params::max_threads,
   $command_threads                   = $puppetdb::params::command_threads,
+  $concurrent_writes                 = $puppetdb::params::concurrent_writes,
   $store_usage                       = $puppetdb::params::store_usage,
   $temp_usage                        = $puppetdb::params::temp_usage,
   $certificate_whitelist_file        = $puppetdb::params::certificate_whitelist_file,
@@ -147,11 +149,12 @@ class puppetdb::server (
   }
 
   class { 'puppetdb::server::command_processing':
-    command_threads => $command_threads,
-    store_usage     => $store_usage,
-    temp_usage      => $temp_usage,
-    confdir         => $confdir,
-    notify          => Service[$puppetdb_service],
+    command_threads   => $command_threads,
+    concurrent_writes => $concurrent_writes,
+    store_usage       => $store_usage,
+    temp_usage        => $temp_usage,
+    confdir           => $confdir,
+    notify            => Service[$puppetdb_service],
   }
 
   class { 'puppetdb::server::database':
@@ -251,6 +254,7 @@ class puppetdb::server (
     ssl_cert_path      => $ssl_cert_path,
     ssl_ca_cert_path   => $ssl_ca_cert_path,
     ssl_protocols      => $ssl_protocols,
+    cipher_suites      => $cipher_suites,
     disable_ssl        => $disable_ssl,
     confdir            => $confdir,
     max_threads        => $max_threads,

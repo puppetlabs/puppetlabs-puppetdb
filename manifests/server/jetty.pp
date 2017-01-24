@@ -11,6 +11,7 @@ class puppetdb::server::jetty (
   $ssl_key_path       = $puppetdb::params::ssl_key_path,
   $ssl_ca_cert_path   = $puppetdb::params::ssl_ca_cert_path,
   $ssl_protocols      = $puppetdb::params::ssl_protocols,
+  $cipher_suites      = $puppetdb::params::cipher_suites,
   $confdir            = $puppetdb::params::confdir,
   $max_threads        = $puppetdb::params::max_threads,
   $puppetdb_user      = $puppetdb::params::puppetdb_user,
@@ -76,6 +77,17 @@ class puppetdb::server::jetty (
       ensure  => $ssl_setting_ensure,
       setting => 'ssl-protocols',
       value   => $ssl_protocols,
+    }
+  }
+
+  if $cipher_suites != undef {
+
+    validate_string($cipher_suites)
+
+    ini_setting { 'puppetdb_cipher-suites':
+      ensure  => $ssl_setting_ensure,
+      setting => 'cipher-suites',
+      value   => $cipher_suites,
     }
   }
 

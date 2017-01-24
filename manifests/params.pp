@@ -10,6 +10,7 @@ class puppetdb::params inherits puppetdb::globals {
   $ssl_listen_port           = '8081'
   $ssl_protocols             = undef
   $disable_ssl               = false
+  $cipher_suites             = undef
   $open_ssl_listen_port      = undef
   $postgres_listen_addresses = 'localhost'
 
@@ -158,6 +159,7 @@ class puppetdb::params inherits puppetdb::globals {
   $puppetdb_service_status  = 'running'
 
   $command_threads          = undef
+  $concurrent_writes        = undef
   $store_usage              = undef
   $temp_usage               = undef
 

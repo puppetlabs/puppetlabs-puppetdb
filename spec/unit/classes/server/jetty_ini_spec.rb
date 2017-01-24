@@ -171,6 +171,26 @@ describe 'puppetdb::server::jetty', :type => :class do
       end
     end
 
+    describe 'when setting cipher_suites' do
+      context 'to a valid string' do
+        let(:params) do
+          {
+            'cipher_suites' => 'SSL_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384, SSL_ECDHE_RSA_WITH_AES_256_CBC_SHA384, SSL_RSA_WITH_AES_256_CBC_SHA256'
+          }
+        end
+
+        it {
+          should contain_ini_setting('puppetdb_cipher-suites').with(
+            'ensure'  => 'present',
+            'path'    => '/etc/puppetlabs/puppetdb/conf.d/jetty.ini',
+            'section' => 'jetty',
+            'setting' => 'cipher-suites',
+            'value'   => 'SSL_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384, SSL_ECDHE_RSA_WITH_AES_256_CBC_SHA384, SSL_RSA_WITH_AES_256_CBC_SHA256'
+          )
+        }
+      end
+    end
+
     describe 'when disabling the cleartext HTTP port' do
       let(:params) do
         {
