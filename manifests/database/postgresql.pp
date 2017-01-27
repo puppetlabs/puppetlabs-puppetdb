@@ -8,6 +8,7 @@ class puppetdb::database::postgresql(
   $database_port        = $puppetdb::params::database_port,
   $manage_server        = $puppetdb::params::manage_dbserver,
   $manage_package_repo  = $puppetdb::params::manage_pg_repo,
+  $postgres_datadir     = $puppetdb::params::postgres_datadir,
   $postgres_version     = $puppetdb::params::postgres_version,
 ) inherits puppetdb::params {
 
@@ -15,6 +16,7 @@ class puppetdb::database::postgresql(
     class { '::postgresql::globals':
       manage_package_repo => $manage_package_repo,
       version             => $postgres_version,
+      datadir             => $postgres_datadir,
     }
     # get the pg server up and running
     class { '::postgresql::server':

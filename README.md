@@ -856,6 +856,10 @@ to `true`. If set to `false`, this class will create the database and user via
 The URL to use for testing if the PuppetDB instance is running. Defaults to
 `/pdb/meta/v1/version`.
 
+####`postgres_datadir`
+
+This setting will override the default postgresql data directory, e.g. `/pgdata`.  The default is to let the postgresql module use whatever directory is the default for your OS distro.
+
 ####`manage_package_repo`
 
 If `true`, the official postgresql.org repo will be added and postgres won't
