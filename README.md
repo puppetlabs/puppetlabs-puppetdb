@@ -767,6 +767,14 @@ If `true`, the module will store values from `puppetdb_server` and `puppetdb_por
 parameters in the PuppetDB configuration file. If `false`, an existing PuppetDB
 configuration file will be used to retrieve server and port values.
 
+####`create_puppet_service_resource`
+
+If `true`, AND if `restart_puppet` is true, then the module will create a service
+resource for `puppet_service_name` if it has not been defined. Defaults to `true`.
+If you are already declaring the `puppet_service_name` service resource in another
+part of your code, setting this to `false` will avoid creation of that service
+resource by this module, avoiding potential duplicate resource errors.
+
 ####`strict_validation`
 
 If `true`, the module will fail if PuppetDB is not reachable, otherwise it will

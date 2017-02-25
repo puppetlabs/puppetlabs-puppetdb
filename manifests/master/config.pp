@@ -18,6 +18,7 @@ class puppetdb::master::config (
   $manage_storeconfigs         = true,
   $manage_report_processor     = false,
   $manage_config               = true,
+  $create_puppet_service_resource = true,
   $strict_validation           = true,
   $enable_reports              = false,
   $puppet_confdir              = $puppetdb::params::puppet_confdir,
@@ -165,8 +166,12 @@ class puppetdb::master::config (
 
   if ($restart_puppet) {
     # We will need to restart the puppet master service if certain config
-    # files are changed, so here we make sure it's in the catalog.
-    if ! defined(Service[$puppet_service_name]) {
+    # files are changed, so here we make sure it's in the catalog. This is
+    # parse-order dependent and could prevent another part of the code from
+    # declaring the service, so set $create_puppet_service_resource to false if you
+    # are absolutely sure you're declaring Service[$puppet_service_name] in
+    # some other way.
+    if $create_puppet_service_resource and ! defined(Service[$puppet_service_name]) {
       service { $puppet_service_name:
         ensure => running,
       }
