@@ -27,14 +27,15 @@ class puppetdb::params inherits puppetdb::globals {
   $postgres_version          = '9.6'
 
   # The remaining database settings are not used for an embedded database
-  $database_host          = 'localhost'
-  $database_port          = '5432'
-  $database_name          = 'puppetdb'
-  $database_username      = 'puppetdb'
-  $database_password      = 'puppetdb'
-  $jdbc_ssl_properties    = ''
-  $database_validate      = true
-  $database_max_pool_size = undef
+  $database_host                    = 'localhost'
+  $database_port                    = '5432'
+  $database_name                    = 'puppetdb'
+  $database_username                = 'puppetdb'
+  $database_password                = 'puppetdb'
+  $jdbc_ssl_properties              = ''
+  $database_validate                = true
+  $database_max_pool_size           = undef
+  $database_ip_mask_allow_all_users = '0.0.0.0/0'
 
   # These settings manage the various auto-deactivation and auto-purge settings
   $node_ttl               = '7d'
