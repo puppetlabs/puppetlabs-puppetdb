@@ -96,4 +96,47 @@ describe 'puppetdb::master::config', :type => :class do
 
   end
 
+  context 'when restart_puppet is true' do
+    let(:pre_condition) { 'class { "puppetdb": }' }
+
+    context 'with create_puppet_service_resource as default' do
+      let(:params) do
+        {
+          :puppet_service_name            => 'puppetserver',
+          :restart_puppet                 => true,
+        }
+      end
+
+      it { should contain_service('puppetserver').with(:ensure => 'running') }
+    end
+
+    context 'with create_puppet_service_resource = true' do
+      let(:params) do
+        {
+          :create_puppet_service_resource => true,
+          :puppet_service_name            => 'puppetserver',
+          :restart_puppet                 => true,
+        }
+      end
+
+      it { should contain_service('puppetserver').with(:ensure => 'running') }
+    end
+
+    context 'with create_puppet_service_resource = false' do
+      # Also setting the various parameters that notify the service to be false. Otherwise this error surfaces:
+      # `Could not find resource 'Service[puppetserver]' for relationship from 'Class[Puppetdb::Master::Puppetdb_conf]'`
+      let(:params) do
+        {
+          :create_puppet_service_resource => false,
+          :manage_config                  => false,
+          :manage_report_processor        => false,
+          :manage_routes                  => false,
+          :puppet_service_name            => 'puppetserver',
+          :restart_puppet                 => true,
+        }
+      end
+
+      it { should_not contain_service('puppetserver') }
+    end
+  end
 end
