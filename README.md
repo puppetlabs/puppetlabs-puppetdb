@@ -147,17 +147,6 @@ If your logging level is set to INFO or finer, you should start seeing
 PuppetDB-related log messages appear in both your Puppet master log and your
 puppetdb log as subsequent agent runs occur.
 
-If you’d prefer to use PuppetDB’s embedded database rather than PostgreSQL, have
-a look at the database parameter on the puppetdb class:
-
-    class { 'puppetdb':
-      database => 'embedded',
-    }
-
-The embedded database can be useful for testing and very small production
-environments, but it is not recommended for production environments since it
-consumes a great deal of memory as your number of nodes increase.
-
 ### Cross-node Dependencies
 
 It is worth noting that there are some cross-node dependencies, which means that
@@ -382,10 +371,12 @@ If true, the PostgreSQL server will be managed by this module. Defaults to `true
 
 ####`database`
 
-Which database backend to use; legal values are `postgres` (default) or
-`embedded`. The `embedded` db can be used for very small installations or for
-testing, but is not recommended for use in production environments. For more
-info, see the [puppetdb docs](http://docs.puppetlabs.com/puppetdb/).
+Which database backend to use; legal values are `postgres` (default)
+or `embedded`. The `embedded` option is not supported on PuppetDB
+4.0.0 or later. `embedded` can be used for very small installations or
+for testing, but is not recommended for use in production
+environments. For more info, see the [puppetdb
+docs](http://docs.puppetlabs.com/puppetdb/).
 
 ####`database_host`
 
