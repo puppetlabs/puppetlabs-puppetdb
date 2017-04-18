@@ -369,6 +369,11 @@ Defaults to `undef`.
 
 If true, the PostgreSQL server will be managed by this module. Defaults to `true`.
 
+###`manage_db`
+
+If true, the PostgreSQL database in the PostgreSQL instance will be managed by
+this module. Defaults to `true`.
+
 ####`database`
 
 Which database backend to use; legal values are `postgres` (default)

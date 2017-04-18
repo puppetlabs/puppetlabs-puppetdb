@@ -17,6 +17,7 @@ class puppetdb::params inherits puppetdb::globals {
   $puppetdb_version          = $puppetdb::globals::version
   $database                  = $puppetdb::globals::database
   $manage_dbserver           = true
+  $manage_db                 = true
   $manage_pg_repo            = true
   $postgres_version          = '9.4'
 
