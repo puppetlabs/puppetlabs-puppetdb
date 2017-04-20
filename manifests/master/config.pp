@@ -12,6 +12,7 @@ class puppetdb::master::config (
     true    => $::puppetdb::disable_ssl,
     default => false,
   },
+  $puppetdb_servers            = [],
   $masterless                  = $puppetdb::params::masterless,
   $puppetdb_soft_write_failure = false,
   $manage_routes               = true,
@@ -156,6 +157,7 @@ class puppetdb::master::config (
     class { 'puppetdb::master::puppetdb_conf':
       server             => $puppetdb_server,
       port               => $puppetdb_port,
+      servers            => $puppetdb_servers,
       soft_write_failure => $puppetdb_soft_write_failure,
       puppet_confdir     => $puppet_confdir,
       legacy_terminus    => $puppetdb::params::terminus_package == 'puppetdb-terminus',
