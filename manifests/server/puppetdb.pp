@@ -2,6 +2,7 @@
 class puppetdb::server::puppetdb (
   $certificate_whitelist_file = $puppetdb::params::certificate_whitelist_file,
   $certificate_whitelist      = $puppetdb::params::certificate_whitelist,
+  $disable_update_checking    = $puppetdb::params::disable_update_checking,
   $confdir                    = $puppetdb::params::confdir,
   $puppetdb_user              = $puppetdb::params::puppetdb_user,
   $puppetdb_group             = $puppetdb::params::puppetdb_group,
@@ -43,5 +44,17 @@ class puppetdb::server::puppetdb (
     mode    => '0644',
     owner   => 0,
     group   => 0,
+  }
+
+  if $disable_update_checking {
+    ini_setting { 'puppetdb_disable_update_checking':
+      setting => 'disable-update-checking',
+      value   => $disable_update_checking,
+    }
+  } else {
+    ini_setting { 'puppetdb_disable_update_checking':
+      ensure  => 'absent',
+      setting => 'disable-update-checking',
+    }
   }
 }

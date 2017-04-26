@@ -65,6 +65,7 @@ class puppetdb::server (
   $concurrent_writes                 = $puppetdb::params::concurrent_writes,
   $store_usage                       = $puppetdb::params::store_usage,
   $temp_usage                        = $puppetdb::params::temp_usage,
+  $disable_update_checking           = $puppetdb::params::disable_update_checking,
   $certificate_whitelist_file        = $puppetdb::params::certificate_whitelist_file,
   $certificate_whitelist             = $puppetdb::params::certificate_whitelist,
   $database_max_pool_size            = $puppetdb::params::database_max_pool_size,
@@ -266,6 +267,7 @@ class puppetdb::server (
   class { 'puppetdb::server::puppetdb':
     certificate_whitelist_file => $certificate_whitelist_file,
     certificate_whitelist      => $certificate_whitelist,
+    disable_update_checking    => $disable_update_checking,
     confdir                    => $confdir,
     puppetdb_user              => $puppetdb_user,
     puppetdb_group             => $puppetdb_group,

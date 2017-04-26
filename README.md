@@ -675,6 +675,11 @@ Defaults to `undef`, using the PuppetDB built-in default.
 The amount of disk space (in MB) to allow for temporary message storage.
 Defaults to `undef`, using the PuppetDB built-in default.
 
+####`disable_update_checking`
+
+Setting this to true disables checking for updated versions of PuppetDB and sending basic analytics data to Puppet. 
+Defaults to `undef`, using the PuppetDB built-in default.
+
 ####`certificate_whitelist_file`
 
 The name of the certificate whitelist file to set up and configure in PuppetDB. Defaults to `/etc/puppetdb/certificate-whitelist` or `/etc/puppetlabs/puppetdb/certificate-whitelist` for FOSS and PE respectively.
