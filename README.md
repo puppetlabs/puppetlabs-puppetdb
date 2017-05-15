@@ -639,6 +639,23 @@ Contents of your SSL certificate, as a string.
 
 Contents of your SSL CA certificate, as a string.
 
+#### `ssl_use_puppet_certs`
+
+A boolean switch to enable or disable copying the puppet SSL certs into your
+`ssl_dir`. Default is `false`.
+
+#### `ssl_key_source`
+
+Source of your SSL key, as a uri.
+
+#### `ssl_cert_source`
+
+Source of your SSL certificate, as a uri.
+
+#### `ssl_ca_cert_source`
+
+Source of your SSL CA certificate, as a uri.
+
 #### `manage_firewall`
 
 If `true`, puppet will manage your iptables rules for PuppetDB via the
