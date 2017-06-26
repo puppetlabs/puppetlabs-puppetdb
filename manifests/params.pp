@@ -17,7 +17,12 @@ class puppetdb::params inherits puppetdb::globals {
   $puppetdb_version          = $puppetdb::globals::version
   $database                  = $puppetdb::globals::database
   $manage_dbserver           = true
-  $manage_pg_repo            = true
+
+  if $osfamily =~ /Redhat|Debian/ {
+    $manage_pg_repo            = true
+  } else {
+    $manage_pg_repo            = false
+  }
   $postgres_version          = '9.4'
 
   # The remaining database settings are not used for an embedded database
