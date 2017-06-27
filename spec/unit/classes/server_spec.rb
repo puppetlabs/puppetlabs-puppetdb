@@ -1,14 +1,15 @@
 require 'spec_helper'
 
 describe 'puppetdb::server', :type => :class do
+  let :node do
+    'test.domain.local'
+  end
   on_supported_os.each do |os, facts|
     context "on #{os}" do
       let(:facts) do
         facts.merge({
             :puppetversion => Puppet.version,
-            :fqdn => 'test.domain.local',
-            :selinux => true,
-            :iptables_persistent_version => '0.5.7',
+            :selinux => true
         })
       end
 

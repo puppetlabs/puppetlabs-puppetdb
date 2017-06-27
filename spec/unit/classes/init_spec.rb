@@ -7,8 +7,7 @@ describe 'puppetdb', :type => :class do
     context "on #{os}" do
       let(:facts) do
         facts.merge({
-          :selinux => false,
-          :iptables_persistent_version => '0.5.7'
+          :selinux => false
         })
       end
 

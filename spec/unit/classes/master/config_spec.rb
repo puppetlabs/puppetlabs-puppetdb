@@ -7,8 +7,7 @@ describe 'puppetdb::master::config', :type => :class do
         facts.merge({
             :puppetversion => Puppet.version,
             :fqdn => 'puppetdb.example.com',
-            :selinux => true,
-            :iptables_persistent_version => '0.5.7',
+            :selinux => true
         })
       end
 
@@ -54,8 +53,8 @@ describe 'puppetdb::master::config', :type => :class do
 
           it { should contain_puppetdb_conn_validator('puppetdb_conn').with(
               :puppetdb_port => '1234',
-              :use_ssl => 'false')}
-
+              :use_ssl => 'false'
+          ) }
         end
 
         context 'when using default values' do
@@ -69,25 +68,23 @@ describe 'puppetdb::master::config', :type => :class do
           it { should contain_puppetdb_conn_validator('puppetdb_conn').with(:test_url => '/v3/version')}
         end
 
-        context 'when upgrading to from v2 to v3 of PuppetDB on RedHat' do
-          let(:facts) do
-            {
-                :osfamily => 'RedHat',
-                :operatingsystem => 'RedHat',
-                :puppetversion => Puppet.version,
-                :operatingsystemrelease => '7.0',
-                :kernel => 'Linux',
-                :concat_basedir => '/var/lib/puppet/concat',
-                :selinux => true,
-            }
-          end
-          let (:pre_condition) { 'class { "puppetdb::globals": version => "3.1.1-1.el7", }' }
-
-          it { should contain_exec('Remove puppetdb-terminus metadata for upgrade').with(:command => 'rpm -e --justdb puppetdb-terminus')}
-        end
-
       end
 
     end
+  end
+  context 'when upgrading to from v2 to v3 of PuppetDB on RedHat' do
+    let(:facts) do
+      {
+          :osfamily => 'RedHat',
+          :operatingsystem => 'RedHat',
+          :puppetversion => Puppet.version,
+          :operatingsystemrelease => '7.0',
+          :kernel => 'Linux',
+          :selinux => true,
+      }
+    end
+    let (:pre_condition) { 'class { "puppetdb::globals": version => "3.1.1-1.el7", }' }
+
+    it { should contain_exec('Remove puppetdb-terminus metadata for upgrade').with(:command => 'rpm -e --justdb puppetdb-terminus')}
   end
 end

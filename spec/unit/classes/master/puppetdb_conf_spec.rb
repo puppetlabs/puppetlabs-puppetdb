@@ -1,14 +1,15 @@
 require 'spec_helper'
 
 describe 'puppetdb::master::puppetdb_conf', :type => :class do
+  let :node do
+    'puppetdb.example.com'
+  end
   on_supported_os.each do |os, facts|
     context "on #{os}" do
       let(:facts) do
         facts.merge({
-            :fqdn => 'puppetdb.example.com',
             :puppetversion => Puppet.version,
-            :selinux => false,
-            :iptables_persistent_version => '0.5.7',
+            :selinux => false
         })
 
       end
