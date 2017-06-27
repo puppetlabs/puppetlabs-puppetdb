@@ -12,7 +12,6 @@
     {
       "operatingsystem": "RedHat",
       "operatingsystemrelease": [
-        "5",
         "6",
         "7"
       ]
@@ -20,7 +19,6 @@
     {
       "operatingsystem": "CentOS",
       "operatingsystemrelease": [
-        "5",
         "6",
         "7"
       ]
@@ -28,7 +26,6 @@
     {
       "operatingsystem": "OracleLinux",
       "operatingsystemrelease": [
-        "5",
         "6",
         "7"
       ]
@@ -36,7 +33,6 @@
     {
       "operatingsystem": "Scientific",
       "operatingsystemrelease": [
-        "5",
         "6",
         "7"
       ]
@@ -57,7 +53,6 @@
     {
       "operatingsystem": "Ubuntu",
       "operatingsystemrelease": [
-        "10.04",
         "12.04",
         "14.04"
       ]
@@ -67,7 +62,7 @@
     "requirements": [
     {
       "name": "puppet",
-      "version_requirement": ">=3.7.1 <5.0.0"
+      "version_requirement": ">=4.7.0 <6.0.0"
     }
     ],
 
@@ -78,7 +73,7 @@
         },
         {
             "name": "puppetlabs/postgresql",
-            "version_requirement": ">= 4.0.0 <5.0.0"
+            "version_requirement": ">= 4.3.0 <5.0.0"
         },
         {
             "name": "puppetlabs/firewall",
