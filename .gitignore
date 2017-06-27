@@ -24,3 +24,8 @@ spec/fixtures/
 
 # Add Jetbrains RubyMine .idea folder
 .idea/
+
+# Beaker files
+log/
+.vagrant/
+junit/
