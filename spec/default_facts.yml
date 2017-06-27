@@ -1,0 +1,3 @@
+---
+concat_basedir: '/var/lib/puppet/concat'
+iptables_persistent_version: '0.5.7'
