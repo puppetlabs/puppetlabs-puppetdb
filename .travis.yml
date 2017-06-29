@@ -1,38 +1,31 @@
 ---
+sudo: false
 language: ruby
-bundler_args: --without system_tests
-script: "bundle exec metadata-json-lint --strict-license --fail-on-warnings metadata.json && bundle exec rake spec SPEC_OPTS='--format documentation'"
-after_success:
-  - git clone -q git://github.com/puppetlabs/ghpublisher.git .forge-release
-  - .forge-release/publish
-rvm:
-  - 1.8.7
-  - 1.9.3
-  - 2.0.0
-  - 2.1.1
-  - 2.3.1
-env:
-  matrix:
-  - PUPPET_GEM_VERSION="~> 3.7.1"
-  - PUPPET_GEM_VERSION="~> 3.7"
-  - PUPPET_GEM_VERSION="~> 3"
-  - PUPPET_GEM_VERSION="~> 3" PARSER="future"
-  - PUPPET_GEM_VERSION="~> 4"
-  global:
-  - PUBLISHER_LOGIN=puppetlabs
-  -  secure: "FInoEwh3G4Auqp+OOdIc20lDLqrV6FHzWsM8ercHWjhDRD23VI49B1qqehWjaI8lKM3D5mTvdup23IVQBJo8M0rR/yfju1NhMYFTQ5bcJIrbQ3fn4n/zSaE8gLTOtHwzjSlqTJAYjxOAnp1VdMZngqpU/RYfSk68zJD34NqfovA="
+cache: bundler
+script: "bundle exec rake release_checks"
+#Inserting below due to the following issue: https://github.com/travis-ci/travis-ci/issues/3531#issuecomment-88311203
+before_install:
+  - gem update bundler
 matrix:
   fast_finish: true
-  exclude:
-    - rvm: 1.8.7
-      env: PUPPET_GEM_VERSION="~> 4"
-    - rvm: 2.3.1
-      env: PUPPET_GEM_VERSION="~> 3.7.1"
-    - rvm: 2.3.1
-      env: PUPPET_GEM_VERSION="~> 3.7"
-    - rvm: 2.3.1
-      env: PUPPET_GEM_VERSION="~> 3"
-    - rvm: 2.3.1
-      env: PUPPET_GEM_VERSION="~> 3" PARSER="future"
+  include:
+  - rvm: 2.3.1
+    dist: trusty
+    env: PUPPET_INSTALL_TYPE=agent BEAKER_debug=true BEAKER_set=docker/ubuntu-14.04
+    script: bundle exec rake beaker
+    services: docker
+    sudo: required
+  - rvm: 2.3.1
+    dist: trusty
+    env: PUPPET_INSTALL_TYPE=agent BEAKER_debug=true BEAKER_set=docker/centos-7
+    script: bundle exec rake beaker
+    services: docker
+    sudo: required
+  - rvm: 2.3.1
+    bundler_args: --without system_tests
+    env: PUPPET_GEM_VERSION="~> 4.0"
+  - rvm: 2.1.7
+    bundler_args: --without system_tests
+    env: PUPPET_GEM_VERSION="~> 4.0"
 notifications:
   email: false

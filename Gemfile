@@ -7,16 +7,19 @@ group :development, :test do
   # Pinning due to bug in newer rspec with Ruby 1.8.7
   gem 'rspec-core', '3.1.7'
   gem 'rspec-puppet', '~> 2.0'
+  gem 'rspec-puppet-facts'
   gem 'puppet-lint',  '~> 1.1'
   gem 'metadata-json-lint', '0.0.11' if RUBY_VERSION < '1.9'
   gem 'metadata-json-lint'           if RUBY_VERSION >= '1.9'
-  gem 'json_pure', '~> 1.8'
+  gem 'json', '~> 1.8'
 end
 
 group :system_tests do
-  gem 'beaker',                :require => false
-  gem 'beaker-rspec',          :require => false
-  gem 'serverspec',            :require => false
+  gem 'beaker',                       :require => false
+  gem 'beaker-rspec',                 :require => false
+  gem 'beaker-puppet_install_helper', :require => false
+  gem 'beaker-module_install_helper', :require => false
+  gem 'serverspec',                   :require => false
 end
 
 if puppetversion = ENV['PUPPET_GEM_VERSION']

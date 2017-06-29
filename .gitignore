@@ -21,3 +21,11 @@ spec/fixtures/
 # RVM files that are specific to developers implementation
 .ruby-version
 .ruby-gemset
+
+# Add Jetbrains RubyMine .idea folder
+.idea/
+
+# Beaker files
+log/
+.vagrant/
+junit/
