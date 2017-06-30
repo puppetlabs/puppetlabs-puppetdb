@@ -87,10 +87,6 @@
         {
             "name": "puppetlabs/stdlib",
             "version_requirement": ">= 4.2.2 <5.0.0"
-        },
-        {
-            "name": "puppetlabs/ntp",
-            "version_requirement": ">= 5.0.0 < 7.0.0"
         }
     ]
 }

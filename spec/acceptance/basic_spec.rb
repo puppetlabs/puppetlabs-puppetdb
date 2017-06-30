@@ -13,7 +13,6 @@ describe 'basic tests:' do
   describe 'single node setup' do
     pp = <<-EOS
       # Single node setup
-      class { 'ntp': panic => undef } ->
       class { 'puppetdb': disable_ssl => true, } ->
       class { 'puppetdb::master::config': puppetdb_port => '8080', puppetdb_server => 'localhost' }
     EOS
@@ -26,7 +25,6 @@ describe 'basic tests:' do
 
   describe 'enabling report processor' do
     pp = <<-EOS
-      class { 'ntp': panic => undef } ->
       class { 'puppetdb': disable_ssl => true, } ->
       class { 'puppetdb::master::config':
         puppetdb_port => '8080',
