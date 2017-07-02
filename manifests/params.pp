@@ -27,7 +27,7 @@ class puppetdb::params inherits puppetdb::globals {
 
   # The remaining database settings are not used for an embedded database
   $database_host          = 'localhost'
-  $database_port          = '5432'
+  $database_port          = 5432
   $database_name          = 'puppetdb'
   $database_username      = 'puppetdb'
   $database_password      = 'puppetdb'
