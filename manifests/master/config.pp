@@ -169,6 +169,7 @@ class puppetdb::master::config (
     if ! defined(Service[$puppet_service_name]) {
       service { $puppet_service_name:
         ensure => running,
+        enable => true,
       }
     }
 
