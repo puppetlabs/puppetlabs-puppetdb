@@ -37,8 +37,8 @@ class puppetdb::params inherits puppetdb::globals {
   $database_max_pool_size = undef
 
   # These settings manage the various auto-deactivation and auto-purge settings
-  $node_ttl               = '0s'
-  $node_purge_ttl         = '0s'
+  $node_ttl               = '7d'
+  $node_purge_ttl         = '14d'
   $report_ttl             = '14d'
 
   $gc_interval            = '60'

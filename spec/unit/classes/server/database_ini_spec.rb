@@ -76,7 +76,7 @@ describe 'puppetdb::server::database', :type => :class do
              'path'    => '/etc/puppetlabs/puppetdb/conf.d/database.ini',
              'section' => 'database',
              'setting' => 'node-ttl',
-             'value'   => '0s'
+             'value'   => '7d'
              )}
       it { should contain_ini_setting('puppetdb_node_purge_ttl').
         with(
@@ -84,7 +84,7 @@ describe 'puppetdb::server::database', :type => :class do
              'path'    => '/etc/puppetlabs/puppetdb/conf.d/database.ini',
              'section' => 'database',
              'setting' => 'node-purge-ttl',
-             'value'   => '0s'
+             'value'   => '14d'
              )}
       it { should contain_ini_setting('puppetdb_report_ttl').
         with(
@@ -185,7 +185,7 @@ describe 'puppetdb::server::database', :type => :class do
              'path'    => '/etc/puppetdb/conf.d/database.ini',
              'section' => 'database',
              'setting' => 'node-ttl',
-             'value'   => '0s'
+             'value'   => '7d'
              )}
       it { should contain_ini_setting('puppetdb_node_purge_ttl').
         with(
@@ -193,7 +193,7 @@ describe 'puppetdb::server::database', :type => :class do
              'path'    => '/etc/puppetdb/conf.d/database.ini',
              'section' => 'database',
              'setting' => 'node-purge-ttl',
-             'value'   => '0s'
+             'value'   => '14d'
              )}
       it { should contain_ini_setting('puppetdb_report_ttl').
         with(
