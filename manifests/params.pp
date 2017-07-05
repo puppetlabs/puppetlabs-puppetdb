@@ -23,7 +23,7 @@ class puppetdb::params inherits puppetdb::globals {
   } else {
     $manage_pg_repo            = false
   }
-  $postgres_version          = '9.4'
+  $postgres_version          = '9.6'
 
   # The remaining database settings are not used for an embedded database
   $database_host          = 'localhost'
