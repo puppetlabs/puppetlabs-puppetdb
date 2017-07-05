@@ -167,6 +167,7 @@ class puppetdb::params inherits puppetdb::globals {
   $concurrent_writes        = undef
   $store_usage              = undef
   $temp_usage               = undef
+  $disable_update_checking  = undef
 
   $ssl_set_cert_paths       = false
   $ssl_cert_path            = "${ssl_dir}/public.pem"

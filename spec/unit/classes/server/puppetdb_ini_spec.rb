@@ -35,6 +35,13 @@ describe 'puppetdb::server::puppetdb', :type => :class do
              'group'   => 'puppetdb',
              'mode'    => '0600'
              )}
+      it { should contain_ini_setting('puppetdb_disable_update_checking').
+        with(
+             'ensure'  => 'absent',
+             'path'    => '/etc/puppetlabs/puppetdb/conf.d/puppetdb.ini',
+             'section' => 'puppetdb',
+             'setting' => 'disable-update-checking'
+             )}
     end
 
     describe 'when restricting access to puppetdb' do
@@ -60,5 +67,22 @@ describe 'puppetdb::server::puppetdb', :type => :class do
              'content' => "puppetmaster\n"
              )}
     end
+
+		describe 'when enable disable-update-checking' do
+			let(:params) do
+				{
+					'disable_update_checking' => true,
+				}
+			end
+
+      it { should contain_ini_setting('puppetdb_disable_update_checking').
+        with(
+             'ensure'  => 'present',
+             'path'    => '/etc/puppetlabs/puppetdb/conf.d/puppetdb.ini',
+             'section' => 'puppetdb',
+             'setting' => 'disable-update-checking',
+             'value'   => 'true'
+             )}
+		end
   end
 end
