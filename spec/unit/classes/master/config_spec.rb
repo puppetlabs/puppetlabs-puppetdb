@@ -89,6 +89,17 @@ describe 'puppetdb::master::config', :type => :class do
   end
 
   context 'when restart_puppet is true' do
+    let(:facts) do
+      {
+        :osfamily => 'RedHat',
+        :operatingsystem => 'RedHat',
+        :puppetversion => Puppet.version,
+        :operatingsystemrelease => '7.0',
+        :kernel => 'Linux',
+        :selinux => true,
+      }
+    end
+
     let(:pre_condition) { 'class { "puppetdb": }' }
 
     context 'with create_puppet_service_resource as default' do
