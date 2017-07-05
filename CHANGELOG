@@ -2,6 +2,36 @@
 
 Release notes for the puppetlabs-puppetdb module.
 
+#### 6.0.0 - 2017/06/05
+
+This is a major release to support PuppetDB 5.0. Note that the default
+PostgreSQL version is now 9.6, the minimum required by PuppetDB 5.0. If you're
+running an older version, be sure to explicitly specifying it when upgrading the
+module so it doesn't get upgraded out from under you.
+
+Detailed changes:
+
+* Require Puppet >= 4.7
+* If unspecified, install PostgreSQL version 9.6
+* Default node-ttl and node-purge ttl to 7 days and 14 days, respectively.
+* Support puppetlabs-postgresql version 5.x (Thanks @dhollinger!)
+* Add create_service_resource param to avoid duplicate resource
+  errors in some situations. (Thanks @kpaulisse!)
+* Configure the master service as 'enabled' when it is automatically added
+  (Thanks @tampakrap!)
+* Add concurrent_writes parameter (Thanks @aperiodic!)
+* Add cipher_suites option to configure jetty's SSL support (Thanks @selyx!)
+* Add support for Ruby 2.3.1 (Thanks @ghoneycutt!)
+* Specify mode of routes.yaml (Thanks @tampakrap!)
+* Add [read_]database_max_pool_size paramater (Thanks @kpaulisse and @vine77!)
+* Fix user/group names on OpenBSD (Thanks @buzzdeee!)
+* Enforce permissions of managed ini files (Thanks @kbarber!)
+* Manage the pg_trgm database extension (Thanks @PascalBourdier!)
+* Default open_ssl_listen_port to undef instead of true (Thanks @mmckinst!)
+
+
+------------------------------------------
+
 #### 5.1.2 - 2016/03/14
 
 This is a minor bugfix release.
