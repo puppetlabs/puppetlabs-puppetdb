@@ -2,6 +2,16 @@
 
 Release notes for the puppetlabs-puppetdb module.
 
+#### 6.0.1 - 2017/06/05
+
+This is a minor bugfix release.
+
+Detailed changes:
+
+* Update the required puppet version in metadata.json
+
+------------------------------------------
+
 #### 6.0.0 - 2017/06/05
 
 This is a major release to support PuppetDB 5.0. Note that the default
