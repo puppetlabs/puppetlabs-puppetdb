@@ -677,7 +677,7 @@ Defaults to `undef`, using the PuppetDB built-in default.
 
 #### `disable_update_checking`
 
-Setting this to true disables checking for updated versions of PuppetDB and sending basic analytics data to Puppet. 
+Setting this to true disables checking for updated versions of PuppetDB and sending basic analytics data to Puppet.
 Defaults to `undef`, using the PuppetDB built-in default.
 
 #### `certificate_whitelist_file`
@@ -868,7 +868,7 @@ be installed from the regular repository. Defaults to `true`.
 #### `postgres_version`
 
 If the postgresql.org repo is installed, you can install several versions of
-postgres. Defaults to `9.4`, the latest stable version.
+postgres. Defaults to `9.6` in module version 6.0+ and `9.4` in older versions.
 
 Implementation
 ---------------
