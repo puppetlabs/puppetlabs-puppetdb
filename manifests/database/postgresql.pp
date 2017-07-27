@@ -27,12 +27,12 @@ class puppetdb::database::postgresql(
     postgresql::server::extension { 'pg_trgm':
       database  => $database_name,
     }
-  }
 
-  # create the puppetdb database
-  postgresql::server::db { $database_name:
-    user     => $database_username,
-    password => $database_password,
-    grant    => 'all',
+    # create the puppetdb database
+    postgresql::server::db { $database_name:
+      user     => $database_username,
+      password => $database_password,
+      grant    => 'all',
+    }
   }
 }
