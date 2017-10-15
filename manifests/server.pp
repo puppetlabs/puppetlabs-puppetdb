@@ -71,12 +71,13 @@ class puppetdb::server (
   $database_max_pool_size                 = $puppetdb::params::database_max_pool_size,
   $read_database_max_pool_size            = $puppetdb::params::read_database_max_pool_size,
 ) inherits puppetdb::params {
+
   # deprecation warnings
-  if $database_ssl                       != undef {
+  if $database_ssl {
     warning('$database_ssl is deprecated and will be removed in the next major release. Please use $jdbc_ssl_properties = "?ssl=true" instead.')
   }
 
-  if $read_database_ssl != undef {
+  if $read_database_ssl {
     warning('$read_database_ssl is deprecated and will be removed in the next major release. Please use $read_database_jdbc_ssl_properties = "?ssl=true" instead.')
   }
 
