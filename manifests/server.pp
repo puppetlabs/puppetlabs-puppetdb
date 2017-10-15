@@ -81,34 +81,37 @@ class puppetdb::server (
   }
 
   # Apply necessary suffix if zero is specified.
+  # Can we drop this in the next major release?
   if $node_ttl == '0' {
-    $node_ttl_real = '0s'
+    $_node_ttl_real = '0s'
   } else {
-    $node_ttl_real = downcase($node_ttl)
+    $_node_ttl_real = downcase($node_ttl)
   }
 
   # Validate node_ttl
-  validate_re ($node_ttl_real, ['^\d+(d|h|m|s|ms)$'], "node_ttl is <${node_ttl}> which does not match the regex validation")
+  $node_ttl_real = assert_type(Puppetdb::Ttl, $_node_ttl_real)
 
   # Apply necessary suffix if zero is specified.
+  # Can we drop this in the next major release?
   if $node_purge_ttl == '0' {
-    $node_purge_ttl_real = '0s'
+    $_node_purge_ttl_real = '0s'
   } else {
-    $node_purge_ttl_real = downcase($node_purge_ttl)
+    $_node_purge_ttl_real = downcase($node_purge_ttl)
   }
 
   # Validate node_purge_ttl
-  validate_re ($node_purge_ttl_real, ['^\d+(d|h|m|s|ms)$'], "node_purge_ttl is <${node_purge_ttl}> which does not match the regex validation")
+  $node_purge_ttl_real = assert_type(Puppetdb::Ttl, $_node_purge_ttl_real)
 
   # Apply necessary suffix if zero is specified.
+  # Can we drop this in the next major release?
   if $report_ttl == '0' {
-    $report_ttl_real = '0s'
+    $_report_ttl_real = '0s'
   } else {
-    $report_ttl_real = downcase($report_ttl)
+    $_report_ttl_real = downcase($report_ttl)
   }
 
   # Validate report_ttl
-  validate_re ($report_ttl_real, ['^\d+(d|h|m|s|ms)$'], "report_ttl is <${report_ttl}> which does not match the regex validation")
+  $repor_ttl_real = assert_type(Puppetdb::Ttl, $_report_ttl_real)
 
   # Validate puppetdb_service_status
   $service_enabled = $puppetdb_service_status ? {
