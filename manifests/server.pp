@@ -212,10 +212,10 @@ class puppetdb::server (
   if $ssl_deploy_certs {
     file {
       $ssl_dir:
-        ensure  => directory,
-        owner   => $puppetdb_user,
-        group   => $puppetdb_group,
-        mode    => '0700';
+        ensure => directory,
+        owner  => $puppetdb_user,
+        group  => $puppetdb_group,
+        mode   => '0700';
       $ssl_key_path:
         ensure  => file,
         content => $ssl_key,
