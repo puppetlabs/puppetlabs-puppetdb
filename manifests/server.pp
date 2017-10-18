@@ -303,23 +303,23 @@ class puppetdb::server (
   }
 
   if $manage_firewall {
-    Package[$puppetdb_package] ->
-    Class['puppetdb::server::firewall'] ->
-    Class['puppetdb::server::global'] ->
-    Class['puppetdb::server::command_processing'] ->
-    Class['puppetdb::server::database'] ->
-    Class['puppetdb::server::read_database'] ->
-    Class['puppetdb::server::jetty'] ->
-    Class['puppetdb::server::puppetdb'] ->
-    Service[$puppetdb_service]
+    Package[$puppetdb_package]
+    -> Class['puppetdb::server::firewall']
+    -> Class['puppetdb::server::global']
+    -> Class['puppetdb::server::command_processing']
+    -> Class['puppetdb::server::database']
+    -> Class['puppetdb::server::read_database']
+    -> Class['puppetdb::server::jetty']
+    -> Class['puppetdb::server::puppetdb']
+    -> Service[$puppetdb_service]
   } else {
-    Package[$puppetdb_package] ->
-    Class['puppetdb::server::global'] ->
-    Class['puppetdb::server::command_processing'] ->
-    Class['puppetdb::server::database'] ->
-    Class['puppetdb::server::read_database'] ->
-    Class['puppetdb::server::jetty'] ->
-    Class['puppetdb::server::puppetdb'] ->
-    Service[$puppetdb_service]
+    Package[$puppetdb_package]
+    -> Class['puppetdb::server::global']
+    -> Class['puppetdb::server::command_processing']
+    -> Class['puppetdb::server::database']
+    -> Class['puppetdb::server::read_database']
+    -> Class['puppetdb::server::jetty']
+    -> Class['puppetdb::server::puppetdb']
+    -> Service[$puppetdb_service]
   }
 }
