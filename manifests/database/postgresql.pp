@@ -26,6 +26,7 @@ class puppetdb::database::postgresql(
     class { '::postgresql::server::contrib': }
     postgresql::server::extension { 'pg_trgm':
       database  => $database_name,
+      require   => Postgresql::Server::Db[$database_name],
     }
   }
 
