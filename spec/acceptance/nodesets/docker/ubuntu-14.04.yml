@@ -10,6 +10,11 @@ HOSTS:
     docker_cmd: '["/sbin/init"]'
     docker_image_commands:
       # ensure that upstart is booting correctly in the container
+      - 'sudo apt-get install apt-transport-https --assume-yes'
+      - 'wget -O - https://apt.postgresql.org/pub/repos/apt/ACCC4CF8.asc | sudo apt-key add -'
+      - 'sh -c "echo deb https://apt.postgresql.org/pub/repos/apt/ trusty-pgdg main >> /etc/apt/sources.list.d/postgresql.list"'
+      - 'sudo apt-get update'
       - 'rm /usr/sbin/policy-rc.d && rm /sbin/initctl && dpkg-divert --rename --remove /sbin/initctl && apt-get update && apt-get install -y net-tools wget && locale-gen en_US.UTF-8'
+
 CONFIG:
   trace_limit: 200
