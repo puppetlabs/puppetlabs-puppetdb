@@ -19,6 +19,7 @@ hosts.each do |host|
     if ! host.check_for_package 'curl'
       on host, 'apt-get install -y curl'
     end
+    on host, 'apt-get install apt-transport-https --assume-yes'
     on host, 'curl -O http://apt.puppetlabs.com/puppetlabs-release-pc1-$(lsb_release -c -s).deb'
     on host, 'dpkg -i puppetlabs-release-pc1-$(lsb_release -c -s).deb'
     on host, 'apt-get -y -m update'
