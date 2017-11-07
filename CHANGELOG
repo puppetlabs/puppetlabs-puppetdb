@@ -2,6 +2,17 @@
 
 Release notes for the puppetlabs-puppetdb module.
 
+#### 6.0.2 - 2017/11/06
+
+This is a minor bugfix release.
+
+Detailed changes:
+
+ * Update the upper bound of the puppetlabs inifile dependency
+ * Explicitly add database dependency in the PostgreSQL manifest (Thanks @pgassmann!)
+
+------------------------------------------
+
 #### 6.0.1 - 2017/06/05
 
 This is a minor bugfix release.
