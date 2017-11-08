@@ -1,21 +1,21 @@
 # PRIVATE CLASS - do not use directly
 class puppetdb::server::jetty (
-  $listen_address     = $puppetdb::params::listen_address,
-  $listen_port        = $puppetdb::params::listen_port,
-  $disable_cleartext  = $puppetdb::params::disable_cleartext,
-  $ssl_listen_address = $puppetdb::params::ssl_listen_address,
-  $ssl_listen_port    = $puppetdb::params::ssl_listen_port,
-  $disable_ssl        = $puppetdb::params::disable_ssl,
-  $ssl_set_cert_paths = $puppetdb::params::ssl_set_cert_paths,
-  $ssl_cert_path      = $puppetdb::params::ssl_cert_path,
-  $ssl_key_path       = $puppetdb::params::ssl_key_path,
-  $ssl_ca_cert_path   = $puppetdb::params::ssl_ca_cert_path,
-  $ssl_protocols      = $puppetdb::params::ssl_protocols,
-  $cipher_suites      = $puppetdb::params::cipher_suites,
-  $confdir            = $puppetdb::params::confdir,
-  $max_threads        = $puppetdb::params::max_threads,
-  $puppetdb_user      = $puppetdb::params::puppetdb_user,
-  $puppetdb_group     = $puppetdb::params::puppetdb_group,
+  $listen_address                 = $puppetdb::params::listen_address,
+  $listen_port                    = $puppetdb::params::listen_port,
+  $disable_cleartext              = $puppetdb::params::disable_cleartext,
+  $ssl_listen_address             = $puppetdb::params::ssl_listen_address,
+  $ssl_listen_port                = $puppetdb::params::ssl_listen_port,
+  $disable_ssl                    = $puppetdb::params::disable_ssl,
+  Boolean $ssl_set_cert_paths     = $puppetdb::params::ssl_set_cert_paths,
+  $ssl_cert_path                  = $puppetdb::params::ssl_cert_path,
+  $ssl_key_path                   = $puppetdb::params::ssl_key_path,
+  $ssl_ca_cert_path               = $puppetdb::params::ssl_ca_cert_path,
+  Optional[String] $ssl_protocols = $puppetdb::params::ssl_protocols,
+  Optional[String] $cipher_suites = $puppetdb::params::cipher_suites,
+  $confdir                        = $puppetdb::params::confdir,
+  $max_threads                    = $puppetdb::params::max_threads,
+  $puppetdb_user                  = $puppetdb::params::puppetdb_user,
+  $puppetdb_group                 = $puppetdb::params::puppetdb_group,
 ) inherits puppetdb::params {
 
   $jetty_ini = "${confdir}/jetty.ini"
@@ -69,9 +69,7 @@ class puppetdb::server::jetty (
     value   => $ssl_listen_port,
   }
 
-  if $ssl_protocols != undef {
-
-    validate_string($ssl_protocols)
+  if $ssl_protocols {
 
     ini_setting { 'puppetdb_sslprotocols':
       ensure  => $ssl_setting_ensure,
@@ -80,9 +78,7 @@ class puppetdb::server::jetty (
     }
   }
 
-  if $cipher_suites != undef {
-
-    validate_string($cipher_suites)
+  if $cipher_suites {
 
     ini_setting { 'puppetdb_cipher-suites':
       ensure  => $ssl_setting_ensure,
@@ -91,7 +87,7 @@ class puppetdb::server::jetty (
     }
   }
 
-  if str2bool($ssl_set_cert_paths) == true {
+  if $ssl_set_cert_paths {
     # assume paths have been validated in calling class
     ini_setting { 'puppetdb_ssl_key':
       ensure  => present,
