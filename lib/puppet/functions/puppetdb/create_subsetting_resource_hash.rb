@@ -1,8 +1,7 @@
 Puppet::Functions.create_function(:'puppetdb::create_subsetting_resource_hash') do
   dispatch :create_subsetting_resource_hash do
     required_param 'Hash', :java_args
-    required_param 'Hash', :params
-    return_type 'Hash'
+    required_param 'Any', :params
   end
 
   def create_subsetting_resource_hash(java_args, params)
