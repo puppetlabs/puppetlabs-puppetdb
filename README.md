@@ -870,6 +870,49 @@ be installed from the regular repository. Defaults to `true`.
 If the postgresql.org repo is installed, you can install several versions of
 postgres. Defaults to `9.6` in module version 6.0+ and `9.4` in older versions.
 
+### puppetdb::cli
+
+The `puppetdb::cli` class manages the `puppet-client-tools` package which
+contains the PuppetDB CLI. This class also manages the associated PuppetDB CLI
+configuration file.
+
+You must declare the class to use it:
+
+    class { 'puppetdb::cli': }
+
+**Parameters within `puppetdb::cli`:**
+
+####`version`
+
+The version of the `puppet-client-tools` package that should be installed. You
+may specify an explicit version number, 'present', or 'latest' (defaults to
+'present').
+
+####`server_urls`
+
+The urls to use for contacting PuppetDB. This parameter may be either a String
+or an Array[String]. By default the value is `['http://localhost:8080']`.
+
+####`confdir`
+
+The directory in which to place the configuration file, `puppetdb.conf`, for the
+PuppetDB CLI. By default this path is the global configuration path at
+`/etc/puppetlabs/client-tools`. You may wish to change this to
+`$HOME/.puppetlabs/client-tools` to manage the per-user configuration file (when
+diverging from the global configuration).
+
+####`localcacert`
+
+Path to your SSL CA (required for SSL connections to PuppetDB).
+
+####`ssl_key_path`
+
+Path to your SSL key (required for SSL connections to PuppetDB).
+
+####`ssl_cert_path`
+
+Path to your SSL certificate (required for SSL connections to PuppetDB).
+
 Implementation
 ---------------
 
