@@ -30,7 +30,7 @@ class puppetdb::server::read_database (
       # Because of a limitation in the postgres module this will break with
       # a duplicate declaration if read and write database host+name are the
       # same.
-      class { 'puppetdb::server::validate_read_db':
+      class { '::puppetdb::server::validate_read_db':
         database          => $database,
         database_host     => $database_host,
         database_port     => $database_port,

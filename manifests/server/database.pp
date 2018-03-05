@@ -33,7 +33,7 @@ class puppetdb::server::database (
     # Because of a limitation in the postgres module this will break with
     # a duplicate declaration if read and write database host+name are the
     # same.
-    class { 'puppetdb::server::validate_db':
+    class { '::puppetdb::server::validate_db':
       database          => $database,
       database_host     => $database_host,
       database_port     => $database_port,
@@ -62,7 +62,7 @@ class puppetdb::server::database (
     path    => $database_ini,
     ensure  => present,
     section => 'database',
-    require => $ini_setting_require
+    require => $ini_setting_require,
   }
 
   if $database == 'embedded' {

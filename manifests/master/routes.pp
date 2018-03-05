@@ -8,8 +8,8 @@ class puppetdb::master::routes (
       'facts' => {
         'terminus' => 'puppetdb',
         'cache'    => 'yaml',
-      }
-    }
+      },
+    },
   }
 ) inherits puppetdb::params {
 
@@ -23,8 +23,8 @@ class puppetdb::master::routes (
         'facts'   => {
           'terminus' => 'facter',
           'cache'    => 'puppetdb_apply',
-        }
-      }
+        },
+      },
     }
   } else {
     $routes_real = $routes

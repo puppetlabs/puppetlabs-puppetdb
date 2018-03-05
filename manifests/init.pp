@@ -167,7 +167,7 @@ class puppetdb (
       manage_server       => $manage_dbserver,
       manage_package_repo => $manage_package_repo,
       postgres_version    => $postgres_version,
-      before              => $database_before
+      before              => $database_before,
     }
   }
 }
