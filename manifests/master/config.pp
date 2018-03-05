@@ -106,7 +106,7 @@ class puppetdb::master::config (
       default => Package[$terminus_package],
     }
 
-    class { 'puppetdb::master::routes':
+    class { '::puppetdb::master::routes':
       puppet_confdir => $puppet_confdir,
       masterless     => $masterless,
       require        => $routes_require,
@@ -122,7 +122,7 @@ class puppetdb::master::config (
       default => Package[$terminus_package],
     }
 
-    class { 'puppetdb::master::storeconfigs':
+    class { '::puppetdb::master::storeconfigs':
       puppet_conf => $puppet_conf,
       masterless  => $masterless,
       require     => $storeconfigs_require,
@@ -138,7 +138,7 @@ class puppetdb::master::config (
       default => Package[$terminus_package],
     }
 
-    class { 'puppetdb::master::report_processor':
+    class { '::puppetdb::master::report_processor':
       puppet_conf => $puppet_conf,
       masterless  => $masterless,
       enable      => $enable_reports,
@@ -154,7 +154,7 @@ class puppetdb::master::config (
       default => Package[$terminus_package],
     }
 
-    class { 'puppetdb::master::puppetdb_conf':
+    class { '::puppetdb::master::puppetdb_conf':
       server             => $puppetdb_server,
       port               => $puppetdb_port,
       soft_write_failure => $puppetdb_soft_write_failure,

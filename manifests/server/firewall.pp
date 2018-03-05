@@ -5,7 +5,7 @@ class puppetdb::server::firewall (
   $ssl_port       = $puppetdb::params::ssl_listen_port,
   $open_ssl_port  = $puppetdb::params::open_ssl_listen_port,
 ) inherits puppetdb::params {
-  include firewall
+  include ::firewall
 
   if ($open_http_port) {
     firewall { "${http_port} accept - puppetdb":

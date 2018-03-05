@@ -137,7 +137,7 @@ class puppetdb::server (
   }
 
   if $manage_firewall {
-    class { 'puppetdb::server::firewall':
+    class { '::puppetdb::server::firewall':
       http_port      => $listen_port,
       open_http_port => $open_listen_port,
       ssl_port       => $ssl_listen_port,
@@ -145,7 +145,7 @@ class puppetdb::server (
     }
   }
 
-  class { 'puppetdb::server::global':
+  class { '::puppetdb::server::global':
     vardir         => $vardir,
     confdir        => $confdir,
     puppetdb_user  => $puppetdb_user,
@@ -153,7 +153,7 @@ class puppetdb::server (
     notify         => Service[$puppetdb_service],
   }
 
-  class { 'puppetdb::server::command_processing':
+  class { '::puppetdb::server::command_processing':
     command_threads   => $command_threads,
     concurrent_writes => $concurrent_writes,
     store_usage       => $store_usage,
@@ -162,7 +162,7 @@ class puppetdb::server (
     notify            => Service[$puppetdb_service],
   }
 
-  class { 'puppetdb::server::database':
+  class { '::puppetdb::server::database':
     database               => $database,
     database_host          => $database_host,
     database_port          => $database_port,
@@ -188,7 +188,7 @@ class puppetdb::server (
     notify                 => Service[$puppetdb_service],
   }
 
-  class { 'puppetdb::server::read_database':
+  class { '::puppetdb::server::read_database':
     database               => $read_database,
     database_host          => $read_database_host,
     database_port          => $read_database_port,
@@ -240,7 +240,7 @@ class puppetdb::server (
     }
   }
 
-  class { 'puppetdb::server::jetty':
+  class { '::puppetdb::server::jetty':
     listen_address     => $listen_address,
     listen_port        => $listen_port,
     disable_cleartext  => $disable_cleartext,
@@ -260,7 +260,7 @@ class puppetdb::server (
     puppetdb_group     => $puppetdb_group,
   }
 
-  class { 'puppetdb::server::puppetdb':
+  class { '::puppetdb::server::puppetdb':
     certificate_whitelist_file => $certificate_whitelist_file,
     certificate_whitelist      => $certificate_whitelist,
     disable_update_checking    => $disable_update_checking,
