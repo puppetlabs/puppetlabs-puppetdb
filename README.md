@@ -673,6 +673,29 @@ The name of the certificate whitelist file to set up and configure in PuppetDB. 
 
 Array of the X.509 certificate Common Names of clients allowed to connect to PuppetDB. Defaults to empty. Be aware that this permits full access to all Puppet clients to download anything contained in PuppetDB, including the full catalogs of all nodes, which possibly contain sensitive information. Set to `[ $::servername ]` to allow access only from your (single) Puppet master, which is enough for normal operation. Set to a list of Puppet masters if you have multiple.
 
+#### `automatic_dlo_cleanup`
+
+PuppetDB creates [Dead Letter Office](https://puppet.com/docs/puppetdb/5.2/maintain_and_tune.html#clean-up-the-dead-letter-office).
+Those are reports of failed requests. They spill up the disk. This parameter is
+a boolean and defaults to false. You can enable automatic cleanup of DLO
+reports by setting this to true.
+
+#### `cleanup_timer_interval`
+
+The DLO cleanup is a systemd timer if systemd is available, otherwise a
+cronjob. The variable configures the systemd.timer option [onCalender](https://www.freedesktop.org/software/systemd/man/systemd.timer.html#OnCalendar=).
+It defaults to `*-*-* ${fqdn_rand(24)}:${fqdn_rand(60)}:00`. This will start
+the cleanup service on a daily basis. The exact minute and hour is random
+per node based on the [fqdn_rand](https://puppet.com/docs/puppet/5.5/function.html#fqdnrand)
+method. On non-systemd systems, the cron runs daily and you need the
+[puppet/cron](https://forge.puppet.com/puppet/cron) module. On systemd systems
+you need the [camptocamp/systemd](https://forge.puppet.com/camptocamp/systemd)
+module. Both are optional dependencies and not automatically installed!
+
+#### `dlo_max_age`
+
+This is a positive integer. It describes the amount of days you want to keep
+the DLO reports. The default value is 90 days.
 
 ### puppetdb::server
 
@@ -923,7 +946,7 @@ Limitations
 
 Currently, PuppetDB is compatible with:
 
-    Puppet Version: 3.7.1+
+    Puppet Version: 4.10+
 
 Platforms:
 * EL 5, 6, 7

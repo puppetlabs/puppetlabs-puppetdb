@@ -73,6 +73,9 @@ class puppetdb (
   $certificate_whitelist             = $puppetdb::params::certificate_whitelist,
   $database_max_pool_size            = $puppetdb::params::database_max_pool_size,
   $read_database_max_pool_size       = $puppetdb::params::read_database_max_pool_size,
+  Boolean $automatic_dlo_cleanup     = $puppetdb::params::automatic_dlo_cleanup,
+  String[1] $cleanup_timer_interval  = $puppetdb::params::cleanup_timer_interval,
+  Integer[1] $dlo_max_age            = $puppetdb::params::dlo_max_age,
 ) inherits puppetdb::params {
 
   class { '::puppetdb::server':
@@ -144,6 +147,9 @@ class puppetdb (
     certificate_whitelist             => $certificate_whitelist,
     database_max_pool_size            => $database_max_pool_size,
     read_database_max_pool_size       => $read_database_max_pool_size,
+    automatic_dlo_cleanup             => $automatic_dlo_cleanup,
+    cleanup_timer_interval            => $cleanup_timer_interval,
+    dlo_max_age                       => $dlo_max_age,
   }
 
   if ($database == 'postgres') {

@@ -1,0 +1,12 @@
+<%- | String[1] $cleanup_timer_interval
+| -%>
+[Unit]
+Description=Timer for puppetdb-DLO-cleanup
+
+[Timer]
+# Daily at 8am
+OnCalendar=<%= $cleanup_timer_interval %>
+Persistent=True
+
+[Install]
+WantedBy=multi-user.target
