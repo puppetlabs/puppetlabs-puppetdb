@@ -1,14 +1,31 @@
 {
-    "name": "puppetlabs-puppetdb",
-    "version": "6.0.2",
-    "summary": "Installs PostgreSQL and PuppetDB, sets up the connection to Puppet master.",
-    "source": "git://github.com/puppetlabs/puppetlabs-puppetdb.git",
-    "project_page": "http://github.com/puppetlabs/puppetlabs-puppetdb",
-    "author": "puppetlabs",
-    "license": "Apache-2.0",
-    "issues_url": "https://tickets.puppetlabs.com/browse/PDB",
-    "description": "Module for installing/configuring PuppetDB",
-    "operatingsystem_support": [
+  "name": "puppetlabs-puppetdb",
+  "version": "6.0.2",
+  "author": "puppetlabs",
+  "summary": "Installs PostgreSQL and PuppetDB, sets up the connection to Puppet master.",
+  "license": "Apache-2.0",
+  "source": "git://github.com/puppetlabs/puppetlabs-puppetdb.git",
+  "project_page": "http://github.com/puppetlabs/puppetlabs-puppetdb",
+  "issues_url": "https://tickets.puppetlabs.com/browse/PDB",
+  "dependencies": [
+    {
+      "name": "puppetlabs/inifile",
+      "version_requirement": ">= 1.1.3 < 3.0.0"
+    },
+    {
+      "name": "puppetlabs/postgresql",
+      "version_requirement": ">= 4.0.0 < 6.0.0"
+    },
+    {
+      "name": "puppetlabs/firewall",
+      "version_requirement": ">= 1.1.3 < 2.0.0"
+    },
+    {
+      "name": "puppetlabs/stdlib",
+      "version_requirement": ">= 4.13.1 < 5.0.0"
+    }
+  ],
+  "operatingsystem_support": [
     {
       "operatingsystem": "RedHat",
       "operatingsystemrelease": [
@@ -62,31 +79,15 @@
         "14.04"
       ]
     }
-    ],
-
-    "requirements": [
+  ],
+  "requirements": [
     {
       "name": "puppet",
       "version_requirement": ">= 4.7.1 < 5.0.0"
     }
-    ],
-
-    "dependencies": [
-        {
-            "name": "puppetlabs/inifile",
-            "version_requirement": ">= 1.1.3 < 3.0.0"
-        },
-        {
-            "name": "puppetlabs/postgresql",
-            "version_requirement": ">= 4.0.0 < 6.0.0"
-        },
-        {
-            "name": "puppetlabs/firewall",
-            "version_requirement": ">= 1.1.3 < 2.0.0"
-        },
-        {
-            "name": "puppetlabs/stdlib",
-            "version_requirement": ">= 4.13.1 < 5.0.0"
-        }
-    ]
+  ],
+  "description": "Module for installing/configuring PuppetDB",
+  "pdk-version": "1.6.0",
+  "template-url": "file:///opt/puppetlabs/pdk/share/cache/pdk-templates.git",
+  "template-ref": "1.6.0-0-gf5564c0"
 }
