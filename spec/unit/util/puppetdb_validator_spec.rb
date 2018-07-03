@@ -2,22 +2,21 @@ require 'spec_helper'
 require 'puppet/util/puppetdb_validator'
 
 describe 'Puppet::Util::PuppetdbValidator' do
-
-  before do
-    response_ok = stub()
-    response_ok.stubs(:kind_of?).with(Net::HTTPSuccess).returns(true)
-    response_not_found = stub()
-    response_not_found.stubs(:kind_of?).with(Net::HTTPSuccess).returns(false)
+  before(:each) do
+    response_ok = stub
+    response_ok.stubs(:is_a?).with(Net::HTTPSuccess).returns(true)
+    response_not_found = stub
+    response_not_found.stubs(:is_a?).with(Net::HTTPSuccess).returns(false)
     response_not_found.stubs(:code).returns(404)
     response_not_found.stubs(:msg).returns('Not found')
 
-    conn_ok = stub()
-    conn_ok.stubs(:get).with('/pdb/meta/v1/version', {"Accept" => "application/json"}).returns(response_ok)
+    conn_ok = stub
+    conn_ok.stubs(:get).with('/pdb/meta/v1/version', 'Accept' => 'application/json').returns(response_ok)
     conn_ok.stubs(:read_timeout=).with(2)
     conn_ok.stubs(:open_timeout=).with(2)
 
-    conn_not_found = stub()
-    conn_not_found.stubs(:get).with('/pdb/meta/v1/version', {"Accept" => "application/json"}).returns(response_not_found)
+    conn_not_found = stub
+    conn_not_found.stubs(:get).with('/pdb/meta/v1/version', 'Accept' => 'application/json').returns(response_not_found)
 
     Puppet::Network::HttpPool.stubs(:http_instance).raises('Unknown host')
     Puppet::Network::HttpPool.stubs(:http_instance).with('mypuppetdb.com', 8080, true).raises('Connection refused')
@@ -31,7 +30,7 @@ describe 'Puppet::Util::PuppetdbValidator' do
     expect(validator.attempt_connection).to be true
   end
 
-  it 'should still validate without ssl' do
+  it 'stills validate without ssl' do
     Puppet[:configtimeout] = 2
     validator = Puppet::Util::PuppetdbValidator.new('mypuppetdb.com', 8080, false)
     expect(validator.attempt_connection).to be true
@@ -60,5 +59,4 @@ describe 'Puppet::Util::PuppetdbValidator' do
     Puppet.expects(:notice).with("Unable to connect to puppetdb server (https://#{puppetdb_server}:#{puppetdb_port}): Unknown host")
     expect(validator.attempt_connection).to be false
   end
-
 end

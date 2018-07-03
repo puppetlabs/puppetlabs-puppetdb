@@ -3,20 +3,20 @@ require 'beaker/puppet_install_helper'
 require 'beaker/module_install_helper'
 
 hosts.each do |host|
-  if host['platform'] =~ /debian/
+  if host['platform'] =~ %r{debian}
     on host, 'echo \'export PATH=/var/lib/gems/1.8/bin/:${PATH}\' >> ~/.bashrc'
   end
-  #install_puppet
-  if host['platform'] =~ /el-(5|6|7)/
-    relver = $1
+  # install_puppet
+  if host['platform'] =~ %r{el-(5|6|7)}
+    relver = Regexp.last_match(1)
     on host, "rpm -ivh http://yum.puppetlabs.com/puppetlabs-release-pc1-el-#{relver}.noarch.rpm"
     on host, 'yum install -y puppetserver'
-  elsif host['platform'] =~ /fedora-(\d+)/
-    relver = $1
+  elsif host['platform'] =~ %r{fedora-(\d+)}
+    relver = Regexp.last_match(1)
     on host, "rpm -ivh http://yum.puppetlabs.com/puppetlabs-release-pc1-fedora-#{relver}.noarch.rpm"
     on host, 'yum install -y puppetserver'
-  elsif host['platform'] =~ /(ubuntu|debian)/
-    if ! host.check_for_package 'curl'
+  elsif host['platform'] =~ %r{(ubuntu|debian)}
+    unless host.check_for_package 'curl'
       on host, 'apt-get install -y curl'
     end
     on host, 'apt-get install apt-transport-https --assume-yes'
