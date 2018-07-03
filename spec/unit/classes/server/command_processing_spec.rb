@@ -9,6 +9,8 @@ describe 'puppetdb::server::command_processing', :type => :class do
       }
     end
 
+    let(:pre_condition) { 'include puppetdb::server::global' }
+
     it { should contain_class('puppetdb::server::command_processing') }
 
     describe 'when using default values' do
@@ -43,7 +45,13 @@ describe 'puppetdb::server::command_processing', :type => :class do
     end
 
     describe 'when using legacy PuppetDB' do
-      let (:pre_condition) { 'class { "puppetdb::globals": version => "2.2.0", }' }
+      let (:pre_condition) do
+        [
+          'class { "puppetdb::globals": version => "2.2.0", }',
+          super(),
+        ].join("\n")
+      end
+
       it { should contain_ini_setting('puppetdb_command_processing_threads').
         with(
              'ensure'  => 'absent',

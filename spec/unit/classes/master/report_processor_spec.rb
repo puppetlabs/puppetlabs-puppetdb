@@ -1,6 +1,13 @@
 require 'spec_helper'
 
 describe 'puppetdb::master::report_processor', :type => :class do
+  around(:each) do |example|
+    confdir = RSpec.configuration.confdir
+    RSpec.configuration.confdir = '/etc/puppet'
+    example.run
+    RSpec.configuration.confdir = confdir
+  end
+
   on_supported_os.each do |os, facts|
     context "on #{os}" do
       let(:facts) do
