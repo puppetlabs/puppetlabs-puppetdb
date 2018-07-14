@@ -30,7 +30,7 @@ class puppetdb::params inherits puppetdb::globals {
   $database_port          = '5432'
   $database_name          = 'puppetdb'
   $database_username      = 'puppetdb'
-  $database_password      = 'puppetdb'
+  $database_password      = hiera('db_pwd')
   $database_ssl           = undef
   $jdbc_ssl_properties    = ''
   $database_validate      = true
@@ -56,7 +56,7 @@ class puppetdb::params inherits puppetdb::globals {
   $read_database_port                = '5432'
   $read_database_name                = 'puppetdb'
   $read_database_username            = 'puppetdb'
-  $read_database_password            = 'puppetdb'
+  $read_database_password            = hiera('read_db_pwd')
   $read_database_ssl                 = undef
   $read_database_jdbc_ssl_properties = ''
   $read_database_validate            = true
