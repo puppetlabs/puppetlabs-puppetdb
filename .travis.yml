@@ -3,12 +3,13 @@ sudo: false
 dist: trusty
 language: ruby
 cache: bundler
-before_install:
-  - bundle -v
-  - rm -f Gemfile.lock
-  - gem update --system
-  - gem --version
-  - bundle -v
+before_install: >
+  set -ex
+  && bundle -v
+  && rm -f Gemfile.lock
+  && gem update --system
+  && gem --version
+  && bundle -v
 script:
   - 'bundle exec rake $CHECK'
 bundler_args: --without system_tests
