@@ -25,7 +25,6 @@ class puppetdb::server (
   $database_username                      = $puppetdb::params::database_username,
   $database_password                      = $puppetdb::params::database_password,
   $database_name                          = $puppetdb::params::database_name,
-  $database_ssl                           = $puppetdb::params::database_ssl,
   $jdbc_ssl_properties                    = $puppetdb::params::jdbc_ssl_properties,
   $database_validate                      = $puppetdb::params::database_validate,
   $database_embedded_path                 = $puppetdb::params::database_embedded_path,
@@ -48,7 +47,6 @@ class puppetdb::server (
   $read_database_username                 = $puppetdb::params::read_database_username,
   $read_database_password                 = $puppetdb::params::read_database_password,
   $read_database_name                     = $puppetdb::params::read_database_name,
-  $read_database_ssl                      = $puppetdb::params::read_database_ssl,
   $read_database_jdbc_ssl_properties      = $puppetdb::params::read_database_jdbc_ssl_properties,
   $read_database_validate                 = $puppetdb::params::read_database_validate,
   $read_log_slow_statements               = $puppetdb::params::read_log_slow_statements,
@@ -71,15 +69,6 @@ class puppetdb::server (
   $database_max_pool_size                 = $puppetdb::params::database_max_pool_size,
   $read_database_max_pool_size            = $puppetdb::params::read_database_max_pool_size,
 ) inherits puppetdb::params {
-
-  # deprecation warnings
-  if $database_ssl {
-    warning('$database_ssl is deprecated and will be removed in the next major release. Please use $jdbc_ssl_properties = "?ssl=true" instead.')
-  }
-
-  if $read_database_ssl {
-    warning('$read_database_ssl is deprecated and will be removed in the next major release. Please use $read_database_jdbc_ssl_properties = "?ssl=true" instead.')
-  }
 
   # Apply necessary suffix if zero is specified.
   # Can we drop this in the next major release?
@@ -169,7 +158,6 @@ class puppetdb::server (
     database_username      => $database_username,
     database_password      => $database_password,
     database_name          => $database_name,
-    database_ssl           => $database_ssl,
     database_max_pool_size => $database_max_pool_size,
     jdbc_ssl_properties    => $jdbc_ssl_properties,
     database_validate      => $database_validate,
@@ -195,7 +183,6 @@ class puppetdb::server (
     database_username      => $read_database_username,
     database_password      => $read_database_password,
     database_name          => $read_database_name,
-    database_ssl           => $read_database_ssl,
     jdbc_ssl_properties    => $read_database_jdbc_ssl_properties,
     database_validate      => $read_database_validate,
     log_slow_statements    => $read_log_slow_statements,

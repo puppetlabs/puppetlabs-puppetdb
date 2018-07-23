@@ -404,15 +404,6 @@ The password for the database user. Defaults to `puppetdb`, ignored for
 The name of the database instance to connect to. Defaults to `puppetdb`, ignored
 for `embedded` database.
 
-#### `database_ssl` (DEPRECATED)
-
-If true, PuppetDB will use SSL to connect to the postgres database. Defaults to
-`false`, ignored for `embedded` database. Setting up proper trust- and keystores has to
-be managed outside of the PuppetDB module.
-
-This parameter is deprecated and will be retired in a future release. Please use
-the `jdbc_ssl_properties` parameter with the value `?ssl=true`.
-
 #### `jdbc_ssl_properties`
 
 The text to append to the JDBC connection URI. This should begin with a '?'
@@ -570,12 +561,6 @@ supported in PuppetDB >= 1.6.
 
 The name of the read database instance to connect to. Defaults to `puppetdb`.
 This option is supported in PuppetDB >= 1.6.
-
-#### `read_database_ssl`
-
-If true, PuppetDB will use SSL to connect to the postgres read database
-(defaults to false). Setting up proper trust- and keystores has to be managed
-outside of the PuppetDB module. This option is supported in PuppetDB >= 1.6.
 
 #### `read_log_slow_statements`
 
