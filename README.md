@@ -687,10 +687,9 @@ cronjob. The variable configures the systemd.timer option [onCalender](https://w
 It defaults to `*-*-* ${fqdn_rand(24)}:${fqdn_rand(60)}:00`. This will start
 the cleanup service on a daily basis. The exact minute and hour is random
 per node based on the [fqdn_rand](https://puppet.com/docs/puppet/5.5/function.html#fqdnrand)
-method. On non-systemd systems, the cron runs daily and you need the
-[puppet/cron](https://forge.puppet.com/puppet/cron) module. On systemd systems
-you need the [camptocamp/systemd](https://forge.puppet.com/camptocamp/systemd)
-module. Both are optional dependencies and not automatically installed!
+method. On non-systemd systems, the cron runs daily and the `$puppetdb_user` needs
+to be able to run cron jobs. On systemd systems you need the [camptocamp/systemd](https://forge.puppet.com/camptocamp/systemd)
+module, which is an optional dependency and not automatically installed!
 
 #### `dlo_max_age`
 
