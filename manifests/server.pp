@@ -68,6 +68,9 @@ class puppetdb::server (
   $certificate_whitelist                  = $puppetdb::params::certificate_whitelist,
   $database_max_pool_size                 = $puppetdb::params::database_max_pool_size,
   $read_database_max_pool_size            = $puppetdb::params::read_database_max_pool_size,
+  Boolean $automatic_dlo_cleanup          = $puppetdb::params::automatic_dlo_cleanup,
+  String[1] $cleanup_timer_interval       = $puppetdb::params::cleanup_timer_interval,
+  Integer[1] $dlo_max_age                 = $puppetdb::params::dlo_max_age,
 ) inherits puppetdb::params {
 
   # Apply necessary suffix if zero is specified.
@@ -280,6 +283,37 @@ class puppetdb::server (
         require => Package[$puppetdb_package],
         notify  => Service[$puppetdb_service],
         value   => puppetdb_flatten_java_args($java_args),
+      }
+    }
+  }
+
+  if $automatic_dlo_cleanup {
+    if $facts['systemd'] {
+      # deploy a systemd timer + service to cleanup old reports
+      # https://puppet.com/docs/puppetdb/5.2/maintain_and_tune.html#clean-up-the-dead-letter-office
+      systemd::unit_file{'puppetdb-dlo-cleanup.service':
+        content => epp("${module_name}/puppetdb-DLO-cleanup.service.epp", {
+          'puppetdb_user'  => $puppetdb_user,
+          'puppetdb_group' =>  $puppetdb_group,
+          'dlo_max_age'    => $dlo_max_age
+        }),
+      }
+      -> systemd::unit_file{'puppetdb-dlo-cleanup.timer':
+        content => epp("${module_name}/puppetdb-DLO-cleanup.timer.epp", {'cleanup_timer_interval' => $cleanup_timer_interval}),
+        enable  => true,
+        active  => true,
+      }
+    } else {
+      cron::job{'puppetdb-dlo-cleanup':
+        ensure      => 'present',
+        minute      => fqdn_rand(60),
+        hour        => fqdn_rand(24),
+        date        => '*',
+        month       => '*',
+        weekday     => '*',
+        command     => "/usr/bin/find /opt/puppetlabs/server/data/puppetdb/stockpile/discard/ -type f -mtime ${dlo_max_age} -delete",
+        user        => $puppetdb_user,
+        description => 'Cleanup old discarded puppetdb reports',
       }
     }
   }

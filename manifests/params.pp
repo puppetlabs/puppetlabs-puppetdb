@@ -167,6 +167,12 @@ class puppetdb::params inherits puppetdb::globals {
   $temp_usage               = undef
   $disable_update_checking  = undef
 
+  # reports of failed actions: https://puppet.com/docs/puppetdb/5.2/maintain_and_tune.html#clean-up-the-dead-letter-office
+  $automatic_dlo_cleanup    = true
+  # any value for a systemd timer is valid: https://www.freedesktop.org/software/systemd/man/systemd.time.html
+  $cleanup_timer_interval   = "*-*-* ${fqdn_rand(24)}:${fqdn_rand(60)}:00"
+  $dlo_max_age              = 90
+
   $ssl_set_cert_paths       = false
   $ssl_cert_path            = "${ssl_dir}/public.pem"
   $ssl_key_path             = "${ssl_dir}/private.pem"
