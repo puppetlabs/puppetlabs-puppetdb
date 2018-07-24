@@ -311,7 +311,7 @@ class puppetdb::server (
         date        => '*',
         month       => '*',
         weekday     => '*',
-        command     => '/usr/bin/find /opt/puppetlabs/server/data/puppetdb/stockpile/discard/ -type f -mtime ${dlo_max_age} -delete',
+        command     => "/usr/bin/find /opt/puppetlabs/server/data/puppetdb/stockpile/discard/ -type f -mtime ${dlo_max_age} -delete",
         user        => $puppetdb_user,
         description => 'Cleanup old discarded puppetdb reports',
       }

@@ -79,6 +79,52 @@ describe 'puppetdb::server', type: :class do
           }
         end
       end
+
+      context 'when systemd is available' do
+        let(:facts) do
+          facts.merge(systemd: true)
+        end
+
+        describe 'by default dlo cleanup service is enabled' do
+          it { is_expected.to contain_systemd__unit_file('puppetdb-dlo-cleanup.service') }
+          it { is_expected.to contain_systemd__unit_file('puppetdb-dlo-cleanup.timer').with_enable(true).with_active(true) }
+
+          it { is_expected.not_to contain_cron__job('puppetdb-dlo-cleanup') }
+        end
+
+        describe 'dlo cleanup service can be disabled by params' do
+          let(:params) do
+            {
+              'automatic_dlo_cleanup' => false,
+            }
+          end
+
+          it { is_expected.not_to contain_systemd__unit_file('puppetdb-dlo-cleanup.service') }
+          it { is_expected.not_to contain_systemd__unit_file('puppetdb-dlo-cleanup.timer') }
+          it { is_expected.not_to contain_cron__job('puppetdb-dlo-cleanup') }
+        end
+      end
+
+      context 'when systemd is not available' do
+        describe 'by default dlo cleanup is set up with cron' do
+          it { is_expected.to contain_cron__job('puppetdb-dlo-cleanup').with_ensure('present') }
+
+          it { is_expected.not_to contain_systemd__unit_file('puppetdb-dlo-cleanup.service') }
+          it { is_expected.not_to contain_systemd__unit_file('puppetdb-dlo-cleanup.timer') }
+        end
+
+        describe 'dlo cleanup can be disabled by params' do
+          let(:params) do
+            {
+              'automatic_dlo_cleanup' => false,
+            }
+          end
+
+          it { is_expected.not_to contain_systemd__unit_file('puppetdb-dlo-cleanup.service') }
+          it { is_expected.not_to contain_systemd__unit_file('puppetdb-dlo-cleanup.timer') }
+          it { is_expected.not_to contain_cron__job('puppetdb-dlo-cleanup') }
+        end
+      end
     end
   end
 end
