@@ -1,11 +1,6 @@
-require 'rubygems'
-require 'bundler/setup'
-
-Bundler.require :default
-
-require 'rspec/core/rake_task'
 require 'puppetlabs_spec_helper/rake_tasks'
+require 'puppet-syntax/tasks/puppet-syntax'
+require 'puppet_blacksmith/rake_tasks' if Bundler.rubygems.find_name('puppet-blacksmith').any?
 
-task :default do
-  sh %{rake -T}
-end
+PuppetLint.configuration.send('disable_relative')
+

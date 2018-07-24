@@ -6,7 +6,6 @@ class puppetdb::server::database (
   $database_username      = $puppetdb::params::database_username,
   $database_password      = $puppetdb::params::database_password,
   $database_name          = $puppetdb::params::database_name,
-  $database_ssl           = $puppetdb::params::database_ssl,
   $jdbc_ssl_properties    = $puppetdb::params::jdbc_ssl_properties,
   $database_validate      = $puppetdb::params::database_validate,
   $database_embedded_path = $puppetdb::params::database_embedded_path,
@@ -77,9 +76,6 @@ class puppetdb::server::database (
 
     if !empty($jdbc_ssl_properties) {
       $database_suffix = $jdbc_ssl_properties
-    }
-    elsif $database_ssl {
-      $database_suffix = '?ssl=true'
     }
     else {
       $database_suffix = ''

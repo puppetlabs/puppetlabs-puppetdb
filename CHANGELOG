@@ -2,6 +2,24 @@
 
 Release notes for the puppetlabs-puppetdb module.
 
+#### 7.0.0 - 2018/06/27
+
+This is a major release that replaces validate_* methods with data types.
+The minimum required version of puppetlabs/stdlib has been bummped to 4.13.1
+in order to get the new data types. Thanks very much to @bastelfreak for your
+submissions!
+
+Detailed changes:
+* Require puppetlabs/stdlib >= 4.13.1
+* Bump puppet-lint to version 2
+* Bump minimal recommended puppet4 version to 4.7.1
+* Replace uses of validate_* methods in favor of data types (Thanks @bastelfreak!)
+* Add data type for ttl (Thanks @bastelfreak!)
+* Update list of supported platforms
+* Retire the previously deprecated `database_ssl` and `read_database_ssl` params in favor of `jdbc_ssl_properties` and `read_database_jdbc_ssl_properties`
+
+------------------------------------------
+
 #### 6.0.2 - 2017/11/06
 
 This is a minor bugfix release.

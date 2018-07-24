@@ -6,7 +6,6 @@ class puppetdb::server::read_database (
   $database_username      = $puppetdb::params::read_database_username,
   $database_password      = $puppetdb::params::read_database_password,
   $database_name          = $puppetdb::params::read_database_name,
-  $database_ssl           = $puppetdb::params::read_database_ssl,
   $jdbc_ssl_properties    = $puppetdb::params::read_database_jdbc_ssl_properties,
   $database_validate      = $puppetdb::params::read_database_validate,
   $log_slow_statements    = $puppetdb::params::read_log_slow_statements,
@@ -68,9 +67,6 @@ class puppetdb::server::read_database (
 
       if !empty($jdbc_ssl_properties) {
         $database_suffix = $jdbc_ssl_properties
-      }
-      elsif $database_ssl {
-        $database_suffix = '?ssl=true'
       }
       else {
         $database_suffix = ''
