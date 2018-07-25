@@ -304,16 +304,15 @@ class puppetdb::server (
         active  => true,
       }
     } else {
-      cron::job{'puppetdb-dlo-cleanup':
-        ensure      => 'present',
-        minute      => fqdn_rand(60),
-        hour        => fqdn_rand(24),
-        date        => '*',
-        month       => '*',
-        weekday     => '*',
-        command     => "/usr/bin/find /opt/puppetlabs/server/data/puppetdb/stockpile/discard/ -type f -mtime ${dlo_max_age} -delete",
-        user        => $puppetdb_user,
-        description => 'Cleanup old discarded puppetdb reports',
+      cron { 'puppetdb-dlo-cleanup':
+        ensure   => 'present',
+        minute   => fqdn_rand(60),
+        hour     => fqdn_rand(24),
+        monthday => '*',
+        month    => '*',
+        weekday  => '*',
+        command  => "/usr/bin/find /opt/puppetlabs/server/data/puppetdb/stockpile/discard/ -type f -mtime ${dlo_max_age} -delete",
+        user     => $puppetdb_user,
       }
     }
   }
