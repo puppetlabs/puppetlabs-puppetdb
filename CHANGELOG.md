@@ -2,6 +2,15 @@
 
 Release notes for the puppetlabs-puppetdb module.
 
+#### 7.0.1 - 2018/07/30
+
+This is a minor bugfix release.
+
+Detailed changes:
+* Update the upper bound of required puppet version in metadata.json (Thanks @ekohl!)
+
+------------------------------------------
+
 #### 7.0.0 - 2018/06/27
 
 This is a major release that replaces validate_* methods with data types.
