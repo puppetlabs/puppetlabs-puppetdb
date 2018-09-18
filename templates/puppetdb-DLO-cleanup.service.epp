@@ -1,5 +1,6 @@
 <%- | String[1] $puppetdb_user,
       String[1] $puppetdb_group,
+      String[1] $vardir,
       Integer[1] $dlo_max_age
 | -%>
 [Unit]
@@ -9,4 +10,4 @@ Description=Cleanup old discarded puppetdb reports
 Type=oneshot
 User=<%= $puppetdb_user %>
 Group=<%= $puppetdb_group %>
-ExecStart=/usr/bin/find /opt/puppetlabs/server/data/puppetdb/stockpile/discard/ -type f -mtime +<%= $dlo_max_age %> -delete
+ExecStart=/usr/bin/find <%= $vardir %>/stockpile/discard/ -type f -mtime +<%= $dlo_max_age %> -delete

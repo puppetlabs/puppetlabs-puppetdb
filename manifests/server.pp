@@ -294,7 +294,8 @@ class puppetdb::server (
       systemd::unit_file{'puppetdb-dlo-cleanup.service':
         content => epp("${module_name}/puppetdb-DLO-cleanup.service.epp", {
           'puppetdb_user'  => $puppetdb_user,
-          'puppetdb_group' =>  $puppetdb_group,
+          'puppetdb_group' => $puppetdb_group,
+          'vardir'         => $vardir,
           'dlo_max_age'    => $dlo_max_age
         }),
       }
@@ -311,7 +312,7 @@ class puppetdb::server (
         monthday => '*',
         month    => '*',
         weekday  => '*',
-        command  => "/usr/bin/find /opt/puppetlabs/server/data/puppetdb/stockpile/discard/ -type f -mtime ${dlo_max_age} -delete",
+        command  => "/usr/bin/find ${vardir}/stockpile/discard/ -type f -mtime ${dlo_max_age} -delete",
         user     => $puppetdb_user,
       }
     }
