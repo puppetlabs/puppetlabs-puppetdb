@@ -86,7 +86,7 @@ describe 'puppetdb::server', type: :class do
         end
 
         describe 'by default dlo cleanup service is enabled' do
-          it { is_expected.to contain_systemd__unit_file('puppetdb-dlo-cleanup.service') }
+          it { is_expected.to contain_systemd__unit_file('puppetdb-dlo-cleanup.service').with_content(%r{/opt/puppetlabs/server/data/puppetdb/stockpile/discard/}) }
           it { is_expected.to contain_systemd__unit_file('puppetdb-dlo-cleanup.timer').with_enable(true).with_active(true) }
 
           it { is_expected.not_to contain_cron('puppetdb-dlo-cleanup') }
@@ -103,11 +103,24 @@ describe 'puppetdb::server', type: :class do
           it { is_expected.not_to contain_systemd__unit_file('puppetdb-dlo-cleanup.timer') }
           it { is_expected.not_to contain_cron('puppetdb-dlo-cleanup') }
         end
+
+        describe 'dlo directory is customized by $vardir to $vardir/stockpile/discard' do
+          let(:params) do
+            {
+              'vardir' => '/var/custom/path',
+            }
+          end
+
+          it { is_expected.to contain_systemd__unit_file('puppetdb-dlo-cleanup.service').with_content(%r{/var/custom/path/stockpile/discard/}) }
+          it { is_expected.to contain_systemd__unit_file('puppetdb-dlo-cleanup.timer').with_enable(true).with_active(true) }
+
+          it { is_expected.not_to contain_cron('puppetdb-dlo-cleanup') }
+        end
       end
 
       context 'when systemd is not available' do
         describe 'by default dlo cleanup is set up with cron' do
-          it { is_expected.to contain_cron('puppetdb-dlo-cleanup').with_ensure('present') }
+          it { is_expected.to contain_cron('puppetdb-dlo-cleanup').with_ensure('present').with(command: %r{/opt/puppetlabs/server/data/puppetdb/stockpile/discard/}) }
 
           it { is_expected.not_to contain_systemd__unit_file('puppetdb-dlo-cleanup.service') }
           it { is_expected.not_to contain_systemd__unit_file('puppetdb-dlo-cleanup.timer') }
@@ -123,6 +136,19 @@ describe 'puppetdb::server', type: :class do
           it { is_expected.not_to contain_systemd__unit_file('puppetdb-dlo-cleanup.service') }
           it { is_expected.not_to contain_systemd__unit_file('puppetdb-dlo-cleanup.timer') }
           it { is_expected.not_to contain_cron('puppetdb-dlo-cleanup') }
+        end
+
+        describe 'dlo directory is customized by $vardir to $vardir/stockpile/discard' do
+          let(:params) do
+            {
+              'vardir' => '/var/custom/path',
+            }
+          end
+
+          it { is_expected.to contain_cron('puppetdb-dlo-cleanup').with_ensure('present').with(command: %r{/var/custom/path/stockpile/discard/}) }
+
+          it { is_expected.not_to contain_systemd__unit_file('puppetdb-dlo-cleanup.service') }
+          it { is_expected.not_to contain_systemd__unit_file('puppetdb-dlo-cleanup.timer') }
         end
       end
     end
