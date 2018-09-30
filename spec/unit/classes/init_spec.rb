@@ -10,9 +10,32 @@ describe 'puppetdb', type: :class do
       end
 
       describe 'when using default values for puppetdb class' do
+        it { is_expected.to compile.with_all_deps }
         it { is_expected.to contain_class('puppetdb') }
         it { is_expected.to contain_class('puppetdb::server') }
         it { is_expected.to contain_class('puppetdb::database::postgresql') }
+      end
+    end
+    next unless facts[:os]['release']['family'] == 'Debian'
+    context "on #{os} with managed postgresql" do
+      let :facts do
+        facts
+      end
+      let :params do
+        {
+          node_ttl: '14d',
+          node_purge_ttl: '14d',
+          report_ttl: '999d',
+          manage_firewall: false,
+          manage_dbserver: true,
+          postgres_version: '10',
+          ssl_set_cert_paths: true,
+          disable_update_checking: true,
+        }
+      end
+
+      describe 'with real world params' do
+        it { is_expected.to compile.with_all_deps }
       end
     end
   end
