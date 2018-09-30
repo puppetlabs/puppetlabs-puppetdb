@@ -37,6 +37,42 @@ describe 'puppetdb', type: :class do
       describe 'with real world params' do
         it { is_expected.to compile.with_all_deps }
       end
+      context "on #{os} without managed postgresql" do
+        let :pre_condition do
+          <<-HEREDOC
+        # get the pg server up and running
+        class { 'postgresql::server':
+          ip_mask_allow_all_users => '0.0.0.0/0',
+          listen_addresses        => '127.0.0.1',
+        }
+        # get the pg contrib to use pg_trgm extension
+        class { 'postgresql::server::contrib': }
+        postgresql::server::extension { 'pg_trgm':
+          database => 'puppetdb',
+          require  => Postgresql::Server::Db['puppetdb'],
+        }
+        HEREDOC
+        end
+        let :facts do
+          facts
+        end
+        let :params do
+          {
+            node_ttl: '14d',
+            node_purge_ttl: '14d',
+            report_ttl: '999d',
+            manage_firewall: false,
+            manage_dbserver: false,
+            postgres_version: '10',
+            ssl_set_cert_paths: true,
+            disable_update_checking: true,
+          }
+        end
+
+        describe 'with real world params' do
+          it { is_expected.to compile.with_all_deps }
+        end
+      end
     end
   end
 
