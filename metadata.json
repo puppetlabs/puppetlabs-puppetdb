@@ -1,6 +1,6 @@
 {
   "name": "puppetlabs-puppetdb",
-  "version": "7.0.1",
+  "version": "7.1.0",
   "author": "puppetlabs",
   "summary": "Installs PostgreSQL and PuppetDB, sets up the connection to Puppet master.",
   "license": "Apache-2.0",
@@ -22,7 +22,7 @@
     },
     {
       "name": "puppetlabs/stdlib",
-      "version_requirement": ">= 4.13.1 < 5.0.0"
+      "version_requirement": ">= 4.13.1 < 6.0.0"
     }
   ],
   "operatingsystem_support": [
@@ -78,7 +78,7 @@
   "requirements": [
     {
       "name": "puppet",
-      "version_requirement": ">= 4.10.0 < 6.0.0"
+      "version_requirement": ">= 4.10.0 < 7.0.0"
     }
   ],
   "description": "Module for installing/configuring PuppetDB",
