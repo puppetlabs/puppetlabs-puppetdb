@@ -2,6 +2,16 @@
 
 Release notes for the puppetlabs-puppetdb module.
 
+#### 7.1.0 - 2018/10/02
+
+This is a minor feature release.
+
+Detailed changes:
+* Fix issue with DLO path default being hardcoded
+* Update module dependencies to allow compatibility with Puppet 6
+
+------------------------------------------
+
 #### 7.0.1 - 2018/07/30
 
 This is a minor bugfix release.
