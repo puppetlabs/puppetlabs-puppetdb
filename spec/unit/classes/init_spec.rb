@@ -10,9 +10,29 @@ describe 'puppetdb', type: :class do
       end
 
       describe 'when using default values for puppetdb class' do
+        it { is_expected.to compile.with_all_deps }
         it { is_expected.to contain_class('puppetdb') }
         it { is_expected.to contain_class('puppetdb::server') }
         it { is_expected.to contain_class('puppetdb::database::postgresql') }
+      end
+
+      describe 'without managed postgresql' do
+        let :pre_condition do
+          <<-HEREDOC
+          class { 'postgresql::server':
+          }
+          HEREDOC
+        end
+
+        let :params do
+          {
+            manage_dbserver: false,
+          }
+        end
+
+        describe 'manifest' do
+          it { is_expected.to compile.with_all_deps }
+        end
       end
     end
   end
