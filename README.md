@@ -213,7 +213,7 @@ The `globals` class above takes into account the following PuppetDB 3 and Puppet
     * The `puppetdb::master:puppetdb_conf` class has added a `$legacy_terminus`
       to support the PuppetDB 2.x terminus configuration.
     * The default `test_url` for the `PuppetDBConnValidator` has also been
-      chaged to `/pdb/meta/v1/version` but will default to `/v3/version` when
+      changed to `/pdb/meta/v1/version` but will default to `/v3/version` when
       using a PuppetDB 2.x version.
     * The configuration pathing for Puppet and PuppetDB has changed with Puppet
       4 and PuppetDB 3, using PuppetDB 2.x or older assumes the old
