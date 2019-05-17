@@ -62,9 +62,9 @@ hosts.each do |host|
     if host['platform'].version == '8' && !use_puppet4?
       create_remote_file(host,
                          '/etc/apt/sources.list.d/jessie-backports.list',
-                         'deb http://httpredir.debian.org/debian jessie-backports main')
+                         'deb https://artifactory.delivery.puppetlabs.net/artifactory/debian_archive__remote/ jessie-backports main')
       on host, 'apt-get -y -m update'
-      on host, 'apt-get install -y -t jessie-backports openjdk-8-jre-headless'
+      on host, 'apt-get install -y openjdk-8-jre-headless'
     end
     on host, 'apt-get install apt-transport-https --assume-yes'
     on host, "curl -O #{build_url('debian')}$(lsb_release -c -s).deb"
