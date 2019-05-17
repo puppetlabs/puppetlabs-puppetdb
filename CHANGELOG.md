@@ -2,6 +2,13 @@
 
 Release notes for the puppetlabs-puppetdb module.
 
+#### 7.2.0 - 2019/05/17
+
+This is a minor feature release.
+
+Detailed changes:
+* Update module dependencies for inifile and PostgreSQL
+
 #### 7.1.0 - 2018/10/02
 
 This is a minor feature release.
