@@ -31,7 +31,6 @@ describe 'Puppet::Util::PuppetdbValidator' do
   end
 
   it 'stills validate without ssl' do
-    Puppet[:configtimeout] = 2
     validator = Puppet::Util::PuppetdbValidator.new('mypuppetdb.com', 8080, false)
     expect(validator.attempt_connection).to be true
   end
