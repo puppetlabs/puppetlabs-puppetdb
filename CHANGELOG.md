@@ -2,6 +2,13 @@
 
 Release notes for the puppetlabs-puppetdb module.
 
+#### 7.3.0 - 2019/06/14
+
+This is a minor feature release.
+
+Detailed changes:
+* Update module dependencies for firewall and stdlib
+
 #### 7.2.0 - 2019/05/17
 
 This is a minor feature release.
