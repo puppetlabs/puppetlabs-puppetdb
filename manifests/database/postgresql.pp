@@ -1,14 +1,14 @@
 # Class for creating the PuppetDB postgresql database. See README.md for more
 # information.
 class puppetdb::database::postgresql(
-  $listen_addresses     = $puppetdb::params::database_host,
-  $database_name        = $puppetdb::params::database_name,
-  $database_username    = $puppetdb::params::database_username,
-  $database_password    = $puppetdb::params::database_password,
-  $database_port        = $puppetdb::params::database_port,
-  $manage_server        = $puppetdb::params::manage_dbserver,
-  $manage_package_repo  = $puppetdb::params::manage_pg_repo,
-  $postgres_version     = $puppetdb::params::postgres_version,
+  $listen_addresses                    = $puppetdb::params::database_host,
+  $database_name                       = $puppetdb::params::database_name,
+  $database_username                   = $puppetdb::params::database_username,
+  Sensitive[String] $database_password = $puppetdb::params::database_password,
+  $database_port                       = $puppetdb::params::database_port,
+  $manage_server                       = $puppetdb::params::manage_dbserver,
+  $manage_package_repo                 = $puppetdb::params::manage_pg_repo,
+  $postgres_version                    = $puppetdb::params::postgres_version,
 ) inherits puppetdb::params {
 
   if $manage_server {
