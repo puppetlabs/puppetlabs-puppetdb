@@ -21,6 +21,7 @@ class puppetdb (
   $ssl_protocols                     = $puppetdb::params::ssl_protocols,
   $cipher_suites                     = $puppetdb::params::cipher_suites,
   $manage_dbserver                   = $puppetdb::params::manage_dbserver,
+  $manage_database                   = $puppetdb::params::manage_database,
   $manage_package_repo               = $puppetdb::params::manage_pg_repo,
   $postgres_version                  = $puppetdb::params::postgres_version,
   $database                          = $puppetdb::params::database,
@@ -167,6 +168,7 @@ class puppetdb (
       database_password   => $database_password,
       database_port       => $database_port,
       manage_server       => $manage_dbserver,
+      manage_database     => $manage_database,
       manage_package_repo => $manage_package_repo,
       postgres_version    => $postgres_version,
       before              => $database_before

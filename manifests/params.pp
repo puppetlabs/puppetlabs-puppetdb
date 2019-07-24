@@ -17,6 +17,7 @@ class puppetdb::params inherits puppetdb::globals {
   $puppetdb_version          = $puppetdb::globals::version
   $database                  = $puppetdb::globals::database
   $manage_dbserver           = true
+  $manage_database           = true
 
   if $::osfamily =~ /RedHat|Debian/ {
     $manage_pg_repo            = true
