@@ -14,6 +14,7 @@ describe 'puppetdb', type: :class do
         it { is_expected.to contain_class('puppetdb') }
         it { is_expected.to contain_class('puppetdb::server') }
         it { is_expected.to contain_class('puppetdb::database::postgresql') }
+        it { is_expected.to contain_postgresql__server__db('puppetdb') }
       end
 
       describe 'without managed postgresql' do
@@ -32,6 +33,19 @@ describe 'puppetdb', type: :class do
 
         describe 'manifest' do
           it { is_expected.to compile.with_all_deps }
+        end
+      end
+      describe 'without managed postgresql database' do
+        let :params do
+          {
+            manage_dbserver: true,
+            manage_database: false,
+          }
+        end
+
+        describe 'manifest' do
+          it { is_expected.to compile.with_all_deps }
+          it { is_expected.not_to contain_postgresql__server__db('puppetdb') }
         end
       end
     end

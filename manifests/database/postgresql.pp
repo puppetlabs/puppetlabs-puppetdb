@@ -6,6 +6,7 @@ class puppetdb::database::postgresql(
   $database_username    = $puppetdb::params::database_username,
   $database_password    = $puppetdb::params::database_password,
   $database_port        = $puppetdb::params::database_port,
+  $manage_database      = $puppetdb::params::manage_database,
   $manage_server        = $puppetdb::params::manage_dbserver,
   $manage_package_repo  = $puppetdb::params::manage_pg_repo,
   $postgres_version     = $puppetdb::params::postgres_version,
@@ -22,18 +23,26 @@ class puppetdb::database::postgresql(
       listen_addresses        => $listen_addresses,
       port                    => scanf($database_port, '%i')[0],
     }
-    # get the pg contrib to use pg_trgm extension
-    class { '::postgresql::server::contrib': }
-    postgresql::server::extension { 'pg_trgm':
-      database => $database_name,
-      require  => Postgresql::Server::Db[$database_name],
+
+    # Only install pg_trgm extension, if database it is actually managed by the module
+    if $manage_database {
+
+      # get the pg contrib to use pg_trgm extension
+      class { '::postgresql::server::contrib': }
+
+      postgresql::server::extension { 'pg_trgm':
+        database => $database_name,
+        require  => Postgresql::Server::Db[$database_name],
+      }
     }
   }
 
-  # create the puppetdb database
-  postgresql::server::db { $database_name:
-    user     => $database_username,
-    password => $database_password,
-    grant    => 'all',
+  if $manage_database {
+    # create the puppetdb database
+    postgresql::server::db { $database_name:
+      user     => $database_username,
+      password => $database_password,
+      grant    => 'all',
+    }
   }
 }
