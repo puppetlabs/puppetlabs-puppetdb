@@ -2,6 +2,13 @@
 
 Release notes for the puppetlabs-puppetdb module.
 
+#### 7.4.0 - 2019/06/14
+
+This is a minor feature release.
+
+Detailed changes:
+* Add the `manage_database` parameter to skip database and extension creation
+
 #### 7.3.0 - 2019/06/14
 
 This is a minor feature release.
@@ -95,7 +102,7 @@ Detailed changes:
 * Add cipher_suites option to configure jetty's SSL support (Thanks @selyx!)
 * Add support for Ruby 2.3.1 (Thanks @ghoneycutt!)
 * Specify mode of routes.yaml (Thanks @tampakrap!)
-* Add [read_]database_max_pool_size paramater (Thanks @kpaulisse and @vine77!)
+* Add [read_]database_max_pool_size parameter (Thanks @kpaulisse and @vine77!)
 * Fix user/group names on OpenBSD (Thanks @buzzdeee!)
 * Enforce permissions of managed ini files (Thanks @kbarber!)
 * Manage the pg_trgm database extension (Thanks @PascalBourdier!)
