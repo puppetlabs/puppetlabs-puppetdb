@@ -3,6 +3,7 @@
 class puppetdb::master::storeconfigs (
   $puppet_conf = $puppetdb::params::puppet_conf,
   $masterless  = $puppetdb::params::masterless,
+  $enable      = false,
 ) inherits puppetdb::params {
 
   if $masterless {
@@ -11,10 +12,15 @@ class puppetdb::master::storeconfigs (
     $puppet_conf_section = 'master'
   }
 
+  $storeconfigs_ensure = $enable ? {
+    true    => present,
+    default => absent,
+  }
+
   Ini_setting {
     section => $puppet_conf_section,
     path    => $puppet_conf,
-    ensure  => present,
+    ensure  => $storeconfigs_ensure,
   }
 
   ini_setting { "puppet.conf/${puppet_conf_section}/storeconfigs":
