@@ -3,7 +3,7 @@
 class puppetdb::master::storeconfigs (
   $puppet_conf = $puppetdb::params::puppet_conf,
   $masterless  = $puppetdb::params::masterless,
-  $enable      = false,
+  $enable      = true,
 ) inherits puppetdb::params {
 
   if $masterless {
