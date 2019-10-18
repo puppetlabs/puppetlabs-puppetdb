@@ -16,6 +16,7 @@ class puppetdb::master::config (
   $puppetdb_soft_write_failure = false,
   $manage_routes               = true,
   $manage_storeconfigs         = true,
+  $enable_storeconfigs         = true,
   $manage_report_processor     = false,
   $manage_config               = true,
   $create_puppet_service_resource = true,
@@ -125,6 +126,7 @@ class puppetdb::master::config (
     class { 'puppetdb::master::storeconfigs':
       puppet_conf => $puppet_conf,
       masterless  => $masterless,
+      enable      => $enable_storeconfigs,
       require     => $storeconfigs_require,
     }
   }

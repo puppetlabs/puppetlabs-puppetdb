@@ -793,6 +793,12 @@ Ignored unless `manage_report_processor` is `true`, in which case this setting
 will determine whether or not the PuppetDB report processor is enabled (`true`)
 or disabled (`false`) in the puppet.conf file.
 
+#### `enable_storeconfigs`
+
+Ignored unless `manage_storeconfigs` is `true`, in which case this setting
+will determine whether or not client configuration storage is enabled (`true`)
+or disabled (`false`) in the puppet.conf file.
+
 #### `puppet_confdir`
 
 Puppet's config directory. Defaults to `/etc/puppet`.
