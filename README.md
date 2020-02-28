@@ -403,6 +403,12 @@ The name of the database user to connect as. Defaults to `puppetdb`, ignored for
 The password for the database user. Defaults to `puppetdb`, ignored for
 `embedded` database.
 
+#### `manage_db_password`
+
+Whether or not the database password in database.ini will be managed by this module.
+Set this to `false` if you want to set the password some other way.
+Defaults to `true`
+
 #### `database_name`
 
 The name of the database instance to connect to. Defaults to `puppetdb`, ignored
@@ -560,6 +566,12 @@ option is supported in PuppetDB >= 1.6.
 
 The password for the read database user. Defaults to `puppetdb`. This option is
 supported in PuppetDB >= 1.6.
+
+#### `manage_read_db_password`
+
+Whether or not the database password in read-database.ini will be managed by this module.
+Set this to `false` if you want to set the password some other way.
+Defaults to `true`
 
 #### `read_database_name`
 

@@ -6,6 +6,7 @@ class puppetdb::server::database (
   $database_username      = $puppetdb::params::database_username,
   $database_password      = $puppetdb::params::database_password,
   $database_name          = $puppetdb::params::database_name,
+  $manage_db_password     = $puppetdb::params::manage_db_password,
   $jdbc_ssl_properties    = $puppetdb::params::jdbc_ssl_properties,
   $database_validate      = $puppetdb::params::database_validate,
   $database_embedded_path = $puppetdb::params::database_embedded_path,
@@ -89,7 +90,7 @@ class puppetdb::server::database (
       value   => $database_username,
     }
 
-    if $database_password != undef {
+    if $database_password != undef and $manage_db_password {
       ini_setting {'puppetdb_psdatabase_password':
         setting => 'password',
         value   => $database_password,
