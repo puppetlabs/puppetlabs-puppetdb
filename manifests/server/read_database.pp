@@ -6,6 +6,7 @@ class puppetdb::server::read_database (
   $database_username      = $puppetdb::params::read_database_username,
   $database_password      = $puppetdb::params::read_database_password,
   $database_name          = $puppetdb::params::read_database_name,
+  $manage_db_password     = $puppetdb::params::manage_read_db_password,
   $jdbc_ssl_properties    = $puppetdb::params::read_database_jdbc_ssl_properties,
   $database_validate      = $puppetdb::params::read_database_validate,
   $log_slow_statements    = $puppetdb::params::read_log_slow_statements,
@@ -79,7 +80,7 @@ class puppetdb::server::read_database (
         value   => $database_username,
       }
 
-      if $database_password != undef {
+      if $database_password != undef and $manage_db_password {
         ini_setting { 'puppetdb_read_database_password':
           setting => 'password',
           value   => $database_password,

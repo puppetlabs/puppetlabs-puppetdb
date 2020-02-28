@@ -151,6 +151,24 @@ describe 'puppetdb::server', type: :class do
           it { is_expected.not_to contain_systemd__unit_file('puppetdb-dlo-cleanup.timer') }
         end
       end
+
+      context 'when not managing the database password' do
+        let(:params) do
+          {
+            'manage_db_password' => false,
+            'manage_read_db_password' => false,
+            'read_database_host' => '10.0.0.1', # Make sure the read_database class is enforced.
+          }
+        end
+
+        describe 'ini_setting entries for the password will not exist' do
+          it { is_expected.to contain_class('puppetdb::server::database').with('manage_db_password' => false) }
+          it { is_expected.to contain_class('puppetdb::server::read_database').with('manage_db_password' => false) }
+
+          it { is_expected.not_to contain_ini__setting('puppetdb_psdatabase_password') }
+          it { is_expected.not_to contain_ini__setting('puppetdb_read_database_password') }
+        end
+      end
     end
   end
 end
