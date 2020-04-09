@@ -25,6 +25,7 @@ class puppetdb::server (
   $database_username                      = $puppetdb::params::database_username,
   $database_password                      = $puppetdb::params::database_password,
   $database_name                          = $puppetdb::params::database_name,
+  $database_ip_mask_allow_all_users       = $puppetdb::params::database_ip_mask_allow_all_users,
   $jdbc_ssl_properties                    = $puppetdb::params::jdbc_ssl_properties,
   $database_validate                      = $puppetdb::params::database_validate,
   $database_embedded_path                 = $puppetdb::params::database_embedded_path,
