@@ -1,26 +1,27 @@
 # PRIVATE CLASS - do not use directly
 class puppetdb::server::database (
-  $database               = $puppetdb::params::database,
-  $database_host          = $puppetdb::params::database_host,
-  $database_port          = $puppetdb::params::database_port,
-  $database_username      = $puppetdb::params::database_username,
-  $database_password      = $puppetdb::params::database_password,
-  $database_name          = $puppetdb::params::database_name,
-  $jdbc_ssl_properties    = $puppetdb::params::jdbc_ssl_properties,
-  $database_validate      = $puppetdb::params::database_validate,
-  $database_embedded_path = $puppetdb::params::database_embedded_path,
-  $node_ttl               = $puppetdb::params::node_ttl,
-  $node_purge_ttl         = $puppetdb::params::node_purge_ttl,
-  $report_ttl             = $puppetdb::params::report_ttl,
-  $gc_interval            = $puppetdb::params::gc_interval,
-  $log_slow_statements    = $puppetdb::params::log_slow_statements,
-  $conn_max_age           = $puppetdb::params::conn_max_age,
-  $conn_keep_alive        = $puppetdb::params::conn_keep_alive,
-  $conn_lifetime          = $puppetdb::params::conn_lifetime,
-  $confdir                = $puppetdb::params::confdir,
-  $puppetdb_user          = $puppetdb::params::puppetdb_user,
-  $puppetdb_group         = $puppetdb::params::puppetdb_group,
-  $database_max_pool_size = $puppetdb::params::database_max_pool_size,
+  $database                   = $puppetdb::params::database,
+  $database_host              = $puppetdb::params::database_host,
+  $database_port              = $puppetdb::params::database_port,
+  $database_username          = $puppetdb::params::database_username,
+  $database_password          = $puppetdb::params::database_password,
+  $database_name              = $puppetdb::params::database_name,
+  $jdbc_ssl_properties        = $puppetdb::params::jdbc_ssl_properties,
+  $database_validate          = $puppetdb::params::database_validate,
+  $database_embedded_path     = $puppetdb::params::database_embedded_path,
+  $node_ttl                   = $puppetdb::params::node_ttl,
+  $node_purge_ttl             = $puppetdb::params::node_purge_ttl,
+  $report_ttl                 = $puppetdb::params::report_ttl,
+  $gc_interval                = $puppetdb::params::gc_interval,
+  $node_purge_gc_batch_limit  = $puppetdb::params::node_purge_gc_batch_limit,
+  $log_slow_statements        = $puppetdb::params::log_slow_statements,
+  $conn_max_age               = $puppetdb::params::conn_max_age,
+  $conn_keep_alive            = $puppetdb::params::conn_keep_alive,
+  $conn_lifetime              = $puppetdb::params::conn_lifetime,
+  $confdir                    = $puppetdb::params::confdir,
+  $puppetdb_user              = $puppetdb::params::puppetdb_user,
+  $puppetdb_group             = $puppetdb::params::puppetdb_group,
+  $database_max_pool_size     = $puppetdb::params::database_max_pool_size,
 ) inherits puppetdb::params {
 
   if str2bool($database_validate) {
@@ -120,6 +121,11 @@ class puppetdb::server::database (
   ini_setting { 'puppetdb_gc_interval':
     setting => 'gc-interval',
     value   => $gc_interval,
+  }
+
+  ini_setting { 'puppetdb_node_purge_gc_batch_limit':
+    setting => 'node-purge-gc-batch-limit',
+    value   => $node_purge_gc_batch_limit,
   }
 
   ini_setting { 'puppetdb_node_ttl':
