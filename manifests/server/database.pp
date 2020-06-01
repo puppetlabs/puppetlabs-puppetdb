@@ -13,6 +13,7 @@ class puppetdb::server::database (
   $node_ttl               = $puppetdb::params::node_ttl,
   $node_purge_ttl         = $puppetdb::params::node_purge_ttl,
   $report_ttl             = $puppetdb::params::report_ttl,
+  $facts_blacklist        = $puppetdb::params::facts_blacklist,
   $gc_interval            = $puppetdb::params::gc_interval,
   $log_slow_statements    = $puppetdb::params::log_slow_statements,
   $conn_max_age           = $puppetdb::params::conn_max_age,
@@ -171,4 +172,18 @@ class puppetdb::server::database (
       }
     }
   }
+
+  if ($facts_blacklist) and length($facts_blacklist) != 0 {
+    $joined_facts_blacklist = join($facts_blacklist, ', ')
+    ini_setting { 'puppetdb_facts_blacklist':
+      setting => 'facts-blacklist',
+      value   => $joined_facts_blacklist,
+    }
+  } else {
+    ini_setting { 'puppetdb_facts_blacklist':
+      ensure  => absent,
+      setting => 'facts-blacklist',
+    }
+  }
+
 }

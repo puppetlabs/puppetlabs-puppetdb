@@ -155,6 +155,37 @@ describe 'puppetdb::server::database', type: :class do
           )
       }
       it { is_expected.not_to contain_ini_setting('puppetdb_database_max_pool_size') }
+      it {
+        is_expected.to contain_ini_setting('puppetdb_facts_blacklist')
+          .with(
+            'ensure'  => 'absent',
+            'path'    => '/etc/puppetlabs/puppetdb/conf.d/database.ini',
+            'section' => 'database',
+            'setting' => 'facts-blacklist',
+          )
+      }
+    end
+
+    describe 'when using facts_blacklist' do
+      let(:params) do
+        {
+          'facts_blacklist' => [
+            'one_fact',
+            'another_fact',
+          ],
+        }
+      end
+
+      it {
+        is_expected.to contain_ini_setting('puppetdb_facts_blacklist')
+          .with(
+            'ensure'  => 'present',
+            'path'    => '/etc/puppetlabs/puppetdb/conf.d/database.ini',
+            'section' => 'database',
+            'setting' => 'facts-blacklist',
+            'value'   => 'one_fact, another_fact',
+          )
+      }
     end
 
     describe 'when using a legacy PuppetDB version' do
