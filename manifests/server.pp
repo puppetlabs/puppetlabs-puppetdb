@@ -264,7 +264,7 @@ class puppetdb::server (
     if $merge_default_java_args {
       create_resources(
         'ini_subsetting',
-        puppetdb_create_subsetting_resource_hash(
+        puppetdb::create_subsetting_resource_hash(
           $java_args, {
             ensure            => present,
             section           => '',
@@ -282,7 +282,7 @@ class puppetdb::server (
         setting => 'JAVA_ARGS',
         require => Package[$puppetdb_package],
         notify  => Service[$puppetdb_service],
-        value   => puppetdb_flatten_java_args($java_args),
+        value   => puppetdb::flatten_java_args($java_args),
       }
     }
   }
