@@ -201,4 +201,7 @@ class puppetdb::params inherits puppetdb::globals {
   } else {
     $database_max_pool_size_setting_name = undef
   }
+
+  # java binary path for PuppetDB. If undef, default will be used.
+  $java_bin = undef
 }
