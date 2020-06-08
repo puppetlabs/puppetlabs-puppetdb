@@ -15,6 +15,7 @@ class puppetdb::server::database (
   $report_ttl             = $puppetdb::params::report_ttl,
   $facts_blacklist        = $puppetdb::params::facts_blacklist,
   $gc_interval            = $puppetdb::params::gc_interval,
+  $node_purge_gc_batch_limit  = $puppetdb::params::node_purge_gc_batch_limit,
   $log_slow_statements    = $puppetdb::params::log_slow_statements,
   $conn_max_age           = $puppetdb::params::conn_max_age,
   $conn_keep_alive        = $puppetdb::params::conn_keep_alive,
@@ -122,6 +123,11 @@ class puppetdb::server::database (
   ini_setting { 'puppetdb_gc_interval':
     setting => 'gc-interval',
     value   => $gc_interval,
+  }
+
+  ini_setting { 'puppetdb_node_purge_gc_batch_limit':
+    setting => 'node-purge-gc-batch-limit',
+    value   => $node_purge_gc_batch_limit,
   }
 
   ini_setting { 'puppetdb_node_ttl':
