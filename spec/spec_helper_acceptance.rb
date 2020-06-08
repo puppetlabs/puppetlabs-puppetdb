@@ -83,7 +83,7 @@ hosts.each do |host|
   end
 end
 
-run_puppet_install_helper unless ENV['BEAKER_provision'] == 'no'
+install_puppet_on(hosts) unless ENV['BEAKER_provision'] == 'no'
 install_ca_certs unless ENV['PUPPET_INSTALL_TYPE'] =~ %r{pe}i
 install_module_on(hosts)
 install_module_dependencies_on(hosts)
