@@ -83,7 +83,9 @@ hosts.each do |host|
   end
 end
 
-install_puppet_on(hosts) unless ENV['BEAKER_provision'] == 'no'
+opts = {puppet_agent_version: 'latest'}
+opts[:puppet_collection] = use_puppet5? ? 'puppet5' : 'puppet6'
+install_puppet_agent_on(hosts, opts) unless ENV['BEAKER_provision'] == 'no'
 install_ca_certs unless ENV['PUPPET_INSTALL_TYPE'] =~ %r{pe}i
 install_module_on(hosts)
 install_module_dependencies_on(hosts)
