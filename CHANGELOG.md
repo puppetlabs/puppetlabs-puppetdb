@@ -2,6 +2,15 @@
 
 Release notes for the puppetlabs-puppetdb module.
 
+#### 7.5.0 - 2020/06/10
+
+* Added `java_bin` parameter to set the full path to the java bin
+* Added `node_purge_gc_batch_limit` parameter
+* Added `facts_blacklist` parameter to manage the database.ini config option
+* Added `manage_db_password` and `manage_read_db_password` parameters
+* Updated functions to use puppet4 functions
+* Added `enable_storeconfigs` parameter, specifies whether or not the manage the master's storeconfigs (default: `true`)
+
 #### 7.4.0 - 2019/06/14
 
 This is a minor feature release.
