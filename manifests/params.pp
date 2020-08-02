@@ -187,6 +187,10 @@ class puppetdb::params inherits puppetdb::globals {
   $ssl_key                  = undef
   $ssl_cert                 = undef
   $ssl_ca_cert              = undef
+  $ssl_use_puppet_certs     = false
+  $ssl_key_source           = undef
+  $ssl_cert_source          = undef
+  $ssl_ca_cert_source       = undef
 
   $certificate_whitelist_file = "${etcdir}/certificate-whitelist"
   # the default is free access for now
