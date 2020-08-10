@@ -19,6 +19,7 @@ class puppetdb::server (
   $ssl_ca_cert                             = $puppetdb::params::ssl_ca_cert,
   $ssl_protocols                           = $puppetdb::params::ssl_protocols,
   $cipher_suites                           = $puppetdb::params::cipher_suites,
+  $migrate                                 = $puppetdb::params::migrate,
   $database                                = $puppetdb::params::database,
   $database_host                           = $puppetdb::params::database_host,
   $database_port                           = $puppetdb::params::database_port,
