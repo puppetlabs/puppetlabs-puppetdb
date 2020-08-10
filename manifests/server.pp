@@ -185,6 +185,7 @@ class puppetdb::server (
     confdir                   => $confdir,
     puppetdb_user             => $puppetdb_user,
     puppetdb_group            => $puppetdb_group,
+    migrate                   => $migrate,
     notify                    => Service[$puppetdb_service],
   }
 
