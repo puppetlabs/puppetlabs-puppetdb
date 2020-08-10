@@ -24,6 +24,7 @@ class puppetdb::server::database (
   $puppetdb_user          = $puppetdb::params::puppetdb_user,
   $puppetdb_group         = $puppetdb::params::puppetdb_group,
   $database_max_pool_size = $puppetdb::params::database_max_pool_size,
+  $migrate                = $puppetdb::params::migrate,
 ) inherits puppetdb::params {
 
   if str2bool($database_validate) {
@@ -163,6 +164,11 @@ class puppetdb::server::database (
   ini_setting { 'puppetdb_conn_lifetime':
     setting => 'conn-lifetime',
     value   => $conn_lifetime,
+  }
+
+  ini_setting { 'puppetdb_migrate':
+    setting => 'migrate',
+    value   => $migrate,
   }
 
   if $puppetdb::params::database_max_pool_size_setting_name != undef {
