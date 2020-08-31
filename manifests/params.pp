@@ -53,6 +53,7 @@ class puppetdb::params inherits puppetdb::globals {
   $conn_lifetime          = '0'
 
   $max_threads            = undef
+  $migrate                = true
 
   # These settings are for the read database
   $read_database                     = 'postgres'

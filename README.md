@@ -365,6 +365,10 @@ Specify the supported SSL protocols for PuppetDB (e.g. TLSv1, TLSv1.1, TLSv1.2.)
 Configure jetty's supported `cipher-suites` (e.g. `SSL_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384`).
 Defaults to `undef`.
 
+#### `migrate`
+
+If `true`, puppetdb will automatically migrate to the latest database format at startup. If `false`, if the database format supplied by this version of PuppetDB doesn't match the version expected (whether newer or older), PuppetDB will exit with an error status. Defaults to `true`.
+
 ### `manage_dbserver`
 
 If true, the PostgreSQL server will be managed by this module. Defaults to `true`.
