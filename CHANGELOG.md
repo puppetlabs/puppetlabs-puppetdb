@@ -2,6 +2,11 @@
 
 Release notes for the puppetlabs-puppetdb module.
 
+#### 7.6.0 - 2020/09/02
+
+* Added `migrate` parameter to manage the database.ini config option
+* Added Ubuntu 20.04 LTS as a supported platform
+
 #### 7.5.0 - 2020/06/10
 
 * Added `java_bin` parameter to set the full path to the java bin
