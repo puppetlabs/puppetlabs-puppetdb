@@ -22,10 +22,10 @@ class puppetdb::master::routes (
   } elsif $routes {
     $routes_real = $routes
   } else {
-    if versioncmp($serverversion, '7.0') == -1 {
-      $default_fact_cache = 'yaml'
-    } else {
+    if (defined('$serverversion')) and (versioncmp($serverversion, '7.0') >= 0) {
       $default_fact_cache = 'json'
+    } else {
+      $default_fact_cache = 'yaml'
     }
     $routes_real = {
       'master' => {
