@@ -86,6 +86,12 @@ describe 'puppetdb::master::config', type: :class do
         operatingsystemrelease: '7.0',
         kernel: 'Linux',
         selinux: true,
+        os: {
+          family: 'RedHat',
+          name: 'RedHat',
+          release: { 'full' => '7.0' },
+          selinux: { 'enabled' => true },
+        },
       }
     end
     let(:pre_condition) { 'class { "puppetdb::globals": version => "3.1.1-1.el7", }' }
@@ -102,6 +108,12 @@ describe 'puppetdb::master::config', type: :class do
         operatingsystemrelease: '7.0',
         kernel: 'Linux',
         selinux: true,
+        os: {
+          family: 'RedHat',
+          name: 'RedHat',
+          release: { 'full' => '7.0' },
+          selinux: { 'enabled' => true },
+        },
       }
     end
 
