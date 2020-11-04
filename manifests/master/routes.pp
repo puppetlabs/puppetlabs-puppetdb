@@ -3,14 +3,7 @@
 class puppetdb::master::routes (
   $puppet_confdir = $puppetdb::params::puppet_confdir,
   $masterless     = $puppetdb::params::masterless,
-  $routes         = {
-    'master' => {
-      'facts' => {
-        'terminus' => 'puppetdb',
-        'cache'    => 'yaml',
-      }
-    }
-  }
+  $routes         = undef,
 ) inherits puppetdb::params {
 
   if $masterless {
@@ -26,8 +19,22 @@ class puppetdb::master::routes (
         }
       }
     }
-  } else {
+  } elsif $routes {
     $routes_real = $routes
+  } else {
+    if versioncmp($serverversion, '7.0') == -1 {
+      $default_fact_cache = 'yaml'
+    } else {
+      $default_fact_cache = 'json'
+    }
+    $routes_real = {
+      'master' => {
+        'facts' => {
+          'terminus' => 'puppetdb',
+          'cache'    => $default_fact_cache,
+        }
+      }
+    }
   }
 
   # TODO: this will overwrite any existing routes.yaml;
