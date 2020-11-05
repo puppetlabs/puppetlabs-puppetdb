@@ -2,6 +2,13 @@
 
 Release notes for the puppetlabs-puppetdb module.
 
+#### 7.7.0 - 2020/11/05
+
+* When applied to a node running puppet `7.0.0` or newer, the
+  `puppetdb::master::config` class will default to the `json` fact cache. See
+  [PUP-10656](https://tickets.puppetlabs.com/browse/PUP-10656) for more
+  information.
+
 #### 7.6.0 - 2020/09/02
 
 * Added `migrate` parameter to manage the database.ini config option
