@@ -2,17 +2,11 @@ require 'puppet/network/http_pool'
 
 # Validator class, for testing that PuppetDB is alive
 class Puppet::Util::PuppetdbValidator
-  attr_reader :puppetdb_server
-  attr_reader :puppetdb_port
-  attr_reader :use_ssl
-  attr_reader :test_path
+  attr_reader :test_uri
   attr_reader :test_headers
 
   def initialize(puppetdb_server, puppetdb_port, use_ssl = true, test_path = '/pdb/meta/v1/version')
-    @puppetdb_server = puppetdb_server
-    @puppetdb_port   = puppetdb_port
-    @use_ssl         = use_ssl
-    @test_path       = test_path
+    @test_uri = URI("#{use_ssl ? 'https' : 'http'}://#{puppetdb_server}:#{puppetdb_port}#{test_path}")
     @test_headers    = { 'Accept' => 'application/json' }
   end
 
@@ -25,16 +19,17 @@ class Puppet::Util::PuppetdbValidator
     # All that we care about is that we are able to connect successfully via
     # http(s), so here we're simpling hitting a somewhat arbitrary low-impact URL
     # on the puppetdb server.
-    conn = Puppet::Network::HttpPool.http_instance(puppetdb_server, puppetdb_port, use_ssl)
+    conn = Puppet.runtime[:http]
 
-    response = conn.get(test_path, test_headers)
-    unless response.is_a?(Net::HTTPSuccess)
-      Puppet.notice "Unable to connect to puppetdb server (http#{use_ssl ? 's' : ''}://#{puppetdb_server}:#{puppetdb_port}): [#{response.code}] #{response.msg}"
+    response = conn.get(test_uri, headers: test_headers)
+    if response.is_a?(Puppet::HTTP::ResponseNetHTTP) && response.success?
+      return true
+    else
+      Puppet.notice "Unable to connect to puppetdb server (#{test_uri}): [#{response.code}] #{response.reason}"
       return false
     end
-    return true
   rescue StandardError => e
-    Puppet.notice "Unable to connect to puppetdb server (http#{use_ssl ? 's' : ''}://#{puppetdb_server}:#{puppetdb_port}): #{e.message}"
+    Puppet.notice "Unable to connect to puppetdb server (#{test_uri}): #{e.message}"
     return false
   end
 end
