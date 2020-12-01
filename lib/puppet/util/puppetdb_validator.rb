@@ -22,7 +22,7 @@ class Puppet::Util::PuppetdbValidator
     conn = Puppet.runtime[:http]
 
     response = conn.get(test_uri, headers: test_headers)
-    if response.is_a?(Puppet::HTTP::ResponseNetHTTP) && response.success?
+    if response.success?
       return true
     else
       Puppet.notice "Unable to connect to puppetdb server (#{test_uri}): [#{response.code}] #{response.reason}"
