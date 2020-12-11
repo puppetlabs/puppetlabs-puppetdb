@@ -33,6 +33,7 @@ class puppetdb::server (
   $node_ttl                                = $puppetdb::params::node_ttl,
   $node_purge_ttl                          = $puppetdb::params::node_purge_ttl,
   $report_ttl                              = $puppetdb::params::report_ttl,
+  $facts_blacklist_type                    = $puppetdb::params::facts_blacklist_type,
   Optional[Array] $facts_blacklist         = $puppetdb::params::facts_blacklist,
   $gc_interval                             = $puppetdb::params::gc_interval,
   $node_purge_gc_batch_limit               = $puppetdb::params::node_purge_gc_batch_limit,
@@ -129,6 +130,10 @@ class puppetdb::server (
     fail("read_database must be 'postgres'. You provided '${read_database}'")
   }
 
+  if !($facts_blacklist_type in [undef, 'literal', 'regex']) {
+    fail("facts_blacklist_type must be literal (default if not supplied) or regex. You provided '${facts_blacklist_type}'")
+  }
+
   package { $puppetdb_package:
     ensure => $puppetdb::params::puppetdb_version,
     notify => Service[$puppetdb_service],
@@ -175,6 +180,7 @@ class puppetdb::server (
     node_ttl                  => $node_ttl,
     node_purge_ttl            => $node_purge_ttl,
     report_ttl                => $report_ttl,
+    facts_blacklist_type      => $facts_blacklist_type,
     facts_blacklist           => $facts_blacklist,
     gc_interval               => $gc_interval,
     node_purge_gc_batch_limit => $node_purge_gc_batch_limit,
