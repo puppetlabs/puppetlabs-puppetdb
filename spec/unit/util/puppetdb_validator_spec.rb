@@ -3,26 +3,57 @@ require 'puppet/util/puppetdb_validator'
 
 describe 'Puppet::Util::PuppetdbValidator' do
   before(:each) do
-    response_ok = stub
-    response_ok.stubs(:is_a?).with(Net::HTTPSuccess).returns(true)
-    response_not_found = stub
-    response_not_found.stubs(:is_a?).with(Net::HTTPSuccess).returns(false)
-    response_not_found.stubs(:code).returns(404)
-    response_not_found.stubs(:msg).returns('Not found')
+    nethttpok = Net::HTTPOK.new('1.1', 200, 'OK')
+    notfound = Net::HTTPNotFound.new('1.1', 404, 'Not found')
 
-    conn_ok = stub
-    conn_ok.stubs(:get).with('/pdb/meta/v1/version', 'Accept' => 'application/json').returns(response_ok)
-    conn_ok.stubs(:read_timeout=).with(2)
-    conn_ok.stubs(:open_timeout=).with(2)
+    url = '/pdb/meta/v1/version'
+    if Puppet::PUPPETVERSION.to_f < 7
+      conn_ok = stub
+      conn_ok.stubs(:get).with(url, 'Accept' => 'application/json').returns(nethttpok)
+      conn_ok.stubs(:read_timeout=).with(2)
+      conn_ok.stubs(:open_timeout=).with(2)
 
-    conn_not_found = stub
-    conn_not_found.stubs(:get).with('/pdb/meta/v1/version', 'Accept' => 'application/json').returns(response_not_found)
+      conn_not_found = stub
+      conn_not_found.stubs(:get).with('/pdb/meta/v1/version', 'Accept' => 'application/json').returns(notfound)
 
-    Puppet::Network::HttpPool.stubs(:http_instance).raises('Unknown host')
-    Puppet::Network::HttpPool.stubs(:http_instance).with('mypuppetdb.com', 8080, true).raises('Connection refused')
-    Puppet::Network::HttpPool.stubs(:http_instance).with('mypuppetdb.com', 8080, false).returns(conn_ok)
-    Puppet::Network::HttpPool.stubs(:http_instance).with('mypuppetdb.com', 8081, true).returns(conn_ok)
-    Puppet::Network::HttpPool.stubs(:http_instance).with('wrongserver.com', 8081, true).returns(conn_not_found)
+      Puppet::Network::HttpPool.stubs(:http_instance).raises('Unknown host')
+      Puppet::Network::HttpPool.stubs(:http_instance).with('mypuppetdb.com', 8080, true).raises('Connection refused')
+      Puppet::Network::HttpPool.stubs(:http_instance).with('mypuppetdb.com', 8080, false).returns(conn_ok)
+      Puppet::Network::HttpPool.stubs(:http_instance).with('mypuppetdb.com', 8081, true).returns(conn_ok)
+      Puppet::Network::HttpPool.stubs(:http_instance).with('wrongserver.com', 8081, true).returns(conn_not_found)
+    else
+      http = stub
+      Puppet::HTTP::Client.stubs(:new).returns(http)
+
+      http.stubs(:get).with { |uri, _opts|
+        uri.hostname == 'mypuppetdb.com' &&
+          uri.port == 8080 &&
+          uri.scheme == 'https'
+      }.raises Puppet::HTTP::HTTPError, 'Connection refused'
+
+      http.stubs(:get).with { |uri, _opts|
+        uri.hostname == 'mypuppetdb.com' &&
+          uri.port == 8080 &&
+          uri.scheme == 'http'
+      }.returns(Puppet::HTTP::ResponseNetHTTP.new(url, nethttpok))
+
+      http.stubs(:get).with { |uri, _opts|
+        uri.hostname == 'mypuppetdb.com' &&
+          uri.port == 8081 &&
+          uri.scheme == 'https'
+      }.returns(Puppet::HTTP::ResponseNetHTTP.new(url, nethttpok))
+
+      http.stubs(:get).with { |uri, _opts|
+        uri.hostname == 'wrongserver.com' &&
+          uri.port == 8081 &&
+          uri.scheme == 'https'
+      }.raises Puppet::HTTP::ResponseError, Puppet::HTTP::ResponseNetHTTP.new(url, notfound)
+
+      http.stubs(:get).with { |uri, _opts|
+        uri.hostname == 'non-existing.com' &&
+          uri.scheme == 'https'
+      }.raises Puppet::HTTP::HTTPError, 'Unknown host'
+    end
   end
 
   it 'returns true if connection succeeds' do
