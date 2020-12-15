@@ -522,7 +522,7 @@ The parent directory for the MQ's data directory.
 
 Java VM options used for overriding default Java VM options specified in
 PuppetDB package. Defaults to `{}`. See
-[PuppetDB Configuration](http://docs.puppetlabs.com/puppetdb/1.1/configure.html)
+[PuppetDB Configuration](https://puppet.com/docs/puppetdb/latest/configure.html)
 to get more details about the current defaults.
 
 For example, to set `-Xmx512m -Xms256m` options use:
