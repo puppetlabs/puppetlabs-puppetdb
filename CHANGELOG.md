@@ -2,6 +2,11 @@
 
 Release notes for the puppetlabs-puppetdb module.
 
+#### 7.7.1 - 2020/12/15
+
+* When using Puppet 7 or newer, the connection validator will use the new HTTP
+  client. This removes a deprecation warning in the agent output.
+
 #### 7.7.0 - 2020/11/05
 
 * When applied to a node running puppet `7.0.0` or newer, the
