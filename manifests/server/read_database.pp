@@ -93,8 +93,9 @@ class puppetdb::server::read_database (
 
     if $read_database_password != undef and $manage_db_password {
       ini_setting { 'puppetdb_read_database_password':
-        setting => 'password',
-        value   => $read_database_password,
+        setting   => 'password',
+        value     => $read_database_password,
+        show_diff => false,
       }
     }
 
