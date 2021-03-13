@@ -497,19 +497,20 @@ settings and fail if it is not able to do so. Defaults to `true`.
 #### `node_ttl`
 
 The length of time a node can go without receiving any new data before it's
-automatically deactivated. (defaults to '0', which disables auto-deactivation).
-This option is supported in PuppetDB >= 1.1.0.
+automatically deactivated. (defaults to '7d', which is a 7-day period. Set to
+'0' to disable auto-deactivation).  This option is supported in PuppetDB >=
+1.1.0.
 
 #### `node_purge_ttl`
 
 The length of time a node can be deactivated before it's deleted from the
-database. (defaults to '0', which disables purging). This option is supported in
-PuppetDB >= 1.2.0.
+database. (defaults to '14d', which is a 14-day period. Set to '0' to disable
+purging). This option is supported in PuppetDB >= 1.2.0.
 
 #### `report_ttl`
 
 The length of time reports should be stored before being deleted. (defaults to
-`7d`, which is a 7-day period). This option is supported in PuppetDB >= 1.1.0.
+`14d`, which is a 14-day period). This option is supported in PuppetDB >= 1.1.0.
 
 #### `gc_interval`
 
