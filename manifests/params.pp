@@ -180,6 +180,14 @@ class puppetdb::params inherits puppetdb::globals {
   $cleanup_timer_interval   = "*-*-* ${fqdn_rand(24)}:${fqdn_rand(60)}:00"
   $dlo_max_age              = 90
 
+  # certificats used for PostgreSQL SSL configuration. Puppet certificates are used
+  $postgresql_ssl_on            = false
+  $postgresql_ssl_folder        = "${puppet_confdir}/ssl"
+  $postgresql_ssl_cert_path     = "${postgresql_ssl_folder}/certs/${trusted['certname']}.pem"
+  $postgresql_ssl_key_path      = "${postgresql_ssl_folder}/private_keys/${trusted['certname']}.pem"
+  $postgresql_ssl_ca_cert_path  = "${postgresql_ssl_folder}/certs/ca.pem"
+
+  # certificats used for Jetty configuration
   $ssl_set_cert_paths       = false
   $ssl_cert_path            = "${ssl_dir}/public.pem"
   $ssl_key_path             = "${ssl_dir}/private.pem"
@@ -188,6 +196,9 @@ class puppetdb::params inherits puppetdb::globals {
   $ssl_key                  = undef
   $ssl_cert                 = undef
   $ssl_ca_cert              = undef
+
+  # certificate used by PuppetDB SSL Configuration
+  $ssl_key_pk8_path         = regsubst($ssl_key_path, '.pem', '.pk8')
 
   $certificate_whitelist_file = "${etcdir}/certificate-whitelist"
   # the default is free access for now

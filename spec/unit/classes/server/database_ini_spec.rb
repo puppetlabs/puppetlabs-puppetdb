@@ -449,5 +449,30 @@ describe 'puppetdb::server::database', type: :class do
         end
       end
     end
+
+    describe 'when using ssl communication' do
+      let(:params) do
+        {
+          'postgresql_ssl_on' => true,
+          'ssl_key_pk8_path' => '/tmp/private_key.pk8',
+        }
+      end
+
+      it 'configures subname correctly' do
+        is_expected.to contain_ini_setting('puppetdb_subname')
+          .with(
+            ensure: 'present',
+            path: '/etc/puppetlabs/puppetdb/conf.d/database.ini',
+            section: 'database',
+            setting: 'subname',
+            value: '//localhost:5432/puppetdb?' \
+                   'ssl=true&sslfactory=org.postgresql.ssl.LibPQFactory&' \
+                   'sslmode=verify-full&' \
+                   'sslrootcert=/etc/puppetlabs/puppetdb/ssl/ca.pem&' \
+                   'sslkey=/tmp/private_key.pk8&' \
+                   'sslcert=/etc/puppetlabs/puppetdb/ssl/public.pem',
+          )
+      end
+    end
   end
 end

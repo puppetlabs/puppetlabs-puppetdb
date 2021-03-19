@@ -97,6 +97,7 @@ hosts.each do |host|
     end
     on host, 'apt-get -y -m update'
     on host, 'apt-get install -y puppetserver'
+    on host, '/opt/puppetlabs/bin/puppetserver ca setup'
   else
     raise "install_puppet() called for unsupported platform '#{host['platform']}' on '#{host.name}'"
   end

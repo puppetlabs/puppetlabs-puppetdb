@@ -12,12 +12,14 @@ class puppetdb::server (
   Boolean $ssl_set_cert_paths              = $puppetdb::params::ssl_set_cert_paths,
   Stdlib::Absolutepath $ssl_cert_path      = $puppetdb::params::ssl_cert_path,
   Stdlib::Absolutepath $ssl_key_path       = $puppetdb::params::ssl_key_path,
+  Stdlib::Absolutepath $ssl_key_pk8_path   = $puppetdb::params::ssl_key_pk8_path,
   Stdlib::Absolutepath $ssl_ca_cert_path   = $puppetdb::params::ssl_ca_cert_path,
   Boolean $ssl_deploy_certs                = $puppetdb::params::ssl_deploy_certs,
   $ssl_key                                 = $puppetdb::params::ssl_key,
   $ssl_cert                                = $puppetdb::params::ssl_cert,
   $ssl_ca_cert                             = $puppetdb::params::ssl_ca_cert,
   $ssl_protocols                           = $puppetdb::params::ssl_protocols,
+  $postgresql_ssl_on                       = $puppetdb::params::postgresql_ssl_on,
   $cipher_suites                           = $puppetdb::params::cipher_suites,
   $migrate                                 = $puppetdb::params::migrate,
   $database                                = $puppetdb::params::database,
@@ -168,6 +170,10 @@ class puppetdb::server (
     database_password         => $database_password,
     database_name             => $database_name,
     manage_db_password        => $manage_db_password,
+    postgresql_ssl_on         => $postgresql_ssl_on,
+    ssl_key_pk8_path          => $ssl_key_pk8_path,
+    ssl_cert_path             => $ssl_cert_path,
+    ssl_ca_cert_path          => $ssl_ca_cert_path,
     database_max_pool_size    => $database_max_pool_size,
     jdbc_ssl_properties       => $jdbc_ssl_properties,
     database_validate         => $database_validate,
@@ -197,6 +203,10 @@ class puppetdb::server (
     database_password      => $read_database_password,
     database_name          => $read_database_name,
     manage_db_password     => $manage_read_db_password,
+    postgresql_ssl_on      => $postgresql_ssl_on,
+    ssl_key_pk8_path       => $ssl_key_pk8_path,
+    ssl_cert_path          => $ssl_cert_path,
+    ssl_ca_cert_path       => $ssl_ca_cert_path,
     jdbc_ssl_properties    => $read_database_jdbc_ssl_properties,
     database_validate      => $read_database_validate,
     log_slow_statements    => $read_log_slow_statements,
@@ -238,6 +248,26 @@ class puppetdb::server (
         group   => $puppetdb_group,
         mode    => '0600',
         notify  => Service[$puppetdb_service];
+    }
+  }
+
+  if $postgresql_ssl_on {
+    exec { $ssl_key_pk8_path:
+      path    => [ '/opt/puppetlabs/puppet/bin', $facts['path'] ],
+      command => "openssl pkcs8 -topk8 -inform PEM -outform DER -in ${ssl_key_path} -out ${ssl_key_pk8_path} -nocrypt",
+      # Generate a .pk8 key if one doesn't exist or is older than the .pem input.
+      # NOTE: bash file time checks, like -ot, can't always discern sub-second
+      # differences.
+      onlyif  => "test ! -e '${ssl_key_pk8_path}' -o '${ssl_key_pk8_path}' -ot '${ssl_key_path}'",
+      before  => File[$ssl_key_pk8_path]
+    }
+
+    file { $ssl_key_pk8_path:
+      ensure => present,
+      owner  => $puppetdb_user,
+      group  => $puppetdb_group,
+      mode   => '0600',
+      notify => Service[$puppetdb_service]
     }
   }
 
