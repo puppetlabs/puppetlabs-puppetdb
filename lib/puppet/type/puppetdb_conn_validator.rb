@@ -23,7 +23,7 @@ Puppet::Type.newtype(:puppetdb_conn_validator) do
   end
 
   newparam(:use_ssl) do
-    desc 'Whether the connection will be attemped using https'
+    desc 'Whether the connection will be attempted using https'
     defaultto true
   end
 

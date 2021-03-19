@@ -169,6 +169,46 @@ describe 'puppetdb::server', type: :class do
           it { is_expected.not_to contain_ini__setting('puppetdb_read_database_password') }
         end
       end
+
+      context 'when managing ssl communication' do
+        let(:params) do
+          {
+            postgresql_ssl_on: true,
+          }
+        end
+        let(:key_path) { '/etc/puppetlabs/puppetdb/ssl/private.pem' }
+        let(:key_pk8_path) { '/etc/puppetlabs/puppetdb/ssl/private.pk8' }
+
+        context 'ini_setting entries for the ssl configuration will exist' do
+          it { is_expected.to contain_class('puppetdb::server::database').with('postgresql_ssl_on' => true) }
+          it { is_expected.to contain_class('puppetdb::server::database').with(ssl_key_pk8_path: key_pk8_path) }
+
+          it { is_expected.to contain_class('puppetdb::server::read_database').with('postgresql_ssl_on' => true) }
+          it { is_expected.to contain_class('puppetdb::server::read_database').with(ssl_key_pk8_path: key_pk8_path) }
+        end
+
+        context 'private key file is converted from .pem to .pk8 format' do
+          it 'runs exec command' do
+            is_expected.to contain_exec(key_pk8_path)
+              .with(
+                path: ['/opt/puppetlabs/puppet/bin', facts[:path]],
+                command: "openssl pkcs8 -topk8 -inform PEM -outform DER -in #{key_path} -out #{key_pk8_path} -nocrypt",
+                onlyif: "test ! -e '#{key_pk8_path}' -o '#{key_pk8_path}' -ot '#{key_path}'",
+                before: "File[#{key_pk8_path}]",
+              )
+          end
+
+          it 'contains file private.pk8' do
+            is_expected.to contain_file('/etc/puppetlabs/puppetdb/ssl/private.pk8')
+              .with(
+                ensure: 'present',
+                owner: 'puppetdb',
+                group: 'puppetdb',
+                mode: '0600',
+              )
+          end
+        end
+      end
     end
   end
 end

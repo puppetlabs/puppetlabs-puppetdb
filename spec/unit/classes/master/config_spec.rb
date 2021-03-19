@@ -111,7 +111,7 @@ describe 'puppetdb::master::config', type: :class do
         os: {
           family: 'RedHat',
           name: 'RedHat',
-          release: { 'full' => '7.0' },
+          release: { 'full' => '7.0', 'major' => '7' },
           selinux: { 'enabled' => true },
         },
       }

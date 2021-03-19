@@ -66,6 +66,17 @@ describe 'puppetdb', type: :class do
           it { is_expected.not_to contain_ini__setting('puppetdb_read_database_password') }
         end
       end
+
+      context 'when using ssl certificates' do
+        let(:params) do
+          {
+            postgresql_ssl_on: true,
+          }
+        end
+
+        it { is_expected.to contain_class('puppetdb::server').with('postgresql_ssl_on' => true) }
+        it { is_expected.to contain_class('puppetdb::database::postgresql').with('postgresql_ssl_on' => true) }
+      end
     end
   end
 

@@ -30,8 +30,8 @@ group :development do
   gem "puppet-module-win-dev-r#{minor_version}", '~> 0.4',       require: false, platforms: [:mswin, :mingw, :x64_mingw]
 end
 group :system_tests do
-  gem "puppet-module-posix-system-r#{minor_version}", require: false, platforms: [:ruby]
-  gem "puppet-module-win-system-r#{minor_version}",   require: false, platforms: [:mswin, :mingw, :x64_mingw]
+  gem "puppet-module-posix-system-r#{minor_version}", '~> 0.5', require: false, platforms: [:ruby]
+  gem "puppet-module-win-system-r#{minor_version}",  '~> 0.5',  require: false, platforms: [:mswin, :mingw, :x64_mingw]
   gem "nokogiri",                                     require: false, platforms: [:ruby]
   gem "serverspec",                                   require: false, platforms: [:ruby]
 end

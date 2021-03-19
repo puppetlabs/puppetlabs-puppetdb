@@ -25,6 +25,38 @@ describe 'basic tests:' do
     end
   end
 
+  describe 'single node with ssl' do
+    ssl_config = <<-EOS
+      class { 'puppetdb': postgresql_ssl_on => true,
+               database_listen_address => '0.0.0.0',
+               database_host => $facts['fqdn'],}
+    EOS
+
+    it 'make sure it runs without error' do
+      apply_manifest(ssl_config, catch_errors: true)
+      apply_manifest(ssl_config, catch_changes: true)
+    end
+
+    change_password = <<-EOS
+      ini_setting { "puppetdb password":
+        ensure  => present,
+        path    => '/etc/puppetlabs/puppetdb/conf.d/database.ini',
+        section => 'database',
+        setting => 'password',
+        value   => 'random_password',
+        notify  => Service[puppetdb]
+      }
+
+      service { 'puppetdb':
+        ensure => 'running',
+      }
+    EOS
+    it 'make sure it starts with wrong password' do
+      apply_manifest(change_password, catch_errors: true)
+      apply_manifest(change_password, catch_changes: true)
+    end
+  end
+
   describe 'enabling report processor' do
     pp = <<-EOS
       class { 'puppetdb': disable_ssl => true, } ->
