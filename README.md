@@ -85,6 +85,7 @@ your manifest will look like:
     node <hostname> {
       # Configure puppetdb and its underlying database
       class { 'puppetdb': }
+      
       # Configure the Puppet master to use puppetdb
       class { 'puppetdb::master::config': }
     }
@@ -132,6 +133,55 @@ scenario might look like:
 This should be all it takes to get a 3-node, distributed installation of
 PuppetDB up and running. Note that, if you prefer, you could easily move two of
 these classes to a single node and end up with a 2-node setup instead.
+
+### Enable SSL connections
+
+To use SSL connections for the single node setup, use the following manifest:
+
+    node <hostname> {
+      # Here we configure puppetdb and PostgreSQL to use ssl connections
+      class { 'puppetdb':
+        postgresql_ssl_on => true,
+        database_host => '<hostname>',
+        database_listen_address => '0.0.0.0'
+      }
+      
+      # Configure the Puppet master to use puppetdb
+      class { 'puppetdb::master::config': }
+
+To use SSL connections for the multiple nodes setup, use the following manifest:
+
+    $puppetdb_host = 'puppetdb.example.lan'
+    $postgres_host = 'postgres.example.lan'
+
+    node 'master.example.lan' {
+      # Here we configure the Puppet master to use PuppetDB,
+      # telling it the hostname of the PuppetDB node.
+      class { 'puppetdb::master::config':
+        puppetdb_server => $puppetdb_host,
+      }
+    }
+
+    node 'postgres.example.lan' {
+      # Here we install and configure PostgreSQL and the PuppetDB
+      # database instance, and tell PostgreSQL that it should
+      # listen for connections to the `$postgres_host`. 
+      # We also enable SSL connections.
+      class { 'puppetdb::database::postgresql':
+        listen_addresses => $postgres_host,
+        postgresql_ssl_on => true,
+        puppetdb_server => $puppetdb_host
+      }
+    }
+
+    node 'puppetdb.example.lan' {
+      # Here we install and configure PuppetDB, and tell it where to
+      # find the PostgreSQL database. We also enable SSL connections.
+      class { 'puppetdb::server':
+        database_host => $postgres_host,
+        postgresql_ssl_on => true
+      }
+    }
 
 ### Beginning with PuppetDB
 
@@ -359,6 +409,11 @@ If true, open the `ssl_listen_port` on the firewall. Defaults to `undef`.
 #### `ssl_protocols`
 
 Specify the supported SSL protocols for PuppetDB (e.g. TLSv1, TLSv1.1, TLSv1.2.)
+
+### `postgresql_ssl_on`
+
+If `true`, it configures SSL connections between PuppetDB and the PostgreSQL database.
+Defaults to `false`.
 
 #### `cipher_suites`
 

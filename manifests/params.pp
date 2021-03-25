@@ -36,6 +36,7 @@ class puppetdb::params inherits puppetdb::globals {
   $jdbc_ssl_properties    = ''
   $database_validate      = true
   $database_max_pool_size = undef
+  $puppetdb_server        = $::fqdn
 
   # These settings manage the various auto-deactivation and auto-purge settings
   $node_ttl               = '7d'

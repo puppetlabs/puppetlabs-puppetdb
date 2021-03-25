@@ -118,5 +118,22 @@ describe 'puppetdb::database::ssl_configuration', type: :class do
         .with_system_username(facts[:fqdn])
         .with_database_username(params[:database_name])
     end
+
+    context 'when the puppetdb_server is set' do
+      let(:params) do
+        {
+          puppetdb_server: 'puppetdb_fqdn',
+          database_name: 'puppetdb',
+          database_username: 'puppetdb',
+        }
+      end
+
+      it 'has ident rule with the specified puppetdb_server host' do
+        is_expected.to contain_postgresql__server__pg_ident_rule("Map the SSL certificate of the server as a #{params[:database_username]} user")
+          .with_map_name(identity_map)
+          .with_system_username(params[:puppetdb_server])
+          .with_database_username(params[:database_name])
+      end
+    end
   end
 end

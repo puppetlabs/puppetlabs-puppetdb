@@ -3,6 +3,7 @@
 class puppetdb::database::ssl_configuration(
   $database_name               = $puppetdb::params::database_name,
   $database_username           = $puppetdb::params::database_username,
+  $puppetdb_server             = $puppetdb::params::puppetdb_server,
   $postgresql_ssl_key_path     = $puppetdb::params::postgresql_ssl_key_path,
   $postgresql_ssl_cert_path    = $puppetdb::params::postgresql_ssl_cert_path,
   $postgresql_ssl_ca_cert_path = $puppetdb::params::postgresql_ssl_ca_cert_path
@@ -74,7 +75,7 @@ class puppetdb::database::ssl_configuration(
 
   postgresql::server::pg_ident_rule {"Map the SSL certificate of the server as a ${database_username} user":
     map_name          => $identity_map_key,
-    system_username   => $::fqdn,
+    system_username   => $puppetdb_server,
     database_username => $database_username,
   }
 }

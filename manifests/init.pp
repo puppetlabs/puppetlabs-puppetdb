@@ -57,6 +57,7 @@ class puppetdb (
   $puppetdb_service_status                 = $puppetdb::params::puppetdb_service_status,
   $puppetdb_user                           = $puppetdb::params::puppetdb_user,
   $puppetdb_group                          = $puppetdb::params::puppetdb_group,
+  $puppetdb_server                         = $puppetdb::params::puppetdb_server,
   $read_database                           = $puppetdb::params::read_database,
   $read_database_host                      = $puppetdb::params::read_database_host,
   $read_database_port                      = $puppetdb::params::read_database_port,
@@ -184,6 +185,7 @@ class puppetdb (
     class { '::puppetdb::database::postgresql':
       listen_addresses    => $database_listen_address,
       database_name       => $database_name,
+      puppetdb_server     => $puppetdb_server,
       database_username   => $database_username,
       database_password   => $database_password,
       database_port       => $database_port,

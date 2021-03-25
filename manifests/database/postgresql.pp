@@ -2,6 +2,7 @@
 # information.
 class puppetdb::database::postgresql(
   $listen_addresses            = $puppetdb::params::database_host,
+  $puppetdb_server             = $puppetdb::params::puppetdb_server,
   $database_name               = $puppetdb::params::database_name,
   $database_username           = $puppetdb::params::database_username,
   $database_password           = $puppetdb::params::database_password,
@@ -34,6 +35,7 @@ class puppetdb::database::postgresql(
       class { 'puppetdb::database::ssl_configuration':
         database_name               => $database_name,
         database_username           => $database_username,
+        puppetdb_server             => $puppetdb_server,
         postgresql_ssl_key_path     => $postgresql_ssl_key_path,
         postgresql_ssl_cert_path    => $postgresql_ssl_cert_path,
         postgresql_ssl_ca_cert_path => $postgresql_ssl_ca_cert_path
