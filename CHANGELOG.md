@@ -2,6 +2,13 @@
 
 Release notes for the puppetlabs-puppetdb module.
 
+#### 7.8.0 - 2021/03/25
+
+* Added an option `postgresql_ssl_on` to enable an SSL connection between
+  PostgreSQL and PuppetDB using Puppet agent certificates to verify the
+  connection and authorize PuppetDB to access the puppetdb database.
+* Update our metadata to allow puppetlabs-postgresql 7 (this fixes an issue on el8)
+
 #### 7.7.1 - 2020/12/15
 
 * When using Puppet 7 or newer, the connection validator will use the new HTTP
