@@ -1,11 +1,18 @@
 # PRIVATE CLASS - do not use directly
 class puppetdb::server::firewall (
-  $http_port      = $puppetdb::params::listen_port,
-  $open_http_port = $puppetdb::params::open_listen_port,
-  $ssl_port       = $puppetdb::params::ssl_listen_port,
-  $open_ssl_port  = $puppetdb::params::open_ssl_listen_port,
+  $http_port         = $puppetdb::params::listen_port,
+  $open_http_port    = $puppetdb::params::open_listen_port,
+  $ssl_port          = $puppetdb::params::ssl_listen_port,
+  $open_ssl_port     = $puppetdb::params::open_ssl_listen_port,
+  $puppetserver_port = $puppetdb::params::puppetserver_default_port,
 ) inherits puppetdb::params {
   include firewall
+
+  firewall { "${puppetserver_port} accept - puppetserver":
+    dport  => $puppetserver_port,
+    proto  => 'tcp',
+    action => 'accept',
+  }
 
   if ($open_http_port) {
     firewall { "${http_port} accept - puppetdb":
