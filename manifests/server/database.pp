@@ -13,6 +13,7 @@ class puppetdb::server::database (
   $node_ttl               = $puppetdb::params::node_ttl,
   $node_purge_ttl         = $puppetdb::params::node_purge_ttl,
   $report_ttl             = $puppetdb::params::report_ttl,
+  $facts_blacklist_type   = $puppetdb::params::facts_blacklist_type,
   $facts_blacklist        = $puppetdb::params::facts_blacklist,
   $gc_interval            = $puppetdb::params::gc_interval,
   $node_purge_gc_batch_limit  = $puppetdb::params::node_purge_gc_batch_limit,
@@ -202,6 +203,18 @@ class puppetdb::server::database (
         setting => $puppetdb::params::database_max_pool_size_setting_name,
         value   => $database_max_pool_size,
       }
+    }
+  }
+
+  if !($facts_blacklist_type in [undef, 'literal']) {
+    ini_setting { 'puppetdb_facts_blacklist_type':
+      setting => 'facts-blacklist-type',
+      value   => $facts_blacklist_type,
+    }
+  } else {
+    ini_setting { 'puppetdb_facts_blacklist_type':
+      ensure  => absent,
+      setting => 'facts-blacklist-type',
     }
   }
 
