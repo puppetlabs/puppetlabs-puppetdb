@@ -159,6 +159,7 @@ class puppetdb (
     puppetdb_user                     => $puppetdb_user,
     puppetdb_group                    => $puppetdb_group,
     manage_firewall                   => $manage_firewall,
+    manage_database                   => $manage_database,
     command_threads                   => $command_threads,
     concurrent_writes                 => $concurrent_writes,
     store_usage                       => $store_usage,
@@ -183,18 +184,23 @@ class puppetdb (
     }
 
     class { '::puppetdb::database::postgresql':
-      listen_addresses    => $database_listen_address,
-      database_name       => $database_name,
-      puppetdb_server     => $puppetdb_server,
-      database_username   => $database_username,
-      database_password   => $database_password,
-      database_port       => $database_port,
-      manage_server       => $manage_dbserver,
-      manage_database     => $manage_database,
-      manage_package_repo => $manage_package_repo,
-      postgres_version    => $postgres_version,
-      postgresql_ssl_on   => $postgresql_ssl_on,
-      before              => $database_before
+      listen_addresses            => $database_listen_address,
+      database_name               => $database_name,
+      puppetdb_server             => $puppetdb_server,
+      database_username           => $database_username,
+      database_password           => $database_password,
+      database_port               => $database_port,
+      manage_server               => $manage_dbserver,
+      manage_database             => $manage_database,
+      manage_package_repo         => $manage_package_repo,
+      postgres_version            => $postgres_version,
+      postgresql_ssl_on           => $postgresql_ssl_on,
+      postgresql_ssl_key_path     => $postgresql_ssl_key_path,
+      postgresql_ssl_cert_path    => $postgresql_ssl_cert_path,
+      postgresql_ssl_ca_cert_path => $postgresql_ssl_ca_cert_path,
+      read_database_username      => $read_database_username,
+      read_database_password      => $read_database_password,
+      before                      => $database_before
     }
   }
 }

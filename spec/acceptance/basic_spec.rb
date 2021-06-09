@@ -77,4 +77,23 @@ describe 'basic tests:' do
       end
     end
   end
+
+  describe 'read only user' do
+    pp = <<-EOS
+      class { 'puppetdb': disable_ssl => true, } ->
+      class { 'puppetdb::master::config':
+        puppetdb_port => '8080',
+        puppetdb_server => 'localhost'
+      }
+    EOS
+
+    it 'can not create tables' do
+      apply_manifest(pp, catch_errors: true)
+      apply_manifest(pp, catch_changes: true)
+
+      shell('psql "postgresql://puppetdb-read:puppetdb-read@localhost/puppetdb" -c "create table tables(id int);"') do |r|
+        expect(r.stdout).to match(%r{^ERROR:  permission denied for schema public.*})
+      end
+    end
+  end
 end

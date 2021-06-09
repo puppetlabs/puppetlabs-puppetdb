@@ -63,6 +63,7 @@ class puppetdb::server (
   $confdir                                 = $puppetdb::params::confdir,
   $vardir                                  = $puppetdb::params::vardir,
   $manage_firewall                         = $puppetdb::params::manage_firewall,
+  $manage_database                         = $puppetdb::params::manage_database,
   $java_args                               = $puppetdb::params::java_args,
   $merge_default_java_args                 = $puppetdb::params::merge_default_java_args,
   $max_threads                             = $puppetdb::params::max_threads,
@@ -195,13 +196,23 @@ class puppetdb::server (
     notify                    => Service[$puppetdb_service],
   }
 
+  if $manage_database and $read_database_host == undef {
+    $real_database_host = $database_host
+    $real_database_port = $database_port
+    $real_database_name = $database_name
+  } else {
+    $real_database_host =  $read_database_host
+    $real_database_port =  $read_database_port
+    $real_database_name =  $read_database_name
+  }
+
   class { 'puppetdb::server::read_database':
-    database               => $read_database,
-    database_host          => $read_database_host,
-    database_port          => $read_database_port,
-    database_username      => $read_database_username,
-    database_password      => $read_database_password,
-    database_name          => $read_database_name,
+    read_database          => $read_database,
+    read_database_host     => $real_database_host,
+    read_database_port     => $real_database_port,
+    read_database_username => $read_database_username,
+    read_database_password => $read_database_password,
+    read_database_name     => $real_database_name,
     manage_db_password     => $manage_read_db_password,
     postgresql_ssl_on      => $postgresql_ssl_on,
     ssl_key_pk8_path       => $ssl_key_pk8_path,
@@ -330,7 +341,7 @@ class puppetdb::server (
 
   # java binary path for PuppetDB. If undef, default will be used.
   if $java_bin {
-    ini_setting{'java':
+    ini_setting { 'java':
       ensure  => 'present',
       section => '',
       path    => $puppetdb::params::puppetdb_initconf,
@@ -345,7 +356,7 @@ class puppetdb::server (
     if $facts['systemd'] {
       # deploy a systemd timer + service to cleanup old reports
       # https://puppet.com/docs/puppetdb/5.2/maintain_and_tune.html#clean-up-the-dead-letter-office
-      systemd::unit_file{'puppetdb-dlo-cleanup.service':
+      systemd::unit_file { 'puppetdb-dlo-cleanup.service':
         content => epp("${module_name}/puppetdb-DLO-cleanup.service.epp", {
           'puppetdb_user'  => $puppetdb_user,
           'puppetdb_group' => $puppetdb_group,
@@ -353,8 +364,8 @@ class puppetdb::server (
           'dlo_max_age'    => $dlo_max_age
         }),
       }
-      -> systemd::unit_file{'puppetdb-dlo-cleanup.timer':
-        content => epp("${module_name}/puppetdb-DLO-cleanup.timer.epp", {'cleanup_timer_interval' => $cleanup_timer_interval}),
+      -> systemd::unit_file { 'puppetdb-dlo-cleanup.timer':
+        content => epp("${module_name}/puppetdb-DLO-cleanup.timer.epp", {'cleanup_timer_interval' => $cleanup_timer_interval }),
         enable  => true,
         active  => true,
       }

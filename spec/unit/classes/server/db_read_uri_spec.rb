@@ -14,7 +14,7 @@ describe 'puppetdb::server::read_database', type: :class do
     describe 'when passing jdbc subparams' do
       let(:params) do
         {
-          database_host: 'localhost',
+          read_database_host: 'localhost',
           jdbc_ssl_properties: '?ssl=true',
         }
       end
@@ -32,7 +32,7 @@ describe 'puppetdb::server::read_database', type: :class do
     describe 'when using ssl communication' do
       let(:params) do
         {
-          database_host: 'cheery-rime.puppetlabs.net',
+          read_database_host: 'cheery-rime.puppetlabs.net',
           postgresql_ssl_on: true,
           ssl_key_pk8_path: '/tmp/private_key.pk8',
         }
@@ -57,7 +57,7 @@ describe 'puppetdb::server::read_database', type: :class do
       context 'when setting jdbc_ssl_properties as well' do
         let(:params) do
           {
-            database_host: 'puppetdb',
+            read_database_host: 'puppetdb',
             jdbc_ssl_properties: '?ssl=true',
             postgresql_ssl_on: true,
           }
