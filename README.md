@@ -608,15 +608,15 @@ Which database backend to use for the read database. Only supports
 #### `read_database_host`
 *This parameter must be set to use another PuppetDB instance for queries.*
 
-The hostname or IP address of the read database server. If set to `undef`, 
-it will use the value of the `database_host` parameter. This option is
-supported in PuppetDB >= 1.6.
+The hostname or IP address of the read database server. If set to `undef`, and 
+`manage_database` is set to `true`, it will use the value of the `database_host` 
+parameter. This option is supported in PuppetDB >= 1.6.
 
 #### `read_database_port`
 
 The port that the read database server listens on. If `read_database_host`
-is set to `undef`, it will use the value of the `database_port` parameter. This
-option is supported in PuppetDB >= 1.6.
+is set to `undef`, and `manage_database` is set to `true`, it will use the value of 
+the `database_port` parameter. This option is supported in PuppetDB >= 1.6.
 
 #### `read_database_username`
 
@@ -637,8 +637,8 @@ Defaults to `true`
 #### `read_database_name`
 
 The name of the read database instance to connect to. If `read_database_host`
-is set to `undef`, it will use the value of the `database_name` parameter.
-This option is supported in PuppetDB >= 1.6.
+is set to `undef`, and `manage_database` is set to `true`, it will use the value of
+the `database_name` parameter. This option is supported in PuppetDB >= 1.6.
 
 #### `read_log_slow_statements`
 

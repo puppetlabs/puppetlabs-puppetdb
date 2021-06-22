@@ -15,7 +15,7 @@ describe 'puppetdb::server::read_database', type: :class do
     it { is_expected.to contain_class('puppetdb::server::read_database') }
 
     describe 'when using default values' do
-      it { is_expected.to contain_file('/etc/puppetlabs/puppetdb/conf.d/read_database.ini') }
+      it { is_expected.to contain_file('/etc/puppetlabs/puppetdb/conf.d/read_database.ini').with('ensure' => 'absent') }
     end
 
     describe 'when using minimum working values' do

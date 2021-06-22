@@ -164,5 +164,9 @@ class puppetdb::server::read_database (
         ensure => absent,
       }
     }
+  } else {
+    file { "${confdir}/read_database.ini":
+      ensure => absent,
+    }
   }
 }
