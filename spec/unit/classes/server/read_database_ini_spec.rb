@@ -21,7 +21,7 @@ describe 'puppetdb::server::read_database', type: :class do
     describe 'when using minimum working values' do
       let(:params) do
         {
-          'database_host' => 'puppetdb',
+          'read_database_host' => 'puppetdb',
         }
       end
 
@@ -41,7 +41,7 @@ describe 'puppetdb::server::read_database', type: :class do
             'path'    => '/etc/puppetlabs/puppetdb/conf.d/read_database.ini',
             'section' => 'read-database',
             'setting' => 'username',
-            'value'   => 'puppetdb',
+            'value'   => 'puppetdb-read',
           )
       }
       it {
@@ -51,7 +51,7 @@ describe 'puppetdb::server::read_database', type: :class do
             'path'    => '/etc/puppetlabs/puppetdb/conf.d/read_database.ini',
             'section' => 'read-database',
             'setting' => 'password',
-            'value'   => 'puppetdb',
+            'value'   => 'puppetdb-read',
           )
       }
       it {
@@ -128,7 +128,7 @@ describe 'puppetdb::server::read_database', type: :class do
       context 'when using ssl communication' do
         let(:params) do
           {
-            database_host: 'puppetdb',
+            read_database_host: 'puppetdb',
             postgresql_ssl_on: true,
             ssl_key_pk8_path: '/tmp/private_key.pk8',
           }
@@ -153,7 +153,7 @@ describe 'puppetdb::server::read_database', type: :class do
         context 'when setting jdbc_ssl_properties as well' do
           let(:params) do
             {
-              database_host: 'puppetdb',
+              read_database_host: 'puppetdb',
               jdbc_ssl_properties: '?ssl=true',
               postgresql_ssl_on: true,
             }

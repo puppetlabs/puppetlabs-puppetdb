@@ -1,6 +1,6 @@
 # Class for creating the PuppetDB postgresql database. See README.md for more
 # information.
-class puppetdb::database::postgresql(
+class puppetdb::database::postgresql (
   $listen_addresses            = $puppetdb::params::database_host,
   $puppetdb_server             = $puppetdb::params::puppetdb_server,
   $database_name               = $puppetdb::params::database_name,
@@ -14,7 +14,10 @@ class puppetdb::database::postgresql(
   $postgresql_ssl_on           = $puppetdb::params::postgresql_ssl_on,
   $postgresql_ssl_key_path     = $puppetdb::params::postgresql_ssl_key_path,
   $postgresql_ssl_cert_path    = $puppetdb::params::postgresql_ssl_cert_path,
-  $postgresql_ssl_ca_cert_path = $puppetdb::params::postgresql_ssl_ca_cert_path
+  $postgresql_ssl_ca_cert_path = $puppetdb::params::postgresql_ssl_ca_cert_path,
+  $read_database_username      = $puppetdb::params::read_database_username,
+  $read_database_password      = $puppetdb::params::read_database_password,
+  $read_database_host          = $puppetdb::params::read_database_host
 ) inherits puppetdb::params {
 
   if $manage_server {
@@ -29,16 +32,27 @@ class puppetdb::database::postgresql(
       port                    => scanf($database_port, '%i')[0],
     }
 
+    # We need to create the ssl connection for the read user, when
+    # manage_database is set to true, or when read_database_host is defined.
+    # Otherwise we don't create it.
+    if $manage_database or $read_database_host != undef{
+      $create_read_user_rule = true
+    } else {
+      $create_read_user_rule = false
+    }
+
     # configure PostgreSQL communication with Puppet Agent SSL certificates if
     # postgresql_ssl_on is set to true
     if $postgresql_ssl_on {
       class { 'puppetdb::database::ssl_configuration':
         database_name               => $database_name,
         database_username           => $database_username,
+        read_database_username      => $read_database_username,
         puppetdb_server             => $puppetdb_server,
         postgresql_ssl_key_path     => $postgresql_ssl_key_path,
         postgresql_ssl_cert_path    => $postgresql_ssl_cert_path,
-        postgresql_ssl_ca_cert_path => $postgresql_ssl_ca_cert_path
+        postgresql_ssl_ca_cert_path => $postgresql_ssl_ca_cert_path,
+        create_read_user_rule       => $create_read_user_rule
       }
     }
 
@@ -61,6 +75,29 @@ class puppetdb::database::postgresql(
       user     => $database_username,
       password => $database_password,
       grant    => 'all',
+    }
+
+    -> postgresql_psql { 'revoke all access on public schema':
+      db      => $database_name,
+      command => 'REVOKE CREATE ON SCHEMA public FROM public',
+      unless  => "SELECT * FROM
+                  (SELECT has_schema_privilege('public', 'public', 'create') can_create) privs
+                WHERE privs.can_create=false",
+    }
+
+    -> postgresql_psql { "grant all permissions to ${database_username}":
+      db      => $database_name,
+      command => "GRANT CREATE ON SCHEMA public TO \"${database_username}\"",
+      unless  => "SELECT * FROM
+                  (SELECT has_schema_privilege('${database_username}', 'public', 'create') can_create) privs
+                WHERE privs.can_create=true",
+    }
+
+    -> puppetdb::database::read_only_user { $read_database_username:
+      read_database_username => $read_database_username,
+      database_name          => $database_name,
+      password_hash          => postgresql::postgresql_password($read_database_username, $read_database_password),
+      database_owner         => $database_username
     }
   }
 }

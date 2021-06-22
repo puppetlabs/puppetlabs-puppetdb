@@ -1,11 +1,11 @@
 # PRIVATE CLASS - do not use directly
 class puppetdb::server::read_database (
-  $database               = $puppetdb::params::read_database,
-  $database_host          = $puppetdb::params::read_database_host,
-  $database_port          = $puppetdb::params::read_database_port,
-  $database_username      = $puppetdb::params::read_database_username,
-  $database_password      = $puppetdb::params::read_database_password,
-  $database_name          = $puppetdb::params::read_database_name,
+  $read_database          = $puppetdb::params::read_database,
+  $read_database_host     = $puppetdb::params::read_database_host,
+  $read_database_port     = $puppetdb::params::read_database_port,
+  $read_database_username = $puppetdb::params::read_database_username,
+  $read_database_password = $puppetdb::params::read_database_password,
+  $read_database_name     = $puppetdb::params::read_database_name,
   $manage_db_password     = $puppetdb::params::manage_read_db_password,
   $jdbc_ssl_properties    = $puppetdb::params::read_database_jdbc_ssl_properties,
   $database_validate      = $puppetdb::params::read_database_validate,
@@ -23,8 +23,7 @@ class puppetdb::server::read_database (
   $ssl_ca_cert_path       = $puppetdb::params::ssl_ca_cert_path
 ) inherits puppetdb::params {
 
-  # Only add the read database configuration if database host is defined.
-  if $database_host != undef {
+  if $read_database_host != undef {
     if str2bool($database_validate) {
       # Validate the database connection.  If we can't connect, we want to fail
       # and skip the rest of the configuration, so that we don't leave puppetdb
@@ -35,12 +34,12 @@ class puppetdb::server::read_database (
       # a duplicate declaration if read and write database host+name are the
       # same.
       class { 'puppetdb::server::validate_read_db':
-        database          => $database,
-        database_host     => $database_host,
-        database_port     => $database_port,
-        database_username => $database_username,
-        database_password => $database_password,
-        database_name     => $database_name,
+        database          => $read_database,
+        database_host     => $read_database_host,
+        database_port     => $read_database_port,
+        database_username => $read_database_username,
+        database_password => $read_database_password,
+        database_name     => $read_database_name,
       }
     }
 
@@ -66,7 +65,7 @@ class puppetdb::server::read_database (
       require => $ini_setting_require,
     }
 
-    if $database == 'postgres' {
+    if $read_database == 'postgres' {
       $classname = 'org.postgresql.Driver'
       $subprotocol = 'postgresql'
 
@@ -77,7 +76,7 @@ class puppetdb::server::read_database (
         $database_suffix = ''
       }
 
-      $subname_default = "//${database_host}:${database_port}/${database_name}${database_suffix}"
+      $subname_default = "//${read_database_host}:${read_database_port}/${read_database_name}${database_suffix}"
 
       if $postgresql_ssl_on and !empty($jdbc_ssl_properties)
       {
@@ -86,24 +85,24 @@ class puppetdb::server::read_database (
 
       if $postgresql_ssl_on {
         $subname = @("EOT"/L)
-          ${subname_default}?\
-          ssl=true&sslfactory=org.postgresql.ssl.LibPQFactory&\
-          sslmode=verify-full&sslrootcert=${ssl_ca_cert_path}&\
-          sslkey=${ssl_key_pk8_path}&sslcert=${ssl_cert_path}\
-          | EOT
+        ${subname_default}?\
+        ssl=true&sslfactory=org.postgresql.ssl.LibPQFactory&\
+        sslmode=verify-full&sslrootcert=${ssl_ca_cert_path}&\
+        sslkey=${ssl_key_pk8_path}&sslcert=${ssl_cert_path}\
+        | EOT
       } else {
         $subname = $subname_default
       }
 
       ini_setting { 'puppetdb_read_database_username':
         setting => 'username',
-        value   => $database_username,
+        value   => $read_database_username,
       }
 
-      if $database_password != undef and $manage_db_password {
+      if $read_database_password != undef and $manage_db_password {
         ini_setting { 'puppetdb_read_database_password':
           setting => 'password',
-          value   => $database_password,
+          value   => $read_database_password,
         }
       }
     }
@@ -159,6 +158,10 @@ class puppetdb::server::read_database (
           setting => $puppetdb::params::database_max_pool_size_setting_name,
           value   => $database_max_pool_size,
         }
+      }
+    } else {
+      file { "${confdir}/read_database.ini":
+        ensure => absent,
       }
     }
   } else {

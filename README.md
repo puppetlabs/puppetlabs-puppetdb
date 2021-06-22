@@ -606,25 +606,26 @@ Which database backend to use for the read database. Only supports
 `postgres` (default). This option is supported in PuppetDB >= 1.6.
 
 #### `read_database_host`
-*This parameter must be set to enable the PuppetDB read-database.*
+*This parameter must be set to use another PuppetDB instance for queries.*
 
-The hostname or IP address of the read database server. Defaults to `undef`.
-The default is to use the regular database for reads and writes. This option is
-supported in PuppetDB >= 1.6.
+The hostname or IP address of the read database server. If set to `undef`, and 
+`manage_database` is set to `true`, it will use the value of the `database_host` 
+parameter. This option is supported in PuppetDB >= 1.6.
 
 #### `read_database_port`
 
-The port that the read database server listens on. Defaults to `5432`. This
-option is supported in PuppetDB >= 1.6.
+The port that the read database server listens on. If `read_database_host`
+is set to `undef`, and `manage_database` is set to `true`, it will use the value of 
+the `database_port` parameter. This option is supported in PuppetDB >= 1.6.
 
 #### `read_database_username`
 
-The name of the read database user to connect as. Defaults to `puppetdb`. This
+The name of the read database user to connect as. Defaults to `puppetdb-read`. This
 option is supported in PuppetDB >= 1.6.
 
 #### `read_database_password`
 
-The password for the read database user. Defaults to `puppetdb`. This option is
+The password for the read database user. Defaults to `puppetdb-read`. This option is
 supported in PuppetDB >= 1.6.
 
 #### `manage_read_db_password`
@@ -635,8 +636,9 @@ Defaults to `true`
 
 #### `read_database_name`
 
-The name of the read database instance to connect to. Defaults to `puppetdb`.
-This option is supported in PuppetDB >= 1.6.
+The name of the read database instance to connect to. If `read_database_host`
+is set to `undef`, and `manage_database` is set to `true`, it will use the value of
+the `database_name` parameter. This option is supported in PuppetDB >= 1.6.
 
 #### `read_log_slow_statements`
 
