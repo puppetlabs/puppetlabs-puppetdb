@@ -200,6 +200,7 @@ class puppetdb (
       postgresql_ssl_ca_cert_path => $postgresql_ssl_ca_cert_path,
       read_database_username      => $read_database_username,
       read_database_password      => $read_database_password,
+      read_database_host          => $read_database_host,
       before                      => $database_before
     }
   }

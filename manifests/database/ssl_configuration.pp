@@ -4,10 +4,12 @@ class puppetdb::database::ssl_configuration (
   $database_name               = $puppetdb::params::database_name,
   $database_username           = $puppetdb::params::database_username,
   $read_database_username      = $puppetdb::params::read_database_username,
+  $read_database_host          = $puppetdb::params::read_database_host,
   $puppetdb_server             = $puppetdb::params::puppetdb_server,
   $postgresql_ssl_key_path     = $puppetdb::params::postgresql_ssl_key_path,
   $postgresql_ssl_cert_path    = $puppetdb::params::postgresql_ssl_cert_path,
-  $postgresql_ssl_ca_cert_path = $puppetdb::params::postgresql_ssl_ca_cert_path
+  $postgresql_ssl_ca_cert_path = $puppetdb::params::postgresql_ssl_ca_cert_path,
+  $create_read_user_rule       = false,
 ) inherits puppetdb::params {
   File {
     ensure  => present,
@@ -56,9 +58,11 @@ class puppetdb::database::ssl_configuration (
     puppetdb_server   => $puppetdb_server,
   }
 
-  puppetdb::database::postgresql_ssl_rules { "Configure postgresql ssl rules for ${read_database_username}":
-    database_name     => $database_name,
-    database_username => $read_database_username,
-    puppetdb_server   => $puppetdb_server,
+  if $create_read_user_rule {
+    puppetdb::database::postgresql_ssl_rules { "Configure postgresql ssl rules for ${read_database_username}":
+      database_name     => $database_name,
+      database_username => $read_database_username,
+      puppetdb_server   => $puppetdb_server,
+    }
   }
 }

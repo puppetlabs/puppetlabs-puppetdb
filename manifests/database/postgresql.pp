@@ -16,7 +16,8 @@ class puppetdb::database::postgresql (
   $postgresql_ssl_cert_path    = $puppetdb::params::postgresql_ssl_cert_path,
   $postgresql_ssl_ca_cert_path = $puppetdb::params::postgresql_ssl_ca_cert_path,
   $read_database_username      = $puppetdb::params::read_database_username,
-  $read_database_password      = $puppetdb::params::read_database_password
+  $read_database_password      = $puppetdb::params::read_database_password,
+  $read_database_host          = $puppetdb::params::read_database_host
 ) inherits puppetdb::params {
 
   if $manage_server {
@@ -31,6 +32,15 @@ class puppetdb::database::postgresql (
       port                    => scanf($database_port, '%i')[0],
     }
 
+    # We need to create the ssl connection for the read user, when
+    # manage_database is set to true, or when read_database_host is defined.
+    # Otherwise we don't create it.
+    if $manage_database or $read_database_host != undef{
+      $create_read_user_rule = true
+    } else {
+      $create_read_user_rule = false
+    }
+
     # configure PostgreSQL communication with Puppet Agent SSL certificates if
     # postgresql_ssl_on is set to true
     if $postgresql_ssl_on {
@@ -41,7 +51,8 @@ class puppetdb::database::postgresql (
         puppetdb_server             => $puppetdb_server,
         postgresql_ssl_key_path     => $postgresql_ssl_key_path,
         postgresql_ssl_cert_path    => $postgresql_ssl_cert_path,
-        postgresql_ssl_ca_cert_path => $postgresql_ssl_ca_cert_path
+        postgresql_ssl_ca_cert_path => $postgresql_ssl_ca_cert_path,
+        create_read_user_rule       => $create_read_user_rule
       }
     }
 
