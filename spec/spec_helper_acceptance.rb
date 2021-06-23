@@ -73,9 +73,9 @@ hosts.each do |host|
     # TODO: we should probably be using the relatively new postgresql
     # module settings manage_dnf_module on el8 when we are managing the postgresql
     # database
-    if relver == "8"
-      on host, "dnf install -y https://download.postgresql.org/pub/repos/yum/reporpms/EL-8-x86_64/pgdg-redhat-repo-latest.noarch.rpm"
-      on host, "dnf -qy module disable postgresql"
+    if relver == '8'
+      on host, 'dnf install -y https://download.postgresql.org/pub/repos/yum/reporpms/EL-8-x86_64/pgdg-redhat-repo-latest.noarch.rpm'
+      on host, 'dnf -qy module disable postgresql'
     end
   elsif host['platform'] =~ %r{fedora-(\d+)}
     relver = Regexp.last_match(1)
