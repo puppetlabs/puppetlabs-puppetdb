@@ -64,11 +64,19 @@ hosts.each do |host|
     on host, 'echo \'export PATH=/var/lib/gems/1.8/bin/:${PATH}\' >> ~/.bashrc'
   end
   # install_puppet
-  if host['platform'] =~ %r{el-(5|6|7)}
+  if host['platform'] =~ %r{el-(5|6|7|8)}
     relver = Regexp.last_match(1)
     on host, "rpm -ivh #{build_url('el')}#{relver}.noarch.rpm"
     on host, 'yum install -y puppetserver'
     on host, '/opt/puppetlabs/bin/puppetserver ca setup'
+
+    # TODO: we should probably be using the relatively new postgresql
+    # module settings manage_dnf_module on el8 when we are managing the postgresql
+    # database
+    if relver == "8"
+      on host, "dnf install -y https://download.postgresql.org/pub/repos/yum/reporpms/EL-8-x86_64/pgdg-redhat-repo-latest.noarch.rpm"
+      on host, "dnf -qy module disable postgresql"
+    end
   elsif host['platform'] =~ %r{fedora-(\d+)}
     relver = Regexp.last_match(1)
     on host, "rpm -ivh #{build_url('fedora')}#{relver}.noarch.rpm"
