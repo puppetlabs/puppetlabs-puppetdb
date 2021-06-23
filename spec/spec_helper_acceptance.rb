@@ -68,6 +68,7 @@ hosts.each do |host|
     relver = Regexp.last_match(1)
     on host, "rpm -ivh #{build_url('el')}#{relver}.noarch.rpm"
     on host, 'yum install -y puppetserver'
+    on host, '/opt/puppetlabs/bin/puppetserver ca setup'
   elsif host['platform'] =~ %r{fedora-(\d+)}
     relver = Regexp.last_match(1)
     on host, "rpm -ivh #{build_url('fedora')}#{relver}.noarch.rpm"
