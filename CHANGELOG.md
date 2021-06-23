@@ -2,6 +2,13 @@
 
 Release notes for the puppetlabs-puppetdb module.
 
+#### 7.9.0 - 2021/06/23
+
+* When `manage_database` is true, it will create a read-only user in postgres
+  and configure PuppetDB to use that user for its read-database connection
+  pool
+* Update module dependencies for inifile, firewall, and stdlib
+
 #### 7.8.0 - 2021/03/25
 
 * Added an option `postgresql_ssl_on` to enable an SSL connection between
