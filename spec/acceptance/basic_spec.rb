@@ -91,8 +91,8 @@ describe 'basic tests:' do
       apply_manifest(pp, catch_errors: true)
       apply_manifest(pp, catch_changes: true)
 
-      shell('psql "postgresql://puppetdb-read:puppetdb-read@localhost/puppetdb" -c "create table tables(id int);"') do |r|
-        expect(r.stdout).to match(%r{^ERROR:  permission denied for schema public.*})
+      shell('psql "postgresql://puppetdb-read:puppetdb-read@localhost/puppetdb" -c "create table tables(id int)" || true') do |r|
+        expect(r.stderr).to match(%r{^ERROR:  permission denied for schema public.*})
       end
     end
   end
