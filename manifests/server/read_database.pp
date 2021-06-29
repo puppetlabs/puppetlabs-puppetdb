@@ -4,7 +4,7 @@ class puppetdb::server::read_database (
   $read_database_host     = $puppetdb::params::read_database_host,
   $read_database_port     = $puppetdb::params::read_database_port,
   $read_database_username = $puppetdb::params::read_database_username,
-  $read_database_password = $puppetdb::params::read_database_password,
+  Optional[Variant[String, Sensitive[String]]] $read_database_password = $puppetdb::params::read_database_password,
   $read_database_name     = $puppetdb::params::read_database_name,
   $manage_db_password     = $puppetdb::params::manage_read_db_password,
   $jdbc_ssl_properties    = $puppetdb::params::read_database_jdbc_ssl_properties,
@@ -100,9 +100,15 @@ class puppetdb::server::read_database (
       }
 
       if $read_database_password != undef and $manage_db_password {
+        # TODO: Workaround, until "ini_setting" accepts Sensitive
+        $read_database_password_unsensitive = if $read_database_password =~ Sensitive {
+          $read_database_password.unwrap
+        } else {
+          $read_database_password
+        }
         ini_setting { 'puppetdb_read_database_password':
           setting => 'password',
-          value   => $read_database_password,
+          value   => $read_database_password_unsensitive,
         }
       }
     }

@@ -5,7 +5,7 @@ class puppetdb::database::postgresql (
   $puppetdb_server             = $puppetdb::params::puppetdb_server,
   $database_name               = $puppetdb::params::database_name,
   $database_username           = $puppetdb::params::database_username,
-  $database_password           = $puppetdb::params::database_password,
+  Variant[String, Sensitive[String]] $database_password = $puppetdb::params::database_password,
   $database_port               = $puppetdb::params::database_port,
   $manage_database             = $puppetdb::params::manage_database,
   $manage_server               = $puppetdb::params::manage_dbserver,
@@ -16,7 +16,7 @@ class puppetdb::database::postgresql (
   $postgresql_ssl_cert_path    = $puppetdb::params::postgresql_ssl_cert_path,
   $postgresql_ssl_ca_cert_path = $puppetdb::params::postgresql_ssl_ca_cert_path,
   $read_database_username      = $puppetdb::params::read_database_username,
-  $read_database_password      = $puppetdb::params::read_database_password,
+  Optional[Variant[String, Sensitive[String]]] $read_database_password = $puppetdb::params::read_database_password,
   $read_database_host          = $puppetdb::params::read_database_host
 ) inherits puppetdb::params {
 
@@ -70,10 +70,22 @@ class puppetdb::database::postgresql (
   }
 
   if $manage_database {
+    # TODO: Workaround, until "postgresql" accepts Sensitive
+    $database_password_unsensitive = if $database_password =~ Sensitive {
+      $database_password.unwrap
+    } else {
+      $database_password
+    }
+    $read_database_password_unsensitive = if $read_database_password =~ Sensitive {
+      $read_database_password.unwrap
+    } else {
+      $read_database_password
+    }
+
     # create the puppetdb database
     postgresql::server::db { $database_name:
       user     => $database_username,
-      password => $database_password,
+      password => $database_password_unsensitive,
       grant    => 'all',
     }
 
@@ -96,7 +108,7 @@ class puppetdb::database::postgresql (
     -> puppetdb::database::read_only_user { $read_database_username:
       read_database_username => $read_database_username,
       database_name          => $database_name,
-      password_hash          => postgresql::postgresql_password($read_database_username, $read_database_password),
+      password_hash          => postgresql::postgresql_password($read_database_username, $read_database_password_unsensitive),
       database_owner         => $database_username
     }
   }
