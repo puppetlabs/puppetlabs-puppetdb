@@ -218,4 +218,7 @@ class puppetdb::params inherits puppetdb::globals {
 
   # java binary path for PuppetDB. If undef, default will be used.
   $java_bin = undef
+
+  # puppetserver default port
+  $puppetserver_default_port = '8140'
 }
