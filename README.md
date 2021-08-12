@@ -30,7 +30,7 @@ will also provide a dashboard you can use to view the current state of your
 system.
 
 For more information about PuppetDB
-[please see the official PuppetDB documentation.](http://docs.puppetlabs.com/puppetdb/)
+[please see the official PuppetDB documentation.](https://puppet.com/docs/puppetdb/latest/)
 
 
 Setup
@@ -439,7 +439,7 @@ or `embedded`. The `embedded` option is not supported on PuppetDB
 4.0.0 or later. `embedded` can be used for very small installations or
 for testing, but is not recommended for use in production
 environments. For more info, see the [puppetdb
-docs](http://docs.puppetlabs.com/puppetdb/).
+docs](https://puppet.com/docs/puppetdb/latest/).
 
 #### `database_host`
 
