@@ -19,7 +19,7 @@ define puppetdb::database::default_read_grant(
                   acl.defaclacl
                 FROM pg_default_acl acl
                 JOIN pg_namespace ns ON acl.defaclnamespace=ns.oid
-                WHERE acl.defaclacl::text ~ '.*\\\\\"${database_read_only_username}\\\\\"=r/${database_username}\\\".*'
+                WHERE acl.defaclacl::text ~ '.*\\\\\"${database_read_only_username}\\\\\"=r/${database_username}\\\\\".*'
                 AND nspname = '${schema}'",
   }
 
@@ -36,7 +36,7 @@ define puppetdb::database::default_read_grant(
                   acl.defaclacl
                 FROM pg_default_acl acl
                 JOIN pg_namespace ns ON acl.defaclnamespace=ns.oid
-                WHERE acl.defaclacl::text ~ '.*\\\\\"${database_read_only_username}\\\\\"=U/${database_username}\\\".*'
+                WHERE acl.defaclacl::text ~ '.*\\\\\"${database_read_only_username}\\\\\"=U/${database_username}\\\\\".*'
                 AND nspname = '${schema}'",
   }
 
@@ -53,7 +53,7 @@ define puppetdb::database::default_read_grant(
                   acl.defaclacl
                 FROM pg_default_acl acl
                 JOIN pg_namespace ns ON acl.defaclnamespace=ns.oid
-                WHERE acl.defaclacl::text ~ '.*\\\\\"${database_read_only_username}\\\\\"=X/${database_username}\\\".*'
+                WHERE acl.defaclacl::text ~ '.*\\\\\"${database_read_only_username}\\\\\"=X/${database_username}\\\\\".*'
                 AND nspname = '${schema}'",
   }
 }
