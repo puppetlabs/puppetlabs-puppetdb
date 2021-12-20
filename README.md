@@ -959,7 +959,7 @@ be installed from the regular repository. Defaults to `true`.
 #### `postgres_version`
 
 If the postgresql.org repo is installed, you can install several versions of
-postgres. Defaults to `9.6` in module version 6.0+ and `9.4` in older versions.
+postgres. Defaults to `11` with PuppetDB version 7.0.0 or newer, and `9.6` in older versions.
 
 Implementation
 ---------------
