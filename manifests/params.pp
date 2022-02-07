@@ -129,7 +129,7 @@ class puppetdb::params inherits puppetdb::globals {
       'FreeBSD': {
         $etcdir              = '/usr/local/etc/puppetlabs/puppetdb'
         $puppet_confdir      = pick($puppetdb::globals::puppet_confdir,'/usr/local/etc/puppetlabs/puppet')
-        $puppet_service_name = undef
+        $puppet_service_name = 'puppetserver'
       }
       default: {
         fail("The fact 'os.family' is set to ${fact('os.family')} which is not supported by the puppetdb module.")
