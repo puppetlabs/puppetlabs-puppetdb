@@ -19,7 +19,6 @@ class puppetdb::server::database (
   $conn_max_age              = $puppetdb::params::conn_max_age,
   $conn_lifetime             = $puppetdb::params::conn_lifetime,
   $confdir                   = $puppetdb::params::confdir,
-  $puppetdb_user             = $puppetdb::params::puppetdb_user,
   $puppetdb_group            = $puppetdb::params::puppetdb_group,
   $database_max_pool_size    = $puppetdb::params::database_max_pool_size,
   $migrate                   = $puppetdb::params::migrate,
@@ -50,9 +49,9 @@ class puppetdb::server::database (
 
   file { $database_ini:
     ensure => file,
-    owner  => $puppetdb_user,
+    owner  => 'root',
     group  => $puppetdb_group,
-    mode   => '0600',
+    mode   => '0640',
   }
 
   $file_require = File[$database_ini]

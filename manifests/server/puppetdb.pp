@@ -6,16 +6,15 @@ class puppetdb::server::puppetdb (
   $certificate_whitelist      = $puppetdb::params::certificate_whitelist,
   $disable_update_checking    = $puppetdb::params::disable_update_checking,
   $confdir                    = $puppetdb::params::confdir,
-  $puppetdb_user              = $puppetdb::params::puppetdb_user,
   $puppetdb_group             = $puppetdb::params::puppetdb_group,
 ) inherits puppetdb::params {
   $puppetdb_ini = "${confdir}/puppetdb.ini"
 
   file { $puppetdb_ini:
     ensure => file,
-    owner  => $puppetdb_user,
+    owner  => 'root',
     group  => $puppetdb_group,
-    mode   => '0600',
+    mode   => '0640',
   }
 
   # Set the defaults
