@@ -127,8 +127,8 @@ class puppetdb::params inherits puppetdb::globals {
         $puppet_service_name = undef
       }
       'FreeBSD': {
-        $etcdir              = '/usr/local/etc/puppetlabs/puppetdb'
-        $puppet_confdir      = pick($puppetdb::globals::puppet_confdir,'/usr/local/etc/puppetlabs/puppet')
+        $etcdir              = '/usr/local/etc/puppetdb'
+        $puppet_confdir      = pick($puppetdb::globals::puppet_confdir,'/usr/local/etc/puppet')
         $puppet_service_name = 'puppetserver'
       }
       default: {
