@@ -149,7 +149,6 @@ class puppetdb::server (
   class { 'puppetdb::server::global':
     vardir         => $vardir,
     confdir        => $confdir,
-    puppetdb_user  => $puppetdb_user,
     puppetdb_group => $puppetdb_group,
     notify         => Service[$puppetdb_service],
   }
@@ -190,7 +189,6 @@ class puppetdb::server (
     conn_keep_alive           => $conn_keep_alive,
     conn_lifetime             => $conn_lifetime,
     confdir                   => $confdir,
-    puppetdb_user             => $puppetdb_user,
     puppetdb_group            => $puppetdb_group,
     migrate                   => $migrate,
     notify                    => Service[$puppetdb_service],
@@ -225,7 +223,6 @@ class puppetdb::server (
     conn_keep_alive        => $read_conn_keep_alive,
     conn_lifetime          => $read_conn_lifetime,
     confdir                => $confdir,
-    puppetdb_user          => $puppetdb_user,
     puppetdb_group         => $puppetdb_group,
     notify                 => Service[$puppetdb_service],
     database_max_pool_size => $read_database_max_pool_size,
@@ -235,29 +232,29 @@ class puppetdb::server (
     file {
       $ssl_dir:
         ensure => directory,
-        owner  => $puppetdb_user,
+        owner  => 'root',
         group  => $puppetdb_group,
-        mode   => '0700';
+        mode   => '0755';
       $ssl_key_path:
         ensure  => file,
         content => $ssl_key,
-        owner   => $puppetdb_user,
+        owner   => 'root',
         group   => $puppetdb_group,
-        mode    => '0600',
+        mode    => '0640',
         notify  => Service[$puppetdb_service];
       $ssl_cert_path:
         ensure  => file,
         content => $ssl_cert,
-        owner   => $puppetdb_user,
+        owner   => 'root',
         group   => $puppetdb_group,
-        mode    => '0600',
+        mode    => '0644',
         notify  => Service[$puppetdb_service];
       $ssl_ca_cert_path:
         ensure  => file,
         content => $ssl_ca_cert,
-        owner   => $puppetdb_user,
+        owner   => 'root',
         group   => $puppetdb_group,
-        mode    => '0600',
+        mode    => '0644',
         notify  => Service[$puppetdb_service];
     }
   }
@@ -275,9 +272,9 @@ class puppetdb::server (
 
     file { $ssl_key_pk8_path:
       ensure => present,
-      owner  => $puppetdb_user,
+      owner  => 'root',
       group  => $puppetdb_group,
-      mode   => '0600',
+      mode   => '0640',
       notify => Service[$puppetdb_service]
     }
   }
@@ -298,7 +295,6 @@ class puppetdb::server (
     confdir            => $confdir,
     max_threads        => $max_threads,
     notify             => Service[$puppetdb_service],
-    puppetdb_user      => $puppetdb_user,
     puppetdb_group     => $puppetdb_group,
   }
 
@@ -307,7 +303,6 @@ class puppetdb::server (
     certificate_whitelist      => $certificate_whitelist,
     disable_update_checking    => $disable_update_checking,
     confdir                    => $confdir,
-    puppetdb_user              => $puppetdb_user,
     puppetdb_group             => $puppetdb_group,
     notify                     => Service[$puppetdb_service],
   }
