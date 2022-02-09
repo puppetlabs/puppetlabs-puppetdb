@@ -12,3 +12,5 @@ fixtures:
     cron_core: 'https://github.com/puppetlabs/puppetlabs-cron_core.git'
     yumrepo_core: 'https://github.com/puppetlabs/puppetlabs-yumrepo_core.git'
     augeas_core: 'https://github.com/puppetlabs/puppetlabs-augeas_core.git'
+    provision: 'https://github.com/puppetlabs/provision.git'
+    puppet_agent: 'https://github.com/puppetlabs/puppetlabs-puppet_agent.git'
