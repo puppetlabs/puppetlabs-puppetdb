@@ -14,3 +14,4 @@ fixtures:
     augeas_core: 'https://github.com/puppetlabs/puppetlabs-augeas_core.git'
     provision: 'https://github.com/puppetlabs/provision.git'
     puppet_agent: 'https://github.com/puppetlabs/puppetlabs-puppet_agent.git'
+    facts: 'https://github.com/puppetlabs/puppetlabs-facts.git'
