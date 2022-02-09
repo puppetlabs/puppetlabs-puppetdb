@@ -9,14 +9,8 @@ fixtures:
     file_concat: 'https://github.com/electrical/puppet-lib-file_concat.git'
     systemd: 'https://github.com/camptocamp/puppet-systemd.git'
     cron: 'https://github.com/voxpupuli/puppet-cron.git'
-    cron_core:
-      repo: https://github.com/puppetlabs/puppetlabs-cron_core.git
-      puppet_version: ">= 6.0.0"
-    yumrepo_core:
-      repo: https://github.com/puppetlabs/puppetlabs-yumrepo_core.git
-      puppet_version: ">= 6.0.0"
-    augeas_core:
-      repo: https://github.com/puppetlabs/puppetlabs-augeas_core.git
-      puppet_version: ">= 6.0.0"
+    cron_core: 'https://github.com/puppetlabs/puppetlabs-cron_core.git'
+    yumrepo_core: 'https://github.com/puppetlabs/puppetlabs-yumrepo_core.git'
+    augeas_core: 'https://github.com/puppetlabs/puppetlabs-augeas_core.git'
   symlinks:
     puppetdb: '#{source_dir}'
