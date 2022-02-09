@@ -7,7 +7,7 @@ describe 'basic tests:' do
     # No point diagnosing any more if the module wasn't copied properly
     shell('ls /etc/puppetlabs/code/modules/puppetdb') do |r|
       r.exit_code.should be_zero
-      r.stdout.should =~ %r{metadata\.json}
+      r.stdout.should include('metadata.json')
       r.stderr.should == ''
     end
   end
