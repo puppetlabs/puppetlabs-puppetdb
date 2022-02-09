@@ -4,11 +4,15 @@ describe 'puppetdb::server::database', type: :class do
   context 'on a supported platform' do
     let(:facts) do
       {
-        osfamily: 'RedHat',
-        operatingsystem: 'RedHat',
+        os: {
+          family: 'RedHat',
+        },
         puppetversion: Puppet.version,
         operatingsystemrelease: '7.0',
-        fqdn: 'test.domain.local',
+        networking: {
+          fqdn: 'test.domain.local',
+        },
+        service_provider: 'systemd',
       }
     end
 

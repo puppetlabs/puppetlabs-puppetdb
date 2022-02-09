@@ -4,8 +4,13 @@ describe 'puppetdb::server::global', type: :class do
   context 'on a supported platform' do
     let(:facts) do
       {
-        osfamily: 'RedHat',
-        fqdn: 'foo.com',
+        os: {
+          family: 'RedHat',
+        },
+        networking: {
+          fqdn: 'foo.com',
+        },
+        service_provider: 'systemd',
       }
     end
 
@@ -26,9 +31,9 @@ describe 'puppetdb::server::global', type: :class do
         is_expected.to contain_file('/etc/puppetlabs/puppetdb/conf.d/config.ini')
           .with(
             'ensure'  => 'file',
-            'owner'   => 'puppetdb',
+            'owner'   => 'root',
             'group'   => 'puppetdb',
-            'mode'    => '0600',
+            'mode'    => '0640',
           )
       }
     end

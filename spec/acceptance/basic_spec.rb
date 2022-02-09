@@ -1,14 +1,25 @@
-require 'beaker-puppet'
-require 'beaker-pe'
 require 'spec_helper_acceptance'
 
 describe 'basic tests:' do
   it 'make sure we have copied the module across' do
     # No point diagnosing any more if the module wasn't copied properly
-    shell('ls /etc/puppetlabs/code/modules/puppetdb') do |r|
+    run_shell('ls /etc/puppetlabs/code/environments/production/modules/puppetdb') do |r|
       r.exit_code.should be_zero
       r.stdout.should contain 'metadata.json'
       r.stderr.should == ''
+    end
+  end
+
+  describe 'setup puppetserver' do
+    pp = <<-EOS
+      package { 'puppetserver': ensure => installed, } ->
+      exec { '/opt/puppetlabs/bin/puppetserver ca setup': creates => '/etc/puppetlabs/puppetserver/ca/ca_crt.pem', }
+      service { 'puppetserver': ensure => running, enable => true, }
+    EOS
+
+    it 'make sure it runs without error' do
+      apply_manifest(pp, catch_errors: true)
+      apply_manifest(pp, catch_changes: true)
     end
   end
 
@@ -72,7 +83,7 @@ describe 'basic tests:' do
       apply_manifest(pp, catch_errors: true)
       apply_manifest(pp, catch_changes: true)
 
-      shell('cat /etc/puppetlabs/puppet/puppet.conf') do |r|
+      run_shell('cat /etc/puppetlabs/puppet/puppet.conf') do |r|
         expect(r.stdout).to match(%r{^reports\s*=\s*([^,]+,)*puppetdb(,[^,]+)*$})
       end
     end
@@ -91,7 +102,7 @@ describe 'basic tests:' do
       apply_manifest(pp, catch_errors: true)
       apply_manifest(pp, catch_changes: true)
 
-      shell('psql "postgresql://puppetdb-read:puppetdb-read@localhost/puppetdb" -c "create table tables(id int)" || true') do |r|
+      run_shell('psql "postgresql://puppetdb-read:puppetdb-read@localhost/puppetdb" -c "create table tables(id int)" || true') do |r|
         expect(r.stderr).to match(%r{^ERROR:  permission denied for schema public.*})
       end
     end

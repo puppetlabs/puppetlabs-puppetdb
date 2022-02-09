@@ -9,6 +9,7 @@ describe 'puppetdb::master::puppetdb_conf', type: :class do
     context "on #{os}" do
       let(:facts) do
         facts.merge(puppetversion: Puppet.version,
+                    service_provider: 'systemd',
                     selinux: false)
       end
 
