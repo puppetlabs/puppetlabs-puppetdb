@@ -12,6 +12,7 @@ describe 'puppetdb::master::report_processor', type: :class do
     context "on #{os}" do
       let(:facts) do
         facts.merge(puppetversion: Puppet.version,
+                    service_provider: 'systemd',
                     clientcert: 'test.domain.local')
       end
 

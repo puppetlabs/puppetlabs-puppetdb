@@ -16,6 +16,7 @@ describe 'puppetdb::database::postgresql', type: :class do
           release: { 'full' => '7.0', 'major' => '7' },
           selinux: { 'enabled' => true },
         },
+        service_provider: 'systemd',
       }
     end
 

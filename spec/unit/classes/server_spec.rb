@@ -9,6 +9,7 @@ describe 'puppetdb::server', type: :class do
     context "on #{os}" do
       let(:facts) do
         facts.merge(puppetversion: Puppet.version,
+                    service_provider: 'systemd',
                     selinux: true)
       end
 
@@ -201,7 +202,7 @@ describe 'puppetdb::server', type: :class do
           it 'contains file private.pk8' do
             is_expected.to contain_file('/etc/puppetlabs/puppetdb/ssl/private.pk8')
               .with(
-                ensure: 'present',
+                ensure: 'file',
                 owner: 'puppetdb',
                 group: 'puppetdb',
                 mode: '0600',
