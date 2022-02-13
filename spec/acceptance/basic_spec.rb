@@ -6,7 +6,6 @@ describe 'basic tests:' do
     run_shell('ls /etc/puppetlabs/code/environments/production/modules/puppetdb') do |r|
       r.exit_code.should be_zero
       r.stdout.should include('metadata.json')
-      r.stderr.should == ''
     end
   end
 
