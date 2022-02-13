@@ -43,6 +43,7 @@ describe 'basic tests:' do
     EOS
 
     it 'make sure it runs without error' do
+      pending('By default postgresql use snakeoil certs and puppetdb puppetserver ones')
       apply_manifest(ssl_config, catch_errors: true)
       apply_manifest(ssl_config, catch_changes: true)
     end
@@ -62,6 +63,7 @@ describe 'basic tests:' do
       }
     EOS
     it 'make sure it starts with wrong password' do
+      pending('By default postgresql use snakeoil certs and puppetdb puppetserver ones')
       apply_manifest(change_password, catch_errors: true)
       apply_manifest(change_password, catch_changes: true)
     end
