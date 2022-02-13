@@ -3,7 +3,7 @@ require 'spec_helper_acceptance'
 describe 'basic tests:' do
   it 'make sure we have copied the module across' do
     # No point diagnosing any more if the module wasn't copied properly
-    run_shell('ls /etc/puppetlabs/code/modules/puppetdb') do |r|
+    run_shell('ls /etc/puppetlabs/code/environments/production/modules/puppetdb') do |r|
       r.exit_code.should be_zero
       r.stdout.should include('metadata.json')
       r.stderr.should == ''
