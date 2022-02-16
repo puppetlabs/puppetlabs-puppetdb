@@ -47,6 +47,7 @@ class puppetdb::server (
   $puppetdb_service_status                 = $puppetdb::params::puppetdb_service_status,
   $puppetdb_user                           = $puppetdb::params::puppetdb_user,
   $puppetdb_group                          = $puppetdb::params::puppetdb_group,
+  Boolean $enable_read_database            = $puppetdb::params::enable_read_database,
   $read_database                           = $puppetdb::params::read_database,
   $read_database_host                      = $puppetdb::params::read_database_host,
   $read_database_port                      = $puppetdb::params::read_database_port,
@@ -195,39 +196,41 @@ class puppetdb::server (
     notify                    => Service[$puppetdb_service],
   }
 
-  if $manage_database and $read_database_host == undef {
-    $real_database_host = $database_host
-    $real_database_port = $database_port
-    $real_database_name = $database_name
-  } else {
-    $real_database_host =  $read_database_host
-    $real_database_port =  $read_database_port
-    $real_database_name =  $read_database_name
-  }
+  if $enable_read_database {
+    if $manage_database and $read_database_host == undef {
+      $real_database_host = $database_host
+      $real_database_port = $database_port
+      $real_database_name = $database_name
+    } else {
+      $real_database_host =  $read_database_host
+      $real_database_port =  $read_database_port
+      $real_database_name =  $read_database_name
+    }
 
-  class { 'puppetdb::server::read_database':
-    read_database          => $read_database,
-    read_database_host     => $real_database_host,
-    read_database_port     => $real_database_port,
-    read_database_username => $read_database_username,
-    read_database_password => $read_database_password,
-    read_database_name     => $real_database_name,
-    manage_db_password     => $manage_read_db_password,
-    postgresql_ssl_on      => $postgresql_ssl_on,
-    ssl_key_pk8_path       => $ssl_key_pk8_path,
-    ssl_cert_path          => $ssl_cert_path,
-    ssl_ca_cert_path       => $ssl_ca_cert_path,
-    jdbc_ssl_properties    => $read_database_jdbc_ssl_properties,
-    database_validate      => $read_database_validate,
-    log_slow_statements    => $read_log_slow_statements,
-    conn_max_age           => $read_conn_max_age,
-    conn_keep_alive        => $read_conn_keep_alive,
-    conn_lifetime          => $read_conn_lifetime,
-    confdir                => $confdir,
-    puppetdb_user          => $puppetdb_user,
-    puppetdb_group         => $puppetdb_group,
-    notify                 => Service[$puppetdb_service],
-    database_max_pool_size => $read_database_max_pool_size,
+    class { 'puppetdb::server::read_database':
+      read_database          => $read_database,
+      read_database_host     => $real_database_host,
+      read_database_port     => $real_database_port,
+      read_database_username => $read_database_username,
+      read_database_password => $read_database_password,
+      read_database_name     => $real_database_name,
+      manage_db_password     => $manage_read_db_password,
+      postgresql_ssl_on      => $postgresql_ssl_on,
+      ssl_key_pk8_path       => $ssl_key_pk8_path,
+      ssl_cert_path          => $ssl_cert_path,
+      ssl_ca_cert_path       => $ssl_ca_cert_path,
+      jdbc_ssl_properties    => $read_database_jdbc_ssl_properties,
+      database_validate      => $read_database_validate,
+      log_slow_statements    => $read_log_slow_statements,
+      conn_max_age           => $read_conn_max_age,
+      conn_keep_alive        => $read_conn_keep_alive,
+      conn_lifetime          => $read_conn_lifetime,
+      confdir                => $confdir,
+      puppetdb_user          => $puppetdb_user,
+      puppetdb_group         => $puppetdb_group,
+      notify                 => Service[$puppetdb_service],
+      database_max_pool_size => $read_database_max_pool_size,
+    }
   }
 
   if $ssl_deploy_certs {

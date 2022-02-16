@@ -62,6 +62,7 @@ class puppetdb::params inherits puppetdb::globals {
   $migrate                = true
 
   # These settings are for the read database
+  $enable_read_database              = true
   $read_database                     = 'postgres'
   $read_database_host                = undef
   $read_database_port                = '5432'
