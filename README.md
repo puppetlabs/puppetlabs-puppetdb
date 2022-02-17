@@ -32,7 +32,6 @@ system.
 For more information about PuppetDB
 [please see the official PuppetDB documentation.](https://puppet.com/docs/puppetdb/latest/)
 
-
 Setup
 -----
 
@@ -260,7 +259,7 @@ change would be:
 
 The `globals` class above takes into account the following PuppetDB 3 and Puppet
 4 related changes:
-    * The `puppetdb::master:puppetdb_conf` class has added a `$legacy_terminus`
+    *The `puppetdb::master:puppetdb_conf` class has added a `$legacy_terminus`
       to support the PuppetDB 2.x terminus configuration.
     * The default `test_url` for the `PuppetDBConnValidator` has also been
       changed to `/pdb/meta/v1/version` but will default to `/v3/version` when
@@ -562,7 +561,7 @@ The name of the PuppetDB service. Defaults to `puppetdb`.
 
 #### `puppetdb_service_status`
 
-Sets whether the service should be `running ` or `stopped`. When set to `stopped` the
+Sets whether the service should be `running` or `stopped`. When set to `stopped` the
 service doesn't start on boot either. Valid values are `true`, `running`,
 `false`, and `stopped`.
 
@@ -600,22 +599,27 @@ init config file will reflect only what is passed via the `java_args` param.
 Jetty option to explicitly set `max-threads`. Defaults to `undef`, so the
 PuppetDB-Jetty default is used.
 
+#### `enable_read_database`
+
+Option to control if read-database settings will be added to the PuppetDB configuration.
+
 #### `read_database`
 
 Which database backend to use for the read database. Only supports
 `postgres` (default). This option is supported in PuppetDB >= 1.6.
 
 #### `read_database_host`
+
 *This parameter must be set to use another PuppetDB instance for queries.*
 
-The hostname or IP address of the read database server. If set to `undef`, and 
-`manage_database` is set to `true`, it will use the value of the `database_host` 
+The hostname or IP address of the read database server. If set to `undef`, and
+`manage_database` is set to `true`, it will use the value of the `database_host`
 parameter. This option is supported in PuppetDB >= 1.6.
 
 #### `read_database_port`
 
 The port that the read database server listens on. If `read_database_host`
-is set to `undef`, and `manage_database` is set to `true`, it will use the value of 
+is set to `undef`, and `manage_database` is set to `true`, it will use the value of
 the `database_port` parameter. This option is supported in PuppetDB >= 1.6.
 
 #### `read_database_username`
@@ -1032,11 +1036,13 @@ Currently, PuppetDB is compatible with:
     Puppet Version: 4.10+
 
 Platforms:
+
 * EL 5, 6, 7
 * Debian 6, 7
 * Ubuntu 10.04, 12.04, 14.04
 
 Community Maintained Platforms:
+
 * Archlinux
 * OpenBSD 5.6-current and newer
 * SLES 11 SP1
