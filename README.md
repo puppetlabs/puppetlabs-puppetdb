@@ -259,7 +259,8 @@ change would be:
 
 The `globals` class above takes into account the following PuppetDB 3 and Puppet
 4 related changes:
-    *The `puppetdb::master:puppetdb_conf` class has added a `$legacy_terminus`
+
+    * The `puppetdb::master:puppetdb_conf` class has added a `$legacy_terminus`
       to support the PuppetDB 2.x terminus configuration.
     * The default `test_url` for the `PuppetDBConnValidator` has also been
       changed to `/pdb/meta/v1/version` but will default to `/v3/version` when
