@@ -30,9 +30,15 @@ class puppetdb::master::puppetdb_conf (
       value   => $port,
     }
   } else {
+    if is_array($server) {
+      $servers_url_string = $server.map | $value | { "https://${value}:${port}"}.join(',') }
+    } else {
+      $servers_url_string = "https://${server}:${port}/"
+    }
+
     ini_setting { 'puppetdbserver_urls':
       setting => 'server_urls',
-      value   => "https://${server}:${port}/",
+      value   => $servers_url_string,
     }
   }
 

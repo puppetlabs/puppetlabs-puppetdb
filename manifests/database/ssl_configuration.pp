@@ -6,7 +6,7 @@ class puppetdb::database::ssl_configuration (
   $database_username           = $puppetdb::params::database_username,
   $read_database_username      = $puppetdb::params::read_database_username,
   $read_database_host          = $puppetdb::params::read_database_host,
-  $puppetdb_server             = $puppetdb::params::puppetdb_server,
+  Variant[String,Array[String, 1]] $puppetdb_server = $puppetdb::params::puppetdb_server,
   $postgresql_ssl_key_path     = $puppetdb::params::postgresql_ssl_key_path,
   $postgresql_ssl_cert_path    = $puppetdb::params::postgresql_ssl_cert_path,
   $postgresql_ssl_ca_cert_path = $puppetdb::params::postgresql_ssl_ca_cert_path,
@@ -54,19 +54,19 @@ class puppetdb::database::ssl_configuration (
     require => [File['postgres private key'], File['postgres public key']],
   }
 
-  puppetdb::database::postgresql_ssl_rules { "Configure postgresql ssl rules for ${database_username}":
-    database_name     => $database_name,
-    database_username => $database_username,
-    postgres_version  => $postgres_version,
-    puppetdb_server   => $puppetdb_server,
-  }
-
-  if $create_read_user_rule {
-    puppetdb::database::postgresql_ssl_rules { "Configure postgresql ssl rules for ${read_database_username}":
+  flatten($puppetdb_server).each | $server | {
+    puppetdb::database::postgresql_ssl_rules { "Configure postgresql ssl rules for ${database_username} from ${server}":
       database_name     => $database_name,
-      database_username => $read_database_username,
+      database_username => $database_username,
       postgres_version  => $postgres_version,
-      puppetdb_server   => $puppetdb_server,
+      puppetdb_server   => $server,
+    }
+    if $create_read_user_rule {
+      puppetdb::database::postgresql_ssl_rules { "Configure postgresql ssl rules for ${read_database_username} from ${server}":
+        database_name     => $database_name,
+        database_username => $read_database_username,
+        puppetdb_server   => $server,
+      }
     }
   }
 }

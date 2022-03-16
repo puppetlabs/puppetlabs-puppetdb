@@ -24,8 +24,9 @@ class Puppet::Util::PuppetdbValidator
     end
   end
 
-  def valid_connection_new_client?
-    test_uri = URI("#{use_ssl ? 'https' : 'http'}://#{puppetdb_server}:#{puppetdb_port}#{test_path}")
+
+  def valid_connection_new_client?(server)
+    test_uri = URI("#{use_ssl ? 'https' : 'http'}://#{server}:#{puppetdb_port}#{test_path}")
     begin
       conn = Puppet.runtime[:http]
       _response = conn.get(test_uri, headers: test_headers)
@@ -36,14 +37,15 @@ class Puppet::Util::PuppetdbValidator
     end
   end
 
-  def valid_connection_old_client?
-    conn = Puppet::Network::HttpPool.http_instance(puppetdb_server, puppetdb_port, use_ssl)
+  def valid_connection_old_client?(server)
+    conn = Puppet::Network::HttpPool.http_instance(server, puppetdb_port, use_ssl)
     response = conn.get(test_path, test_headers)
     unless response.is_a?(Net::HTTPSuccess)
       log_error(response.msg, response.code)
       return false
     end
     true
+
   end
 
   # Utility method; attempts to make an http/https connection to the puppetdb server.
@@ -56,11 +58,19 @@ class Puppet::Util::PuppetdbValidator
     # http(s), so here we're simpling hitting a somewhat arbitrary low-impact URL
     # on the puppetdb server.
 
-    if Gem::Version.new(Puppet.version) >= Gem::Version.new('7.0.0')
-      valid_connection_new_client?
+  if Gem::Version.new(Puppet.version) >= Gem::Version.new('7.0.0')
+    if puppetdb_server.kind_of?(Array)
+      puppetdb_server.each { | server | valid_connection_new_client?(server) }
     else
-      valid_connection_old_client?
+      valid_connection_new_client?(puppetdb_server)
     end
+  else
+    if puppetdb_server.kind_of?(Array)
+      puppetdb_server.each { | server | valid_connection_old_client?(server) }
+    else
+      valid_connection_old_client?(puppetdb_server)
+    end
+  end
   rescue StandardError => e
     log_error(e.message)
     false
