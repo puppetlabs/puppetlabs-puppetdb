@@ -1,6 +1,6 @@
 # Manage puppet configuration. See README.md for more details.
 class puppetdb::master::config (
-  $puppetdb_server             = $::fqdn,
+  $puppetdb_servers            = $::fqdn,
   $puppetdb_port               = defined(Class['puppetdb']) ? {
     true    => $::puppetdb::disable_ssl ? {
       true => 8080,
@@ -71,7 +71,7 @@ class puppetdb::master::config (
     # *must* not perform the other configuration steps, or else
 
     $conn_puppetdb_server = $manage_config ? {
-      true    => $puppetdb_server,
+      true    => $puppetdb_servers,
       default => undef,
     }
     $conn_puppetdb_port = $manage_config ? {
@@ -157,7 +157,7 @@ class puppetdb::master::config (
     }
 
     class { 'puppetdb::master::puppetdb_conf':
-      server             => $puppetdb_server,
+      servers            => $puppetdb_servers,
       port               => $puppetdb_port,
       soft_write_failure => $puppetdb_soft_write_failure,
       puppet_confdir     => $puppet_confdir,

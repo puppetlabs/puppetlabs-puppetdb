@@ -1,7 +1,7 @@
 # Manage the puppetdb.conf file on the puppeet master. See README.md for more
 # details.
 class puppetdb::master::puppetdb_conf (
-  $server             = 'localhost',
+  $servers            = 'localhost',
   $port               = '8081',
   $soft_write_failure = $puppetdb::disable_ssl ? {
     true => true,
@@ -30,9 +30,11 @@ class puppetdb::master::puppetdb_conf (
       value   => $port,
     }
   } else {
+    $servers_url_string = $servers.map | $server | { "https://${server}:${port}"}.join(',')
+
     ini_setting { 'puppetdbserver_urls':
       setting => 'server_urls',
-      value   => "https://${server}:${port}/",
+      value   => $servers_url_string,
     }
   }
 
