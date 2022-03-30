@@ -4,7 +4,7 @@
   "author": "puppetlabs",
   "summary": "Installs PostgreSQL and PuppetDB, sets up the connection to Puppet master.",
   "license": "Apache-2.0",
-  "source": "git://github.com/puppetlabs/puppetlabs-puppetdb.git",
+  "source": "https://github.com/puppetlabs/puppetlabs-puppetdb.git",
   "project_page": "http://github.com/puppetlabs/puppetlabs-puppetdb",
   "issues_url": "https://tickets.puppetlabs.com/browse/PDB",
   "dependencies": [
