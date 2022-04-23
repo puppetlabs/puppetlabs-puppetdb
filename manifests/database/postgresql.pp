@@ -59,12 +59,8 @@ class puppetdb::database::postgresql (
     # Only install pg_trgm extension, if database it is actually managed by the module
     if $manage_database {
 
-      # from postgresql version 10 onwards, this extension is no longer inside
-      # the contrib package, but is being bundled with the postgresql package itself
-      if versioncmp($postgres_version, '10') < 0 {
-        # get the pg contrib to use pg_trgm extension
-        include postgresql::server::contrib
-      }
+      # get the pg contrib to use pg_trgm extension
+      class { '::postgresql::server::contrib': }
 
       postgresql::server::extension { 'pg_trgm':
         database => $database_name,
