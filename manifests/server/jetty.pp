@@ -39,37 +39,35 @@ class puppetdb::server::jetty (
     default => 'present',
   }
 
-  ini_setting { 'puppetdb_host':
-    ensure  => $cleartext_setting_ensure,
-    setting => 'host',
-    value   => $listen_address,
-    *       => $ini_setting_defaults,
-  }
-
-  ini_setting { 'puppetdb_port':
-    ensure  => $cleartext_setting_ensure,
-    setting => 'port',
-    value   => $listen_port,
-    *       => $ini_setting_defaults,
-  }
-
   $ssl_setting_ensure = $disable_ssl ? {
     true    => 'absent',
     default => 'present',
   }
 
-  ini_setting { 'puppetdb_sslhost':
-    ensure  => $ssl_setting_ensure,
-    setting => 'ssl-host',
-    value   => $ssl_listen_address,
-    *       => $ini_setting_defaults,
-  }
-
-  ini_setting { 'puppetdb_sslport':
-    ensure  => $ssl_setting_ensure,
-    setting => 'ssl-port',
-    value   => $ssl_listen_port,
-    *       => $ini_setting_defaults,
+  ini_setting {
+    default:
+      *      => $ini_setting_defaults,
+    ;
+    'puppetdb_host':
+      ensure  => $cleartext_setting_ensure,
+      setting => 'host',
+      value   => $listen_address,
+    ;
+    'puppetdb_port':
+      ensure  => $cleartext_setting_ensure,
+      setting => 'port',
+      value   => $listen_port,
+    ;
+    'puppetdb_sslhost':
+      ensure  => $ssl_setting_ensure,
+      setting => 'ssl-host',
+      value   => $ssl_listen_address,
+    ;
+    'puppetdb_sslport':
+      ensure  => $ssl_setting_ensure,
+      setting => 'ssl-port',
+      value   => $ssl_listen_port,
+    ;
   }
 
   if $ssl_protocols {
@@ -94,23 +92,24 @@ class puppetdb::server::jetty (
 
   if $ssl_set_cert_paths {
     # assume paths have been validated in calling class
-    ini_setting { 'puppetdb_ssl_key':
-      ensure  => present,
-      setting => 'ssl-key',
-      value   => $ssl_key_path,
-      *       => $ini_setting_defaults,
-    }
-    ini_setting { 'puppetdb_ssl_cert':
-      ensure  => present,
-      setting => 'ssl-cert',
-      value   => $ssl_cert_path,
-      *       => $ini_setting_defaults,
-    }
-    ini_setting { 'puppetdb_ssl_ca_cert':
-      ensure  => present,
-      setting => 'ssl-ca-cert',
-      value   => $ssl_ca_cert_path,
-      *       => $ini_setting_defaults,
+    #
+    ini_setting {
+      default:
+        ensure => present,
+        *      => $ini_setting_defaults,
+      ;
+      'puppetdb_ssl_key':
+        setting => 'ssl-key',
+        value   => $ssl_key_path,
+      ;
+      'puppetdb_ssl_cert':
+        setting => 'ssl-cert',
+        value   => $ssl_cert_path,
+      ;
+      'puppetdb_ssl_ca_cert':
+        setting => 'ssl-ca-cert',
+        value   => $ssl_ca_cert_path,
+      ;
     }
   }
 

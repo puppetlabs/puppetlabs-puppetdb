@@ -25,8 +25,8 @@ class puppetdb::server::puppetdb (
   }
 
   $certificate_whitelist_setting_ensure = empty($certificate_whitelist) ? {
-    true    => 'absent',
-    default => 'present',
+    true    => absent,
+    default => present,
   }
 
   # accept connections only from puppet master
@@ -55,7 +55,7 @@ class puppetdb::server::puppetdb (
     }
   } else {
     ini_setting { 'puppetdb_disable_update_checking':
-      ensure  => 'absent',
+      ensure  => absent,
       setting => 'disable-update-checking',
       *       => $ini_setting_defaults,
     }

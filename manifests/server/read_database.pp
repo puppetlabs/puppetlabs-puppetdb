@@ -64,8 +64,6 @@ class puppetdb::server::read_database (
       require => $ini_setting_require,
     }
 
-    $ini_setting_present_defaults = $ini_setting_defaults + { ensure => present }
-
     if $read_database == 'postgres' {
       $classname = 'org.postgresql.Driver'
       $subprotocol = 'postgresql'
@@ -96,67 +94,61 @@ class puppetdb::server::read_database (
       }
 
       ini_setting { 'puppetdb_read_database_username':
+        ensure  => present,
         setting => 'username',
         value   => $read_database_username,
-        *       => $ini_setting_present_defaults,
+        *       => $ini_setting_defaults,
       }
 
       if $read_database_password != undef and $manage_db_password {
         ini_setting { 'puppetdb_read_database_password':
+          ensure  => present,
           setting => 'password',
           value   => $read_database_password,
-          *       => $ini_setting_present_defaults,
+          *       => $ini_setting_defaults,
         }
       }
     }
 
-    ini_setting { 'puppetdb_read_classname':
-      setting => 'classname',
-      value   => $classname,
-      *       => $ini_setting_present_defaults,
+    ini_setting {
+      default:
+        ensure => present,
+        *      => $ini_setting_defaults,
+      ;
+      'puppetdb_read_classname':
+        setting => 'classname',
+        value   => $classname,
+      ;
+      'puppetdb_read_subprotocol':
+        setting => 'subprotocol',
+        value   => $subprotocol,
+      ;
+      'puppetdb_read_pgs':
+        setting => 'syntax_pgs',
+        value   => true,
+      ;
+      'puppetdb_read_subname':
+        setting => 'subname',
+        value   => $subname,
+      ;
+      'puppetdb_read_log_slow_statements':
+        setting => 'log-slow-statements',
+        value   => $log_slow_statements,
+      ;
+      'puppetdb_read_conn_max_age':
+        setting => 'conn-max-age',
+        value   => $conn_max_age,
+      ;
+      'puppetdb_read_conn_keep_alive':
+        setting => 'conn-keep-alive',
+        value   => $conn_keep_alive,
+      ;
+      'puppetdb_read_conn_lifetime':
+        setting => 'conn-lifetime',
+        value   => $conn_lifetime,
+      ;
     }
 
-    ini_setting { 'puppetdb_read_subprotocol':
-      setting => 'subprotocol',
-      value   => $subprotocol,
-      *       => $ini_setting_present_defaults,
-    }
-
-    ini_setting { 'puppetdb_read_pgs':
-      setting => 'syntax_pgs',
-      value   => true,
-      *       => $ini_setting_present_defaults,
-    }
-
-    ini_setting { 'puppetdb_read_subname':
-      setting => 'subname',
-      value   => $subname,
-      *       => $ini_setting_present_defaults,
-    }
-
-    ini_setting { 'puppetdb_read_log_slow_statements':
-      setting => 'log-slow-statements',
-      value   => $log_slow_statements,
-      *       => $ini_setting_present_defaults,
-    }
-
-    ini_setting { 'puppetdb_read_conn_max_age':
-      setting => 'conn-max-age',
-      value   => $conn_max_age,
-      *       => $ini_setting_present_defaults,
-    }
-
-    ini_setting { 'puppetdb_read_conn_keep_alive':
-      setting => 'conn-keep-alive',
-      value   => $conn_keep_alive,
-      *       => $ini_setting_present_defaults,
-    }
-
-    ini_setting { 'puppetdb_read_conn_lifetime':
-      setting => 'conn-lifetime',
-      value   => $conn_lifetime,
-      *       => $ini_setting_present_defaults,
-    }
 
     if $puppetdb::params::database_max_pool_size_setting_name != undef {
       if $database_max_pool_size == 'absent' {
@@ -167,9 +159,10 @@ class puppetdb::server::read_database (
         }
       } elsif $database_max_pool_size != undef {
         ini_setting { 'puppetdb_read_database_max_pool_size':
+          ensure  => present,
           setting => $puppetdb::params::database_max_pool_size_setting_name,
           value   => $database_max_pool_size,
-          *       => $ini_setting_present_defaults,
+          *       => $ini_setting_defaults,
         }
       }
     } else {

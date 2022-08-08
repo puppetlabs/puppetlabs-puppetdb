@@ -71,8 +71,6 @@ class puppetdb::server::database (
     require => $ini_setting_require
   }
 
-  $ini_setting_present_defaults = $ini_setting_defaults + { ensure => present }
-
   if $database == 'embedded' {
 
     $classname = 'org.hsqldb.jdbcDriver'
@@ -110,103 +108,85 @@ class puppetdb::server::database (
 
     ##Only setup for postgres
     ini_setting { 'puppetdb_psdatabase_username':
+      ensure  => present,
       setting => 'username',
       value   => $database_username,
-      *       => $ini_setting_present_defaults,
+      *       => $ini_setting_defaults,
     }
 
     if $database_password != undef and $manage_db_password {
       ini_setting { 'puppetdb_psdatabase_password':
+        ensure  => present,
         setting => 'password',
         value   => $database_password,
-        *       => $ini_setting_present_defaults,
+        *       => $ini_setting_defaults,
       }
     }
   }
 
-  ini_setting { 'puppetdb_classname':
-    setting => 'classname',
-    value   => $classname,
-    *       => $ini_setting_present_defaults,
+  ini_setting{
+    default:
+      ensure => present,
+      *      => $ini_setting_defaults,
+    ;
+    'puppetdb_classname':
+      setting => 'classname',
+      value   => $classname,
+    ;
+    'puppetdb_subprotocol':
+      setting => 'subprotocol',
+      value   => $subprotocol,
+    ;
+    'puppetdb_pgs':
+      setting => 'syntax_pgs',
+      value   => true,
+    ;
+    'puppetdb_subname':
+      setting => 'subname',
+      value   => $subname,
+    ;
+    'puppetdb_gc_interval':
+      setting => 'gc-interval',
+      value   => $gc_interval,
+    ;
+    'puppetdb_node_purge_gc_batch_limit':
+      setting => 'node-purge-gc-batch-limit',
+      value   => $node_purge_gc_batch_limit,
+    ;
+    'puppetdb_node_ttl':
+      setting => 'node-ttl',
+      value   => $node_ttl,
+    ;
+    'puppetdb_node_purge_ttl':
+      setting => 'node-purge-ttl',
+      value   => $node_purge_ttl,
+    ;
+    'puppetdb_report_ttl':
+      setting => 'report-ttl',
+      value   => $report_ttl,
+    ;
+    'puppetdb_log_slow_statements':
+      setting => 'log-slow-statements',
+      value   => $log_slow_statements,
+    ;
+    'puppetdb_conn_max_age':
+      setting => 'conn-max-age',
+      value   => $conn_max_age,
+    ;
+    'puppetdb_conn_keep_alive':
+      setting => 'conn-keep-alive',
+      value   => $conn_keep_alive,
+    ;
+    'puppetdb_conn_lifetime':
+      setting => 'conn-lifetime',
+      value   => $conn_lifetime,
+    ;
+    'puppetdb_migrate':
+      setting => 'migrate',
+      value   => $migrate,
+    ;
   }
 
-  ini_setting { 'puppetdb_subprotocol':
-    setting => 'subprotocol',
-    value   => $subprotocol,
-    *       => $ini_setting_present_defaults,
-  }
-
-  ini_setting { 'puppetdb_pgs':
-    setting => 'syntax_pgs',
-    value   => true,
-    *       => $ini_setting_present_defaults,
-  }
-
-  ini_setting { 'puppetdb_subname':
-    setting => 'subname',
-    value   => $subname,
-    *       => $ini_setting_present_defaults,
-  }
-
-  ini_setting { 'puppetdb_gc_interval':
-    setting => 'gc-interval',
-    value   => $gc_interval,
-    *       => $ini_setting_present_defaults,
-  }
-
-  ini_setting { 'puppetdb_node_purge_gc_batch_limit':
-    setting => 'node-purge-gc-batch-limit',
-    value   => $node_purge_gc_batch_limit,
-    *       => $ini_setting_present_defaults,
-  }
-
-  ini_setting { 'puppetdb_node_ttl':
-    setting => 'node-ttl',
-    value   => $node_ttl,
-    *       => $ini_setting_present_defaults,
-  }
-
-  ini_setting { 'puppetdb_node_purge_ttl':
-    setting => 'node-purge-ttl',
-    value   => $node_purge_ttl,
-    *       => $ini_setting_present_defaults,
-  }
-
-  ini_setting { 'puppetdb_report_ttl':
-    setting => 'report-ttl',
-    value   => $report_ttl,
-    *       => $ini_setting_present_defaults,
-  }
-
-  ini_setting { 'puppetdb_log_slow_statements':
-    setting => 'log-slow-statements',
-    value   => $log_slow_statements,
-    *       => $ini_setting_present_defaults,
-  }
-
-  ini_setting { 'puppetdb_conn_max_age':
-    setting => 'conn-max-age',
-    value   => $conn_max_age,
-    *       => $ini_setting_present_defaults,
-  }
-
-  ini_setting { 'puppetdb_conn_keep_alive':
-    setting => 'conn-keep-alive',
-    value   => $conn_keep_alive,
-    *       => $ini_setting_present_defaults,
-  }
-
-  ini_setting { 'puppetdb_conn_lifetime':
-    setting => 'conn-lifetime',
-    value   => $conn_lifetime,
-    *       => $ini_setting_present_defaults,
-  }
-
-  ini_setting { 'puppetdb_migrate':
-    setting => 'migrate',
-    value   => $migrate,
-    *       => $ini_setting_present_defaults,
-  }
 
   if $puppetdb::params::database_max_pool_size_setting_name != undef {
     if $database_max_pool_size == 'absent' {
@@ -217,9 +197,10 @@ class puppetdb::server::database (
       }
     } elsif $database_max_pool_size != undef {
       ini_setting { 'puppetdb_database_max_pool_size':
+        ensure  => present,
         setting => $puppetdb::params::database_max_pool_size_setting_name,
         value   => $database_max_pool_size,
-        *       => $ini_setting_present_defaults,
+        *       => $ini_setting_defaults,
       }
     }
   }
@@ -227,9 +208,10 @@ class puppetdb::server::database (
   if ($facts_blacklist) and length($facts_blacklist) != 0 {
     $joined_facts_blacklist = join($facts_blacklist, ', ')
     ini_setting { 'puppetdb_facts_blacklist':
+      ensure  => present,
       setting => 'facts-blacklist',
       value   => $joined_facts_blacklist,
-      *       => $ini_setting_present_defaults,
+      *       => $ini_setting_defaults,
     }
   } else {
     ini_setting { 'puppetdb_facts_blacklist':
