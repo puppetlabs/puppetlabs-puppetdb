@@ -67,10 +67,11 @@ class puppetdb::server::database (
   # Set the defaults
   $ini_setting_defaults = {
     path    => $database_ini,
-    ensure  => present,
     section => 'database',
     require => $ini_setting_require
   }
+
+  $ini_setting_present_defaults = $ini_setting_defaults + { ensure => present }
 
   if $database == 'embedded' {
 
@@ -109,116 +110,116 @@ class puppetdb::server::database (
 
     ##Only setup for postgres
     ini_setting { 'puppetdb_psdatabase_username':
-      *       => $ini_setting_defaults,
       setting => 'username',
       value   => $database_username,
+      *       => $ini_setting_present_defaults,
     }
 
     if $database_password != undef and $manage_db_password {
       ini_setting { 'puppetdb_psdatabase_password':
-      *       => $ini_setting_defaults,
         setting => 'password',
         value   => $database_password,
+        *       => $ini_setting_present_defaults,
       }
     }
   }
 
   ini_setting { 'puppetdb_classname':
-      *       => $ini_setting_defaults,
     setting => 'classname',
     value   => $classname,
+    *       => $ini_setting_present_defaults,
   }
 
   ini_setting { 'puppetdb_subprotocol':
-      *       => $ini_setting_defaults,
     setting => 'subprotocol',
     value   => $subprotocol,
+    *       => $ini_setting_present_defaults,
   }
 
   ini_setting { 'puppetdb_pgs':
-      *       => $ini_setting_defaults,
     setting => 'syntax_pgs',
     value   => true,
+    *       => $ini_setting_present_defaults,
   }
 
   ini_setting { 'puppetdb_subname':
-      *       => $ini_setting_defaults,
     setting => 'subname',
     value   => $subname,
+    *       => $ini_setting_present_defaults,
   }
 
   ini_setting { 'puppetdb_gc_interval':
-      *       => $ini_setting_defaults,
     setting => 'gc-interval',
     value   => $gc_interval,
+    *       => $ini_setting_present_defaults,
   }
 
   ini_setting { 'puppetdb_node_purge_gc_batch_limit':
-      *       => $ini_setting_defaults,
     setting => 'node-purge-gc-batch-limit',
     value   => $node_purge_gc_batch_limit,
+    *       => $ini_setting_present_defaults,
   }
 
   ini_setting { 'puppetdb_node_ttl':
-      *       => $ini_setting_defaults,
     setting => 'node-ttl',
     value   => $node_ttl,
+    *       => $ini_setting_present_defaults,
   }
 
   ini_setting { 'puppetdb_node_purge_ttl':
-      *       => $ini_setting_defaults,
     setting => 'node-purge-ttl',
     value   => $node_purge_ttl,
+    *       => $ini_setting_present_defaults,
   }
 
   ini_setting { 'puppetdb_report_ttl':
-      *       => $ini_setting_defaults,
     setting => 'report-ttl',
     value   => $report_ttl,
+    *       => $ini_setting_present_defaults,
   }
 
   ini_setting { 'puppetdb_log_slow_statements':
-      *       => $ini_setting_defaults,
     setting => 'log-slow-statements',
     value   => $log_slow_statements,
+    *       => $ini_setting_present_defaults,
   }
 
   ini_setting { 'puppetdb_conn_max_age':
-      *       => $ini_setting_defaults,
     setting => 'conn-max-age',
     value   => $conn_max_age,
+    *       => $ini_setting_present_defaults,
   }
 
   ini_setting { 'puppetdb_conn_keep_alive':
-      *       => $ini_setting_defaults,
     setting => 'conn-keep-alive',
     value   => $conn_keep_alive,
+    *       => $ini_setting_present_defaults,
   }
 
   ini_setting { 'puppetdb_conn_lifetime':
-      *       => $ini_setting_defaults,
     setting => 'conn-lifetime',
     value   => $conn_lifetime,
+    *       => $ini_setting_present_defaults,
   }
 
   ini_setting { 'puppetdb_migrate':
-      *       => $ini_setting_defaults,
     setting => 'migrate',
     value   => $migrate,
+    *       => $ini_setting_present_defaults,
   }
 
   if $puppetdb::params::database_max_pool_size_setting_name != undef {
     if $database_max_pool_size == 'absent' {
       ini_setting { 'puppetdb_database_max_pool_size':
-      *       => $ini_setting_defaults,
         ensure  => absent,
         setting => $puppetdb::params::database_max_pool_size_setting_name,
+        *       => $ini_setting_defaults,
       }
     } elsif $database_max_pool_size != undef {
       ini_setting { 'puppetdb_database_max_pool_size':
-      *       => $ini_setting_defaults,
         setting => $puppetdb::params::database_max_pool_size_setting_name,
         value   => $database_max_pool_size,
+        *       => $ini_setting_present_defaults,
       }
     }
   }
@@ -226,15 +227,15 @@ class puppetdb::server::database (
   if ($facts_blacklist) and length($facts_blacklist) != 0 {
     $joined_facts_blacklist = join($facts_blacklist, ', ')
     ini_setting { 'puppetdb_facts_blacklist':
-      *       => $ini_setting_defaults,
       setting => 'facts-blacklist',
       value   => $joined_facts_blacklist,
+      *       => $ini_setting_present_defaults,
     }
   } else {
     ini_setting { 'puppetdb_facts_blacklist':
-      *       => $ini_setting_defaults,
       ensure  => absent,
       setting => 'facts-blacklist',
+      *       => $ini_setting_defaults,
     }
   }
 }

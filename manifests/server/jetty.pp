@@ -30,7 +30,6 @@ class puppetdb::server::jetty (
   # Set the defaults
   $ini_setting_defaults = {
     path    => $jetty_ini,
-    ensure  => present,
     section => 'jetty',
     require => File[$jetty_ini],
   }
@@ -41,17 +40,17 @@ class puppetdb::server::jetty (
   }
 
   ini_setting { 'puppetdb_host':
-      *       => $ini_setting_defaults,
     ensure  => $cleartext_setting_ensure,
     setting => 'host',
     value   => $listen_address,
+    *       => $ini_setting_defaults,
   }
 
   ini_setting { 'puppetdb_port':
-      *       => $ini_setting_defaults,
     ensure  => $cleartext_setting_ensure,
     setting => 'port',
     value   => $listen_port,
+    *       => $ini_setting_defaults,
   }
 
   $ssl_setting_ensure = $disable_ssl ? {
@@ -60,72 +59,73 @@ class puppetdb::server::jetty (
   }
 
   ini_setting { 'puppetdb_sslhost':
-      *       => $ini_setting_defaults,
     ensure  => $ssl_setting_ensure,
     setting => 'ssl-host',
     value   => $ssl_listen_address,
+    *       => $ini_setting_defaults,
   }
 
   ini_setting { 'puppetdb_sslport':
-      *       => $ini_setting_defaults,
     ensure  => $ssl_setting_ensure,
     setting => 'ssl-port',
     value   => $ssl_listen_port,
+    *       => $ini_setting_defaults,
   }
 
   if $ssl_protocols {
 
     ini_setting { 'puppetdb_sslprotocols':
-      *       => $ini_setting_defaults,
       ensure  => $ssl_setting_ensure,
       setting => 'ssl-protocols',
       value   => $ssl_protocols,
+      *       => $ini_setting_defaults,
     }
   }
 
   if $cipher_suites {
 
     ini_setting { 'puppetdb_cipher-suites':
-      *       => $ini_setting_defaults,
       ensure  => $ssl_setting_ensure,
       setting => 'cipher-suites',
       value   => $cipher_suites,
+      *       => $ini_setting_defaults,
     }
   }
 
   if $ssl_set_cert_paths {
     # assume paths have been validated in calling class
     ini_setting { 'puppetdb_ssl_key':
-      *       => $ini_setting_defaults,
       ensure  => present,
       setting => 'ssl-key',
       value   => $ssl_key_path,
+      *       => $ini_setting_defaults,
     }
     ini_setting { 'puppetdb_ssl_cert':
-      *       => $ini_setting_defaults,
       ensure  => present,
       setting => 'ssl-cert',
       value   => $ssl_cert_path,
+      *       => $ini_setting_defaults,
     }
     ini_setting { 'puppetdb_ssl_ca_cert':
-      *       => $ini_setting_defaults,
       ensure  => present,
       setting => 'ssl-ca-cert',
       value   => $ssl_ca_cert_path,
+      *       => $ini_setting_defaults,
     }
   }
 
   if ($max_threads) {
     ini_setting { 'puppetdb_max_threads':
-      *       => $ini_setting_defaults,
+      ensure  => present,
       setting => 'max-threads',
       value   => $max_threads,
+      *       => $ini_setting_defaults,
     }
   } else {
     ini_setting { 'puppetdb_max_threads':
-      *       => $ini_setting_defaults,
       ensure  => absent,
       setting => 'max-threads',
+      *       => $ini_setting_defaults,
     }
   }
 }

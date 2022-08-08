@@ -60,10 +60,11 @@ class puppetdb::server::read_database (
     # Set the defaults
     $ini_setting_defaults = {
       path    => $read_database_ini,
-      ensure  => present,
       section => 'read-database',
       require => $ini_setting_require,
     }
+
+    $ini_setting_present_defaults = $ini_setting_defaults + { ensure => present }
 
     if $read_database == 'postgres' {
       $classname = 'org.postgresql.Driver'
@@ -95,80 +96,80 @@ class puppetdb::server::read_database (
       }
 
       ini_setting { 'puppetdb_read_database_username':
-      *       => $ini_setting_defaults,
         setting => 'username',
         value   => $read_database_username,
+        *       => $ini_setting_present_defaults,
       }
 
       if $read_database_password != undef and $manage_db_password {
         ini_setting { 'puppetdb_read_database_password':
-      *       => $ini_setting_defaults,
           setting => 'password',
           value   => $read_database_password,
+          *       => $ini_setting_present_defaults,
         }
       }
     }
 
     ini_setting { 'puppetdb_read_classname':
-      *       => $ini_setting_defaults,
       setting => 'classname',
       value   => $classname,
+      *       => $ini_setting_present_defaults,
     }
 
     ini_setting { 'puppetdb_read_subprotocol':
-      *       => $ini_setting_defaults,
       setting => 'subprotocol',
       value   => $subprotocol,
+      *       => $ini_setting_present_defaults,
     }
 
     ini_setting { 'puppetdb_read_pgs':
-      *       => $ini_setting_defaults,
       setting => 'syntax_pgs',
       value   => true,
+      *       => $ini_setting_present_defaults,
     }
 
     ini_setting { 'puppetdb_read_subname':
-      *       => $ini_setting_defaults,
       setting => 'subname',
       value   => $subname,
+      *       => $ini_setting_present_defaults,
     }
 
     ini_setting { 'puppetdb_read_log_slow_statements':
-      *       => $ini_setting_defaults,
       setting => 'log-slow-statements',
       value   => $log_slow_statements,
+      *       => $ini_setting_present_defaults,
     }
 
     ini_setting { 'puppetdb_read_conn_max_age':
-      *       => $ini_setting_defaults,
       setting => 'conn-max-age',
       value   => $conn_max_age,
+      *       => $ini_setting_present_defaults,
     }
 
     ini_setting { 'puppetdb_read_conn_keep_alive':
-      *       => $ini_setting_defaults,
       setting => 'conn-keep-alive',
       value   => $conn_keep_alive,
+      *       => $ini_setting_present_defaults,
     }
 
     ini_setting { 'puppetdb_read_conn_lifetime':
-      *       => $ini_setting_defaults,
       setting => 'conn-lifetime',
       value   => $conn_lifetime,
+      *       => $ini_setting_present_defaults,
     }
 
     if $puppetdb::params::database_max_pool_size_setting_name != undef {
       if $database_max_pool_size == 'absent' {
         ini_setting { 'puppetdb_read_database_max_pool_size':
-      *       => $ini_setting_defaults,
           ensure  => absent,
           setting => $puppetdb::params::database_max_pool_size_setting_name,
+          *       => $ini_setting_defaults,
         }
       } elsif $database_max_pool_size != undef {
         ini_setting { 'puppetdb_read_database_max_pool_size':
-      *       => $ini_setting_defaults,
           setting => $puppetdb::params::database_max_pool_size_setting_name,
           value   => $database_max_pool_size,
+          *       => $ini_setting_present_defaults,
         }
       }
     } else {

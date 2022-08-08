@@ -20,7 +20,6 @@ class puppetdb::server::puppetdb (
   # Set the defaults
   $ini_setting_defaults = {
     path    => $puppetdb_ini,
-    ensure  => present,
     section => 'puppetdb',
     require => File[$puppetdb_ini],
   }
@@ -32,11 +31,11 @@ class puppetdb::server::puppetdb (
 
   # accept connections only from puppet master
   ini_setting {'puppetdb-connections-from-master-only':
-      *       => $ini_setting_defaults,
     ensure  => $certificate_whitelist_setting_ensure,
     section => 'puppetdb',
     setting => 'certificate-whitelist',
     value   => $certificate_whitelist_file,
+    *       => $ini_setting_defaults,
   }
 
   file { $certificate_whitelist_file:
@@ -49,15 +48,16 @@ class puppetdb::server::puppetdb (
 
   if $disable_update_checking {
     ini_setting { 'puppetdb_disable_update_checking':
-      *       => $ini_setting_defaults,
+      ensure  => present,
       setting => 'disable-update-checking',
       value   => $disable_update_checking,
+      *       => $ini_setting_defaults,
     }
   } else {
     ini_setting { 'puppetdb_disable_update_checking':
-      *       => $ini_setting_defaults,
       ensure  => 'absent',
       setting => 'disable-update-checking',
+      *       => $ini_setting_defaults,
     }
   }
 }

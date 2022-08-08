@@ -25,9 +25,9 @@ class puppetdb::server::global (
 
   if $vardir {
     ini_setting { 'puppetdb_global_vardir':
-      *       => $ini_setting_defaults,
       setting => 'vardir',
       value   => $vardir,
+      *       => $ini_setting_defaults,
     }
   }
 }
