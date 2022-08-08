@@ -16,7 +16,7 @@ class puppetdb::server::global (
   }
 
   # Set the defaults
-  Ini_setting {
+  $ini_setting_defaults = {
     path    => $config_ini,
     ensure  => 'present',
     section => 'global',
@@ -25,6 +25,7 @@ class puppetdb::server::global (
 
   if $vardir {
     ini_setting { 'puppetdb_global_vardir':
+      *       => $ini_setting_defaults,
       setting => 'vardir',
       value   => $vardir,
     }

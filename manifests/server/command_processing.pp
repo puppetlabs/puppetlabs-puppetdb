@@ -10,7 +10,7 @@ class puppetdb::server::command_processing (
   $config_ini = "${confdir}/config.ini"
 
   # Set the defaults
-  Ini_setting {
+  $ini_setting_defaults = {
     path    => $config_ini,
     ensure  => 'present',
     section => 'command-processing',
@@ -19,11 +19,13 @@ class puppetdb::server::command_processing (
 
   if $command_threads {
     ini_setting { 'puppetdb_command_processing_threads':
+      *       => $ini_setting_defaults,
       setting => 'threads',
       value   => $command_threads,
     }
   } else {
     ini_setting { 'puppetdb_command_processing_threads':
+      *       => $ini_setting_defaults,
       ensure  => 'absent',
       setting => 'threads',
     }
@@ -31,11 +33,13 @@ class puppetdb::server::command_processing (
 
   if $concurrent_writes {
     ini_setting { 'puppetdb_command_processing_concurrent_writes':
+      *       => $ini_setting_defaults,
       setting => 'concurrent-writes',
       value   => $concurrent_writes,
     }
   } else {
     ini_setting { 'puppetdb_command_processing_concurrent_writes':
+      *       => $ini_setting_defaults,
       ensure  => 'absent',
       setting => 'concurrent-writes',
     }
@@ -43,11 +47,13 @@ class puppetdb::server::command_processing (
 
   if $store_usage {
     ini_setting { 'puppetdb_command_processing_store_usage':
+      *       => $ini_setting_defaults,
       setting => 'store-usage',
       value   => $store_usage,
     }
   } else {
     ini_setting { 'puppetdb_command_processing_store_usage':
+      *       => $ini_setting_defaults,
       ensure  => 'absent',
       setting => 'store-usage',
     }
@@ -55,11 +61,13 @@ class puppetdb::server::command_processing (
 
   if $temp_usage {
     ini_setting { 'puppetdb_command_processing_temp_usage':
+      *       => $ini_setting_defaults,
       setting => 'temp-usage',
       value   => $temp_usage,
     }
   } else {
     ini_setting { 'puppetdb_command_processing_temp_usage':
+      *       => $ini_setting_defaults,
       ensure  => 'absent',
       setting => 'temp-usage',
     }

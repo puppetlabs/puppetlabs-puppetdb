@@ -17,18 +17,20 @@ class puppetdb::master::storeconfigs (
     default => absent,
   }
 
-  Ini_setting {
+  $ini_setting_defaults = {
     section => $puppet_conf_section,
     path    => $puppet_conf,
     ensure  => $storeconfigs_ensure,
   }
 
   ini_setting { "puppet.conf/${puppet_conf_section}/storeconfigs":
+      *       => $ini_setting_defaults,
     setting => 'storeconfigs',
     value   => true,
   }
 
   ini_setting { "puppet.conf/${puppet_conf_section}/storeconfigs_backend":
+      *       => $ini_setting_defaults,
     setting => 'storeconfigs_backend',
     value   => 'puppetdb',
   }
