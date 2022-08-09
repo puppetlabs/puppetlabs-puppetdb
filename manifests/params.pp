@@ -53,9 +53,7 @@ class puppetdb::params inherits puppetdb::globals {
   $gc_interval               = '60'
   $node_purge_gc_batch_limit = '25'
 
-  $log_slow_statements    = '10'
   $conn_max_age           = '60'
-  $conn_keep_alive        = '45'
   $conn_lifetime          = '0'
 
   $max_threads            = undef
@@ -70,9 +68,7 @@ class puppetdb::params inherits puppetdb::globals {
   $manage_read_db_password           = true
   $read_database_jdbc_ssl_properties = ''
   $read_database_validate            = true
-  $read_log_slow_statements          = '10'
   $read_conn_max_age                 = '60'
-  $read_conn_keep_alive              = '45'
   $read_conn_lifetime                = '0'
   $read_database_max_pool_size       = undef
 
