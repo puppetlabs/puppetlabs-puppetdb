@@ -74,6 +74,7 @@ class puppetdb::database::postgresql (
     postgresql::server::db { $database_name:
       user     => $database_username,
       password => $database_password,
+      encoding => 'UTF8',
       grant    => 'all',
     }
 
