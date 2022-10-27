@@ -60,7 +60,7 @@ class puppetdb::database::postgresql (
     if $manage_database {
 
       # get the pg contrib to use pg_trgm extension
-      if (versioncmp($postgres_version, '10') < 0) {
+      if (versioncmp($postgresql::globals::globals_version, '10') < 0) {
         include postgresql::server::contrib
       }
 
