@@ -26,6 +26,11 @@ class puppetdb::params inherits puppetdb::globals {
   }
 
   if $puppetdb_version in ['latest','present'] or versioncmp($puppetdb_version, '7.0.0') >= 0 {
+    # if fact('os.family') == 'RedHat' and fact('os.release.major') == '8' {
+    #   $postgres_version = '12'
+    # } else {
+    #   $postgres_version = '11'
+    # }
     $postgres_version          = '11'
   } else {
     $postgres_version          = '9.6'
