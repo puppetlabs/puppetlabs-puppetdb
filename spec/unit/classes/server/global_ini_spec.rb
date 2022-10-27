@@ -10,6 +10,7 @@ describe 'puppetdb::server::global', type: :class do
         networking: {
           fqdn: 'foo.com',
         },
+        service_provider: 'systemd',
       }
     end
 

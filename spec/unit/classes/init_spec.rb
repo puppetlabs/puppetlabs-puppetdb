@@ -6,7 +6,7 @@ describe 'puppetdb', type: :class do
   on_supported_os.each do |os, facts|
     context "on #{os}" do
       let(:facts) do
-        facts.merge(selinux: false)
+        facts.merge(selinux: false, service_provider: 'systemd')
       end
 
       describe 'when using default values for puppetdb class' do

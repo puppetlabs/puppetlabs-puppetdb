@@ -8,6 +8,7 @@ describe 'puppetdb::server::command_processing', type: :class do
           family: 'OpenBSD',
         },
         puppetversion: Puppet.version,
+        service_provider: 'systemd',
       }
     end
 

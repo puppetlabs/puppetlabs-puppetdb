@@ -19,6 +19,7 @@ describe 'puppetdb::database::ssl_configuration', type: :class do
         networking: {
           fqdn: 'cheery-rime@puppet',
         },
+        service_provider: 'systemd',
       }
     end
 

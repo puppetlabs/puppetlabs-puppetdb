@@ -6,6 +6,7 @@ describe 'puppetdb::master::config', type: :class do
       let(:facts) do
         facts.merge(puppetversion: Puppet.version,
                     networking: { fqdn: 'puppetdb.example.com' },
+                    service_provider: 'systemd',
                     selinux: true)
       end
 
@@ -114,6 +115,7 @@ describe 'puppetdb::master::config', type: :class do
           release: { 'full' => '7.0', 'major' => '7' },
           selinux: { 'enabled' => true },
         },
+        service_provider: 'systemd',
       }
     end
 

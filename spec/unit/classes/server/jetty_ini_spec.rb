@@ -10,6 +10,7 @@ describe 'puppetdb::server::jetty', type: :class do
         networking: {
           fqdn: 'test.domain.local',
         },
+        service_provider: 'systemd',
       }
     end
 
