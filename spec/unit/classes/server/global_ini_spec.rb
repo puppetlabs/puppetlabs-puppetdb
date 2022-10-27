@@ -4,8 +4,12 @@ describe 'puppetdb::server::global', type: :class do
   context 'on a supported platform' do
     let(:facts) do
       {
-        osfamily: 'RedHat',
-        fqdn: 'foo.com',
+        os: {
+          family: 'RedHat',
+        },
+        networking: {
+          fqdn: 'foo.com',
+        },
       }
     end
 

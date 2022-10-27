@@ -16,7 +16,9 @@ describe 'puppetdb::database::ssl_configuration', type: :class do
           release: { 'full' => '7.0', 'major' => '7' },
           selinux: { 'enabled' => true },
         },
-        fqdn: 'cheery-rime@puppet',
+        networking: {
+          fqdn: 'cheery-rime@puppet',
+        },
       }
     end
 
@@ -125,7 +127,7 @@ describe 'puppetdb::database::ssl_configuration', type: :class do
     it 'has ident rule' do
       is_expected.to contain_postgresql__server__pg_ident_rule("Map the SSL certificate of the server as a #{params[:database_username]} user")
         .with_map_name(identity_map)
-        .with_system_username(facts[:fqdn])
+        .with_system_username(facts[:networking][:fqdn])
         .with_database_username(params[:database_name])
     end
 
@@ -184,7 +186,7 @@ describe 'puppetdb::database::ssl_configuration', type: :class do
       it 'has read ident rule' do
         is_expected.to contain_postgresql__server__pg_ident_rule("Map the SSL certificate of the server as a #{params[:read_database_username]} user")
           .with_map_name(read_identity_map)
-          .with_system_username(facts[:fqdn])
+          .with_system_username(facts[:networking][:fqdn])
           .with_database_username(params[:read_database_username])
       end
     end

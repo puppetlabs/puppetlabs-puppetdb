@@ -5,7 +5,7 @@ describe 'puppetdb::master::config', type: :class do
     context "on #{os}" do
       let(:facts) do
         facts.merge(puppetversion: Puppet.version,
-                    fqdn: 'puppetdb.example.com',
+                    networking: { fqdn: 'puppetdb.example.com' },
                     selinux: true)
       end
 
