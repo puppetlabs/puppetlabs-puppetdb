@@ -99,5 +99,12 @@ class puppetdb::database::postgresql (
       password_hash          => postgresql::postgresql_password($read_database_username, $read_database_password),
       database_owner         => $database_username
     }
+
+    -> postgresql_psql { "grant ${read_database_username} role to ${database_username}":
+      db      => $database_name,
+      command => "GRANT \"${read_database_username}\" TO \"${database_username}\"",
+      unless  => "SELECT oid, rolname FROM pg_roles WHERE
+                   pg_has_role( '${database_username}', oid, 'member') and rolname = '${read_database_username}'";
+    }
   }
 }
