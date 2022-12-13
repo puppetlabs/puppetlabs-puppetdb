@@ -2,6 +2,12 @@
 
 Release notes for the puppetlabs-puppetdb module.
 
+#### 7.12.0 - 2022/12/13
+* Grant read role to write user to fix database user permissions issue
+  [PDB-5559](https://tickets.puppetlabs.com/browse/PDB-5559)
+
+#### 7.11.0 - Not Released
+
 #### 7.10.0 - 2021/12/16
 * Add support for Debian 11
 * Allow puppetlabs/stdlib 8.0.0
