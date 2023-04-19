@@ -2,6 +2,10 @@
 
 Release notes for the puppetlabs-puppetdb module.
 
+#### 7.13.0 - 2022/04/19
+* Replace usage of legacy ::osfamily fact with structured form
+  [PDB-5611](https://tickets.puppetlabs.com/browse/PDB-5611)
+
 #### 7.12.0 - 2022/12/13
 * Grant read role to write user to fix database user permissions issue
   [PDB-5559](https://tickets.puppetlabs.com/browse/PDB-5559)
