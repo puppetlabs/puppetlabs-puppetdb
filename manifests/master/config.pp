@@ -52,7 +52,7 @@ class puppetdb::master::config (
   # installed to revert the change.
   if !($puppetdb::params::puppetdb_version in ['present','absent'])
   and versioncmp($puppetdb::params::puppetdb_version, '3.0.0') >= 0
-  and $::osfamily in ['RedHat','Suse'] {
+  and $facts['os']['family'] in ['RedHat','Suse'] {
     exec { 'Remove puppetdb-terminus metadata for upgrade':
       command => 'rpm -e --justdb puppetdb-terminus',
       path    => '/sbin/:/bin/',
