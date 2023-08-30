@@ -13,7 +13,7 @@ define puppetdb::database::postgresql_ssl_rules (
     address     => '0.0.0.0/0',
     auth_method => 'cert',
     order       => 0,
-    auth_option => "map=${identity_map_key} clientcert=1"
+    auth_option => "map=${identity_map_key} clientcert=verify-full"
   }
 
   postgresql::server::pg_hba_rule { "Allow certificate mapped connections to ${database_name} as ${database_username} (ipv6)":
@@ -23,7 +23,7 @@ define puppetdb::database::postgresql_ssl_rules (
     address     => '::0/0',
     auth_method => 'cert',
     order       => 0,
-    auth_option => "map=${identity_map_key} clientcert=1"
+    auth_option => "map=${identity_map_key} clientcert=verify-full"
   }
 
   postgresql::server::pg_ident_rule { "Map the SSL certificate of the server as a ${database_username} user":
