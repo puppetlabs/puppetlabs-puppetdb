@@ -13,7 +13,7 @@ class puppetdb::server::firewall (
     firewall { "${http_port} accept - puppetdb":
       dport  => $http_port,
       proto  => 'tcp',
-      action => 'accept',
+      jump   => 'accept',
     }
   }
 
@@ -21,7 +21,7 @@ class puppetdb::server::firewall (
     firewall { "${ssl_port} accept - puppetdb":
       dport  => $ssl_port,
       proto  => 'tcp',
-      action => 'accept',
+      jump   => 'accept',
     }
   }
 }
