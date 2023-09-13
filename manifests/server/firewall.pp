@@ -11,17 +11,17 @@ class puppetdb::server::firewall (
 
   if ($open_http_port) {
     firewall { "${http_port} accept - puppetdb":
-      dport  => $http_port,
-      proto  => 'tcp',
-      jump   => 'accept',
+      dport => $http_port,
+      proto => 'tcp',
+      jump  => 'accept',
     }
   }
 
   if ($open_ssl_port) {
     firewall { "${ssl_port} accept - puppetdb":
-      dport  => $ssl_port,
-      proto  => 'tcp',
-      jump   => 'accept',
+      dport => $ssl_port,
+      proto => 'tcp',
+      jump  => 'accept',
     }
   }
 }
