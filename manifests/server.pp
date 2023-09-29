@@ -149,6 +149,7 @@ class puppetdb::server (
   class { 'puppetdb::server::global':
     vardir         => $vardir,
     confdir        => $confdir,
+    puppetdb_user  => $puppetdb_user,
     puppetdb_group => $puppetdb_group,
     notify         => Service[$puppetdb_service],
   }
