@@ -2,6 +2,7 @@
 class puppetdb::server::global (
   $vardir         = $puppetdb::params::vardir,
   $confdir        = $puppetdb::params::confdir,
+  $puppetdb_user  = $puppetdb::params::puppetdb_user,
   $puppetdb_group = $puppetdb::params::puppetdb_group,
 ) inherits puppetdb::params {
 
@@ -9,9 +10,9 @@ class puppetdb::server::global (
 
   file { $config_ini:
     ensure => file,
-    owner  => 'root',
+    owner  => $puppetdb_user,
     group  => $puppetdb_group,
-    mode   => '0640',
+    mode   => '0600',
   }
 
   # Set the defaults
