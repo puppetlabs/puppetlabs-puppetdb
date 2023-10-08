@@ -8,8 +8,6 @@ Gemfile:
     ':system_tests':
       - gem: 'nokogiri'
         platforms: ruby
-      - gem: 'serverspec'
-        platforms: ruby
 spec/spec_helper.rb:
   mock_with: ":rspec"
   coverage_report: true
@@ -18,7 +16,6 @@ spec/spec_helper.rb:
 .github/workflows/nightly.yml:
   unmanaged: false
 .github/workflows/spec.yml:
-  checks: 'syntax lint metadata_lint check:symlinks check:git_ignore check:dot_underscore check:test_file rubocop'
   unmanaged: false
 .github/workflows/release.yml:
   unmanaged: false
