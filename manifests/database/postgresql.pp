@@ -19,14 +19,13 @@ class puppetdb::database::postgresql (
   $read_database_password      = $puppetdb::params::read_database_password,
   $read_database_host          = $puppetdb::params::read_database_host
 ) inherits puppetdb::params {
-
   if $manage_server {
-    class { '::postgresql::globals':
+    class { 'postgresql::globals':
       manage_package_repo => $manage_package_repo,
       version             => $postgres_version,
     }
     # get the pg server up and running
-    class { '::postgresql::server':
+    class { 'postgresql::server':
       ip_mask_allow_all_users => '0.0.0.0/0',
       listen_addresses        => $listen_addresses,
       port                    => scanf($database_port, '%i')[0],
@@ -35,7 +34,7 @@ class puppetdb::database::postgresql (
     # We need to create the ssl connection for the read user, when
     # manage_database is set to true, or when read_database_host is defined.
     # Otherwise we don't create it.
-    if $manage_database or $read_database_host != undef{
+    if $manage_database or $read_database_host != undef {
       $create_read_user_rule = true
     } else {
       $create_read_user_rule = false
@@ -52,13 +51,12 @@ class puppetdb::database::postgresql (
         postgresql_ssl_key_path     => $postgresql_ssl_key_path,
         postgresql_ssl_cert_path    => $postgresql_ssl_cert_path,
         postgresql_ssl_ca_cert_path => $postgresql_ssl_ca_cert_path,
-        create_read_user_rule       => $create_read_user_rule
+        create_read_user_rule       => $create_read_user_rule,
       }
     }
 
     # Only install pg_trgm extension, if database it is actually managed by the module
     if $manage_database {
-
       # get the pg contrib to use pg_trgm extension
       if (versioncmp($postgresql::globals::globals_version, '10') < 0) {
         include postgresql::server::contrib
@@ -99,7 +97,7 @@ class puppetdb::database::postgresql (
       read_database_username => $read_database_username,
       database_name          => $database_name,
       password_hash          => postgresql::postgresql_password($read_database_username, $read_database_password),
-      database_owner         => $database_username
+      database_owner         => $database_username,
     }
 
     -> postgresql_psql { "grant ${read_database_username} role to ${database_username}":

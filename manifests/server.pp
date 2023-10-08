@@ -81,7 +81,6 @@ class puppetdb::server (
   Integer[1] $dlo_max_age                  = $puppetdb::params::dlo_max_age,
   Optional[Stdlib::Absolutepath] $java_bin = $puppetdb::params::java_bin,
 ) inherits puppetdb::params {
-
   # Apply necessary suffix if zero is specified.
   # Can we drop this in the next major release?
   if $node_ttl == '0' {
@@ -263,21 +262,21 @@ class puppetdb::server (
 
   if $postgresql_ssl_on {
     exec { $ssl_key_pk8_path:
-      path    => [ '/opt/puppetlabs/puppet/bin', $facts['path'] ],
+      path    => ['/opt/puppetlabs/puppet/bin', $facts['path']],
       command => "openssl pkcs8 -topk8 -inform PEM -outform DER -in ${ssl_key_path} -out ${ssl_key_pk8_path} -nocrypt",
       # Generate a .pk8 key if one doesn't exist or is older than the .pem input.
       # NOTE: bash file time checks, like -ot, can't always discern sub-second
       # differences.
       onlyif  => "test ! -e '${ssl_key_pk8_path}' -o '${ssl_key_pk8_path}' -ot '${ssl_key_path}'",
-      before  => File[$ssl_key_pk8_path]
+      before  => File[$ssl_key_pk8_path],
     }
 
     file { $ssl_key_pk8_path:
-      ensure => present,
+      ensure => file,
       owner  => $puppetdb_user,
       group  => $puppetdb_group,
       mode   => '0600',
-      notify => Service[$puppetdb_service]
+      notify => Service[$puppetdb_service],
     }
   }
 
@@ -324,7 +323,7 @@ class puppetdb::server (
             setting           => 'JAVA_ARGS',
             require           => Package[$puppetdb_package],
             notify            => Service[$puppetdb_service],
-          }))
+      }))
     } else {
       ini_setting { 'java_args':
         ensure  => present,
@@ -357,14 +356,14 @@ class puppetdb::server (
       # https://puppet.com/docs/puppetdb/5.2/maintain_and_tune.html#clean-up-the-dead-letter-office
       systemd::unit_file { 'puppetdb-dlo-cleanup.service':
         content => epp("${module_name}/puppetdb-DLO-cleanup.service.epp", {
-          'puppetdb_user'  => $puppetdb_user,
-          'puppetdb_group' => $puppetdb_group,
-          'vardir'         => $vardir,
-          'dlo_max_age'    => $dlo_max_age
+            'puppetdb_user'  => $puppetdb_user,
+            'puppetdb_group' => $puppetdb_group,
+            'vardir'         => $vardir,
+            'dlo_max_age'    => $dlo_max_age
         }),
       }
       -> systemd::unit_file { 'puppetdb-dlo-cleanup.timer':
-        content => epp("${module_name}/puppetdb-DLO-cleanup.timer.epp", {'cleanup_timer_interval' => $cleanup_timer_interval }),
+        content => epp("${module_name}/puppetdb-DLO-cleanup.timer.epp", { 'cleanup_timer_interval' => $cleanup_timer_interval }),
         enable  => true,
         active  => true,
       }

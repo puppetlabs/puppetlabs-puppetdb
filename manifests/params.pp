@@ -204,7 +204,7 @@ class puppetdb::params inherits puppetdb::globals {
 
   $certificate_whitelist_file = "${etcdir}/certificate-whitelist"
   # the default is free access for now
-  $certificate_whitelist      = [ ]
+  $certificate_whitelist      = []
   # change to this to only allow access by the puppet master by default:
   #$certificate_whitelist      = [ $::servername ]
 

@@ -91,8 +91,7 @@ class puppetdb (
   Integer[1] $dlo_max_age                  = $puppetdb::params::dlo_max_age,
   Optional[Stdlib::Absolutepath] $java_bin = $puppetdb::params::java_bin,
 ) inherits puppetdb::params {
-
-  class { '::puppetdb::server':
+  class { 'puppetdb::server':
     listen_address                    => $listen_address,
     listen_port                       => $listen_port,
     disable_cleartext                 => $disable_cleartext,
@@ -176,14 +175,13 @@ class puppetdb (
   }
 
   if ($database == 'postgres') {
-
     $database_before = str2bool($database_validate) ? {
-      false => Class['::puppetdb::server'],
-      default => [Class['::puppetdb::server'],
-                  Class['::puppetdb::server::validate_db']],
+      false => Class['puppetdb::server'],
+      default => [Class['puppetdb::server'],
+      Class['puppetdb::server::validate_db']],
     }
 
-    class { '::puppetdb::database::postgresql':
+    class { 'puppetdb::database::postgresql':
       listen_addresses            => $database_listen_address,
       database_name               => $database_name,
       puppetdb_server             => $puppetdb_server,
@@ -201,7 +199,7 @@ class puppetdb (
       read_database_username      => $read_database_username,
       read_database_password      => $read_database_password,
       read_database_host          => $read_database_host,
-      before                      => $database_before
+      before                      => $database_before,
     }
   }
 }
