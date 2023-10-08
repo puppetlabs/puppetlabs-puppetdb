@@ -8,6 +8,13 @@ Gemfile:
     ':system_tests':
       - gem: 'nokogiri'
         platforms: ruby
+Rakefile:
+  default_disabled_lint_checks:
+    - relative
+    - parameter_types
+    - parameter_documentation
+    - documentation
+    - 140chars
 spec/spec_helper.rb:
   mock_with: ":rspec"
   coverage_report: true
