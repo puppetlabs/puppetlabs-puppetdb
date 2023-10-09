@@ -2,7 +2,11 @@
 
 Release notes for the puppetlabs-puppetdb module.
 
-#### 7.13.0 - 2022/04/19
+#### 7.14.0 - 2023/10/09
+* Owner of puppetdb config.ini is now root
+* Remove support for EOL OSes CentOS 6, Debian 8 & 9.
+
+#### 7.13.0 - 2023/04/19
 * Replace usage of legacy ::osfamily fact with structured form
   [PDB-5611](https://tickets.puppetlabs.com/browse/PDB-5611)
 
