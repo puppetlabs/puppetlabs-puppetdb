@@ -10,6 +10,7 @@ describe 'puppetdb::database::ssl_configuration', type: :class do
         operatingsystemrelease: '7.0',
         kernel: 'Linux',
         selinux: true,
+        path: '/usr/bin:/bin',
         os: {
           family: 'RedHat',
           name: 'RedHat',
