@@ -31,9 +31,9 @@ describe 'puppetdb::server::global', type: :class do
         is_expected.to contain_file('/etc/puppetlabs/puppetdb/conf.d/config.ini')
           .with(
             'ensure'  => 'file',
-            'owner'   => 'puppetdb',
+            'owner'   => 'root',
             'group'   => 'puppetdb',
-            'mode'    => '0600',
+            'mode'    => '0640',
           )
       }
     end
