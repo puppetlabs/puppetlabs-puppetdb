@@ -91,21 +91,21 @@ class puppetdb::params inherits puppetdb::globals {
         $etcdir                 = '/etc/puppetdb'
         $vardir                 = '/var/lib/puppetdb'
         $database_embedded_path = "${vardir}/db/db"
-        $puppet_confdir         = pick($settings::confdir,'/etc/puppet')
+        $puppet_confdir         = pick($puppetdb::globals::puppet_confdir,'/etc/puppet')
         $puppet_service_name    = 'puppetmaster'
       }
       'OpenBSD': {
         $etcdir                 = '/etc/puppetdb'
         $vardir                 = '/var/db/puppetdb'
         $database_embedded_path = "${vardir}/db/db"
-        $puppet_confdir         = pick($settings::confdir,'/etc/puppet')
+        $puppet_confdir         = pick($puppetdb::globals::puppet_confdir,'/etc/puppet')
         $puppet_service_name    = 'puppetmasterd'
       }
       'FreeBSD': {
         $etcdir                 = '/usr/local/etc/puppetdb'
         $vardir                 = '/var/db/puppetdb'
         $database_embedded_path = "${vardir}/db/db"
-        $puppet_confdir         = pick($settings::confdir,'/usr/local/etc/puppet')
+        $puppet_confdir         = pick($puppetdb::globals::puppet_confdir,'/usr/local/etc/puppet')
         $puppet_service_name    = 'puppetmaster'
       }
       default: {
@@ -118,17 +118,17 @@ class puppetdb::params inherits puppetdb::globals {
     case fact('os.family') {
       'RedHat', 'Suse', 'Archlinux','Debian': {
         $etcdir              = '/etc/puppetlabs/puppetdb'
-        $puppet_confdir      = pick($settings::confdir,'/etc/puppetlabs/puppet')
+        $puppet_confdir      = pick($puppetdb::globals::puppet_confdir,'/etc/puppetlabs/puppet')
         $puppet_service_name = 'puppetserver'
       }
       'OpenBSD': {
         $etcdir              = '/etc/puppetlabs/puppetdb'
-        $puppet_confdir      = pick($settings::confdir,'/etc/puppetlabs/puppet')
+        $puppet_confdir      = pick($puppetdb::globals::puppet_confdir,'/etc/puppetlabs/puppet')
         $puppet_service_name = undef
       }
       'FreeBSD': {
         $etcdir              = '/usr/local/etc/puppetlabs/puppetdb'
-        $puppet_confdir      = pick($settings::confdir,'/usr/local/etc/puppetlabs/puppet')
+        $puppet_confdir      = pick($puppetdb::globals::puppet_confdir,'/usr/local/etc/puppetlabs/puppet')
         $puppet_service_name = undef
       }
       default: {
