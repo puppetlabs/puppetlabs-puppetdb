@@ -2,14 +2,14 @@
 class puppetdb::master::config (
   $puppetdb_server             = fact('networking.fqdn'),
   $puppetdb_port               = defined(Class['puppetdb']) ? {
-    true    => $::puppetdb::disable_ssl ? {
+    true    => $puppetdb::disable_ssl ? {
       true => 8080,
       default => 8081,
     },
     default => 8081,
   },
   $puppetdb_disable_ssl        = defined(Class['puppetdb']) ? {
-    true    => $::puppetdb::disable_ssl,
+    true    => $puppetdb::disable_ssl,
     default => false,
   },
   $masterless                  = $puppetdb::params::masterless,
@@ -30,7 +30,6 @@ class puppetdb::master::config (
   $test_url                    = $puppetdb::params::test_url,
   $restart_puppet              = true,
 ) inherits puppetdb::params {
-
   # **WARNING**: Ugly hack to work around a yum bug with metadata parsing. This
   # should not be copied, replicated or even looked at. In short, never rename
   # your packages...
@@ -66,7 +65,6 @@ class puppetdb::master::config (
   }
 
   if ($strict_validation) {
-
     # Validate the puppetdb connection.  If we can't connect to puppetdb then we
     # *must* not perform the other configuration steps, or else
 
@@ -192,5 +190,4 @@ class puppetdb::master::config (
       Class['puppetdb::master::report_processor'] ~> Service[$puppet_service_name]
     }
   }
-
 }

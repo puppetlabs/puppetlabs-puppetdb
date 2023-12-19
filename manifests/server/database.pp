@@ -30,7 +30,6 @@ class puppetdb::server::database (
   $ssl_key_pk8_path          = $puppetdb::params::ssl_key_pk8_path,
   $ssl_ca_cert_path          = $puppetdb::params::ssl_ca_cert_path
 ) inherits puppetdb::params {
-
   if str2bool($database_validate) {
     # Validate the database connection.  If we can't connect, we want to fail
     # and skip the rest of the configuration, so that we don't leave puppetdb
@@ -69,15 +68,13 @@ class puppetdb::server::database (
     path    => $database_ini,
     ensure  => present,
     section => 'database',
-    require => $ini_setting_require
+    require => $ini_setting_require,
   }
 
   if $database == 'embedded' {
-
     $classname = 'org.hsqldb.jdbcDriver'
     $subprotocol = 'hsqldb'
     $subname = "file:${database_embedded_path};hsqldb.tx=mvcc;sql.syntax_pgs=true"
-
   } elsif $database == 'postgres' {
     $classname = 'org.postgresql.Driver'
     $subprotocol = 'postgresql'
@@ -91,8 +88,7 @@ class puppetdb::server::database (
 
     $subname_default = "//${database_host}:${database_port}/${database_name}${database_suffix}"
 
-    if $postgresql_ssl_on and !empty($jdbc_ssl_properties)
-    {
+    if $postgresql_ssl_on and !empty($jdbc_ssl_properties) {
       fail("Variables 'postgresql_ssl_on' and 'jdbc_ssl_properties' can not be used at the same time!")
     }
 

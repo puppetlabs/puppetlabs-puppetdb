@@ -17,7 +17,6 @@ class puppetdb::server::jetty (
   $puppetdb_user                  = $puppetdb::params::puppetdb_user,
   $puppetdb_group                 = $puppetdb::params::puppetdb_group,
 ) inherits puppetdb::params {
-
   $jetty_ini = "${confdir}/jetty.ini"
 
   file { $jetty_ini:
@@ -70,7 +69,6 @@ class puppetdb::server::jetty (
   }
 
   if $ssl_protocols {
-
     ini_setting { 'puppetdb_sslprotocols':
       ensure  => $ssl_setting_ensure,
       setting => 'ssl-protocols',
@@ -79,7 +77,6 @@ class puppetdb::server::jetty (
   }
 
   if $cipher_suites {
-
     ini_setting { 'puppetdb_cipher-suites':
       ensure  => $ssl_setting_ensure,
       setting => 'cipher-suites',

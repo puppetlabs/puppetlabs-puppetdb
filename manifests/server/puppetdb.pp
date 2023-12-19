@@ -7,7 +7,6 @@ class puppetdb::server::puppetdb (
   $puppetdb_user              = $puppetdb::params::puppetdb_user,
   $puppetdb_group             = $puppetdb::params::puppetdb_group,
 ) inherits puppetdb::params {
-
   $puppetdb_ini = "${confdir}/puppetdb.ini"
 
   file { $puppetdb_ini:
@@ -31,7 +30,7 @@ class puppetdb::server::puppetdb (
   }
 
   # accept connections only from puppet master
-  ini_setting {'puppetdb-connections-from-master-only':
+  ini_setting { 'puppetdb-connections-from-master-only':
     ensure  => $certificate_whitelist_setting_ensure,
     section => 'puppetdb',
     setting => 'certificate-whitelist',

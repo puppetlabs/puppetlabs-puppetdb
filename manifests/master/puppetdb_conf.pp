@@ -12,8 +12,7 @@ class puppetdb::master::puppetdb_conf (
     /(puppetdb-terminus)/ => true,
     default               => false,
   },
-  ) inherits puppetdb::params {
-
+) inherits puppetdb::params {
   Ini_setting {
     ensure  => present,
     section => 'main',
