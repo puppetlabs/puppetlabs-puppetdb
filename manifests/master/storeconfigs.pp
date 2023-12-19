@@ -5,7 +5,6 @@ class puppetdb::master::storeconfigs (
   $masterless  = $puppetdb::params::masterless,
   $enable      = true,
 ) inherits puppetdb::params {
-
   if $masterless {
     $puppet_conf_section = 'main'
   } else {

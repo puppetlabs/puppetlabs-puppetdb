@@ -31,25 +31,25 @@ class puppetdb::database::ssl_configuration (
   postgresql::server::config_entry { 'ssl':
     ensure  => present,
     value   => 'on',
-    require => [File['postgres private key'], File['postgres public key']]
+    require => [File['postgres private key'], File['postgres public key']],
   }
 
   postgresql::server::config_entry { 'ssl_cert_file':
     ensure  => present,
     value   => "${postgresql::server::datadir}/server.crt",
-    require => [File['postgres private key'], File['postgres public key']]
+    require => [File['postgres private key'], File['postgres public key']],
   }
 
   postgresql::server::config_entry { 'ssl_key_file':
     ensure  => present,
     value   => "${postgresql::server::datadir}/server.key",
-    require => [File['postgres private key'], File['postgres public key']]
+    require => [File['postgres private key'], File['postgres public key']],
   }
 
   postgresql::server::config_entry { 'ssl_ca_file':
     ensure  => present,
     value   => $postgresql_ssl_ca_cert_path,
-    require => [File['postgres private key'], File['postgres public key']]
+    require => [File['postgres private key'], File['postgres public key']],
   }
 
   puppetdb::database::postgresql_ssl_rules { "Configure postgresql ssl rules for ${database_username}":

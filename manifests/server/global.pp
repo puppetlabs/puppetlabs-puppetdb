@@ -4,7 +4,6 @@ class puppetdb::server::global (
   $confdir        = $puppetdb::params::confdir,
   $puppetdb_group = $puppetdb::params::puppetdb_group,
 ) inherits puppetdb::params {
-
   $config_ini = "${confdir}/config.ini"
 
   file { $config_ini:

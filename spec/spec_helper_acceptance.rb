@@ -60,11 +60,11 @@ def build_url(platform)
 end
 
 hosts.each do |host|
-  if host['platform'] =~ %r{debian}
+  if host['platform'].include? 'debian'
     on host, 'echo \'export PATH=/var/lib/gems/1.8/bin/:${PATH}\' >> ~/.bashrc'
   end
   # install_puppet
-  if host['platform'] =~ %r{el-(5|6|7|8)}
+  if host['platform'].match? %r{el-(5|6|7|8)}
     relver = Regexp.last_match(1)
     on host, "rpm -ivh #{build_url('el')}#{relver}.noarch.rpm"
     on host, 'yum install -y puppetserver'
@@ -77,11 +77,11 @@ hosts.each do |host|
       on host, 'dnf install -y https://download.postgresql.org/pub/repos/yum/reporpms/EL-8-x86_64/pgdg-redhat-repo-latest.noarch.rpm'
       on host, 'dnf -qy module disable postgresql'
     end
-  elsif host['platform'] =~ %r{fedora-(\d+)}
+  elsif host['platform'].match? %r{fedora-(\d+)}
     relver = Regexp.last_match(1)
     on host, "rpm -ivh #{build_url('fedora')}#{relver}.noarch.rpm"
     on host, 'yum install -y puppetserver'
-  elsif host['platform'] =~ %r{(ubuntu|debian)}
+  elsif host['platform'].match? %r{(ubuntu|debian)}
     unless host.check_for_package 'curl'
       on host, 'apt-get install -y curl'
     end
@@ -121,7 +121,7 @@ opts[:puppet_collection] = if use_puppet5?
                              'puppet7'
                            end
 install_puppet_agent_on(hosts, opts) unless ENV['BEAKER_provision'] == 'no'
-install_ca_certs unless ENV['PUPPET_INSTALL_TYPE'] =~ %r{pe}i
+install_ca_certs unless ENV['PUPPET_INSTALL_TYPE'].match? %r{pe}i
 install_module_on(hosts)
 install_module_dependencies_on(hosts)
 
@@ -129,7 +129,7 @@ RSpec.configure do |c|
   # Readable test descriptions
   c.formatter = :documentation
   hosts.each do |host|
-    if host[:platform] =~ %r{el-7-x86_64} && host[:hypervisor] =~ %r{docker}
+    if host[:platform].include?('el-7-x86_64') && host[:hypervisor].include?('docker')
       on(host, "sed -i '/nodocs/d' /etc/yum.conf")
     end
   end
