@@ -14,7 +14,6 @@ class puppetdb::server::jetty (
   Optional[String] $cipher_suites = $puppetdb::params::cipher_suites,
   $confdir                        = $puppetdb::params::confdir,
   $max_threads                    = $puppetdb::params::max_threads,
-  $puppetdb_user                  = $puppetdb::params::puppetdb_user,
   $puppetdb_group                 = $puppetdb::params::puppetdb_group,
 ) inherits puppetdb::params {
 
@@ -22,9 +21,9 @@ class puppetdb::server::jetty (
 
   file { $jetty_ini:
     ensure => file,
-    owner  => $puppetdb_user,
+    owner  => 'root',
     group  => $puppetdb_group,
-    mode   => '0600',
+    mode   => '0640',
   }
 
   # Set the defaults
