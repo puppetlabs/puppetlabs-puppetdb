@@ -4,9 +4,9 @@ puppetdb
 Statement of Support - Maintenance Mode
 ---------------------------------------
 
-This module is maintained by Puppet, but we have no plans for future feature development. We
-will keep it working with current versions of Puppet, but new feature development will come
-from community contributions. It does not qualify for Puppet Support plans.
+> This module is maintained by Puppet, but we have no plans for future feature development. We
+> will keep it working with current versions of Puppet, but new feature development will come
+> from community contributions. It does not qualify for Puppet Support plans.
 
 [tier:maintenance-mode]
 
