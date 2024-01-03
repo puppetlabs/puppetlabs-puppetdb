@@ -14,7 +14,7 @@ class puppetdb::master::puppetdb_conf (
   },
   ) inherits puppetdb::params {
 
-  Ini_setting {
+  $ini_setting_defaults = {
     ensure  => present,
     section => 'main',
     path    => "${puppet_confdir}/puppetdb.conf",
@@ -24,20 +24,24 @@ class puppetdb::master::puppetdb_conf (
     ini_setting { 'puppetdbserver':
       setting => 'server',
       value   => $server,
+      *       => $ini_setting_defaults,
     }
     ini_setting { 'puppetdbport':
       setting => 'port',
       value   => $port,
+      *       => $ini_setting_defaults,
     }
   } else {
     ini_setting { 'puppetdbserver_urls':
       setting => 'server_urls',
       value   => "https://${server}:${port}/",
+      *       => $ini_setting_defaults,
     }
   }
 
   ini_setting { 'soft_write_failure':
     setting => 'soft_write_failure',
     value   => $soft_write_failure,
+    *       => $ini_setting_defaults,
   }
 }
