@@ -18,6 +18,10 @@ class puppetdb::server (
   $ssl_key                                 = $puppetdb::params::ssl_key,
   $ssl_cert                                = $puppetdb::params::ssl_cert,
   $ssl_ca_cert                             = $puppetdb::params::ssl_ca_cert,
+  Boolean $ssl_use_puppet_certs            = $puppetdb::params::ssl_use_puppet_certs,
+  $ssl_key_source                          = $puppetdb::params::ssl_key_source,
+  $ssl_cert_source                         = $puppetdb::params::ssl_cert_source,
+  $ssl_ca_cert_source                      = $puppetdb::params::ssl_ca_cert_source,
   $ssl_protocols                           = $puppetdb::params::ssl_protocols,
   $postgresql_ssl_on                       = $puppetdb::params::postgresql_ssl_on,
   $cipher_suites                           = $puppetdb::params::cipher_suites,
@@ -230,19 +234,32 @@ class puppetdb::server (
     database_max_pool_size => $read_database_max_pool_size,
   }
 
-  if $ssl_deploy_certs {
+  if $ssl_deploy_certs or $ssl_use_puppet_certs {
+
+    if $ssl_use_puppet_certs {
+      $_ssl_key_source = "file:///${::settings::ssldir}/private_keys/${::clientcert}.pem"
+      $_ssl_cert_source = "file:///${::settings::ssldir}/certs/${::clientcert}.pem"
+      $_ssl_ca_cert_source = "file:///${::settings::ssldir}/certs/ca.pem"
+    } else {
+      $_ssl_key_source = $ssl_key_source
+      $_ssl_cert_source = $ssl_cert_source
+      $_ssl_ca_cert_source = $ssl_ca_cert_source
+    }
+
     file {
       $ssl_dir:
-        ensure => directory,
-        owner  => $puppetdb_user,
-        group  => $puppetdb_group,
-        mode   => '0700';
+        ensure  => directory,
+        owner   => $puppetdb_user,
+        group   => $puppetdb_group,
+        mode    => '0700',
+        require => Package[$puppetdb_package];
       $ssl_key_path:
         ensure  => file,
         content => $ssl_key,
         owner   => $puppetdb_user,
         group   => $puppetdb_group,
         mode    => '0600',
+        source  => $_ssl_key_source,
         notify  => Service[$puppetdb_service];
       $ssl_cert_path:
         ensure  => file,
@@ -250,6 +267,7 @@ class puppetdb::server (
         owner   => $puppetdb_user,
         group   => $puppetdb_group,
         mode    => '0600',
+        source  => $_ssl_cert_source,
         notify  => Service[$puppetdb_service];
       $ssl_ca_cert_path:
         ensure  => file,
@@ -257,6 +275,7 @@ class puppetdb::server (
         owner   => $puppetdb_user,
         group   => $puppetdb_group,
         mode    => '0600',
+        source  => $_ssl_ca_cert_source,
         notify  => Service[$puppetdb_service];
     }
   }

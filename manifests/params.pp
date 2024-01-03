@@ -202,6 +202,10 @@ class puppetdb::params inherits puppetdb::globals {
   $ssl_key                  = undef
   $ssl_cert                 = undef
   $ssl_ca_cert              = undef
+  $ssl_use_puppet_certs     = false
+  $ssl_key_source           = undef
+  $ssl_cert_source          = undef
+  $ssl_ca_cert_source       = undef
 
   # certificate used by PuppetDB SSL Configuration
   $ssl_key_pk8_path         = regsubst($ssl_key_path, '.pem', '.pk8')
