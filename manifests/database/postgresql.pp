@@ -116,7 +116,8 @@ class puppetdb::database::postgresql (
         postgresql_ssl_key_path     => $postgresql_ssl_key_path,
         postgresql_ssl_cert_path    => $postgresql_ssl_cert_path,
         postgresql_ssl_ca_cert_path => $postgresql_ssl_ca_cert_path,
-        create_read_user_rule       => $create_read_user_rule,
+        postgres_version            => $postgres_version,
+        create_read_user_rule       => $create_read_user_rule
       }
     }
 
