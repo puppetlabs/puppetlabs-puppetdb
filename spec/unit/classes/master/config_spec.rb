@@ -1,14 +1,11 @@
 require 'spec_helper'
 
 describe 'puppetdb::master::config', type: :class do
+  let(:node) { 'puppetdb.example.com' }
+
   on_supported_os.each do |os, facts|
     context "on #{os}" do
-      let(:facts) do
-        facts.merge(puppetversion: Puppet.version,
-                    networking: { fqdn: 'puppetdb.example.com' },
-                    service_provider: 'systemd',
-                    selinux: true)
-      end
+      let(:facts) { facts }
 
       context 'when PuppetDB on remote server' do
         context 'when using default values' do
@@ -74,91 +71,63 @@ describe 'puppetdb::master::config', type: :class do
 
           it { is_expected.to contain_package('puppetdb-terminus').with(ensure: '2.2.0') }
           it { is_expected.to contain_puppetdb_conn_validator('puppetdb_conn').with(test_url: '/v3/version') }
+          it {
+            is_expected.to contain_service('puppetmaster')
+              .with_ensure('running')
+              .with_enable(true)
+          }
         end
       end
-    end
-  end
-  context 'when upgrading to from v2 to v3 of PuppetDB on RedHat' do
-    let(:facts) do
-      {
-        osfamily: 'RedHat',
-        operatingsystem: 'RedHat',
-        puppetversion: Puppet.version,
-        operatingsystemrelease: '7.0',
-        kernel: 'Linux',
-        selinux: true,
-        os: {
-          family: 'RedHat',
-          name: 'RedHat',
-          release: { 'full' => '7.0' },
-          selinux: { 'enabled' => true },
-        },
-      }
-    end
-    let(:pre_condition) { 'class { "puppetdb::globals": version => "3.1.1-1.el7", }' }
 
-    it { is_expected.to contain_exec('Remove puppetdb-terminus metadata for upgrade').with(command: 'rpm -e --justdb puppetdb-terminus') }
-  end
+      context 'when restart_puppet is true' do
+        let(:pre_condition) { 'class { "puppetdb": }' }
 
-  context 'when restart_puppet is true' do
-    let(:facts) do
-      {
-        osfamily: 'RedHat',
-        operatingsystem: 'RedHat',
-        puppetversion: Puppet.version,
-        operatingsystemrelease: '7.0',
-        kernel: 'Linux',
-        selinux: true,
-        os: {
-          family: 'RedHat',
-          name: 'RedHat',
-          release: { 'full' => '7.0', 'major' => '7' },
-          selinux: { 'enabled' => true },
-        },
-        service_provider: 'systemd',
-      }
-    end
+        context 'with create_puppet_service_resource as default' do
+          let(:params) do
+            {
+              puppet_service_name: 'puppetserver',
+              restart_puppet: true,
+            }
+          end
 
-    let(:pre_condition) { 'class { "puppetdb": }' }
+          it { is_expected.to contain_service('puppetserver').with(ensure: 'running') }
+        end
 
-    context 'with create_puppet_service_resource as default' do
-      let(:params) do
-        {
-          puppet_service_name: 'puppetserver',
-          restart_puppet: true,
-        }
+        context 'with create_puppet_service_resource = true' do
+          let(:params) do
+            {
+              create_puppet_service_resource: true,
+              puppet_service_name: 'puppetserver',
+              restart_puppet: true,
+            }
+          end
+
+          it { is_expected.to contain_service('puppetserver').with(ensure: 'running') }
+        end
+
+        context 'with create_puppet_service_resource = false' do
+          # Also setting the various parameters that notify the service to be false. Otherwise this error surfaces:
+          # `Could not find resource 'Service[puppetserver]' for relationship from 'Class[Puppetdb::Master::Puppetdb_conf]'`
+          let(:params) do
+            {
+              create_puppet_service_resource: false,
+              manage_config: false,
+              manage_report_processor: false,
+              manage_routes: false,
+              puppet_service_name: 'puppetserver',
+              restart_puppet: true,
+            }
+          end
+
+          it { is_expected.not_to contain_service('puppetserver') }
+        end
       end
 
-      it { is_expected.to contain_service('puppetserver').with(ensure: 'running') }
-    end
+      context 'when upgrading to from v2 to v3 of PuppetDB on RedHat', if: os =~ %r{^redhat-7} do
+        let(:pre_condition) { 'class { "puppetdb::globals": version => "3.1.1-1.el7", }' }
 
-    context 'with create_puppet_service_resource = true' do
-      let(:params) do
-        {
-          create_puppet_service_resource: true,
-          puppet_service_name: 'puppetserver',
-          restart_puppet: true,
-        }
+        it { is_expected.to contain_exec('Remove puppetdb-terminus metadata for upgrade').with(command: 'rpm -e --justdb puppetdb-terminus') }
       end
-
-      it { is_expected.to contain_service('puppetserver').with(ensure: 'running') }
-    end
-
-    context 'with create_puppet_service_resource = false' do
-      # Also setting the various parameters that notify the service to be false. Otherwise this error surfaces:
-      # `Could not find resource 'Service[puppetserver]' for relationship from 'Class[Puppetdb::Master::Puppetdb_conf]'`
-      let(:params) do
-        {
-          create_puppet_service_resource: false,
-          manage_config: false,
-          manage_report_processor: false,
-          manage_routes: false,
-          puppet_service_name: 'puppetserver',
-          restart_puppet: true,
-        }
-      end
-
-      it { is_expected.not_to contain_service('puppetserver') }
     end
   end
 end
