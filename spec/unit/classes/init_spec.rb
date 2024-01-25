@@ -32,7 +32,10 @@ describe 'puppetdb', type: :class do
         end
 
         describe 'manifest' do
-          it { is_expected.to compile.with_all_deps }
+          it {
+            pending('platform support to be removed') if facts[:os]['name'] == 'Ubuntu' && (Puppet::Util::Package.versioncmp(facts[:os]['release']['major'], '18.04') < 0)
+            is_expected.to compile.with_all_deps
+          }
         end
       end
       describe 'without managed postgresql database' do
