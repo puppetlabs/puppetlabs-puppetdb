@@ -1,0 +1,23 @@
+name: "ci"
+
+on:
+  pull_request:
+    branches:
+      - "main"
+    paths-ignore:
+      - '**.md'
+      - 'examples/**'
+      - 'LICENSE'
+      - 'CODEOWNERS'
+      - 'AUTHORS'
+  workflow_dispatch:
+
+jobs:
+  Unit:
+    uses: "./.github/workflows/module_unit.yml"
+    secrets: "inherit"
+
+  Acceptance:
+    needs: Unit
+    uses: "./.github/workflows/module_acceptance.yml"
+    secrets: "inherit"

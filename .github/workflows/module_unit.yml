@@ -1,0 +1,85 @@
+# This is a generic workflow for Puppet module CI operations.
+name: "Module Unit Tests"
+
+on:
+  workflow_call:
+    inputs:
+      runs_on:
+        description: "The operating system used for the runner."
+        required: false
+        default: "ubuntu-latest"
+        type: "string"
+      flags:
+        description: "Additional flags to pass to matrix_from_metadata_v2."
+        required: false
+        default: ''
+        type: "string"
+
+jobs:
+  setup_matrix:
+    name: "Setup Test Matrix"
+    runs-on: ${{ inputs.runs_on }}
+    outputs:
+      spec_matrix: ${{ steps.get-matrix.outputs.spec_matrix }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: "Setup ruby"
+        uses: "ruby/setup-ruby@v1"
+        with:
+          ruby-version: "2.7"
+          bundler-cache: true
+
+      - name: "Bundle environment"
+        run: |
+          echo ::group::bundler environment
+          bundle env
+          echo ::endgroup::
+
+      - name: "Setup Test Matrix"
+        id: get-matrix
+        run: |
+          bundle exec matrix_from_metadata_v2 ${{ inputs.flags }}
+
+  spec:
+    name: "Test (Puppet: ${{matrix.puppet_version}}, Ruby Ver: ${{matrix.ruby_version}})"
+    needs: "setup_matrix"
+    runs-on: ${{ inputs.runs_on }}
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJson( needs.setup_matrix.outputs.spec_matrix ) }}
+
+    env:
+      PUPPET_GEM_VERSION: ${{ matrix.puppet_version }}
+      FACTER_GEM_VERSION: 'https://github.com/puppetlabs/facter#main'  # why is this set?
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: "Setup ruby"
+        uses: "ruby/setup-ruby@v1"
+        with:
+          ruby-version: ${{matrix.ruby_version}}
+          bundler-cache: true
+
+      - name: "Bundle environment"
+        run: |
+          echo ::group::bundler environment
+          bundle env
+          echo ::endgroup::
+
+      - name: "Run Static & Syntax Tests"
+        run: |
+          bundle exec rake ci:check ci:syntax ci:lint ci:doc
+          bundle exec dependency-checker metadata.json || true # temporarily disabled
+
+      - name: "Run tests"
+        run: |
+          bundle exec rake ci:unit
