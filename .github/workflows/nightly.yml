@@ -1,20 +1,13 @@
-name: "ci"
+name: "nightly"
 
 on:
-  pull_request:
-    branches:
-      - "main"
-    paths-ignore:
-      - '**.md'
-      - 'examples/**'
-      - 'LICENSE'
-      - 'CODEOWNERS'
-      - 'AUTHORS'
+  schedule:
+    - cron: "0 0 * * *"
   workflow_dispatch:
 
 jobs:
   Spec:
-    uses: "./.github/workflows/module_unit.yml"
+    uses: "puppetlabs/cat-github-actions/.github/workflows/module_ci.yml@main"
     secrets: "inherit"
 
   Acceptance:
