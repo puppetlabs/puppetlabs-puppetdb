@@ -1,5 +1,5 @@
 # This is a generic workflow for Puppet module CI operations.
-name: "Module Unit Tests"
+name: "Module CI"
 
 on:
   workflow_call:
@@ -23,10 +23,11 @@ jobs:
       spec_matrix: ${{ steps.get-matrix.outputs.spec_matrix }}
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+
+      - name: "Checkout"
+        uses: "actions/checkout@v4"
         with:
-          fetch-depth: 1
+          ref: ${{ github.event.pull_request.head.sha }}
 
       - name: "Setup ruby"
         uses: "ruby/setup-ruby@v1"
@@ -40,13 +41,13 @@ jobs:
           bundle env
           echo ::endgroup::
 
-      - name: "Setup Test Matrix"
+      - name: Setup Spec Test Matrix
         id: get-matrix
         run: |
           bundle exec matrix_from_metadata_v2 ${{ inputs.flags }}
 
   spec:
-    name: "Test (Puppet: ${{matrix.puppet_version}}, Ruby Ver: ${{matrix.ruby_version}})"
+    name: "Spec tests (Puppet: ${{matrix.puppet_version}}, Ruby Ver: ${{matrix.ruby_version}})"
     needs: "setup_matrix"
     runs-on: ${{ inputs.runs_on }}
     strategy:
@@ -58,10 +59,10 @@ jobs:
       FACTER_GEM_VERSION: 'https://github.com/puppetlabs/facter#main'  # why is this set?
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - name: "Checkout"
+        uses: "actions/checkout@v4"
         with:
-          fetch-depth: 1
+          ref: ${{ github.event.pull_request.head.sha }}
 
       - name: "Setup ruby"
         uses: "ruby/setup-ruby@v1"
@@ -77,9 +78,9 @@ jobs:
 
       - name: "Run Static & Syntax Tests"
         run: |
-          bundle exec rake ci:check ci:syntax ci:lint ci:doc
-          bundle exec dependency-checker metadata.json || true # temporarily disabled
+          bundle exec rake syntax lint metadata_lint check:symlinks check:git_ignore check:dot_underscore check:test_file rubocop
+          bundle exec dependency-checker metadata.json || true # temporarily allow to fail
 
       - name: "Run tests"
         run: |
-          bundle exec rake ci:unit
+          bundle exec rake parallel_spec

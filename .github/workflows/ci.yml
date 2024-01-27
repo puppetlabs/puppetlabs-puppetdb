@@ -14,7 +14,7 @@ on:
 
 jobs:
   Spec:
-    uses: "./.github/workflows/module_unit.yml"
+    uses: "./.github/workflows/module_ci.yml"
     secrets: "inherit"
 
   Acceptance:
