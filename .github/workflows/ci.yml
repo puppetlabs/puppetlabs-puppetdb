@@ -23,3 +23,4 @@ jobs:
     secrets: "inherit"
     with:
       runs_on: "ubuntu-20.04"
+      flags: "--exclude-platforms '[\"ubuntu-18.04\"]'" # TODO: remove when module dependencies are sorted
