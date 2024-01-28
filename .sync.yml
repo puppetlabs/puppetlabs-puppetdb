@@ -15,7 +15,6 @@
     - /provision.yaml
 Rakefile:
   default_disabled_lint_checks:
-    - relative
     - parameter_types
     - parameter_documentation
     - documentation
