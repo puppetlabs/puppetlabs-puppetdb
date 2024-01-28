@@ -4,7 +4,7 @@ describe 'basic tests' do
   let(:puppetdb_params) {}
   let(:puppetdb_master_config_params) {}
   # FIXME: temporary work-around for EL install
-  let(:postgres_version) { "($facts['os']['family'] == 'RedHat') ? { true => '12', default => undef }" }
+  let(:postgres_version) { "($facts['os']['family'] == 'RedHat' and Integer($facts['os']['release']['major']) > 7) ? { true => '12', default => undef }" }
 
   let(:pp) do
     <<~EOS
