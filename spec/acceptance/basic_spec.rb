@@ -8,12 +8,12 @@ describe 'basic tests' do
   let(:pp) do
     <<~PP
     # FIXME: temporary work-around for EL installs
-    if $facts['os']['family'] == 'RedHat' and Integer($facts['os']['release']['major']) < 8 {
-      file { '/etc/pki/rpm-gpg/RPM-GPG-KEY-PGDG-RHEL7':
-        source => "https://download.postgresql.org/pub/repos/yum/keys/PGDG-RPM-GPG-KEY-RHEL7",
+    if $facts['os']['family'] == 'RedHat' {
+      file { '/etc/pki/rpm-gpg/RPM-GPG-KEY-PGDG-RHEL-new':
+        source => "https://download.postgresql.org/pub/repos/yum/keys/PGDG-RPM-GPG-KEY-RHEL${facts['os']['release']['major']}",
       }
       -> Yumrepo <| tag == 'postgresql::repo' |> {
-        gpgkey => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-PGDG-RHEL7',
+        gpgkey => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-PGDG-RHEL-new',
       }
     }
 
@@ -54,10 +54,8 @@ describe 'basic tests' do
   end
 
   describe 'puppetdb' do
-    describe 'standard deployment', :change do
-      it 'applies idempotently' do
-        idempotent_apply(pp)
-      end
+    it 'applies idempotently' do
+      idempotent_apply(pp)
     end
 
     describe service('puppetdb'), :status do
