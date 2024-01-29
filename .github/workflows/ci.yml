@@ -26,5 +26,5 @@ jobs:
     uses: "./.github/workflows/module_acceptance.yml"
     secrets: "inherit"
     with:
-      runs_on: "ubuntu-latest"
-      flags: "--exclude-platforms '[\"ubuntu-18.04\",\"scientific-7\"]'" # TODO: remove when module dependencies are sorted
+      runs_on: ubuntu-20.04
+      flags: "--exclude-platforms '[\"ubuntu-18.04\",\"redhat-8\",\"redhat-7\",\"Scientific-7\",\"CentOS-7\",\"OracleLinux-7\"]'" # EL7 is failing on GHA, ubuntu 18 module updates

@@ -1,4 +1,6 @@
 ---
+.rspec:
+  unmanaged: true
 .rubocop.yml:
   default_configs:
     AllCops:

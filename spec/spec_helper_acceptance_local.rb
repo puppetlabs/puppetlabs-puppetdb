@@ -8,7 +8,9 @@ end
 
 RSpec.configure do |c|
   if ENV['GITHUB_ACTIONS']
-    c.formatter = 'RSpec::Github::Formatter'
+    require 'rspec/github'
+    c.formatter = :documentation
+    c.add_formatter 'RSpec::Github::Formatter'
     c.color_mode = :on
   end
 

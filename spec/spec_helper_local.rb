@@ -4,7 +4,9 @@ Dir['./spec/support/unit/**/*.rb'].sort.each { |f| require f }
 
 RSpec.configure do |c|
   if ENV['GITHUB_ACTIONS']
-    c.formatter = 'RSpec::Github::Formatter'
+    require 'rspec/github'
+    c.formatter = :progress
+    c.add_formatter 'RSpec::Github::Formatter'
     c.color_mode = :on
   end
 
