@@ -3,8 +3,6 @@ fixtures:
   repositories:
     inifile: 'https://github.com/puppetlabs/puppetlabs-inifile.git'
     stdlib: 'https://github.com/puppetlabs/puppetlabs-stdlib.git'
-    postgresql: 'https://github.com/puppetlabs/puppet-postgresql.git'
-    firewall: 'https://github.com/puppetlabs/puppetlabs-firewall.git'
     apt: 'https://github.com/puppetlabs/puppetlabs-apt.git'
     concat: 'https://github.com/puppetlabs/puppetlabs-concat.git'
     file_concat: 'https://github.com/electrical/puppet-lib-file_concat.git'
@@ -22,5 +20,12 @@ fixtures:
     augeas_core:
       repo: https://github.com/puppetlabs/puppetlabs-augeas_core.git
       puppet_version: ">= 6.0.0"
+  forge_modules:
+    postgresql:
+      repo: 'puppetlabs/postgresql'
+      ref: "9.2.0"
+    firewall:
+      repo: 'puppetlabs/firewall'
+      ref: "6.0.0"
   symlinks:
     puppetdb: '#{source_dir}'
