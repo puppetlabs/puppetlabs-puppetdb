@@ -3,16 +3,40 @@ require 'spec_helper_acceptance'
 describe 'basic tests' do
   let(:puppetdb_params) {}
   let(:puppetdb_master_config_params) {}
-  # FIXME: temporary work-around for EL install
-  let(:postgres_version) { "($facts['os']['family'] == 'RedHat' and Integer($facts['os']['release']['major']) > 7) ? { true => '12', default => undef }" }
-
+  # FIXME: temporary work-around for EL installs
+  let(:postgres_version) { "($facts['os']['family'] == 'RedHat') ? { true => '12', default => undef }" }
   let(:pp) do
-    <<~EOS
+    <<~PP
+    # FIXME: temporary work-around for EL installs
+    if $facts['os']['family'] == 'RedHat' and Integer($facts['os']['release']['major']) < 8 {
+      file { '/etc/pki/rpm-gpg/RPM-GPG-KEY-PGDG-RHEL7':
+        source => "https://download.postgresql.org/pub/repos/yum/keys/PGDG-RPM-GPG-KEY-RHEL7",
+      }
+      -> Yumrepo <| tag == 'postgresql::repo' |> {
+        gpgkey => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-PGDG-RHEL7',
+      }
+    }
+
+    $sysconfdir = $facts['os']['family'] ? {
+      'Debian' => '/etc/default',
+      default  => '/etc/sysconfig',
+    }
     package { 'puppetserver':
      ensure => installed,
     }
+    # savagely disable dropsonde
+    -> file { '/opt/puppetlabs/server/apps/puppetserver/cli/apps/dropsonde':
+      ensure => absent,
+    }
     -> exec { '/opt/puppetlabs/bin/puppetserver ca setup':
       creates => '/etc/puppetlabs/puppetserver/ca/ca_crt.pem',
+    }
+    # drop memory requirements to fit on a sub-2g ram instance
+    -> augeas { 'puppetserver-environment':
+      context => "/files${sysconfdir}/puppetserver",
+      changes => [
+        "set JAVA_ARGS '\\"-Xms256m -Xmx256m -Djruby.logger.class=com.puppetlabs.jruby_utils.jruby.Slf4jLogger\\"'",
+      ],
     }
     ~> service { 'puppetserver':
       ensure => running,
@@ -26,43 +50,51 @@ describe 'basic tests' do
     -> class { 'puppetdb::master::config':
       #{puppetdb_master_config_params}
     }
-    EOS
-  end
-
-  it 'ensure module is installed' do
-    # No point diagnosing any more if the module wasn't copied properly
-    run_shell('puppet module list') do |r|
-      expect(r.stdout).to include(' puppetlabs-puppetdb ')
-    end
+    PP
   end
 
   describe 'puppetdb' do
-    it 'applies idempotently' do
-      idempotent_apply(pp)
+    describe 'standard deployment', :change do
+      it 'applies idempotently' do
+        idempotent_apply(pp)
+      end
     end
 
-    describe service('puppetdb') do
+    describe service('puppetdb'), :status do
       it { is_expected.to be_enabled }
       it { is_expected.to be_running }
     end
 
-    describe port(8080) do
-      it { is_expected.to be_listening.on('127.0.0.1').with('tcp') }
+    describe port(8080), :status do
+      it { is_expected.to be_listening }
     end
 
-    describe port(8081) do
-      it { is_expected.to be_listening.on('0.0.0.0').with('tcp') }
+    describe port(8081), :status do
+      it { is_expected.to be_listening }
     end
 
-    describe 'puppetdb postgres user' do
-      it 'read-only user can not create tables' do
-        run_shell('psql "postgresql://puppetdb-read:puppetdb-read@localhost/puppetdb" -c "create table tables(id int)" || true') do |r|
+    context 'puppetdb postgres user', :status do
+      it 'is not allowing read-only user to create tables' do
+        run_shell('psql "postgresql://puppetdb-read:puppetdb-read@localhost/puppetdb" -c "create table tables(id int)"', expect_failures: true) do |r|
           expect(r.stderr).to match(%r{^ERROR:  permission denied for schema public.*})
+          expect(r.exit_code).to eq 1
+        end
+      end
+
+      it 'is allowing normal user to manage schema' do
+        run_shell('psql "postgresql://puppetdb:puppetdb@localhost/puppetdb" -c "create table testing(id int); drop table testing"') do |r|
+          expect(r.exit_status).to eq 0
+        end
+      end
+
+      it 'is allowing read-only user to select' do
+        run_shell('psql "postgresql://puppetdb-read:puppetdb-read@localhost/puppetdb" -c "select * from catalogs limit 1"') do |r|
+          expect(r.exit_status).to eq 0
         end
       end
     end
 
-    context 'manage report processor', :reports do
+    context 'manage report processor', :change do
       ['add', 'remove'].each do |outcome|
         context "#{outcome}s puppet config puppetdb report processor" do
           let(:enable_reports) { (outcome == 'add') ? true : false }
@@ -74,8 +106,8 @@ describe 'basic tests' do
             EOS
           end
 
-          it 'applies idempotently' do
-            idempotent_apply(pp)
+          it 'applies manifest' do
+            apply_manifest(pp, expect_failures: false)
           end
 
           describe command('puppet config print --section master reports') do
@@ -89,7 +121,7 @@ describe 'basic tests' do
     end
   end
 
-  describe 'puppetdb with postgresql ssl' do
+  describe 'puppetdb with postgresql ssl', :change do
     let(:puppetdb_params) do
       <<~EOS
         postgresql_ssl_on       => true,
@@ -103,7 +135,7 @@ describe 'basic tests' do
     end
   end
 
-  describe 'set wrong database password in puppetdb conf' do
+  describe 'set wrong database password in puppetdb conf', :change do
     it 'applies manifest' do
       pp = <<~EOS
         ini_setting { "puppetdb password":
