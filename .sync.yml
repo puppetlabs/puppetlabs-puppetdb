@@ -3,6 +3,8 @@
   default_configs:
     AllCops:
       NewCops: enable
+      Include:
+        - '**/*.rake'
 .pdkignore:
   paths:
     - /.*.yml

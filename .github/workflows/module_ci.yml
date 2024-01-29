@@ -1,0 +1,86 @@
+# This is a generic workflow for Puppet module CI operations.
+name: "Module CI"
+
+on:
+  workflow_call:
+    inputs:
+      runs_on:
+        description: "The operating system used for the runner."
+        required: false
+        default: "ubuntu-latest"
+        type: "string"
+      flags:
+        description: "Additional flags to pass to matrix_from_metadata_v2."
+        required: false
+        default: ''
+        type: "string"
+
+jobs:
+  setup_matrix:
+    name: "Setup Test Matrix"
+    runs-on: ${{ inputs.runs_on }}
+    outputs:
+      spec_matrix: ${{ steps.get-matrix.outputs.spec_matrix }}
+
+    steps:
+
+      - name: "Checkout"
+        uses: "actions/checkout@v4"
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: "Setup ruby"
+        uses: "ruby/setup-ruby@v1"
+        with:
+          ruby-version: "2.7"
+          bundler-cache: true
+
+      - name: "Bundle environment"
+        run: |
+          echo ::group::bundler environment
+          bundle env
+          echo ::endgroup::
+
+      - name: Setup Spec Test Matrix
+        id: get-matrix
+        run: |
+          bundle exec matrix_from_metadata_v2 ${{ inputs.flags }}
+
+  spec:
+    name: "Spec tests (Puppet: ${{matrix.puppet_version}}, Ruby Ver: ${{matrix.ruby_version}})"
+    needs: "setup_matrix"
+    runs-on: ${{ inputs.runs_on }}
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJson( needs.setup_matrix.outputs.spec_matrix ) }}
+
+    env:
+      PUPPET_GEM_VERSION: ${{ matrix.puppet_version }}
+      FACTER_GEM_VERSION: 'https://github.com/puppetlabs/facter#main'  # why is this set?
+
+    steps:
+      - name: "Checkout"
+        uses: "actions/checkout@v4"
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: "Setup ruby"
+        uses: "ruby/setup-ruby@v1"
+        with:
+          ruby-version: ${{matrix.ruby_version}}
+          bundler-cache: true
+
+      - name: "Bundle environment"
+        run: |
+          echo ::group::bundler environment
+          bundle env
+          echo ::endgroup::
+
+      - name: "Run Static & Syntax Tests"
+        run: |
+          bundle exec rake syntax lint metadata_lint check:symlinks check:git_ignore check:dot_underscore check:test_file rubocop
+          bundle exec dependency-checker metadata.json || true # temporarily allow to fail
+
+      - name: "Run tests"
+        run: |
+          bundle exec rake parallel_spec
