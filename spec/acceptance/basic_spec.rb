@@ -9,11 +9,15 @@ describe 'basic tests' do
     <<~PP
     # FIXME: temporary work-around for EL installs
     if $facts['os']['family'] == 'RedHat' {
-      file { '/etc/pki/rpm-gpg/RPM-GPG-KEY-PGDG-RHEL-new':
-        source => "https://download.postgresql.org/pub/repos/yum/keys/PGDG-RPM-GPG-KEY-RHEL${facts['os']['release']['major']}",
+      $gpg_key_file = $facts['os']['release']['major'] ? {
+        '7'     => 'PGDG-RPM-GPG-KEY-RHEL7',
+        default => 'PGDG-RPM-GPG-KEY-RHEL',
+      }
+      file { "/etc/pki/rpm-gpg/${gpg_key_file}":
+        source => "https://download.postgresql.org/pub/repos/yum/keys/${gpg_key_file}",
       }
       -> Yumrepo <| tag == 'postgresql::repo' |> {
-        gpgkey => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-PGDG-RHEL-new',
+        gpgkey => "file:///etc/pki/rpm-gpg/${gpg_key_file}",
       }
     }
 
@@ -25,8 +29,11 @@ describe 'basic tests' do
      ensure => installed,
     }
     # savagely disable dropsonde
-    -> file { '/opt/puppetlabs/server/apps/puppetserver/cli/apps/dropsonde':
-      ensure => absent,
+    -> file { '/opt/puppetlabs/server/data/puppetserver/dropsonde':
+      ensure    => absent,
+      recurse   => true,
+      force     => true,
+      max_files => 6000,
     }
     -> exec { '/opt/puppetlabs/bin/puppetserver ca setup':
       creates => '/etc/puppetlabs/puppetserver/ca/ca_crt.pem',
@@ -35,7 +42,7 @@ describe 'basic tests' do
     -> augeas { 'puppetserver-environment':
       context => "/files${sysconfdir}/puppetserver",
       changes => [
-        "set JAVA_ARGS '\\"-Xms256m -Xmx256m -Djruby.logger.class=com.puppetlabs.jruby_utils.jruby.Slf4jLogger\\"'",
+        "set JAVA_ARGS '\\"-Xmx512m -Djruby.logger.class=com.puppetlabs.jruby_utils.jruby.Slf4jLogger\\"'",
       ],
     }
     ~> service { 'puppetserver':
@@ -43,8 +50,25 @@ describe 'basic tests' do
       enable => true,
     }
 
+    # reduce pgs memory
+    postgresql::server::config_entry { 'max_connections': value => '20' }
+    postgresql::server::config_entry { 'shared_buffers': value => '128kB' }
+    postgresql::server::config_entry { 'effective_cache_size': value => '24MB' }
+    postgresql::server::config_entry { 'maintenance_work_mem': value => '1MB' }
+    postgresql::server::config_entry { 'checkpoint_completion_target': value => '0.9' }
+    postgresql::server::config_entry { 'wal_buffers': value => '32kB' }
+    postgresql::server::config_entry { 'random_page_cost': value => '4' }
+    postgresql::server::config_entry { 'effective_io_concurrency': value => '2' }
+    postgresql::server::config_entry { 'work_mem': value => '204kB' }
+    postgresql::server::config_entry { 'huge_pages': value => 'off' }
+    postgresql::server::config_entry { 'min_wal_size': value => '80MB' }
+    postgresql::server::config_entry { 'max_wal_size': value => '1GB' }
+
     class { 'puppetdb':
-      postgres_version => #{postgres_version},
+      postgres_version            => #{postgres_version},
+      java_args                   => { '-Xmx' => '128m' },
+      database_max_pool_size      => '2',
+      read_database_max_pool_size => '2',
       #{puppetdb_params}
     }
     -> class { 'puppetdb::master::config':
@@ -93,7 +117,7 @@ describe 'basic tests' do
     end
 
     context 'manage report processor', :change do
-      ['add', 'remove'].each do |outcome|
+      ['remove', 'add'].each do |outcome|
         context "#{outcome}s puppet config puppetdb report processor" do
           let(:enable_reports) { (outcome == 'add') ? true : false }
 

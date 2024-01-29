@@ -12,6 +12,10 @@ on:
       - 'AUTHORS'
   workflow_dispatch:
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   Spec:
     uses: "./.github/workflows/module_ci.yml"
@@ -19,8 +23,8 @@ jobs:
 
   Acceptance:
     needs: Spec
-    uses: "puppetlabs/cat-github-actions/.github/workflows/module_acceptance.yml@main"
+    uses: "./.github/workflows/module_acceptance.yml"
     secrets: "inherit"
     with:
-      runs_on: "ubuntu-20.04"
+      runs_on: "ubuntu-latest"
       flags: "--exclude-platforms '[\"ubuntu-18.04\",\"scientific-7\"]'" # TODO: remove when module dependencies are sorted
