@@ -5,20 +5,18 @@ describe 'puppetdb::server', type: :class do
     'test.domain.local'
   end
 
+  let(:pathdir) do
+    case facts[:os]['family']
+    when 'Debian'
+      '/etc/default/puppetdb'
+    else
+      '/etc/sysconfig/puppetdb'
+    end
+  end
+
   on_supported_os.each do |os, facts|
     context "on #{os}" do
-      let(:facts) do
-        facts.merge(puppetversion: Puppet.version,
-                    service_provider: 'systemd',
-                    selinux: true)
-      end
-
-      pathdir = case facts[:osfamily]
-                when 'Debian'
-                  '/etc/default/puppetdb'
-                else
-                  '/etc/sysconfig/puppetdb'
-                end
+      let(:facts) { facts }
 
       describe 'when using default values' do
         it { is_expected.to contain_class('puppetdb::server') }
@@ -28,6 +26,17 @@ describe 'puppetdb::server', type: :class do
         it { is_expected.to contain_class('puppetdb::server::read_database') }
         it { is_expected.to contain_class('puppetdb::server::jetty') }
         it { is_expected.to contain_class('puppetdb::server::puppetdb') }
+
+        it {
+          is_expected.to contain_package('puppetdb')
+            .that_notifies('Service[puppetdb]')
+        }
+
+        it {
+          is_expected.to contain_service('puppetdb')
+            .with_ensure('running')
+            .with_enable(true)
+        }
       end
 
       describe 'when not specifying JAVA_ARGS' do
@@ -43,20 +52,18 @@ describe 'puppetdb::server', type: :class do
           }
         end
 
-        context 'on redhat PuppetDB' do
-          it {
-            is_expected.to contain_ini_subsetting("'-Xms'")
-              .with(
-                'ensure'            => 'present',
-                'path'              => pathdir.to_s,
-                'section'           => '',
-                'key_val_separator' => '=',
-                'setting'           => 'JAVA_ARGS',
-                'subsetting'        => '-Xms',
-                'value'             => '2g',
-              )
-          }
-        end
+        it {
+          is_expected.to contain_ini_subsetting("'-Xms'")
+            .with(
+              'ensure'            => 'present',
+              'path'              => pathdir.to_s,
+              'section'           => '',
+              'key_val_separator' => '=',
+              'setting'           => 'JAVA_ARGS',
+              'subsetting'        => '-Xms',
+              'value'             => '2g',
+            )
+        }
       end
 
       describe 'when specifying JAVA_ARGS with merge_default_java_args false' do
@@ -83,7 +90,7 @@ describe 'puppetdb::server', type: :class do
 
       context 'when systemd is available' do
         let(:facts) do
-          facts.merge(systemd: true)
+          super().merge(systemd: true)
         end
 
         describe 'by default dlo cleanup service is enabled' do
