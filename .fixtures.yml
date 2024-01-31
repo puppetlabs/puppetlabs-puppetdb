@@ -3,13 +3,23 @@ fixtures:
   repositories:
     inifile: 'https://github.com/puppetlabs/puppetlabs-inifile.git'
     stdlib: 'https://github.com/puppetlabs/puppetlabs-stdlib.git'
-    postgresql: 'https://github.com/puppetlabs/puppet-postgresql.git'
-    firewall: 'https://github.com/puppetlabs/puppetlabs-firewall.git'
     apt: 'https://github.com/puppetlabs/puppetlabs-apt.git'
     concat: 'https://github.com/puppetlabs/puppetlabs-concat.git'
-    file_concat: 'https://github.com/electrical/puppet-lib-file_concat.git'
     systemd: 'https://github.com/camptocamp/puppet-systemd.git'
-    cron: 'https://github.com/voxpupuli/puppet-cron.git'
+    provision: 'https://github.com/puppetlabs/provision.git'
+    puppet_agent: 'https://github.com/puppetlabs/puppetlabs-puppet_agent.git'
+    facts: 'https://github.com/puppetlabs/puppetlabs-facts.git'
     cron_core: 'https://github.com/puppetlabs/puppetlabs-cron_core.git'
     yumrepo_core: 'https://github.com/puppetlabs/puppetlabs-yumrepo_core.git'
     augeas_core: 'https://github.com/puppetlabs/puppetlabs-augeas_core.git'
+    postgresql: 'https://github.com/puppetlabs/puppetlabs-postgresql.git'
+    firewall: 'https://github.com/puppetlabs/puppetlabs-firewall.git'
+  forge_modules:
+    postgresql:
+      repo: 'puppetlabs/postgresql'
+      ref: "9.2.0"
+    firewall:
+      repo: 'puppetlabs/firewall'
+      ref: "6.0.0"
+  symlinks:
+    puppetdb: '#{source_dir}'

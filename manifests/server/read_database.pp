@@ -22,7 +22,6 @@ class puppetdb::server::read_database (
   $ssl_key_pk8_path       = $puppetdb::params::ssl_key_pk8_path,
   $ssl_ca_cert_path       = $puppetdb::params::ssl_ca_cert_path
 ) inherits puppetdb::params {
-
   if $read_database_host != undef {
     if str2bool($database_validate) {
       # Validate the database connection.  If we can't connect, we want to fail
@@ -78,18 +77,17 @@ class puppetdb::server::read_database (
 
       $subname_default = "//${read_database_host}:${read_database_port}/${read_database_name}${database_suffix}"
 
-      if $postgresql_ssl_on and !empty($jdbc_ssl_properties)
-      {
+      if $postgresql_ssl_on and !empty($jdbc_ssl_properties) {
         fail("Variables 'postgresql_ssl_on' and 'jdbc_ssl_properties' can not be used at the same time!")
       }
 
       if $postgresql_ssl_on {
         $subname = @("EOT"/L)
-        ${subname_default}?\
-        ssl=true&sslfactory=org.postgresql.ssl.LibPQFactory&\
-        sslmode=verify-full&sslrootcert=${ssl_ca_cert_path}&\
-        sslkey=${ssl_key_pk8_path}&sslcert=${ssl_cert_path}\
-        | EOT
+          ${subname_default}?\
+          ssl=true&sslfactory=org.postgresql.ssl.LibPQFactory&\
+          sslmode=verify-full&sslrootcert=${ssl_ca_cert_path}&\
+          sslkey=${ssl_key_pk8_path}&sslcert=${ssl_cert_path}\
+          | EOT
       } else {
         $subname = $subname_default
       }

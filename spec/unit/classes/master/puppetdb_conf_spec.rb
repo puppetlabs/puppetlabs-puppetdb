@@ -9,16 +9,23 @@ describe 'puppetdb::master::puppetdb_conf', type: :class do
     context "on #{os}" do
       let(:facts) do
         facts.merge(puppetversion: Puppet.version,
+                    service_provider: 'systemd',
                     selinux: false)
       end
 
       let(:pre_condition) { 'class { "puppetdb": }' }
 
-      context 'when using using default values' do
+      it {
+        is_expected.to contain_ini_setting('soft_write_failure')
+          .with_setting('soft_write_failure')
+          .with_value(false)
+      }
+
+      context 'when using default values' do
         it { is_expected.to contain_ini_setting('puppetdbserver_urls').with(value: 'https://localhost:8081/') }
       end
 
-      context 'when using using default values' do
+      context 'when using legacy_terminus' do
         let(:params) { { legacy_terminus: true } }
 
         it { is_expected.to contain_ini_setting('puppetdbserver').with(value: 'localhost') }

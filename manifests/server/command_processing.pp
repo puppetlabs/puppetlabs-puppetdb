@@ -6,7 +6,6 @@ class puppetdb::server::command_processing (
   $temp_usage        = $puppetdb::params::temp_usage,
   $confdir           = $puppetdb::params::confdir,
 ) inherits puppetdb::params {
-
   $config_ini = "${confdir}/config.ini"
 
   # Set the defaults

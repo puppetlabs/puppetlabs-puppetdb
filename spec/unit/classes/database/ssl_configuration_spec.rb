@@ -2,23 +2,7 @@ require 'spec_helper'
 
 describe 'puppetdb::database::ssl_configuration', type: :class do
   context 'on a supported platform' do
-    let(:facts) do
-      {
-        osfamily: 'RedHat',
-        operatingsystem: 'RedHat',
-        puppetversion: Puppet.version,
-        operatingsystemrelease: '7.0',
-        kernel: 'Linux',
-        selinux: true,
-        os: {
-          family: 'RedHat',
-          name: 'RedHat',
-          release: { 'full' => '7.0', 'major' => '7' },
-          selinux: { 'enabled' => true },
-        },
-        fqdn: 'cheery-rime@puppet',
-      }
-    end
+    let(:facts) { on_supported_os.take(1).first[1] }
 
     let(:params) do
       {
@@ -92,100 +76,38 @@ describe 'puppetdb::database::ssl_configuration', type: :class do
         .that_requires('File[postgres public key]')
     end
 
-    it 'has hba rule for puppetdb user ipv4' do
-      is_expected.to contain_postgresql__server__pg_hba_rule("Allow certificate mapped connections to #{params[:database_name]} as #{params[:database_username]} (ipv4)")
-        .with_type('hostssl')
-        .with_database(params[:database_name])
-        .with_user(params[:database_username])
-        .with_address('0.0.0.0/0')
-        .with_auth_method('cert')
-        .with_order(0)
-        .with_auth_option("map=#{identity_map} clientcert=1")
+    context 'does not create ssl rules for puppetdb-read user by default' do
+      it { is_expected.not_to contain_postgresql__server__pg_hba_rule("Allow certificate mapped connections to #{params[:database_name]} as #{params[:read_database_username]} (ipv4)") }
+      it { is_expected.not_to contain_postgresql__server__pg_hba_rule("Allow certificate mapped connections to #{params[:database_name]} as #{params[:read_database_username]} (ipv6)") }
+      it { is_expected.not_to contain_postgresql__server__pg_ident_rule("Map the SSL certificate of the server as a #{params[:read_database_username]} user") }
     end
 
-    it 'does not create hba rule for puppetdb-read user ipv4' do
-      is_expected.not_to contain_postgresql__server__pg_hba_rule("Allow certificate mapped connections to #{params[:database_name]} as #{params[:read_database_username]} (ipv4)")
-    end
-
-    it 'has hba rule for puppetdb user ipv6' do
-      is_expected.to contain_postgresql__server__pg_hba_rule("Allow certificate mapped connections to #{params[:database_name]} as #{params[:database_username]} (ipv6)")
-        .with_type('hostssl')
-        .with_database(params[:database_name])
-        .with_user(params[:database_username])
-        .with_address('::0/0')
-        .with_auth_method('cert')
-        .with_order(0)
-        .with_auth_option("map=#{identity_map} clientcert=1")
-    end
-
-    it 'does not create hba rule for puppetdb-read user ipv6' do
-      is_expected.not_to contain_postgresql__server__pg_hba_rule("Allow certificate mapped connections to #{params[:database_name]} as #{params[:read_database_username]} (ipv6)")
-    end
-
-    it 'has ident rule' do
-      is_expected.to contain_postgresql__server__pg_ident_rule("Map the SSL certificate of the server as a #{params[:database_username]} user")
-        .with_map_name(identity_map)
-        .with_system_username(facts[:fqdn])
-        .with_database_username(params[:database_name])
-    end
-
-    it 'does not create read ident rule' do
-      is_expected.not_to contain_postgresql__server__pg_ident_rule("Map the SSL certificate of the server as a #{params[:read_database_username]} user")
-    end
-
-    context 'when the puppetdb_server is set' do
-      let(:params) do
+    context 'configure ssl rules' do
+      let(:name) { "Configure postgresql ssl rules for #{args[:database_username]}" }
+      let(:args) do
         {
-          puppetdb_server: 'puppetdb_fqdn',
-          database_name: 'puppetdb',
-          database_username: 'puppetdb',
+          database_name:     params[:database_name],
+          database_username: params[:database_username],
+          puppetdb_server:   params[:puppetdb_server] || facts[:networking]['fqdn'],
         }
       end
 
-      it 'has ident rule with the specified puppetdb_server host' do
-        is_expected.to contain_postgresql__server__pg_ident_rule("Map the SSL certificate of the server as a #{params[:database_username]} user")
-          .with_map_name(identity_map)
-          .with_system_username(params[:puppetdb_server])
-          .with_database_username(params[:database_name])
-      end
-    end
-
-    context 'when the create_read_user_rule is set to true' do
-      let(:params) do
-        {
-          database_name: 'puppetdb',
-          read_database_username: 'puppetdb-read',
-          create_read_user_rule: true,
-        }
+      context 'when the puppetdb_server is not set' do
+        include_examples 'puppetdb::database::postgresql_ssl_rules'
       end
 
-      it 'has hba rule for puppetdb-read user ipv4' do
-        is_expected.to contain_postgresql__server__pg_hba_rule("Allow certificate mapped connections to #{params[:database_name]} as #{params[:read_database_username]} (ipv4)")
-          .with_type('hostssl')
-          .with_database(params[:database_name])
-          .with_user(params[:read_database_username])
-          .with_address('0.0.0.0/0')
-          .with_auth_method('cert')
-          .with_order(0)
-          .with_auth_option("map=#{read_identity_map} clientcert=1")
+      context 'when the puppetdb_server is set' do
+        let(:params) { super().merge({ puppetdb_server: 'puppetdb_fqdn' }) }
+
+        include_examples 'puppetdb::database::postgresql_ssl_rules'
       end
 
-      it 'has hba rule for puppetdb-read user ipv6' do
-        is_expected.to contain_postgresql__server__pg_hba_rule("Allow certificate mapped connections to #{params[:database_name]} as #{params[:read_database_username]} (ipv6)")
-          .with_type('hostssl')
-          .with_database(params[:database_name])
-          .with_user(params[:read_database_username])
-          .with_address('::0/0')
-          .with_auth_method('cert')
-          .with_order(0)
-          .with_auth_option("map=#{read_identity_map} clientcert=1")
-      end
+      context 'when the create_read_user_rule is true' do
+        let(:params) { super().merge({ create_read_user_rule: true }) }
 
-      it 'has read ident rule' do
-        is_expected.to contain_postgresql__server__pg_ident_rule("Map the SSL certificate of the server as a #{params[:read_database_username]} user")
-          .with_map_name(read_identity_map)
-          .with_system_username(facts[:fqdn])
-          .with_database_username(params[:read_database_username])
+        it_behaves_like 'puppetdb::database::postgresql_ssl_rules' do
+          let(:args) { super().merge({ database_username: params[:read_database_username] }) }
+        end
       end
     end
   end

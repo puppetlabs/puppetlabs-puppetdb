@@ -1,0 +1,22 @@
+name: "ci"
+
+on:
+  pull_request:
+    branches:
+      - "main"
+    paths-ignore:
+      - '**.md'
+      - 'examples/**'
+      - 'LICENSE'
+      - 'CODEOWNERS'
+      - 'AUTHORS'
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  Spec:
+    uses: ./.github/workflows/module_ci.yml
+    secrets: inherit

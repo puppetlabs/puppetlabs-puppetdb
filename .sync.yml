@@ -1,14 +1,26 @@
-Gemfile:
-  required:
-    ':system_tests':
-      - gem: 'puppet-module-posix-system-r#{minor_version}'
-        platforms: ruby
-      - gem: 'puppet-module-win-system-r#{minor_version}'
-        platforms:
-          - mswin
-          - mingw
-          - x64_mingw
-      - gem: 'nokogiri'
-        platforms: ruby
-      - gem: 'serverspec'
-        platforms: ruby
+---
+.rubocop.yml:
+  default_configs:
+    AllCops:
+      NewCops: enable
+      Include:
+        - '**/*.rake'
+.pdkignore:
+  paths:
+    - /.*.yml
+    - /pdk.yaml
+    - /.pmtignore
+    - /.git*
+    - /.editorconfig
+    - /provision.yaml
+Rakefile:
+  default_disabled_lint_checks:
+    - parameter_types
+    - parameter_documentation
+    - documentation
+    - 140chars
+spec/default_facts.yml:
+  unmanaged: true
+spec/spec_helper.rb:
+  coverage_report: true
+  minimum_code_coverage_percentage: 100

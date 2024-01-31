@@ -8,7 +8,6 @@ class puppetdb::server::validate_db (
   $database_name       = $puppetdb::params::database_name,
   $jdbc_ssl_properties = $puppetdb::params::jdbc_ssl_properties,
 ) inherits puppetdb::params {
-
   # We don't need any validation for the embedded database, presumably.
   if (
     $database == 'postgres' and
