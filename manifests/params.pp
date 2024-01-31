@@ -31,6 +31,12 @@ class puppetdb::params inherits puppetdb::globals {
     $postgres_version          = '9.6'
   }
 
+  $puppetdb_major_version = $puppetdb_version ? {
+    'latest'  => '8',
+    'present' => '8',
+    default   => $puppetdb_version.split('.')[0],
+  }
+
   # The remaining database settings are not used for an embedded database
   $database_host          = 'localhost'
   $database_port          = '5432'
@@ -81,13 +87,14 @@ class puppetdb::params inherits puppetdb::globals {
   $java_args               = {}
   $merge_default_java_args = true
 
-  $puppetdb_package     = 'puppetdb'
   $puppetdb_service     = 'puppetdb'
   $masterless           = false
 
   if !($puppetdb_version in ['latest','present','absent']) and versioncmp($puppetdb_version, '3.0.0') < 0 {
     case fact('os.family') {
       'RedHat', 'Suse', 'Archlinux','Debian': {
+        $puppetdb_package       = 'puppetdb'
+        $terminus_package       = 'puppetdb-terminus'
         $etcdir                 = '/etc/puppetdb'
         $vardir                 = '/var/lib/puppetdb'
         $database_embedded_path = "${vardir}/db/db"
@@ -95,6 +102,8 @@ class puppetdb::params inherits puppetdb::globals {
         $puppet_service_name    = 'puppetmaster'
       }
       'OpenBSD': {
+        $puppetdb_package       = 'puppetdb'
+        $terminus_package       = 'puppetdb-terminus'
         $etcdir                 = '/etc/puppetdb'
         $vardir                 = '/var/db/puppetdb'
         $database_embedded_path = "${vardir}/db/db"
@@ -102,6 +111,8 @@ class puppetdb::params inherits puppetdb::globals {
         $puppet_service_name    = 'puppetmasterd'
       }
       'FreeBSD': {
+        $puppetdb_package       = inline_epp('puppetdb<%= $puppetdb::params::puppetdb_major_version %>')
+        $terminus_package       = inline_epp('puppetdb-terminus<%= $puppetdb::params::puppetdb_major_version %>')
         $etcdir                 = '/usr/local/etc/puppetdb'
         $vardir                 = '/var/db/puppetdb'
         $database_embedded_path = "${vardir}/db/db"
@@ -112,32 +123,38 @@ class puppetdb::params inherits puppetdb::globals {
         fail("The fact 'os.family' is set to ${fact('os.family')} which is not supported by the puppetdb module.")
       }
     }
-    $terminus_package = 'puppetdb-terminus'
     $test_url         = '/v3/version'
   } else {
     case fact('os.family') {
       'RedHat', 'Suse', 'Archlinux','Debian': {
+        $puppetdb_package    = 'puppetdb'
+        $terminus_package    = 'puppetdb-termini'
         $etcdir              = '/etc/puppetlabs/puppetdb'
         $puppet_confdir      = pick($puppetdb::globals::puppet_confdir,'/etc/puppetlabs/puppet')
         $puppet_service_name = 'puppetserver'
+        $vardir              = '/opt/puppetlabs/server/data/puppetdb'
       }
       'OpenBSD': {
+        $puppetdb_package    = 'puppetdb'
+        $terminus_package    = 'puppetdb-termini'
         $etcdir              = '/etc/puppetlabs/puppetdb'
         $puppet_confdir      = pick($puppetdb::globals::puppet_confdir,'/etc/puppetlabs/puppet')
         $puppet_service_name = undef
+        $vardir              = '/opt/puppetlabs/server/data/puppetdb'
       }
       'FreeBSD': {
-        $etcdir              = '/usr/local/etc/puppetlabs/puppetdb'
-        $puppet_confdir      = pick($puppetdb::globals::puppet_confdir,'/usr/local/etc/puppetlabs/puppet')
-        $puppet_service_name = undef
+        $puppetdb_package    = inline_epp('puppetdb<%= $puppetdb::params::puppetdb_major_version %>')
+        $terminus_package    = inline_epp('puppetdb-terminus<%= $puppetdb::params::puppetdb_major_version %>')
+        $etcdir              = '/usr/local/etc/puppetdb'
+        $puppet_confdir      = pick($puppetdb::globals::puppet_confdir,'/usr/local/etc/puppet')
+        $puppet_service_name = 'puppetserver'
+        $vardir              = '/var/db/puppetdb'
       }
       default: {
         fail("The fact 'os.family' is set to ${fact('os.family')} which is not supported by the puppetdb module.")
       }
     }
-    $terminus_package       = 'puppetdb-termini'
     $test_url               = '/pdb/meta/v1/version'
-    $vardir                 = '/opt/puppetlabs/server/data/puppetdb'
     $database_embedded_path = "${vardir}/db/db"
   }
 
