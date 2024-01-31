@@ -14,12 +14,11 @@ fixtures:
     augeas_core: 'https://github.com/puppetlabs/puppetlabs-augeas_core.git'
     postgresql: 'https://github.com/puppetlabs/puppetlabs-postgresql.git'
     firewall: 'https://github.com/puppetlabs/puppetlabs-firewall.git'
-  forge_modules:
     postgresql:
-      repo: 'puppetlabs/postgresql'
-      ref: "9.2.0"
+      repo: 'https://github.com/puppetlabs/puppetlabs-postgresql.git'
+      ref: 'v9.2.0'
     firewall:
-      repo: 'puppetlabs/firewall'
-      ref: "6.0.0"
+      repo: 'https://github.com/puppetlabs/puppetlabs-firewall.git'
+      ref: 'v6.0.0'
   symlinks:
     puppetdb: '#{source_dir}'
