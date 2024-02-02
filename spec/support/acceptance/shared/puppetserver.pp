@@ -25,23 +25,21 @@ if $facts['os']['family'] == 'RedHat' {
     -> Package <| tag == 'postgresql' |>
   }
 
-  if $facts['virtual'] == 'docker' {
-    # Work-around EL systemd in docker with cgroupsv1? issue and forked services
-    # Without this, the puppet agent will stall for 300 seconds waiting for
-    # the service to start... then miserably fail.
-    # systemd error message:
-    #     New main PID 1411 does not belong to service, and PID file is not
-    #     owned by root. Refusing.
-    # PIDFile is not needed, but it cannot be reset by a drop-in, therefor the
-    # original unit must be modified
-    file_line { 'puppetserver-unit-remove-pidfile':
-      path               => '/lib/systemd/system/puppetserver.service',
-      line               => '#PIDFile=/run/puppetlabs/puppetserver.pid',
-      match              => '^PIDFile.*',
-      append_on_no_match => false,
-      require            => Package['puppetserver'],
-      notify             => Service['puppetserver'],
-    }
+  # Work-around EL systemd in docker with cgroupsv1? issue and forked services
+  # Without this, the puppet agent will stall for 300 seconds waiting for
+  # the service to start... then miserably fail.
+  # systemd error message:
+  #     New main PID 1411 does not belong to service, and PID file is not
+  #     owned by root. Refusing.
+  # PIDFile is not needed, but it cannot be reset by a drop-in, therefor the
+  # original unit must be modified
+  file_line { 'puppetserver-unit-remove-pidfile':
+    path               => '/lib/systemd/system/puppetserver.service',
+    line               => '#PIDFile=/run/puppetlabs/puppetserver.pid',
+    match              => '^PIDFile.*',
+    append_on_no_match => false,
+    require            => Package['puppetserver'],
+    notify             => Service['puppetserver'],
   }
 }
 
@@ -69,7 +67,6 @@ package { 'puppetserver':
   context => "/files${sysconfdir}/puppetserver",
   changes => [
     'set JAVA_ARGS \'"-Xms512m -Djruby.logger.class=com.puppetlabs.jruby_utils.jruby.Slf4jLogger"\'',
-    "set START_TIMEOUT '30'",
   ],
 }
 -> service { 'puppetserver':

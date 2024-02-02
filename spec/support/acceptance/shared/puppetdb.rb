@@ -16,16 +16,14 @@ shared_examples 'puppetdb' do
         gpgkey => "file:///etc/pki/rpm-gpg/${gpg_key_file}",
       }
 
-      if $facts['virtual'] == 'docker' {
-        # Work-around EL systemd in docker bug affecting forked services
-        file_line { 'puppetdb-unit-remove-pidfile':
-          path               => '/lib/systemd/system/puppetdb.service',
-          line               => '#PIDFile=/run/puppetlabs/puppetdb/puppetdb.pid',
-          match              => '^PIDFile.*',
-          append_on_no_match => false,
-          require            => Package['puppetdb'],
-          notify             => Service['puppetdb'],
-        }
+      # Work-around EL systemd in docker bug affecting forked services
+      file_line { 'puppetdb-unit-remove-pidfile':
+        path               => '/lib/systemd/system/puppetdb.service',
+        line               => '#PIDFile=/run/puppetlabs/puppetdb/puppetdb.pid',
+        match              => '^PIDFile.*',
+        append_on_no_match => false,
+        require            => Package['puppetdb'],
+        notify             => Service['puppetdb'],
       }
     }
 
