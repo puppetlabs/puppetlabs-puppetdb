@@ -77,7 +77,6 @@ jobs:
             test-
 
       - name: Provision test environment
-        timeout-minutes: 10
         run: |
           bundle exec rake 'litmus:provision[${{matrix.platforms.provider}},${{ matrix.platforms.image }}]'
           FILE='spec/fixtures/litmus_inventory.yaml'
@@ -101,7 +100,6 @@ jobs:
 
       - name: Run acceptance tests
         id: run-acceptance
-        timeout-minutes: 15
         run: bundle exec rake 'litmus:acceptance'
 
       - name: Failure Logs
