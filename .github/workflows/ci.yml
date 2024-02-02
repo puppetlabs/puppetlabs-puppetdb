@@ -2,6 +2,10 @@ name: "ci"
 
 on:
   pull_request:
+    types:
+      - opened
+      - labeled
+      - synchronize
     branches:
       - "main"
     paths-ignore:
@@ -11,12 +15,47 @@ on:
       - 'CODEOWNERS'
       - 'AUTHORS'
   workflow_dispatch:
+    inputs:
+      debug:
+        description: "Debug"
+        type: boolean
+        required: false
+        default: true
+      run_spec:
+        description: "Run Spec job"
+        type: boolean
+        required: false
+        default: true
+      run_acceptance:
+        description: "Run Acceptance job"
+        type: boolean
+        required: false
+        default: false
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
+  Matrix:
+    uses: ./.github/workflows/matrix.yml
+    with:
+      flags: "--exclude-platforms '[\"Ubuntu-18.04\"]'" # TODO: remove after postgres module update
   Spec:
-    uses: ./.github/workflows/module_ci.yml
+    if: ${{ github.event_name == 'pull_request' || inputs.run_spec == 'true' }}
+    needs: Matrix
+    uses: ./.github/workflows/module_spec.yml
     secrets: inherit
+    with:
+      debug: ${{ github.events.inputs.debug == 'true' || contains(github.event.pull_request.labels.*.name, 'debug') }}
+      ignore_dependency_check: true # TODO: remove after module updates
+      matrix: ${{ needs.Matrix.outputs.spec_matrix }}
+  Acceptance:
+    if: ${{ github.event_name == 'pull_request' || inputs.run_acceptance == 'true' }}
+    needs: [ Matrix, Spec ]
+    uses: ./.github/workflows/module_acceptance.yml
+    secrets: inherit
+    with:
+      debug: ${{ github.events.inputs.debug == 'true' || contains(github.event.pull_request.labels.*.name, 'debug') }}
+      matrix: ${{ needs.Matrix.outputs.acceptance_matrix }}
+      runs_on: ubuntu-20.04 # TODO: cgroupv1 containers do not provision on ubuntu-latest

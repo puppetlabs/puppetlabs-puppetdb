@@ -1,0 +1,28 @@
+---
+default:
+  provisioner: docker
+  images:
+    - litmusimage/ubuntu:20.04
+yum:
+  provisioner: docker
+  images:
+    - litmusimage/centos:7
+dnf:
+  provisioner: docker
+  images:
+    - litmusimage/centos:8
+apt:
+  provisioner: docker
+  images:
+    - litmusimage/ubuntu:20.04
+ci:
+  provisioner: docker
+  images:
+    - litmusimage/centos:7
+    - litmusimage/centos:8
+    - litmusimage/oraclelinux:7
+    - litmusimage/oraclelinux:8
+    - litmusimage/debian:10
+    - litmusimage/debian:11
+    - litmusimage/ubuntu:18.04
+    - litmusimage/ubuntu:20.04

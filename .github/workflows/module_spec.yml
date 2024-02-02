@@ -1,0 +1,88 @@
+# This is a generic workflow for Puppet module CI operations.
+name: "Module Spec Matrix"
+
+on:
+  workflow_call:
+    inputs:
+      matrix:
+        description: "JSON matrix"
+        required: true
+        type: "string"
+      ignore_dependency_check:
+        description: "Ignore dependency check failure"
+        required: false
+        type: "boolean"
+        default: false
+      debug:
+        description: "Run jobs with debug steps and flags enabled"
+        required: false
+        type: "boolean"
+        default: false
+      runs_on:
+        description: "The operating system used for the runner"
+        required: false
+        default: "ubuntu-latest"
+        type: "string"
+
+jobs:
+  Test:
+    name: "Test Puppet ${{ matrix.puppet_version }} with ruby ${{ matrix.ruby_version }}"
+    runs-on: ${{ inputs.runs_on }}
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJson(inputs.matrix) }}
+    env:
+      PUPPET_GEM_VERSION: ${{ matrix.puppet_version }}
+      FACTER_GEM_VERSION: 'https://github.com/puppetlabs/facter#main'  # why is this set?
+
+    steps:
+      - name: "Checkout"
+        uses: "actions/checkout@v4"
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 1
+
+      - name: "Setup ruby"
+        uses: "ruby/setup-ruby@v1"
+        with:
+          ruby-version: ${{ matrix.ruby_version }}
+          bundler-cache: true
+
+      - name: Debug
+        if: ${{ inputs.debug == true }}
+        run: |
+          echo ::group::bundler environment
+          bundle env
+          echo ::endgroup::
+          echo "RSPEC_DEBUG=1" >> $GITHUB_ENV
+          echo "DEBUG=1" >> $GITHUB_ENV
+
+      - name: "Cache fixture modules"
+        id: cache-fixtures
+        uses: actions/cache@v4
+        env:
+          cache-name: cache-fixtures-modules
+        with:
+          path: spec/fixtures/modules
+          key: test-${{ env.cache-name }}-${{ hashFiles('metadata.json', '.fixtures.yml') }}
+          restore-keys: |
+            test-${{ env.cache-name }}-
+            test-
+
+      - name: "Run static & syntax tests"
+        run: bundle exec rake syntax lint metadata_lint check:symlinks check:git_ignore check:dot_underscore check:test_file rubocop
+
+      - name: "Dependency check"
+        run: |
+          bundle exec dependency-checker metadata.json && EC=$? || EC=$?
+          if [ "${{ inputs.ignore_dependency_check }}" == "true" ] ; then
+            echo '::warning title=::ignoring dependency check failure'
+          else
+            exit $EC
+          fi
+
+      - name: "Install modules"
+        run: bundle exec rake spec_prep
+
+      - name: "Run tests"
+        run: bundle exec rake parallel_spec_standalone

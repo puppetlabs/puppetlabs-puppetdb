@@ -1,0 +1,49 @@
+---
+on:
+  workflow_call:
+    inputs:
+      runs_on:
+        description: "The operating system used for the runner."
+        required: false
+        default: "ubuntu-latest"
+        type: "string"
+      flags:
+        description: "Additional flags to pass to matrix_from_metadata_v2."
+        required: false
+        default: ''
+        type: "string"
+    outputs:
+      spec_matrix:
+        description: "Spec matrix from metadata"
+        value: ${{ jobs.generate-json-matrix.outputs.spec_matrix }}
+      acceptance_matrix:
+        description: "Acceptance matrix from metadata"
+        value: ${{ jobs.generate-json-matrix.outputs.acceptance_matrix }}
+
+jobs:
+  generate-json-matrix:
+    name: Generate
+    runs-on: ${{ inputs.runs_on }}
+    outputs:
+      spec_matrix: ${{ steps.get-matrix.outputs.spec_matrix }}
+      acceptance_matrix: ${{ steps.get-matrix.outputs.matrix }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: Activate Ruby 2.7
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "2.7"
+          bundler-cache: true
+      - name: Setup Test Matrix
+        id: get-matrix
+        run: |
+          bundle exec matrix_from_metadata_v2 ${{ inputs.flags }}
+          echo ::group::spec matrix
+          sed -n 's/^spec_matrix=\(.*\)/\1/p' $GITHUB_OUTPUT | jq
+          echo ::endgroup::
+          echo ::group::acceptance matrix
+          sed -n 's/^matrix=\(.*\)/\1/p' $GITHUB_OUTPUT | jq
+          echo ::endgroup::

@@ -1,0 +1,125 @@
+# This is a generic workflow for Puppet module acceptance operations.
+name: "Module Acceptance"
+
+on:
+  workflow_call:
+    inputs:
+      matrix:
+        description: "JSON matrix"
+        type: "string"
+        required: true
+      debug:
+        description: "Run jobs with debug steps and flags enabled"
+        type: "boolean"
+        required: false
+        default: false
+      puppet_version:
+        description: "Version of Puppet used to run tests"
+        type: "string"
+        required: false
+        default: "~> 7.24"
+      ruby_version:
+        description: "Version of Ruby to install"
+        type: "string"
+        required: false
+        default: "2.7"
+      runs_on:
+        description: "The operating system used for the runner"
+        type: "string"
+        required: false
+        default: "ubuntu-latest"
+
+jobs:
+  Test:
+    name: "Test ${{ matrix.platforms.label }} with ${{ matrix.collection }}"
+    runs-on: ${{ inputs.runs_on }}
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJson(inputs.matrix) }}
+    env:
+      PUPPET_GEM_VERSION: ${{ inputs.puppet_version }}
+      FACTER_GEM_VERSION: 'https://github.com/puppetlabs/facter#main'
+      BOLT_GEM: 1
+    steps:
+      - name: Checkout Source
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Activate Ruby ${{ inputs.ruby_version }}
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ inputs.ruby_version }}
+          bundler-cache: true
+
+      - name: Debug
+        if: ${{ inputs.debug == true }}
+        run: |
+          echo ::group::bundler environment
+          bundle env
+          echo ::endgroup::
+          echo ::group::docker info
+          docker info
+          echo ::endgroup::
+          echo "RSPEC_DEBUG=1" >> $GITHUB_ENV
+          echo "DEBUG=1" >> $GITHUB_ENV
+
+      - name: Cache fixture modules
+        id: cache-fixtures
+        uses: actions/cache@v4
+        env:
+          cache-name: cache-fixtures-modules
+        with:
+          path: spec/fixtures/modules
+          key: test-${{ env.cache-name }}-${{ hashFiles('metadata.json', '.fixtures.yml') }}
+          restore-keys: |
+            test-${{ env.cache-name }}-
+            test-
+
+      - name: Provision test environment
+        run: |
+          bundle exec rake 'litmus:provision[${{matrix.platforms.provider}},${{ matrix.platforms.image }}]'
+          FILE='spec/fixtures/litmus_inventory.yaml'
+          sed -e 's/password: .*/password: "[redacted]"/' < $FILE || true
+          if [ "${{ inputs.debug }}" == "true" ] ; then
+            while read CN ; do
+              echo ::group::docker container $CN
+              docker inspect "$CN"
+              echo ::endgroup::
+            done < <(docker ps --format '{{.Names}}')
+          fi
+
+      - name: Install agent
+        run: |
+          echo ::group::agent
+          bundle exec rake 'litmus:install_agent[${{ matrix.collection }}]'
+          echo ::endgroup::
+
+      - name: Install module
+        run: bundle exec rake 'litmus:install_module'
+
+      - name: Run acceptance tests
+        id: run-acceptance
+        run: bundle exec rake 'litmus:acceptance'
+
+      - name: Failure Logs
+        if: ${{ failure() && steps.run-acceptance.conclusion == 'failure' }}
+        continue-on-error: true
+        run: |
+          echo ::group::last 100 lines in runner journal
+          journalctl -n 100
+          echo ::endgroup::
+          echo ::group::last 100 lines in container journal
+          bundle exec bolt command run 'journalctl -n 100' -t all -i spec/fixtures/litmus_inventory.yaml
+          echo ::endgroup::
+          echo ::group::last 50 lines of puppetlabs logs
+          bundle exec bolt command run 'tail -n 50 /var/log/puppetlabs/*/*.log' -t all -i spec/fixtures/litmus_inventory.yaml
+          echo ::endgroup::
+
+      - name: Tear down
+        if: ${{ always() }}
+        continue-on-error: true
+        run: |
+          if [[ -f spec/fixtures/litmus_inventory.yaml ]]; then
+            bundle exec rake 'litmus:tear_down'
+          fi

@@ -9,6 +9,8 @@ MetadataJsonLint.options.strict_dependencies = true
 
 PuppetLint.configuration.log_forat = '%{path}:%{line}:%{check}:%{KIND}:%{message}'
 PuppetLint.configuration.fail_on_warnings = true
+PuppetLint.configuration.ignore_paths.reject! { |c| c == 'spec/**/*.pp' }
+PuppetLint.configuration.ignore_paths << 'spec/fixtures/**/*.pp'
 
 desc 'Run dependency-checker'
 task :metadata_deps do
