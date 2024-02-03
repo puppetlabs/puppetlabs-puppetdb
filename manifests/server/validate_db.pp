@@ -1,4 +1,6 @@
-# This validates a database connection. See README.md for more details.
+# validates the database connection
+#
+# @api private
 class puppetdb::server::validate_db (
   $database            = $puppetdb::params::database,
   $database_host       = $puppetdb::params::database_host,

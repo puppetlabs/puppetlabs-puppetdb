@@ -1,5 +1,6 @@
-# Class for configuring SSL connection for the PuppetDB postgresql database. See README.md for more
-# information.
+# configure SSL for the PuppetDB postgresql database
+#
+# @api private
 class puppetdb::database::ssl_configuration (
   $database_name               = $puppetdb::params::database_name,
   $database_username           = $puppetdb::params::database_username,

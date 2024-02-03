@@ -1,4 +1,5 @@
-# Global configuration class for PuppetDB. See README.md for more details.
+# global configuration class for PuppetDB
+#
 class puppetdb::globals (
   $version                      = 'present',
   $database                     = 'postgres',

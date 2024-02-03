@@ -1,4 +1,5 @@
-# Manage puppet configuration. See README.md for more details.
+# manage the puppet configuration on the primary
+#
 class puppetdb::master::config (
   $puppetdb_server             = fact('networking.fqdn'),
   $puppetdb_port               = defined(Class['puppetdb']) ? {

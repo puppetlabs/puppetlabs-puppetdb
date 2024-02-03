@@ -1,5 +1,5 @@
-# All in one class for setting up a PuppetDB instance. See README.md for more
-# details.
+# manage PuppetDB
+#
 class puppetdb (
   $listen_address                          = $puppetdb::params::listen_address,
   $listen_port                             = $puppetdb::params::listen_port,

@@ -1,5 +1,5 @@
-# Class for creating the PuppetDB postgresql database. See README.md for more
-# information.
+# create the PuppetDB postgresql database
+#
 class puppetdb::database::postgresql (
   $listen_addresses            = $puppetdb::params::database_host,
   $puppetdb_server             = $puppetdb::params::puppetdb_server,

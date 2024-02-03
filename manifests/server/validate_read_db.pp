@@ -1,4 +1,6 @@
-# This validates a database connection. See README.md for more details.
+# validates the read only database connection
+#
+# @api private
 class puppetdb::server::validate_read_db (
   $database            = $puppetdb::params::database,
   $database_host       = $puppetdb::params::database_host,

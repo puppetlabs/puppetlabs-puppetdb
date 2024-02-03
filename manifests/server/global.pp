@@ -1,4 +1,6 @@
-# PRIVATE CLASS - do not use directly
+# manage puppetdb global setting
+#
+# @api private
 class puppetdb::server::global (
   $vardir         = $puppetdb::params::vardir,
   $confdir        = $puppetdb::params::confdir,

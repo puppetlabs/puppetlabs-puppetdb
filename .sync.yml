@@ -17,7 +17,6 @@ Rakefile:
   default_disabled_lint_checks:
     - parameter_types
     - parameter_documentation
-    - documentation
     - 140chars
 spec/default_facts.yml:
   unmanaged: true

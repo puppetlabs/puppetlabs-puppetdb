@@ -1,5 +1,4 @@
 --relative
 --no-parameter_types-check
 --no-parameter_documentation-check
---no-documentation-check
 --no-140chars-check

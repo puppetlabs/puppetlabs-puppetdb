@@ -1,6 +1,6 @@
-# PRIVATE CLASS - do not use directly
+# default configuration settings
 #
-# The puppetdb default configuration settings.
+# @api private
 class puppetdb::params inherits puppetdb::globals {
   $listen_address            = 'localhost'
   $listen_port               = '8080'

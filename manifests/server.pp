@@ -1,4 +1,5 @@
-# Class to configure a PuppetDB server. See README.md for more details.
+# manage the PuppetDB server
+#
 class puppetdb::server (
   $listen_address                          = $puppetdb::params::listen_address,
   $listen_port                             = $puppetdb::params::listen_port,

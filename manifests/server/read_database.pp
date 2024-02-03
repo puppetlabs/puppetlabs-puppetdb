@@ -1,4 +1,6 @@
-# PRIVATE CLASS - do not use directly
+# manage puppetdb read_database ini
+#
+# @api private
 class puppetdb::server::read_database (
   $read_database          = $puppetdb::params::read_database,
   $read_database_host     = $puppetdb::params::read_database_host,

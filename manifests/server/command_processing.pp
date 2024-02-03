@@ -1,4 +1,6 @@
-# PRIVATE CLASS - do not use directly
+# manage puppetdb config ini
+#
+# @api private
 class puppetdb::server::command_processing (
   $command_threads   = $puppetdb::params::command_threads,
   $concurrent_writes = $puppetdb::params::concurrent_writes,

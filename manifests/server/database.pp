@@ -1,4 +1,6 @@
-# PRIVATE CLASS - do not use directly
+# manage puppetdb database ini
+#
+# @api private
 class puppetdb::server::database (
   $database                  = $puppetdb::params::database,
   $database_host             = $puppetdb::params::database_host,
