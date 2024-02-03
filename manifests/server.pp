@@ -23,7 +23,6 @@ class puppetdb::server (
   $postgresql_ssl_on                       = $puppetdb::params::postgresql_ssl_on,
   $cipher_suites                           = $puppetdb::params::cipher_suites,
   $migrate                                 = $puppetdb::params::migrate,
-  $database                                = $puppetdb::params::database,
   $database_host                           = $puppetdb::params::database_host,
   $database_port                           = $puppetdb::params::database_port,
   $database_username                       = $puppetdb::params::database_username,
@@ -32,7 +31,6 @@ class puppetdb::server (
   $manage_db_password                      = $puppetdb::params::manage_db_password,
   $jdbc_ssl_properties                     = $puppetdb::params::jdbc_ssl_properties,
   $database_validate                       = $puppetdb::params::database_validate,
-  $database_embedded_path                  = $puppetdb::params::database_embedded_path,
   $node_ttl                                = $puppetdb::params::node_ttl,
   $node_purge_ttl                          = $puppetdb::params::node_purge_ttl,
   $report_ttl                              = $puppetdb::params::report_ttl,
@@ -48,7 +46,6 @@ class puppetdb::server (
   $puppetdb_service_status                 = $puppetdb::params::puppetdb_service_status,
   $puppetdb_user                           = $puppetdb::params::puppetdb_user,
   $puppetdb_group                          = $puppetdb::params::puppetdb_group,
-  $read_database                           = $puppetdb::params::read_database,
   $read_database_host                      = $puppetdb::params::read_database_host,
   $read_database_port                      = $puppetdb::params::read_database_port,
   $read_database_username                  = $puppetdb::params::read_database_username,
@@ -122,16 +119,6 @@ class puppetdb::server (
     default           => fail("puppetdb_service_status valid values are 'true', 'running', 'false', and 'stopped'. You provided '${puppetdb_service_status}'"),
   }
 
-  # Validate database type (Currently only postgres and embedded are supported)
-  if !($database in ['postgres', 'embedded']) {
-    fail("database must must be 'postgres' or 'embedded'. You provided '${database}'")
-  }
-
-  # Validate read-database type (Currently only postgres is supported)
-  if !($read_database in ['postgres']) {
-    fail("read_database must be 'postgres'. You provided '${read_database}'")
-  }
-
   package { $puppetdb_package:
     ensure => $puppetdb::params::puppetdb_version,
     notify => Service[$puppetdb_service],
@@ -163,7 +150,6 @@ class puppetdb::server (
   }
 
   class { 'puppetdb::server::database':
-    database                  => $database,
     database_host             => $database_host,
     database_port             => $database_port,
     database_username         => $database_username,
@@ -177,7 +163,6 @@ class puppetdb::server (
     database_max_pool_size    => $database_max_pool_size,
     jdbc_ssl_properties       => $jdbc_ssl_properties,
     database_validate         => $database_validate,
-    database_embedded_path    => $database_embedded_path,
     node_ttl                  => $node_ttl,
     node_purge_ttl            => $node_purge_ttl,
     report_ttl                => $report_ttl,
@@ -206,7 +191,6 @@ class puppetdb::server (
   }
 
   class { 'puppetdb::server::read_database':
-    read_database          => $read_database,
     read_database_host     => $real_database_host,
     read_database_port     => $real_database_port,
     read_database_username => $read_database_username,

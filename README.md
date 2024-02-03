@@ -52,13 +52,6 @@ Setup
 
 To begin using PuppetDB, you’ll have to make a few decisions:
 
-* Which database back-end should I use?
-  * PostgreSQL (default) or our embedded database
-  * Embedded database
-    * **note:** As of PuppetDB 4.0, the embedded database is no longer supported as
-      an option. When running PuppetDB 3.x, we suggest using the embedded database
-      only for experimental environments rather than production, as it does not scale
-      well and can cause difficulty in migrating to PostgreSQL.
 * Should I run the database on the same node that I run PuppetDB on?
 * Should I run PuppetDB on the same node that I run my master on?
 
@@ -432,35 +425,22 @@ If true, the PostgreSQL server will be managed by this module. Defaults to `true
 
 If true, the PostgreSQL database will be managed by this module. Defaults to `true`.
 
-#### `database`
-
-Which database backend to use; legal values are `postgres` (default)
-or `embedded`. The `embedded` option is not supported on PuppetDB
-4.0.0 or later. `embedded` can be used for very small installations or
-for testing, but is not recommended for use in production
-environments. For more info, see the [puppetdb
-docs](https://puppet.com/docs/puppetdb/latest/).
-
 #### `database_host`
 
 Hostname to use for the database connection. For single case installations this
-should be left as the default. Defaults to `localhost`, ignored for `embedded`
-database.
+should be left as the default. Defaults to `localhost`.
 
 #### `database_port`
 
-The port that the database server listens on. Defaults to `5432`, ignored for
-`embedded` database.
+The port that the database server listens on. Defaults to `5432`.
 
 #### `database_username`
 
-The name of the database user to connect as. Defaults to `puppetdb`, ignored for
-`embedded` database.
+The name of the database user to connect as. Defaults to `puppetdb`.
 
 #### `database_password`
 
-The password for the database user. Defaults to `puppetdb`, ignored for
-`embedded` database.
+The password for the database user. Defaults to `puppetdb`.
 
 #### `manage_db_password`
 
@@ -470,8 +450,7 @@ Defaults to `true`
 
 #### `database_name`
 
-The name of the database instance to connect to. Defaults to `puppetdb`, ignored
-for `embedded` database.
+The name of the database instance to connect to. Defaults to `puppetdb`.
 
 #### `jdbc_ssl_properties`
 
@@ -479,20 +458,10 @@ The text to append to the JDBC connection URI. This should begin with a '?'
 character. For example, to use SSL for the PostgreSQL connection, set this
 parameter's value to `?ssl=true`.
 
-This setting is only available when using PostgreSQL; when using HyperSQL (the
-`embedded` database), it does nothing.
-
 #### `database_validate`
 
 If true, the module will attempt to connect to the database using the specified
 settings and fail if it is not able to do so. Defaults to `true`.
-
-#### `database_embedded_path`
-
-*Embedded Database Only* Changes the path location for the HSQLDB database. Does
- not provide migration for old data, so if you change this value and you have an
- existing database you will need to manually move the content also. (defaults to
- package default for 2.x release).
 
 #### `node_ttl`
 
@@ -599,11 +568,6 @@ init config file will reflect only what is passed via the `java_args` param.
 
 Jetty option to explicitly set `max-threads`. Defaults to `undef`, so the
 PuppetDB-Jetty default is used.
-
-#### `read_database`
-
-Which database backend to use for the read database. Only supports
-`postgres` (default). This option is supported in PuppetDB >= 1.6.
 
 #### `read_database_host`
 *This parameter must be set to use another PuppetDB instance for queries.*

@@ -31,7 +31,6 @@ class puppetdb (
   $manage_database                         = $puppetdb::params::manage_database,
   $manage_package_repo                     = $puppetdb::params::manage_pg_repo,
   $postgres_version                        = $puppetdb::params::postgres_version,
-  $database                                = $puppetdb::params::database,
   $database_host                           = $puppetdb::params::database_host,
   $database_port                           = $puppetdb::params::database_port,
   $database_username                       = $puppetdb::params::database_username,
@@ -41,7 +40,6 @@ class puppetdb (
   $jdbc_ssl_properties                     = $puppetdb::params::jdbc_ssl_properties,
   $database_listen_address                 = $puppetdb::params::postgres_listen_addresses,
   $database_validate                       = $puppetdb::params::database_validate,
-  $database_embedded_path                  = $puppetdb::params::database_embedded_path,
   $node_ttl                                = $puppetdb::params::node_ttl,
   $node_purge_ttl                          = $puppetdb::params::node_purge_ttl,
   $report_ttl                              = $puppetdb::params::report_ttl,
@@ -58,7 +56,6 @@ class puppetdb (
   $puppetdb_user                           = $puppetdb::params::puppetdb_user,
   $puppetdb_group                          = $puppetdb::params::puppetdb_group,
   $puppetdb_server                         = $puppetdb::params::puppetdb_server,
-  $read_database                           = $puppetdb::params::read_database,
   $read_database_host                      = $puppetdb::params::read_database_host,
   $read_database_port                      = $puppetdb::params::read_database_port,
   $read_database_username                  = $puppetdb::params::read_database_username,
@@ -114,7 +111,6 @@ class puppetdb (
     postgresql_ssl_on                 => $postgresql_ssl_on,
     cipher_suites                     => $cipher_suites,
     migrate                           => $migrate,
-    database                          => $database,
     database_host                     => $database_host,
     database_port                     => $database_port,
     database_username                 => $database_username,
@@ -123,7 +119,6 @@ class puppetdb (
     manage_db_password                => $manage_db_password,
     jdbc_ssl_properties               => $jdbc_ssl_properties,
     database_validate                 => $database_validate,
-    database_embedded_path            => $database_embedded_path,
     node_ttl                          => $node_ttl,
     node_purge_ttl                    => $node_purge_ttl,
     report_ttl                        => $report_ttl,
@@ -142,7 +137,6 @@ class puppetdb (
     java_args                         => $java_args,
     merge_default_java_args           => $merge_default_java_args,
     max_threads                       => $max_threads,
-    read_database                     => $read_database,
     read_database_host                => $read_database_host,
     read_database_port                => $read_database_port,
     read_database_username            => $read_database_username,
@@ -174,34 +168,32 @@ class puppetdb (
     java_bin                          => $java_bin,
   }
 
-  if ($database == 'postgres') {
-    $database_before = str2bool($database_validate) ? {
-      false => Class['puppetdb::server'],
-      default => [
-        Class['puppetdb::server'],
-        Class['puppetdb::server::validate_db']
-      ],
-    }
+  $database_before = str2bool($database_validate) ? {
+    false => Class['puppetdb::server'],
+    default => [
+      Class['puppetdb::server'],
+      Class['puppetdb::server::validate_db']
+    ],
+  }
 
-    class { 'puppetdb::database::postgresql':
-      listen_addresses            => $database_listen_address,
-      database_name               => $database_name,
-      puppetdb_server             => $puppetdb_server,
-      database_username           => $database_username,
-      database_password           => $database_password,
-      database_port               => $database_port,
-      manage_server               => $manage_dbserver,
-      manage_database             => $manage_database,
-      manage_package_repo         => $manage_package_repo,
-      postgres_version            => $postgres_version,
-      postgresql_ssl_on           => $postgresql_ssl_on,
-      postgresql_ssl_key_path     => $postgresql_ssl_key_path,
-      postgresql_ssl_cert_path    => $postgresql_ssl_cert_path,
-      postgresql_ssl_ca_cert_path => $postgresql_ssl_ca_cert_path,
-      read_database_username      => $read_database_username,
-      read_database_password      => $read_database_password,
-      read_database_host          => $read_database_host,
-      before                      => $database_before,
-    }
+  class { 'puppetdb::database::postgresql':
+    listen_addresses            => $database_listen_address,
+    database_name               => $database_name,
+    puppetdb_server             => $puppetdb_server,
+    database_username           => $database_username,
+    database_password           => $database_password,
+    database_port               => $database_port,
+    manage_server               => $manage_dbserver,
+    manage_database             => $manage_database,
+    manage_package_repo         => $manage_package_repo,
+    postgres_version            => $postgres_version,
+    postgresql_ssl_on           => $postgresql_ssl_on,
+    postgresql_ssl_key_path     => $postgresql_ssl_key_path,
+    postgresql_ssl_cert_path    => $postgresql_ssl_cert_path,
+    postgresql_ssl_ca_cert_path => $postgresql_ssl_ca_cert_path,
+    read_database_username      => $read_database_username,
+    read_database_password      => $read_database_password,
+    read_database_host          => $read_database_host,
+    before                      => $database_before,
   }
 }

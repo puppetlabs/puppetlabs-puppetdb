@@ -94,7 +94,6 @@ The following parameters are available in the `puppetdb` class:
 * [`manage_database`](#-puppetdb--manage_database)
 * [`manage_package_repo`](#-puppetdb--manage_package_repo)
 * [`postgres_version`](#-puppetdb--postgres_version)
-* [`database`](#-puppetdb--database)
 * [`database_host`](#-puppetdb--database_host)
 * [`database_port`](#-puppetdb--database_port)
 * [`database_username`](#-puppetdb--database_username)
@@ -104,7 +103,6 @@ The following parameters are available in the `puppetdb` class:
 * [`jdbc_ssl_properties`](#-puppetdb--jdbc_ssl_properties)
 * [`database_listen_address`](#-puppetdb--database_listen_address)
 * [`database_validate`](#-puppetdb--database_validate)
-* [`database_embedded_path`](#-puppetdb--database_embedded_path)
 * [`node_ttl`](#-puppetdb--node_ttl)
 * [`node_purge_ttl`](#-puppetdb--node_purge_ttl)
 * [`report_ttl`](#-puppetdb--report_ttl)
@@ -121,7 +119,6 @@ The following parameters are available in the `puppetdb` class:
 * [`puppetdb_user`](#-puppetdb--puppetdb_user)
 * [`puppetdb_group`](#-puppetdb--puppetdb_group)
 * [`puppetdb_server`](#-puppetdb--puppetdb_server)
-* [`read_database`](#-puppetdb--read_database)
 * [`read_database_host`](#-puppetdb--read_database_host)
 * [`read_database_port`](#-puppetdb--read_database_port)
 * [`read_database_username`](#-puppetdb--read_database_username)
@@ -394,14 +391,6 @@ Data type: `Any`
 
 Default value: `$puppetdb::params::postgres_version`
 
-##### <a name="-puppetdb--database"></a>`database`
-
-Data type: `Any`
-
-
-
-Default value: `$puppetdb::params::database`
-
 ##### <a name="-puppetdb--database_host"></a>`database_host`
 
 Data type: `Any`
@@ -473,14 +462,6 @@ Data type: `Any`
 
 
 Default value: `$puppetdb::params::database_validate`
-
-##### <a name="-puppetdb--database_embedded_path"></a>`database_embedded_path`
-
-Data type: `Any`
-
-
-
-Default value: `$puppetdb::params::database_embedded_path`
 
 ##### <a name="-puppetdb--node_ttl"></a>`node_ttl`
 
@@ -609,14 +590,6 @@ Data type: `Any`
 
 
 Default value: `$puppetdb::params::puppetdb_server`
-
-##### <a name="-puppetdb--read_database"></a>`read_database`
-
-Data type: `Any`
-
-
-
-Default value: `$puppetdb::params::read_database`
 
 ##### <a name="-puppetdb--read_database_host"></a>`read_database_host`
 
@@ -1037,7 +1010,6 @@ global configuration class for PuppetDB
 The following parameters are available in the `puppetdb::globals` class:
 
 * [`version`](#-puppetdb--globals--version)
-* [`database`](#-puppetdb--globals--database)
 * [`puppet_confdir`](#-puppetdb--globals--puppet_confdir)
 
 ##### <a name="-puppetdb--globals--version"></a>`version`
@@ -1047,14 +1019,6 @@ Data type: `Any`
 
 
 Default value: `'present'`
-
-##### <a name="-puppetdb--globals--database"></a>`database`
-
-Data type: `Any`
-
-
-
-Default value: `'postgres'`
 
 ##### <a name="-puppetdb--globals--puppet_confdir"></a>`puppet_confdir`
 
@@ -1298,7 +1262,6 @@ The following parameters are available in the `puppetdb::server` class:
 * [`postgresql_ssl_on`](#-puppetdb--server--postgresql_ssl_on)
 * [`cipher_suites`](#-puppetdb--server--cipher_suites)
 * [`migrate`](#-puppetdb--server--migrate)
-* [`database`](#-puppetdb--server--database)
 * [`database_host`](#-puppetdb--server--database_host)
 * [`database_port`](#-puppetdb--server--database_port)
 * [`database_username`](#-puppetdb--server--database_username)
@@ -1307,7 +1270,6 @@ The following parameters are available in the `puppetdb::server` class:
 * [`manage_db_password`](#-puppetdb--server--manage_db_password)
 * [`jdbc_ssl_properties`](#-puppetdb--server--jdbc_ssl_properties)
 * [`database_validate`](#-puppetdb--server--database_validate)
-* [`database_embedded_path`](#-puppetdb--server--database_embedded_path)
 * [`node_ttl`](#-puppetdb--server--node_ttl)
 * [`node_purge_ttl`](#-puppetdb--server--node_purge_ttl)
 * [`report_ttl`](#-puppetdb--server--report_ttl)
@@ -1323,7 +1285,6 @@ The following parameters are available in the `puppetdb::server` class:
 * [`puppetdb_service_status`](#-puppetdb--server--puppetdb_service_status)
 * [`puppetdb_user`](#-puppetdb--server--puppetdb_user)
 * [`puppetdb_group`](#-puppetdb--server--puppetdb_group)
-* [`read_database`](#-puppetdb--server--read_database)
 * [`read_database_host`](#-puppetdb--server--read_database_host)
 * [`read_database_port`](#-puppetdb--server--read_database_port)
 * [`read_database_username`](#-puppetdb--server--read_database_username)
@@ -1533,14 +1494,6 @@ Data type: `Any`
 
 Default value: `$puppetdb::params::migrate`
 
-##### <a name="-puppetdb--server--database"></a>`database`
-
-Data type: `Any`
-
-
-
-Default value: `$puppetdb::params::database`
-
 ##### <a name="-puppetdb--server--database_host"></a>`database_host`
 
 Data type: `Any`
@@ -1604,14 +1557,6 @@ Data type: `Any`
 
 
 Default value: `$puppetdb::params::database_validate`
-
-##### <a name="-puppetdb--server--database_embedded_path"></a>`database_embedded_path`
-
-Data type: `Any`
-
-
-
-Default value: `$puppetdb::params::database_embedded_path`
 
 ##### <a name="-puppetdb--server--node_ttl"></a>`node_ttl`
 
@@ -1732,14 +1677,6 @@ Data type: `Any`
 
 
 Default value: `$puppetdb::params::puppetdb_group`
-
-##### <a name="-puppetdb--server--read_database"></a>`read_database`
-
-Data type: `Any`
-
-
-
-Default value: `$puppetdb::params::read_database`
 
 ##### <a name="-puppetdb--server--read_database_host"></a>`read_database_host`
 

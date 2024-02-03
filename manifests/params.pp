@@ -15,7 +15,6 @@ class puppetdb::params inherits puppetdb::globals {
   $postgres_listen_addresses = 'localhost'
 
   $puppetdb_version          = $puppetdb::globals::version
-  $database                  = $puppetdb::globals::database
   $manage_dbserver           = true
   $manage_database           = true
 
@@ -37,7 +36,6 @@ class puppetdb::params inherits puppetdb::globals {
     default   => $puppetdb_version.split('.')[0],
   }
 
-  # The remaining database settings are not used for an embedded database
   $database_host          = 'localhost'
   $database_port          = '5432'
   $database_name          = 'puppetdb'
@@ -68,7 +66,6 @@ class puppetdb::params inherits puppetdb::globals {
   $migrate                = true
 
   # These settings are for the read database
-  $read_database                     = 'postgres'
   $read_database_host                = undef
   $read_database_port                = '5432'
   $read_database_name                = 'puppetdb'
@@ -97,7 +94,6 @@ class puppetdb::params inherits puppetdb::globals {
         $terminus_package       = 'puppetdb-terminus'
         $etcdir                 = '/etc/puppetdb'
         $vardir                 = '/var/lib/puppetdb'
-        $database_embedded_path = "${vardir}/db/db"
         $puppet_confdir         = pick($puppetdb::globals::puppet_confdir,'/etc/puppet')
         $puppet_service_name    = 'puppetmaster'
       }
@@ -106,7 +102,6 @@ class puppetdb::params inherits puppetdb::globals {
         $terminus_package       = 'puppetdb-terminus'
         $etcdir                 = '/etc/puppetdb'
         $vardir                 = '/var/db/puppetdb'
-        $database_embedded_path = "${vardir}/db/db"
         $puppet_confdir         = pick($puppetdb::globals::puppet_confdir,'/etc/puppet')
         $puppet_service_name    = 'puppetmasterd'
       }
@@ -115,7 +110,6 @@ class puppetdb::params inherits puppetdb::globals {
         $terminus_package       = inline_epp('puppetdb-terminus<%= $puppetdb::params::puppetdb_major_version %>')
         $etcdir                 = '/usr/local/etc/puppetdb'
         $vardir                 = '/var/db/puppetdb'
-        $database_embedded_path = "${vardir}/db/db"
         $puppet_confdir         = pick($puppetdb::globals::puppet_confdir,'/usr/local/etc/puppet')
         $puppet_service_name    = 'puppetmaster'
       }
@@ -155,7 +149,6 @@ class puppetdb::params inherits puppetdb::globals {
       }
     }
     $test_url               = '/pdb/meta/v1/version'
-    $database_embedded_path = "${vardir}/db/db"
   }
 
   $confdir = "${etcdir}/conf.d"

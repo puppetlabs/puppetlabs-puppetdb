@@ -14,7 +14,6 @@ describe 'puppetdb::server::validate_read_db', type: :class do
     it {
       is_expected.to contain_class('puppetdb::server::validate_read_db')
         .with(
-          database: 'postgres',
           database_host:     'localhost',
           database_port:     '5432',
           database_username: 'puppetdb',
@@ -41,12 +40,6 @@ describe 'puppetdb::server::validate_read_db', type: :class do
             database_name:     'puppetdb',
           )
       }
-    end
-
-    context 'with unsupported database' do
-      let(:params) { { database: 'nosql' } }
-
-      it { is_expected.not_to contain_postgresql__validate_db_connection('validate puppetdb postgres (read) connection') }
     end
 
     context 'without database password' do
