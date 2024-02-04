@@ -1,5 +1,314 @@
 # manage PuppetDB
 #
+# @param listen_address
+#   The address that the web server should bind to for HTTP requests. Defaults to
+#   `localhost`. Set to `0.0.0.0` to listen on all addresses.
+#
+# @param listen_port
+#   The port on which the puppetdb web server should accept HTTP requests. Defaults
+#   to `8080`.
+#
+# @param disable_cleartext
+#   If `true`, the puppetdb web server will only serve HTTPS and not HTTP requests (defaults to false).
+#
+# @param open_listen_port
+#   If `true`, open the `http_listen_port` on the firewall. Defaults to `false`.
+#
+# @param ssl_listen_address
+#   The address that the web server should bind to for HTTPS requests. Defaults to
+#   `0.0.0.0` to listen on all addresses.
+#
+# @param ssl_listen_port
+#   The port on which the puppetdb web server should accept HTTPS requests. Defaults
+#   to `8081`.
+#
+# @param disable_ssl
+#   If `true`, the puppetdb web server will only serve HTTP and not HTTPS requests.
+#   Defaults to `false`.
+#
+# @param open_ssl_listen_port
+#   If true, open the `ssl_listen_port` on the firewall. Defaults to `undef`.
+#
+# @param ssl_protocols
+#   Specify the supported SSL protocols for PuppetDB (e.g. TLSv1, TLSv1.1, TLSv1.2.)
+#
+# @param postgresql_ssl_on
+#   If `true`, it configures SSL connections between PuppetDB and the PostgreSQL database.
+#   Defaults to `false`.
+#
+# @param cipher_suites
+#   Configure jetty's supported `cipher-suites` (e.g. `SSL_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384`).
+#   Defaults to `undef`.
+#
+# @param migrate
+#   If `true`, puppetdb will automatically migrate to the latest database format at startup. If `false`, if the database format supplied by this version of PuppetDB doesn't match the version expected (whether newer or older), PuppetDB will exit with an error status. Defaults to `true`.
+#
+# @param manage_dbserver
+#   If true, the PostgreSQL server will be managed by this module. Defaults to `true`.
+#
+# @param manage_database
+#   If true, the PostgreSQL database will be managed by this module. Defaults to `true`.
+#
+# @param database_host
+#   Hostname to use for the database connection. For single case installations this
+#   should be left as the default. Defaults to `localhost`.
+#
+# @param database_port
+#   The port that the database server listens on. Defaults to `5432`.
+#
+# @param database_username
+#   The name of the database user to connect as. Defaults to `puppetdb`.
+#
+# @param database_password
+#   The password for the database user. Defaults to `puppetdb`.
+#
+# @param manage_db_password
+#   Whether or not the database password in database.ini will be managed by this module.
+#   Set this to `false` if you want to set the password some other way.
+#   Defaults to `true`
+#
+# @param database_name
+#   The name of the database instance to connect to. Defaults to `puppetdb`.
+#
+# @param jdbc_ssl_properties
+#   The text to append to the JDBC connection URI. This should begin with a '?'
+#   character. For example, to use SSL for the PostgreSQL connection, set this
+#   parameter's value to `?ssl=true`.
+#
+# @param database_validate
+#   If true, the module will attempt to connect to the database using the specified
+#   settings and fail if it is not able to do so. Defaults to `true`.
+#
+# @param node_ttl
+#   The length of time a node can go without receiving any new data before it's
+#   automatically deactivated. (defaults to '7d', which is a 7-day period. Set to
+#   '0d' to disable auto-deactivation).  This option is supported in PuppetDB >=
+#   1.1.0.
+#
+# @param node_purge_ttl
+#   The length of time a node can be deactivated before it's deleted from the
+#   database. (defaults to '14d', which is a 14-day period. Set to '0d' to disable
+#   purging). This option is supported in PuppetDB >= 1.2.0.
+#
+# @param report_ttl
+#   The length of time reports should be stored before being deleted. (defaults to
+#   `14d`, which is a 14-day period). This option is supported in PuppetDB >= 1.1.0.
+#
+# @param gc_interval
+#   This controls how often (in minutes) to compact the database. The compaction
+#   process reclaims space and deletes unnecessary rows. If not supplied, the
+#   default is every 60 minutes. This option is supported in PuppetDB >= 0.9.
+#
+# @param log_slow_statements
+#   This sets the number of seconds before an SQL query is considered "slow." Slow
+#   SQL queries are logged as warnings, to assist in debugging and tuning. Note
+#   PuppetDB does not interrupt slow queries; it simply reports them after they
+#   complete.
+#
+#   The default value is `10` seconds. A value of 0 will disable logging of slow
+#   queries. This option is supported in PuppetDB >= 1.1.
+#
+# @param conn_max_age
+#   The maximum time (in minutes) for a pooled connection to remain unused before
+#   it is closed off.
+#
+#   If not supplied, we default to `60` minutes. This option is supported in PuppetDB >= 1.1.
+#
+# @param conn_keep_alive
+#   This sets the time (in minutes) for a connection to remain idle before sending
+#   a test query to the DB. This is useful to prevent a DB from timing out
+#   connections on its end.
+#
+#   If not supplied, we default to 45 minutes. This option is supported in PuppetDB >= 1.1.
+#
+# @param conn_lifetime
+#   The maximum time (in minutes) a pooled connection should remain open. Any
+#   connections older than this setting will be closed off. Connections currently in
+#   use will not be affected until they are returned to the pool.
+#
+#   If not supplied, we won't terminate connections based on their age alone. This
+#   option is supported in PuppetDB >= 1.4.
+#
+# @param puppetdb_package
+#   The PuppetDB package name in the package manager. Defaults to `present`.
+#
+# @param puppetdb_service
+#   The name of the PuppetDB service. Defaults to `puppetdb`.
+#
+# @param puppetdb_service_status
+#   Sets whether the service should be `running ` or `stopped`. When set to `stopped` the
+#   service doesn't start on boot either. Valid values are `true`, `running`,
+#   `false`, and `stopped`.
+#
+# @param confdir
+#   The PuppetDB configuration directory. Defaults to `/etc/puppetdb/conf.d`.
+#
+# @param vardir
+#   The parent directory for the MQ's data directory.
+#
+# @param java_args
+#   Java VM options used for overriding default Java VM options specified in
+#   PuppetDB package. Defaults to `{}`. See
+#   [PuppetDB Configuration](https://puppet.com/docs/puppetdb/latest/configure.html)
+#   to get more details about the current defaults.
+#
+#   For example, to set `-Xmx512m -Xms256m` options use:
+#
+#       {
+#           '-Xmx' => '512m',
+#           '-Xms' => '256m',
+#       }
+#
+# @param merge_default_java_args
+#   Sets whether the provided java args should be merged with the defaults, or
+#   should override the defaults. This setting is necessary if any of the defaults
+#   are to be removed. Defaults to true. If `false`, the `java_args` in the PuppetDB
+#   init config file will reflect only what is passed via the `java_args` param.
+#
+# @param max_threads
+#   Jetty option to explicitly set `max-threads`. Defaults to `undef`, so the
+#   PuppetDB-Jetty default is used.
+#
+# @param read_database_host
+#   *This parameter must be set to use another PuppetDB instance for queries.*
+#
+#   The hostname or IP address of the read database server. If set to `undef`, and
+#   `manage_database` is set to `true`, it will use the value of the `database_host`
+#   parameter. This option is supported in PuppetDB >= 1.6.
+#
+# @param read_database_port
+#   The port that the read database server listens on. If `read_database_host`
+#   is set to `undef`, and `manage_database` is set to `true`, it will use the value of
+#   the `database_port` parameter. This option is supported in PuppetDB >= 1.6.
+#
+# @param read_database_username
+#   The name of the read database user to connect as. Defaults to `puppetdb-read`. This
+#   option is supported in PuppetDB >= 1.6.
+#
+# @param read_database_password
+#   The password for the read database user. Defaults to `puppetdb-read`. This option is
+#   supported in PuppetDB >= 1.6.
+#
+# @param manage_read_db_password
+#   Whether or not the database password in read-database.ini will be managed by this module.
+#   Set this to `false` if you want to set the password some other way.
+#   Defaults to `true`
+#
+# @param read_database_name
+#   The name of the read database instance to connect to. If `read_database_host`
+#   is set to `undef`, and `manage_database` is set to `true`, it will use the value of
+#   the `database_name` parameter. This option is supported in PuppetDB >= 1.6.
+#
+# @param read_log_slow_statements
+#   This sets the number of seconds before an SQL query to the read database is
+#   considered "slow." Slow SQL queries are logged as warnings, to assist in
+#   debugging and tuning. Note PuppetDB does not interrupt slow queries; it simply
+#   reports them after they complete.
+#
+#   The default value is 10 seconds. A value of 0 will disable logging of slow
+#   queries. This option is supported in PuppetDB >= 1.6.
+#
+# @param read_conn_max_age
+#   The maximum time (in minutes) for a pooled read database connection to remain
+#   unused before it is closed off.
+#
+#   If not supplied, we default to 60 minutes. This option is supported in PuppetDB >= 1.6.
+#
+# @param read_conn_keep_alive
+#   This sets the time (in minutes) for a read database connection to remain idle
+#   before sending a test query to the DB. This is useful to prevent a DB from
+#   timing out connections on its end.
+#
+#   If not supplied, we default to 45 minutes. This option is supported in PuppetDB >= 1.6.
+#
+# @param read_conn_lifetime
+#   The maximum time (in minutes) a pooled read database connection should remain
+#   open. Any connections older than this setting will be closed off. Connections
+#   currently in use will not be affected until they are returned to the pool.
+#
+#   If not supplied, we won't terminate connections based on their age alone. This
+#   option is supported in PuppetDB >= 1.6.
+#
+# @param ssl_dir
+#   Base directory for PuppetDB SSL configuration. Defaults to `/etc/puppetdb/ssl`
+#   or `/etc/puppetlabs/puppetdb/ssl` for FOSS and PE respectively.
+#
+# @param ssl_set_cert_paths
+#   A switch to enable or disable the management of SSL certificates in your
+#   `jetty.ini` configuration file.
+#
+# @param ssl_cert_path
+#   Path to your SSL certificate for populating `jetty.ini`.
+#
+# @param ssl_key_path
+#   Path to your SSL key for populating `jetty.ini`.
+#
+# @param ssl_ca_cert_path
+#   Path to your SSL CA for populating `jetty.ini`.
+#
+# @param ssl_deploy_certs
+#   A boolean switch to enable or disable the management of SSL keys in your
+#   `ssl_dir`. Default is `false`.
+#
+# @param ssl_key
+#   Contents of your SSL key, as a string.
+#
+# @param ssl_cert
+#   Contents of your SSL certificate, as a string.
+#
+# @param ssl_ca_cert
+#   Contents of your SSL CA certificate, as a string.
+#
+# @param manage_firewall
+#   If `true`, puppet will manage your iptables rules for PuppetDB via the
+#   [puppetlabs-firewall](https://forge.puppetlabs.com/puppetlabs/firewall) class.
+#
+# @param command_threads
+#   The number of command processing threads to use. Defaults to `undef`, using the
+#   PuppetDB built-in default.
+#
+# @param concurrent_writes
+#   The number of threads allowed to write to disk at any one time. Defaults to
+#   `undef`, which uses the PuppetDB built-in default.
+#
+# @param store_usage
+#   The amount of disk space (in MB) to allow for persistent message storage.
+#   Defaults to `undef`, using the PuppetDB built-in default.
+#
+# @param temp_usage
+#   The amount of disk space (in MB) to allow for temporary message storage.
+#   Defaults to `undef`, using the PuppetDB built-in default.
+#
+# @param disable_update_checking
+#   Setting this to true disables checking for updated versions of PuppetDB and sending basic analytics data to Puppet.
+#   Defaults to `undef`, using the PuppetDB built-in default.
+#
+# @param certificate_whitelist_file
+#   The name of the certificate whitelist file to set up and configure in PuppetDB. Defaults to `/etc/puppetdb/certificate-whitelist` or `/etc/puppetlabs/puppetdb/certificate-whitelist` for FOSS and PE respectively.
+#
+# @param certificate_whitelist
+#   Array of the X.509 certificate Common Names of clients allowed to connect to PuppetDB. Defaults to empty. Be aware that this permits full access to all Puppet clients to download anything contained in PuppetDB, including the full catalogs of all nodes, which possibly contain sensitive information. Set to `[ $::servername ]` to allow access only from your (single) Puppet master, which is enough for normal operation. Set to a list of Puppet masters if you have multiple.
+#
+# @param automatic_dlo_cleanup
+#   PuppetDB creates [Dead Letter Office](https://puppet.com/docs/puppetdb/5.2/maintain_and_tune.html#clean-up-the-dead-letter-office).
+#   Those are reports of failed requests. They spill up the disk. This parameter is
+#   a boolean and defaults to false. You can enable automatic cleanup of DLO
+#   reports by setting this to true.
+#
+# @param cleanup_timer_interval
+#   The DLO cleanup is a systemd timer if systemd is available, otherwise a
+#   cronjob. The variable configures the systemd.timer option [onCalender](https://www.freedesktop.org/software/systemd/man/systemd.timer.html#OnCalendar=).
+#   It defaults to `*-*-* ${fqdn_rand(24)}:${fqdn_rand(60)}:00`. This will start
+#   the cleanup service on a daily basis. The exact minute and hour is random
+#   per node based on the [fqdn_rand](https://puppet.com/docs/puppet/5.5/function.html#fqdnrand)
+#   method. On non-systemd systems, the cron runs daily and the `$puppetdb_user` needs
+#   to be able to run cron jobs. On systemd systems you need the [camptocamp/systemd](https://forge.puppet.com/camptocamp/systemd)
+#   module, which is an optional dependency and not automatically installed!
+#
+# @param dlo_max_age
+#   This is a positive integer. It describes the amount of days you want to keep
+#   the DLO reports. The default value is 90 days.
+#
 class puppetdb (
   $listen_address                          = $puppetdb::params::listen_address,
   $listen_port                             = $puppetdb::params::listen_port,

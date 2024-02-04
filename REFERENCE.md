@@ -72,43 +72,24 @@ The following parameters are available in the `puppetdb` class:
 * [`ssl_listen_port`](#-puppetdb--ssl_listen_port)
 * [`disable_ssl`](#-puppetdb--disable_ssl)
 * [`open_ssl_listen_port`](#-puppetdb--open_ssl_listen_port)
-* [`ssl_dir`](#-puppetdb--ssl_dir)
-* [`ssl_set_cert_paths`](#-puppetdb--ssl_set_cert_paths)
-* [`ssl_cert_path`](#-puppetdb--ssl_cert_path)
-* [`ssl_key_path`](#-puppetdb--ssl_key_path)
-* [`ssl_key_pk8_path`](#-puppetdb--ssl_key_pk8_path)
-* [`ssl_ca_cert_path`](#-puppetdb--ssl_ca_cert_path)
-* [`ssl_deploy_certs`](#-puppetdb--ssl_deploy_certs)
-* [`ssl_key`](#-puppetdb--ssl_key)
-* [`ssl_cert`](#-puppetdb--ssl_cert)
-* [`ssl_ca_cert`](#-puppetdb--ssl_ca_cert)
 * [`ssl_protocols`](#-puppetdb--ssl_protocols)
 * [`postgresql_ssl_on`](#-puppetdb--postgresql_ssl_on)
-* [`postgresql_ssl_folder`](#-puppetdb--postgresql_ssl_folder)
-* [`postgresql_ssl_cert_path`](#-puppetdb--postgresql_ssl_cert_path)
-* [`postgresql_ssl_key_path`](#-puppetdb--postgresql_ssl_key_path)
-* [`postgresql_ssl_ca_cert_path`](#-puppetdb--postgresql_ssl_ca_cert_path)
 * [`cipher_suites`](#-puppetdb--cipher_suites)
 * [`migrate`](#-puppetdb--migrate)
 * [`manage_dbserver`](#-puppetdb--manage_dbserver)
 * [`manage_database`](#-puppetdb--manage_database)
-* [`manage_package_repo`](#-puppetdb--manage_package_repo)
-* [`postgres_version`](#-puppetdb--postgres_version)
 * [`database_host`](#-puppetdb--database_host)
 * [`database_port`](#-puppetdb--database_port)
 * [`database_username`](#-puppetdb--database_username)
 * [`database_password`](#-puppetdb--database_password)
-* [`database_name`](#-puppetdb--database_name)
 * [`manage_db_password`](#-puppetdb--manage_db_password)
+* [`database_name`](#-puppetdb--database_name)
 * [`jdbc_ssl_properties`](#-puppetdb--jdbc_ssl_properties)
-* [`database_listen_address`](#-puppetdb--database_listen_address)
 * [`database_validate`](#-puppetdb--database_validate)
 * [`node_ttl`](#-puppetdb--node_ttl)
 * [`node_purge_ttl`](#-puppetdb--node_purge_ttl)
 * [`report_ttl`](#-puppetdb--report_ttl)
-* [`facts_blacklist`](#-puppetdb--facts_blacklist)
 * [`gc_interval`](#-puppetdb--gc_interval)
-* [`node_purge_gc_batch_limit`](#-puppetdb--node_purge_gc_batch_limit)
 * [`log_slow_statements`](#-puppetdb--log_slow_statements)
 * [`conn_max_age`](#-puppetdb--conn_max_age)
 * [`conn_keep_alive`](#-puppetdb--conn_keep_alive)
@@ -116,27 +97,31 @@ The following parameters are available in the `puppetdb` class:
 * [`puppetdb_package`](#-puppetdb--puppetdb_package)
 * [`puppetdb_service`](#-puppetdb--puppetdb_service)
 * [`puppetdb_service_status`](#-puppetdb--puppetdb_service_status)
-* [`puppetdb_user`](#-puppetdb--puppetdb_user)
-* [`puppetdb_group`](#-puppetdb--puppetdb_group)
-* [`puppetdb_server`](#-puppetdb--puppetdb_server)
+* [`confdir`](#-puppetdb--confdir)
+* [`vardir`](#-puppetdb--vardir)
+* [`java_args`](#-puppetdb--java_args)
+* [`merge_default_java_args`](#-puppetdb--merge_default_java_args)
+* [`max_threads`](#-puppetdb--max_threads)
 * [`read_database_host`](#-puppetdb--read_database_host)
 * [`read_database_port`](#-puppetdb--read_database_port)
 * [`read_database_username`](#-puppetdb--read_database_username)
 * [`read_database_password`](#-puppetdb--read_database_password)
-* [`read_database_name`](#-puppetdb--read_database_name)
 * [`manage_read_db_password`](#-puppetdb--manage_read_db_password)
-* [`read_database_jdbc_ssl_properties`](#-puppetdb--read_database_jdbc_ssl_properties)
-* [`read_database_validate`](#-puppetdb--read_database_validate)
+* [`read_database_name`](#-puppetdb--read_database_name)
 * [`read_log_slow_statements`](#-puppetdb--read_log_slow_statements)
 * [`read_conn_max_age`](#-puppetdb--read_conn_max_age)
 * [`read_conn_keep_alive`](#-puppetdb--read_conn_keep_alive)
 * [`read_conn_lifetime`](#-puppetdb--read_conn_lifetime)
-* [`confdir`](#-puppetdb--confdir)
-* [`vardir`](#-puppetdb--vardir)
+* [`ssl_dir`](#-puppetdb--ssl_dir)
+* [`ssl_set_cert_paths`](#-puppetdb--ssl_set_cert_paths)
+* [`ssl_cert_path`](#-puppetdb--ssl_cert_path)
+* [`ssl_key_path`](#-puppetdb--ssl_key_path)
+* [`ssl_ca_cert_path`](#-puppetdb--ssl_ca_cert_path)
+* [`ssl_deploy_certs`](#-puppetdb--ssl_deploy_certs)
+* [`ssl_key`](#-puppetdb--ssl_key)
+* [`ssl_cert`](#-puppetdb--ssl_cert)
+* [`ssl_ca_cert`](#-puppetdb--ssl_ca_cert)
 * [`manage_firewall`](#-puppetdb--manage_firewall)
-* [`java_args`](#-puppetdb--java_args)
-* [`merge_default_java_args`](#-puppetdb--merge_default_java_args)
-* [`max_threads`](#-puppetdb--max_threads)
 * [`command_threads`](#-puppetdb--command_threads)
 * [`concurrent_writes`](#-puppetdb--concurrent_writes)
 * [`store_usage`](#-puppetdb--store_usage)
@@ -144,18 +129,34 @@ The following parameters are available in the `puppetdb` class:
 * [`disable_update_checking`](#-puppetdb--disable_update_checking)
 * [`certificate_whitelist_file`](#-puppetdb--certificate_whitelist_file)
 * [`certificate_whitelist`](#-puppetdb--certificate_whitelist)
-* [`database_max_pool_size`](#-puppetdb--database_max_pool_size)
-* [`read_database_max_pool_size`](#-puppetdb--read_database_max_pool_size)
 * [`automatic_dlo_cleanup`](#-puppetdb--automatic_dlo_cleanup)
 * [`cleanup_timer_interval`](#-puppetdb--cleanup_timer_interval)
 * [`dlo_max_age`](#-puppetdb--dlo_max_age)
+* [`ssl_key_pk8_path`](#-puppetdb--ssl_key_pk8_path)
+* [`postgresql_ssl_folder`](#-puppetdb--postgresql_ssl_folder)
+* [`postgresql_ssl_cert_path`](#-puppetdb--postgresql_ssl_cert_path)
+* [`postgresql_ssl_key_path`](#-puppetdb--postgresql_ssl_key_path)
+* [`postgresql_ssl_ca_cert_path`](#-puppetdb--postgresql_ssl_ca_cert_path)
+* [`manage_package_repo`](#-puppetdb--manage_package_repo)
+* [`postgres_version`](#-puppetdb--postgres_version)
+* [`database_listen_address`](#-puppetdb--database_listen_address)
+* [`facts_blacklist`](#-puppetdb--facts_blacklist)
+* [`node_purge_gc_batch_limit`](#-puppetdb--node_purge_gc_batch_limit)
+* [`puppetdb_user`](#-puppetdb--puppetdb_user)
+* [`puppetdb_group`](#-puppetdb--puppetdb_group)
+* [`puppetdb_server`](#-puppetdb--puppetdb_server)
+* [`read_database_jdbc_ssl_properties`](#-puppetdb--read_database_jdbc_ssl_properties)
+* [`read_database_validate`](#-puppetdb--read_database_validate)
+* [`database_max_pool_size`](#-puppetdb--database_max_pool_size)
+* [`read_database_max_pool_size`](#-puppetdb--read_database_max_pool_size)
 * [`java_bin`](#-puppetdb--java_bin)
 
 ##### <a name="-puppetdb--listen_address"></a>`listen_address`
 
 Data type: `Any`
 
-
+The address that the web server should bind to for HTTP requests. Defaults to
+`localhost`. Set to `0.0.0.0` to listen on all addresses.
 
 Default value: `$puppetdb::params::listen_address`
 
@@ -163,7 +164,8 @@ Default value: `$puppetdb::params::listen_address`
 
 Data type: `Any`
 
-
+The port on which the puppetdb web server should accept HTTP requests. Defaults
+to `8080`.
 
 Default value: `$puppetdb::params::listen_port`
 
@@ -171,7 +173,7 @@ Default value: `$puppetdb::params::listen_port`
 
 Data type: `Any`
 
-
+If `true`, the puppetdb web server will only serve HTTPS and not HTTP requests (defaults to false).
 
 Default value: `$puppetdb::params::disable_cleartext`
 
@@ -179,7 +181,7 @@ Default value: `$puppetdb::params::disable_cleartext`
 
 Data type: `Any`
 
-
+If `true`, open the `http_listen_port` on the firewall. Defaults to `false`.
 
 Default value: `$puppetdb::params::open_listen_port`
 
@@ -187,7 +189,8 @@ Default value: `$puppetdb::params::open_listen_port`
 
 Data type: `Any`
 
-
+The address that the web server should bind to for HTTPS requests. Defaults to
+`0.0.0.0` to listen on all addresses.
 
 Default value: `$puppetdb::params::ssl_listen_address`
 
@@ -195,7 +198,8 @@ Default value: `$puppetdb::params::ssl_listen_address`
 
 Data type: `Any`
 
-
+The port on which the puppetdb web server should accept HTTPS requests. Defaults
+to `8081`.
 
 Default value: `$puppetdb::params::ssl_listen_port`
 
@@ -203,7 +207,8 @@ Default value: `$puppetdb::params::ssl_listen_port`
 
 Data type: `Any`
 
-
+If `true`, the puppetdb web server will only serve HTTP and not HTTPS requests.
+Defaults to `false`.
 
 Default value: `$puppetdb::params::disable_ssl`
 
@@ -211,15 +216,416 @@ Default value: `$puppetdb::params::disable_ssl`
 
 Data type: `Any`
 
-
+If true, open the `ssl_listen_port` on the firewall. Defaults to `undef`.
 
 Default value: `$puppetdb::params::open_ssl_listen_port`
+
+##### <a name="-puppetdb--ssl_protocols"></a>`ssl_protocols`
+
+Data type: `Any`
+
+Specify the supported SSL protocols for PuppetDB (e.g. TLSv1, TLSv1.1, TLSv1.2.)
+
+Default value: `$puppetdb::params::ssl_protocols`
+
+##### <a name="-puppetdb--postgresql_ssl_on"></a>`postgresql_ssl_on`
+
+Data type: `Any`
+
+If `true`, it configures SSL connections between PuppetDB and the PostgreSQL database.
+Defaults to `false`.
+
+Default value: `$puppetdb::params::postgresql_ssl_on`
+
+##### <a name="-puppetdb--cipher_suites"></a>`cipher_suites`
+
+Data type: `Any`
+
+Configure jetty's supported `cipher-suites` (e.g. `SSL_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384`).
+Defaults to `undef`.
+
+Default value: `$puppetdb::params::cipher_suites`
+
+##### <a name="-puppetdb--migrate"></a>`migrate`
+
+Data type: `Any`
+
+If `true`, puppetdb will automatically migrate to the latest database format at startup. If `false`, if the database format supplied by this version of PuppetDB doesn't match the version expected (whether newer or older), PuppetDB will exit with an error status. Defaults to `true`.
+
+Default value: `$puppetdb::params::migrate`
+
+##### <a name="-puppetdb--manage_dbserver"></a>`manage_dbserver`
+
+Data type: `Any`
+
+If true, the PostgreSQL server will be managed by this module. Defaults to `true`.
+
+Default value: `$puppetdb::params::manage_dbserver`
+
+##### <a name="-puppetdb--manage_database"></a>`manage_database`
+
+Data type: `Any`
+
+If true, the PostgreSQL database will be managed by this module. Defaults to `true`.
+
+Default value: `$puppetdb::params::manage_database`
+
+##### <a name="-puppetdb--database_host"></a>`database_host`
+
+Data type: `Any`
+
+Hostname to use for the database connection. For single case installations this
+should be left as the default. Defaults to `localhost`.
+
+Default value: `$puppetdb::params::database_host`
+
+##### <a name="-puppetdb--database_port"></a>`database_port`
+
+Data type: `Any`
+
+The port that the database server listens on. Defaults to `5432`.
+
+Default value: `$puppetdb::params::database_port`
+
+##### <a name="-puppetdb--database_username"></a>`database_username`
+
+Data type: `Any`
+
+The name of the database user to connect as. Defaults to `puppetdb`.
+
+Default value: `$puppetdb::params::database_username`
+
+##### <a name="-puppetdb--database_password"></a>`database_password`
+
+Data type: `Any`
+
+The password for the database user. Defaults to `puppetdb`.
+
+Default value: `$puppetdb::params::database_password`
+
+##### <a name="-puppetdb--manage_db_password"></a>`manage_db_password`
+
+Data type: `Any`
+
+Whether or not the database password in database.ini will be managed by this module.
+Set this to `false` if you want to set the password some other way.
+Defaults to `true`
+
+Default value: `$puppetdb::params::manage_db_password`
+
+##### <a name="-puppetdb--database_name"></a>`database_name`
+
+Data type: `Any`
+
+The name of the database instance to connect to. Defaults to `puppetdb`.
+
+Default value: `$puppetdb::params::database_name`
+
+##### <a name="-puppetdb--jdbc_ssl_properties"></a>`jdbc_ssl_properties`
+
+Data type: `Any`
+
+The text to append to the JDBC connection URI. This should begin with a '?'
+character. For example, to use SSL for the PostgreSQL connection, set this
+parameter's value to `?ssl=true`.
+
+Default value: `$puppetdb::params::jdbc_ssl_properties`
+
+##### <a name="-puppetdb--database_validate"></a>`database_validate`
+
+Data type: `Any`
+
+If true, the module will attempt to connect to the database using the specified
+settings and fail if it is not able to do so. Defaults to `true`.
+
+Default value: `$puppetdb::params::database_validate`
+
+##### <a name="-puppetdb--node_ttl"></a>`node_ttl`
+
+Data type: `Any`
+
+The length of time a node can go without receiving any new data before it's
+automatically deactivated. (defaults to '7d', which is a 7-day period. Set to
+'0d' to disable auto-deactivation).  This option is supported in PuppetDB >=
+1.1.0.
+
+Default value: `$puppetdb::params::node_ttl`
+
+##### <a name="-puppetdb--node_purge_ttl"></a>`node_purge_ttl`
+
+Data type: `Any`
+
+The length of time a node can be deactivated before it's deleted from the
+database. (defaults to '14d', which is a 14-day period. Set to '0d' to disable
+purging). This option is supported in PuppetDB >= 1.2.0.
+
+Default value: `$puppetdb::params::node_purge_ttl`
+
+##### <a name="-puppetdb--report_ttl"></a>`report_ttl`
+
+Data type: `Any`
+
+The length of time reports should be stored before being deleted. (defaults to
+`14d`, which is a 14-day period). This option is supported in PuppetDB >= 1.1.0.
+
+Default value: `$puppetdb::params::report_ttl`
+
+##### <a name="-puppetdb--gc_interval"></a>`gc_interval`
+
+Data type: `Any`
+
+This controls how often (in minutes) to compact the database. The compaction
+process reclaims space and deletes unnecessary rows. If not supplied, the
+default is every 60 minutes. This option is supported in PuppetDB >= 0.9.
+
+Default value: `$puppetdb::params::gc_interval`
+
+##### <a name="-puppetdb--log_slow_statements"></a>`log_slow_statements`
+
+Data type: `Any`
+
+This sets the number of seconds before an SQL query is considered "slow." Slow
+SQL queries are logged as warnings, to assist in debugging and tuning. Note
+PuppetDB does not interrupt slow queries; it simply reports them after they
+complete.
+
+The default value is `10` seconds. A value of 0 will disable logging of slow
+queries. This option is supported in PuppetDB >= 1.1.
+
+Default value: `$puppetdb::params::log_slow_statements`
+
+##### <a name="-puppetdb--conn_max_age"></a>`conn_max_age`
+
+Data type: `Any`
+
+The maximum time (in minutes) for a pooled connection to remain unused before
+it is closed off.
+
+If not supplied, we default to `60` minutes. This option is supported in PuppetDB >= 1.1.
+
+Default value: `$puppetdb::params::conn_max_age`
+
+##### <a name="-puppetdb--conn_keep_alive"></a>`conn_keep_alive`
+
+Data type: `Any`
+
+This sets the time (in minutes) for a connection to remain idle before sending
+a test query to the DB. This is useful to prevent a DB from timing out
+connections on its end.
+
+If not supplied, we default to 45 minutes. This option is supported in PuppetDB >= 1.1.
+
+Default value: `$puppetdb::params::conn_keep_alive`
+
+##### <a name="-puppetdb--conn_lifetime"></a>`conn_lifetime`
+
+Data type: `Any`
+
+The maximum time (in minutes) a pooled connection should remain open. Any
+connections older than this setting will be closed off. Connections currently in
+use will not be affected until they are returned to the pool.
+
+If not supplied, we won't terminate connections based on their age alone. This
+option is supported in PuppetDB >= 1.4.
+
+Default value: `$puppetdb::params::conn_lifetime`
+
+##### <a name="-puppetdb--puppetdb_package"></a>`puppetdb_package`
+
+Data type: `Any`
+
+The PuppetDB package name in the package manager. Defaults to `present`.
+
+Default value: `$puppetdb::params::puppetdb_package`
+
+##### <a name="-puppetdb--puppetdb_service"></a>`puppetdb_service`
+
+Data type: `Any`
+
+The name of the PuppetDB service. Defaults to `puppetdb`.
+
+Default value: `$puppetdb::params::puppetdb_service`
+
+##### <a name="-puppetdb--puppetdb_service_status"></a>`puppetdb_service_status`
+
+Data type: `Any`
+
+Sets whether the service should be `running ` or `stopped`. When set to `stopped` the
+service doesn't start on boot either. Valid values are `true`, `running`,
+`false`, and `stopped`.
+
+Default value: `$puppetdb::params::puppetdb_service_status`
+
+##### <a name="-puppetdb--confdir"></a>`confdir`
+
+Data type: `Any`
+
+The PuppetDB configuration directory. Defaults to `/etc/puppetdb/conf.d`.
+
+Default value: `$puppetdb::params::confdir`
+
+##### <a name="-puppetdb--vardir"></a>`vardir`
+
+Data type: `Any`
+
+The parent directory for the MQ's data directory.
+
+Default value: `$puppetdb::params::vardir`
+
+##### <a name="-puppetdb--java_args"></a>`java_args`
+
+Data type: `Any`
+
+Java VM options used for overriding default Java VM options specified in
+PuppetDB package. Defaults to `{}`. See
+[PuppetDB Configuration](https://puppet.com/docs/puppetdb/latest/configure.html)
+to get more details about the current defaults.
+
+For example, to set `-Xmx512m -Xms256m` options use:
+
+    {
+        '-Xmx' => '512m',
+        '-Xms' => '256m',
+    }
+
+Default value: `$puppetdb::params::java_args`
+
+##### <a name="-puppetdb--merge_default_java_args"></a>`merge_default_java_args`
+
+Data type: `Any`
+
+Sets whether the provided java args should be merged with the defaults, or
+should override the defaults. This setting is necessary if any of the defaults
+are to be removed. Defaults to true. If `false`, the `java_args` in the PuppetDB
+init config file will reflect only what is passed via the `java_args` param.
+
+Default value: `$puppetdb::params::merge_default_java_args`
+
+##### <a name="-puppetdb--max_threads"></a>`max_threads`
+
+Data type: `Any`
+
+Jetty option to explicitly set `max-threads`. Defaults to `undef`, so the
+PuppetDB-Jetty default is used.
+
+Default value: `$puppetdb::params::max_threads`
+
+##### <a name="-puppetdb--read_database_host"></a>`read_database_host`
+
+Data type: `Any`
+
+*This parameter must be set to use another PuppetDB instance for queries.*
+
+The hostname or IP address of the read database server. If set to `undef`, and
+`manage_database` is set to `true`, it will use the value of the `database_host`
+parameter. This option is supported in PuppetDB >= 1.6.
+
+Default value: `$puppetdb::params::read_database_host`
+
+##### <a name="-puppetdb--read_database_port"></a>`read_database_port`
+
+Data type: `Any`
+
+The port that the read database server listens on. If `read_database_host`
+is set to `undef`, and `manage_database` is set to `true`, it will use the value of
+the `database_port` parameter. This option is supported in PuppetDB >= 1.6.
+
+Default value: `$puppetdb::params::read_database_port`
+
+##### <a name="-puppetdb--read_database_username"></a>`read_database_username`
+
+Data type: `Any`
+
+The name of the read database user to connect as. Defaults to `puppetdb-read`. This
+option is supported in PuppetDB >= 1.6.
+
+Default value: `$puppetdb::params::read_database_username`
+
+##### <a name="-puppetdb--read_database_password"></a>`read_database_password`
+
+Data type: `Any`
+
+The password for the read database user. Defaults to `puppetdb-read`. This option is
+supported in PuppetDB >= 1.6.
+
+Default value: `$puppetdb::params::read_database_password`
+
+##### <a name="-puppetdb--manage_read_db_password"></a>`manage_read_db_password`
+
+Data type: `Any`
+
+Whether or not the database password in read-database.ini will be managed by this module.
+Set this to `false` if you want to set the password some other way.
+Defaults to `true`
+
+Default value: `$puppetdb::params::manage_read_db_password`
+
+##### <a name="-puppetdb--read_database_name"></a>`read_database_name`
+
+Data type: `Any`
+
+The name of the read database instance to connect to. If `read_database_host`
+is set to `undef`, and `manage_database` is set to `true`, it will use the value of
+the `database_name` parameter. This option is supported in PuppetDB >= 1.6.
+
+Default value: `$puppetdb::params::read_database_name`
+
+##### <a name="-puppetdb--read_log_slow_statements"></a>`read_log_slow_statements`
+
+Data type: `Any`
+
+This sets the number of seconds before an SQL query to the read database is
+considered "slow." Slow SQL queries are logged as warnings, to assist in
+debugging and tuning. Note PuppetDB does not interrupt slow queries; it simply
+reports them after they complete.
+
+The default value is 10 seconds. A value of 0 will disable logging of slow
+queries. This option is supported in PuppetDB >= 1.6.
+
+Default value: `$puppetdb::params::read_log_slow_statements`
+
+##### <a name="-puppetdb--read_conn_max_age"></a>`read_conn_max_age`
+
+Data type: `Any`
+
+The maximum time (in minutes) for a pooled read database connection to remain
+unused before it is closed off.
+
+If not supplied, we default to 60 minutes. This option is supported in PuppetDB >= 1.6.
+
+Default value: `$puppetdb::params::read_conn_max_age`
+
+##### <a name="-puppetdb--read_conn_keep_alive"></a>`read_conn_keep_alive`
+
+Data type: `Any`
+
+This sets the time (in minutes) for a read database connection to remain idle
+before sending a test query to the DB. This is useful to prevent a DB from
+timing out connections on its end.
+
+If not supplied, we default to 45 minutes. This option is supported in PuppetDB >= 1.6.
+
+Default value: `$puppetdb::params::read_conn_keep_alive`
+
+##### <a name="-puppetdb--read_conn_lifetime"></a>`read_conn_lifetime`
+
+Data type: `Any`
+
+The maximum time (in minutes) a pooled read database connection should remain
+open. Any connections older than this setting will be closed off. Connections
+currently in use will not be affected until they are returned to the pool.
+
+If not supplied, we won't terminate connections based on their age alone. This
+option is supported in PuppetDB >= 1.6.
+
+Default value: `$puppetdb::params::read_conn_lifetime`
 
 ##### <a name="-puppetdb--ssl_dir"></a>`ssl_dir`
 
 Data type: `Any`
 
-
+Base directory for PuppetDB SSL configuration. Defaults to `/etc/puppetdb/ssl`
+or `/etc/puppetlabs/puppetdb/ssl` for FOSS and PE respectively.
 
 Default value: `$puppetdb::params::ssl_dir`
 
@@ -227,7 +633,8 @@ Default value: `$puppetdb::params::ssl_dir`
 
 Data type: `Any`
 
-
+A switch to enable or disable the management of SSL certificates in your
+`jetty.ini` configuration file.
 
 Default value: `$puppetdb::params::ssl_set_cert_paths`
 
@@ -235,7 +642,7 @@ Default value: `$puppetdb::params::ssl_set_cert_paths`
 
 Data type: `Any`
 
-
+Path to your SSL certificate for populating `jetty.ini`.
 
 Default value: `$puppetdb::params::ssl_cert_path`
 
@@ -243,9 +650,155 @@ Default value: `$puppetdb::params::ssl_cert_path`
 
 Data type: `Any`
 
-
+Path to your SSL key for populating `jetty.ini`.
 
 Default value: `$puppetdb::params::ssl_key_path`
+
+##### <a name="-puppetdb--ssl_ca_cert_path"></a>`ssl_ca_cert_path`
+
+Data type: `Any`
+
+Path to your SSL CA for populating `jetty.ini`.
+
+Default value: `$puppetdb::params::ssl_ca_cert_path`
+
+##### <a name="-puppetdb--ssl_deploy_certs"></a>`ssl_deploy_certs`
+
+Data type: `Any`
+
+A boolean switch to enable or disable the management of SSL keys in your
+`ssl_dir`. Default is `false`.
+
+Default value: `$puppetdb::params::ssl_deploy_certs`
+
+##### <a name="-puppetdb--ssl_key"></a>`ssl_key`
+
+Data type: `Any`
+
+Contents of your SSL key, as a string.
+
+Default value: `$puppetdb::params::ssl_key`
+
+##### <a name="-puppetdb--ssl_cert"></a>`ssl_cert`
+
+Data type: `Any`
+
+Contents of your SSL certificate, as a string.
+
+Default value: `$puppetdb::params::ssl_cert`
+
+##### <a name="-puppetdb--ssl_ca_cert"></a>`ssl_ca_cert`
+
+Data type: `Any`
+
+Contents of your SSL CA certificate, as a string.
+
+Default value: `$puppetdb::params::ssl_ca_cert`
+
+##### <a name="-puppetdb--manage_firewall"></a>`manage_firewall`
+
+Data type: `Any`
+
+If `true`, puppet will manage your iptables rules for PuppetDB via the
+[puppetlabs-firewall](https://forge.puppetlabs.com/puppetlabs/firewall) class.
+
+Default value: `$puppetdb::params::manage_firewall`
+
+##### <a name="-puppetdb--command_threads"></a>`command_threads`
+
+Data type: `Any`
+
+The number of command processing threads to use. Defaults to `undef`, using the
+PuppetDB built-in default.
+
+Default value: `$puppetdb::params::command_threads`
+
+##### <a name="-puppetdb--concurrent_writes"></a>`concurrent_writes`
+
+Data type: `Any`
+
+The number of threads allowed to write to disk at any one time. Defaults to
+`undef`, which uses the PuppetDB built-in default.
+
+Default value: `$puppetdb::params::concurrent_writes`
+
+##### <a name="-puppetdb--store_usage"></a>`store_usage`
+
+Data type: `Any`
+
+The amount of disk space (in MB) to allow for persistent message storage.
+Defaults to `undef`, using the PuppetDB built-in default.
+
+Default value: `$puppetdb::params::store_usage`
+
+##### <a name="-puppetdb--temp_usage"></a>`temp_usage`
+
+Data type: `Any`
+
+The amount of disk space (in MB) to allow for temporary message storage.
+Defaults to `undef`, using the PuppetDB built-in default.
+
+Default value: `$puppetdb::params::temp_usage`
+
+##### <a name="-puppetdb--disable_update_checking"></a>`disable_update_checking`
+
+Data type: `Any`
+
+Setting this to true disables checking for updated versions of PuppetDB and sending basic analytics data to Puppet.
+Defaults to `undef`, using the PuppetDB built-in default.
+
+Default value: `$puppetdb::params::disable_update_checking`
+
+##### <a name="-puppetdb--certificate_whitelist_file"></a>`certificate_whitelist_file`
+
+Data type: `Any`
+
+The name of the certificate whitelist file to set up and configure in PuppetDB. Defaults to `/etc/puppetdb/certificate-whitelist` or `/etc/puppetlabs/puppetdb/certificate-whitelist` for FOSS and PE respectively.
+
+Default value: `$puppetdb::params::certificate_whitelist_file`
+
+##### <a name="-puppetdb--certificate_whitelist"></a>`certificate_whitelist`
+
+Data type: `Any`
+
+Array of the X.509 certificate Common Names of clients allowed to connect to PuppetDB. Defaults to empty. Be aware that this permits full access to all Puppet clients to download anything contained in PuppetDB, including the full catalogs of all nodes, which possibly contain sensitive information. Set to `[ $::servername ]` to allow access only from your (single) Puppet master, which is enough for normal operation. Set to a list of Puppet masters if you have multiple.
+
+Default value: `$puppetdb::params::certificate_whitelist`
+
+##### <a name="-puppetdb--automatic_dlo_cleanup"></a>`automatic_dlo_cleanup`
+
+Data type: `Boolean`
+
+PuppetDB creates [Dead Letter Office](https://puppet.com/docs/puppetdb/5.2/maintain_and_tune.html#clean-up-the-dead-letter-office).
+Those are reports of failed requests. They spill up the disk. This parameter is
+a boolean and defaults to false. You can enable automatic cleanup of DLO
+reports by setting this to true.
+
+Default value: `$puppetdb::params::automatic_dlo_cleanup`
+
+##### <a name="-puppetdb--cleanup_timer_interval"></a>`cleanup_timer_interval`
+
+Data type: `String[1]`
+
+The DLO cleanup is a systemd timer if systemd is available, otherwise a
+cronjob. The variable configures the systemd.timer option [onCalender](https://www.freedesktop.org/software/systemd/man/systemd.timer.html#OnCalendar=).
+It defaults to `*-*-* ${fqdn_rand(24)}:${fqdn_rand(60)}:00`. This will start
+the cleanup service on a daily basis. The exact minute and hour is random
+per node based on the [fqdn_rand](https://puppet.com/docs/puppet/5.5/function.html#fqdnrand)
+method. On non-systemd systems, the cron runs daily and the `$puppetdb_user` needs
+to be able to run cron jobs. On systemd systems you need the [camptocamp/systemd](https://forge.puppet.com/camptocamp/systemd)
+module, which is an optional dependency and not automatically installed!
+
+Default value: `$puppetdb::params::cleanup_timer_interval`
+
+##### <a name="-puppetdb--dlo_max_age"></a>`dlo_max_age`
+
+Data type: `Integer[1]`
+
+This is a positive integer. It describes the amount of days you want to keep
+the DLO reports. The default value is 90 days.
+
+Default value: `$puppetdb::params::dlo_max_age`
 
 ##### <a name="-puppetdb--ssl_key_pk8_path"></a>`ssl_key_pk8_path`
 
@@ -254,62 +807,6 @@ Data type: `Any`
 
 
 Default value: `$puppetdb::params::ssl_key_pk8_path`
-
-##### <a name="-puppetdb--ssl_ca_cert_path"></a>`ssl_ca_cert_path`
-
-Data type: `Any`
-
-
-
-Default value: `$puppetdb::params::ssl_ca_cert_path`
-
-##### <a name="-puppetdb--ssl_deploy_certs"></a>`ssl_deploy_certs`
-
-Data type: `Any`
-
-
-
-Default value: `$puppetdb::params::ssl_deploy_certs`
-
-##### <a name="-puppetdb--ssl_key"></a>`ssl_key`
-
-Data type: `Any`
-
-
-
-Default value: `$puppetdb::params::ssl_key`
-
-##### <a name="-puppetdb--ssl_cert"></a>`ssl_cert`
-
-Data type: `Any`
-
-
-
-Default value: `$puppetdb::params::ssl_cert`
-
-##### <a name="-puppetdb--ssl_ca_cert"></a>`ssl_ca_cert`
-
-Data type: `Any`
-
-
-
-Default value: `$puppetdb::params::ssl_ca_cert`
-
-##### <a name="-puppetdb--ssl_protocols"></a>`ssl_protocols`
-
-Data type: `Any`
-
-
-
-Default value: `$puppetdb::params::ssl_protocols`
-
-##### <a name="-puppetdb--postgresql_ssl_on"></a>`postgresql_ssl_on`
-
-Data type: `Any`
-
-
-
-Default value: `$puppetdb::params::postgresql_ssl_on`
 
 ##### <a name="-puppetdb--postgresql_ssl_folder"></a>`postgresql_ssl_folder`
 
@@ -343,38 +840,6 @@ Data type: `Any`
 
 Default value: `$puppetdb::params::postgresql_ssl_ca_cert_path`
 
-##### <a name="-puppetdb--cipher_suites"></a>`cipher_suites`
-
-Data type: `Any`
-
-
-
-Default value: `$puppetdb::params::cipher_suites`
-
-##### <a name="-puppetdb--migrate"></a>`migrate`
-
-Data type: `Any`
-
-
-
-Default value: `$puppetdb::params::migrate`
-
-##### <a name="-puppetdb--manage_dbserver"></a>`manage_dbserver`
-
-Data type: `Any`
-
-
-
-Default value: `$puppetdb::params::manage_dbserver`
-
-##### <a name="-puppetdb--manage_database"></a>`manage_database`
-
-Data type: `Any`
-
-
-
-Default value: `$puppetdb::params::manage_database`
-
 ##### <a name="-puppetdb--manage_package_repo"></a>`manage_package_repo`
 
 Data type: `Any`
@@ -391,62 +856,6 @@ Data type: `Any`
 
 Default value: `$puppetdb::params::postgres_version`
 
-##### <a name="-puppetdb--database_host"></a>`database_host`
-
-Data type: `Any`
-
-
-
-Default value: `$puppetdb::params::database_host`
-
-##### <a name="-puppetdb--database_port"></a>`database_port`
-
-Data type: `Any`
-
-
-
-Default value: `$puppetdb::params::database_port`
-
-##### <a name="-puppetdb--database_username"></a>`database_username`
-
-Data type: `Any`
-
-
-
-Default value: `$puppetdb::params::database_username`
-
-##### <a name="-puppetdb--database_password"></a>`database_password`
-
-Data type: `Any`
-
-
-
-Default value: `$puppetdb::params::database_password`
-
-##### <a name="-puppetdb--database_name"></a>`database_name`
-
-Data type: `Any`
-
-
-
-Default value: `$puppetdb::params::database_name`
-
-##### <a name="-puppetdb--manage_db_password"></a>`manage_db_password`
-
-Data type: `Any`
-
-
-
-Default value: `$puppetdb::params::manage_db_password`
-
-##### <a name="-puppetdb--jdbc_ssl_properties"></a>`jdbc_ssl_properties`
-
-Data type: `Any`
-
-
-
-Default value: `$puppetdb::params::jdbc_ssl_properties`
-
 ##### <a name="-puppetdb--database_listen_address"></a>`database_listen_address`
 
 Data type: `Any`
@@ -454,38 +863,6 @@ Data type: `Any`
 
 
 Default value: `$puppetdb::params::postgres_listen_addresses`
-
-##### <a name="-puppetdb--database_validate"></a>`database_validate`
-
-Data type: `Any`
-
-
-
-Default value: `$puppetdb::params::database_validate`
-
-##### <a name="-puppetdb--node_ttl"></a>`node_ttl`
-
-Data type: `Any`
-
-
-
-Default value: `$puppetdb::params::node_ttl`
-
-##### <a name="-puppetdb--node_purge_ttl"></a>`node_purge_ttl`
-
-Data type: `Any`
-
-
-
-Default value: `$puppetdb::params::node_purge_ttl`
-
-##### <a name="-puppetdb--report_ttl"></a>`report_ttl`
-
-Data type: `Any`
-
-
-
-Default value: `$puppetdb::params::report_ttl`
 
 ##### <a name="-puppetdb--facts_blacklist"></a>`facts_blacklist`
 
@@ -495,14 +872,6 @@ Data type: `Optional[Array]`
 
 Default value: `$puppetdb::params::facts_blacklist`
 
-##### <a name="-puppetdb--gc_interval"></a>`gc_interval`
-
-Data type: `Any`
-
-
-
-Default value: `$puppetdb::params::gc_interval`
-
 ##### <a name="-puppetdb--node_purge_gc_batch_limit"></a>`node_purge_gc_batch_limit`
 
 Data type: `Any`
@@ -510,62 +879,6 @@ Data type: `Any`
 
 
 Default value: `$puppetdb::params::node_purge_gc_batch_limit`
-
-##### <a name="-puppetdb--log_slow_statements"></a>`log_slow_statements`
-
-Data type: `Any`
-
-
-
-Default value: `$puppetdb::params::log_slow_statements`
-
-##### <a name="-puppetdb--conn_max_age"></a>`conn_max_age`
-
-Data type: `Any`
-
-
-
-Default value: `$puppetdb::params::conn_max_age`
-
-##### <a name="-puppetdb--conn_keep_alive"></a>`conn_keep_alive`
-
-Data type: `Any`
-
-
-
-Default value: `$puppetdb::params::conn_keep_alive`
-
-##### <a name="-puppetdb--conn_lifetime"></a>`conn_lifetime`
-
-Data type: `Any`
-
-
-
-Default value: `$puppetdb::params::conn_lifetime`
-
-##### <a name="-puppetdb--puppetdb_package"></a>`puppetdb_package`
-
-Data type: `Any`
-
-
-
-Default value: `$puppetdb::params::puppetdb_package`
-
-##### <a name="-puppetdb--puppetdb_service"></a>`puppetdb_service`
-
-Data type: `Any`
-
-
-
-Default value: `$puppetdb::params::puppetdb_service`
-
-##### <a name="-puppetdb--puppetdb_service_status"></a>`puppetdb_service_status`
-
-Data type: `Any`
-
-
-
-Default value: `$puppetdb::params::puppetdb_service_status`
 
 ##### <a name="-puppetdb--puppetdb_user"></a>`puppetdb_user`
 
@@ -591,54 +904,6 @@ Data type: `Any`
 
 Default value: `$puppetdb::params::puppetdb_server`
 
-##### <a name="-puppetdb--read_database_host"></a>`read_database_host`
-
-Data type: `Any`
-
-
-
-Default value: `$puppetdb::params::read_database_host`
-
-##### <a name="-puppetdb--read_database_port"></a>`read_database_port`
-
-Data type: `Any`
-
-
-
-Default value: `$puppetdb::params::read_database_port`
-
-##### <a name="-puppetdb--read_database_username"></a>`read_database_username`
-
-Data type: `Any`
-
-
-
-Default value: `$puppetdb::params::read_database_username`
-
-##### <a name="-puppetdb--read_database_password"></a>`read_database_password`
-
-Data type: `Any`
-
-
-
-Default value: `$puppetdb::params::read_database_password`
-
-##### <a name="-puppetdb--read_database_name"></a>`read_database_name`
-
-Data type: `Any`
-
-
-
-Default value: `$puppetdb::params::read_database_name`
-
-##### <a name="-puppetdb--manage_read_db_password"></a>`manage_read_db_password`
-
-Data type: `Any`
-
-
-
-Default value: `$puppetdb::params::manage_read_db_password`
-
 ##### <a name="-puppetdb--read_database_jdbc_ssl_properties"></a>`read_database_jdbc_ssl_properties`
 
 Data type: `Any`
@@ -655,142 +920,6 @@ Data type: `Any`
 
 Default value: `$puppetdb::params::read_database_validate`
 
-##### <a name="-puppetdb--read_log_slow_statements"></a>`read_log_slow_statements`
-
-Data type: `Any`
-
-
-
-Default value: `$puppetdb::params::read_log_slow_statements`
-
-##### <a name="-puppetdb--read_conn_max_age"></a>`read_conn_max_age`
-
-Data type: `Any`
-
-
-
-Default value: `$puppetdb::params::read_conn_max_age`
-
-##### <a name="-puppetdb--read_conn_keep_alive"></a>`read_conn_keep_alive`
-
-Data type: `Any`
-
-
-
-Default value: `$puppetdb::params::read_conn_keep_alive`
-
-##### <a name="-puppetdb--read_conn_lifetime"></a>`read_conn_lifetime`
-
-Data type: `Any`
-
-
-
-Default value: `$puppetdb::params::read_conn_lifetime`
-
-##### <a name="-puppetdb--confdir"></a>`confdir`
-
-Data type: `Any`
-
-
-
-Default value: `$puppetdb::params::confdir`
-
-##### <a name="-puppetdb--vardir"></a>`vardir`
-
-Data type: `Any`
-
-
-
-Default value: `$puppetdb::params::vardir`
-
-##### <a name="-puppetdb--manage_firewall"></a>`manage_firewall`
-
-Data type: `Any`
-
-
-
-Default value: `$puppetdb::params::manage_firewall`
-
-##### <a name="-puppetdb--java_args"></a>`java_args`
-
-Data type: `Any`
-
-
-
-Default value: `$puppetdb::params::java_args`
-
-##### <a name="-puppetdb--merge_default_java_args"></a>`merge_default_java_args`
-
-Data type: `Any`
-
-
-
-Default value: `$puppetdb::params::merge_default_java_args`
-
-##### <a name="-puppetdb--max_threads"></a>`max_threads`
-
-Data type: `Any`
-
-
-
-Default value: `$puppetdb::params::max_threads`
-
-##### <a name="-puppetdb--command_threads"></a>`command_threads`
-
-Data type: `Any`
-
-
-
-Default value: `$puppetdb::params::command_threads`
-
-##### <a name="-puppetdb--concurrent_writes"></a>`concurrent_writes`
-
-Data type: `Any`
-
-
-
-Default value: `$puppetdb::params::concurrent_writes`
-
-##### <a name="-puppetdb--store_usage"></a>`store_usage`
-
-Data type: `Any`
-
-
-
-Default value: `$puppetdb::params::store_usage`
-
-##### <a name="-puppetdb--temp_usage"></a>`temp_usage`
-
-Data type: `Any`
-
-
-
-Default value: `$puppetdb::params::temp_usage`
-
-##### <a name="-puppetdb--disable_update_checking"></a>`disable_update_checking`
-
-Data type: `Any`
-
-
-
-Default value: `$puppetdb::params::disable_update_checking`
-
-##### <a name="-puppetdb--certificate_whitelist_file"></a>`certificate_whitelist_file`
-
-Data type: `Any`
-
-
-
-Default value: `$puppetdb::params::certificate_whitelist_file`
-
-##### <a name="-puppetdb--certificate_whitelist"></a>`certificate_whitelist`
-
-Data type: `Any`
-
-
-
-Default value: `$puppetdb::params::certificate_whitelist`
-
 ##### <a name="-puppetdb--database_max_pool_size"></a>`database_max_pool_size`
 
 Data type: `Any`
@@ -806,30 +935,6 @@ Data type: `Any`
 
 
 Default value: `$puppetdb::params::read_database_max_pool_size`
-
-##### <a name="-puppetdb--automatic_dlo_cleanup"></a>`automatic_dlo_cleanup`
-
-Data type: `Boolean`
-
-
-
-Default value: `$puppetdb::params::automatic_dlo_cleanup`
-
-##### <a name="-puppetdb--cleanup_timer_interval"></a>`cleanup_timer_interval`
-
-Data type: `String[1]`
-
-
-
-Default value: `$puppetdb::params::cleanup_timer_interval`
-
-##### <a name="-puppetdb--dlo_max_age"></a>`dlo_max_age`
-
-Data type: `Integer[1]`
-
-
-
-Default value: `$puppetdb::params::dlo_max_age`
 
 ##### <a name="-puppetdb--java_bin"></a>`java_bin`
 
