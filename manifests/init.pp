@@ -36,6 +36,18 @@
 #   If `true`, it configures SSL connections between PuppetDB and the PostgreSQL database.
 #   Defaults to `false`.
 #
+# @param postgresql_ssl_folder
+#   Path to the Postgresql SSL folder.
+#
+# @param postgresql_ssl_cert_path
+#   Path to the Postgresql SSL certificate.
+#
+# @param postgresql_ssl_key_path
+#   Path to the Postgresql SSL key.
+#
+# @param postgresql_ssl_ca_cert_path
+#   Path to the Postgresql SSL CA.
+#
 # @param cipher_suites
 #   Configure jetty's supported `cipher-suites` (e.g. `SSL_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384`).
 #   Defaults to `undef`.
@@ -48,6 +60,14 @@
 #
 # @param manage_database
 #   If true, the PostgreSQL database will be managed by this module. Defaults to `true`.
+#
+# @param manage_package_repo
+#   If `true`, the official postgresql.org repo will be added and postgres won't
+#   be installed from the regular repository. Defaults to `true`.
+#
+# @param postgres_version
+#   If the postgresql.org repo is installed, you can install several versions of
+#   postgres. Defaults to `11` with PuppetDB version 7.0.0 or newer, and `9.6` in older versions.
 #
 # @param database_host
 #   Hostname to use for the database connection. For single case installations this
@@ -75,6 +95,12 @@
 #   character. For example, to use SSL for the PostgreSQL connection, set this
 #   parameter's value to `?ssl=true`.
 #
+# @param database_listen_address
+#   A comma-separated list of hostnames or IP addresses on which the postgres
+#   server should listen for incoming connections. This defaults to `localhost`.
+#   This parameter maps directly to PostgreSQL's `listen_addresses`
+#   config option. Use a `*` to allow connections on any accessible address.
+#
 # @param database_validate
 #   If true, the module will attempt to connect to the database using the specified
 #   settings and fail if it is not able to do so. Defaults to `true`.
@@ -94,10 +120,16 @@
 #   The length of time reports should be stored before being deleted. (defaults to
 #   `14d`, which is a 14-day period). This option is supported in PuppetDB >= 1.1.0.
 #
+# @param facts_blacklist
+#   A list of fact names to be ignored whenever submitted.
+#
 # @param gc_interval
 #   This controls how often (in minutes) to compact the database. The compaction
 #   process reclaims space and deletes unnecessary rows. If not supplied, the
 #   default is every 60 minutes. This option is supported in PuppetDB >= 0.9.
+#
+# @param node_purge_gc_batch_limit
+#   Nodes will be purged in batches of this size, one batch per gc-interval.
 #
 # @param log_slow_statements
 #   This sets the number of seconds before an SQL query is considered "slow." Slow
@@ -139,6 +171,15 @@
 #   Sets whether the service should be `running ` or `stopped`. When set to `stopped` the
 #   service doesn't start on boot either. Valid values are `true`, `running`,
 #   `false`, and `stopped`.
+#
+# @param puppetdb_user
+#   Puppetdb service user
+#
+# @param puppetdb_group
+#   Puppetdb service group
+#
+# @param puppetdb_server
+#   Puppetdb server hostname or IP address.
 #
 # @param confdir
 #   The PuppetDB configuration directory. Defaults to `/etc/puppetdb/conf.d`.
@@ -194,6 +235,15 @@
 #   Set this to `false` if you want to set the password some other way.
 #   Defaults to `true`
 #
+# @param read_database_jdbc_ssl_properties
+#   The text to append to the JDBC connection URI. This should begin with a '?'
+#   character. For example, to use SSL for the PostgreSQL connection, set this
+#   parameter's value to `?ssl=true`.
+#
+# @param read_database_validate
+#   If true, the module will attempt to connect to the database using the specified
+#   settings and fail if it is not able to do so. Defaults to `true`.
+#
 # @param read_database_name
 #   The name of the read database instance to connect to. If `read_database_host`
 #   is set to `undef`, and `manage_database` is set to `true`, it will use the value of
@@ -239,6 +289,10 @@
 #
 # @param ssl_cert_path
 #   Path to your SSL certificate for populating `jetty.ini`.
+#
+# @param ssl_key_pk8_path
+#   Path to the SSL pk8 key for populating `jetty.ini`, will be generated from
+#   the SSL key as needed automatically.
 #
 # @param ssl_key_path
 #   Path to your SSL key for populating `jetty.ini`.
@@ -289,6 +343,14 @@
 # @param certificate_whitelist
 #   Array of the X.509 certificate Common Names of clients allowed to connect to PuppetDB. Defaults to empty. Be aware that this permits full access to all Puppet clients to download anything contained in PuppetDB, including the full catalogs of all nodes, which possibly contain sensitive information. Set to `[ $::servername ]` to allow access only from your (single) Puppet master, which is enough for normal operation. Set to a list of Puppet masters if you have multiple.
 #
+# @param database_max_pool_size
+#   When the pool reaches this size, and no idle connections are available, attempts to get a connection will wait for connection-timeout milliseconds before timing out.
+#   Note that PuppetDB will use one pool for writes and another for reads, so the total number of connections used will be twice this setting.
+#
+# @param read_database_max_pool_size
+#   When the pool reaches this size, and no idle connections are available, attempts to get a connection will wait for connection-timeout milliseconds before timing out.
+#   Note that PuppetDB will use one pool for writes and another for reads, so the total number of connections used will be twice this setting.
+#
 # @param automatic_dlo_cleanup
 #   PuppetDB creates [Dead Letter Office](https://puppet.com/docs/puppetdb/5.2/maintain_and_tune.html#clean-up-the-dead-letter-office).
 #   Those are reports of failed requests. They spill up the disk. This parameter is
@@ -308,6 +370,9 @@
 # @param dlo_max_age
 #   This is a positive integer. It describes the amount of days you want to keep
 #   the DLO reports. The default value is 90 days.
+#
+# @param java_bin
+#   java binary path for PuppetDB. If undef, default will be used.
 #
 class puppetdb (
   $listen_address                          = $puppetdb::params::listen_address,
