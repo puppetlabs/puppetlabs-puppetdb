@@ -1,6 +1,7 @@
-# PRIVATE CLASS - do not use directly
+# @summary manage puppetdb read_database ini
+#
+# @api private
 class puppetdb::server::read_database (
-  $read_database          = $puppetdb::params::read_database,
   $read_database_host     = $puppetdb::params::read_database_host,
   $read_database_port     = $puppetdb::params::read_database_port,
   $read_database_username = $puppetdb::params::read_database_username,
@@ -33,7 +34,6 @@ class puppetdb::server::read_database (
       # a duplicate declaration if read and write database host+name are the
       # same.
       class { 'puppetdb::server::validate_read_db':
-        database          => $read_database,
         database_host     => $read_database_host,
         database_port     => $read_database_port,
         database_username => $read_database_username,
@@ -64,44 +64,42 @@ class puppetdb::server::read_database (
       require => $ini_setting_require,
     }
 
-    if $read_database == 'postgres' {
-      $classname = 'org.postgresql.Driver'
-      $subprotocol = 'postgresql'
+    $classname = 'org.postgresql.Driver'
+    $subprotocol = 'postgresql'
 
-      if !empty($jdbc_ssl_properties) {
-        $database_suffix = $jdbc_ssl_properties
-      }
-      else {
-        $database_suffix = ''
-      }
+    if !empty($jdbc_ssl_properties) {
+      $database_suffix = $jdbc_ssl_properties
+    }
+    else {
+      $database_suffix = ''
+    }
 
-      $subname_default = "//${read_database_host}:${read_database_port}/${read_database_name}${database_suffix}"
+    $subname_default = "//${read_database_host}:${read_database_port}/${read_database_name}${database_suffix}"
 
-      if $postgresql_ssl_on and !empty($jdbc_ssl_properties) {
-        fail("Variables 'postgresql_ssl_on' and 'jdbc_ssl_properties' can not be used at the same time!")
-      }
+    if $postgresql_ssl_on and !empty($jdbc_ssl_properties) {
+      fail("Variables 'postgresql_ssl_on' and 'jdbc_ssl_properties' can not be used at the same time!")
+    }
 
-      if $postgresql_ssl_on {
-        $subname = @("EOT"/L)
-          ${subname_default}?\
-          ssl=true&sslfactory=org.postgresql.ssl.LibPQFactory&\
-          sslmode=verify-full&sslrootcert=${ssl_ca_cert_path}&\
-          sslkey=${ssl_key_pk8_path}&sslcert=${ssl_cert_path}\
-          | EOT
-      } else {
-        $subname = $subname_default
-      }
+    if $postgresql_ssl_on {
+      $subname = @("EOT"/L)
+        ${subname_default}?\
+        ssl=true&sslfactory=org.postgresql.ssl.LibPQFactory&\
+        sslmode=verify-full&sslrootcert=${ssl_ca_cert_path}&\
+        sslkey=${ssl_key_pk8_path}&sslcert=${ssl_cert_path}\
+        | EOT
+    } else {
+      $subname = $subname_default
+    }
 
-      ini_setting { 'puppetdb_read_database_username':
-        setting => 'username',
-        value   => $read_database_username,
-      }
+    ini_setting { 'puppetdb_read_database_username':
+      setting => 'username',
+      value   => $read_database_username,
+    }
 
-      if $read_database_password != undef and $manage_db_password {
-        ini_setting { 'puppetdb_read_database_password':
-          setting => 'password',
-          value   => $read_database_password,
-        }
+    if $read_database_password != undef and $manage_db_password {
+      ini_setting { 'puppetdb_read_database_password':
+        setting => 'password',
+        value   => $read_database_password,
       }
     }
 

@@ -1,4 +1,6 @@
-# PRIVATE CLASS - do not use directly
+# @summary manage puppetdb ini
+#
+# @api private
 class puppetdb::server::puppetdb (
   $certificate_whitelist_file = $puppetdb::params::certificate_whitelist_file,
   $certificate_whitelist      = $puppetdb::params::certificate_whitelist,

@@ -1,5 +1,6 @@
-# Manages the routes configuration file on the master. See README.md for more
-# details.
+# @summary manages the routes configuration file on the master
+#
+# @api private
 class puppetdb::master::routes (
   $puppet_confdir = $puppetdb::params::puppet_confdir,
   $masterless     = $puppetdb::params::masterless,

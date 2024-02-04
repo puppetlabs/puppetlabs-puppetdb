@@ -1,5 +1,6 @@
-# This class configures the puppet master to enable storeconfigs and to use
-# puppetdb as the storeconfigs backend. See README.md for more details.
+# @summary configure the puppet master to enable storeconfigs and to use puppetdb as the storeconfigs backend
+#
+# @api private
 class puppetdb::master::storeconfigs (
   $puppet_conf = $puppetdb::params::puppet_conf,
   $masterless  = $puppetdb::params::masterless,

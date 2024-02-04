@@ -5,6 +5,7 @@ Release notes for the puppetlabs-puppetdb module.
 #### Unreleased
 * Drop support for Puppet 6
 * Drop support for Ubuntu 16.04 and Scientific Linux 7
+* Remove all code related to embedded database
 
 #### 7.14.0 - 2023/10/09
 * Owner of puppetdb config.ini is now root

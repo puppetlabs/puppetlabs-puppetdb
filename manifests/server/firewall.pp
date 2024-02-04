@@ -1,4 +1,6 @@
-# PRIVATE CLASS - do not use directly
+# @summary manage puppetdb firewall rules
+#
+# @api private
 class puppetdb::server::firewall (
   $http_port      = $puppetdb::params::listen_port,
   $open_http_port = $puppetdb::params::open_listen_port,

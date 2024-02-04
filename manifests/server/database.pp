@@ -1,6 +1,7 @@
-# PRIVATE CLASS - do not use directly
+# @summary manage puppetdb database ini
+#
+# @api private
 class puppetdb::server::database (
-  $database                  = $puppetdb::params::database,
   $database_host             = $puppetdb::params::database_host,
   $database_port             = $puppetdb::params::database_port,
   $database_username         = $puppetdb::params::database_username,
@@ -9,7 +10,6 @@ class puppetdb::server::database (
   $manage_db_password        = $puppetdb::params::manage_db_password,
   $jdbc_ssl_properties       = $puppetdb::params::jdbc_ssl_properties,
   $database_validate         = $puppetdb::params::database_validate,
-  $database_embedded_path    = $puppetdb::params::database_embedded_path,
   $node_ttl                  = $puppetdb::params::node_ttl,
   $node_purge_ttl            = $puppetdb::params::node_purge_ttl,
   $report_ttl                = $puppetdb::params::report_ttl,
@@ -40,7 +40,6 @@ class puppetdb::server::database (
     # a duplicate declaration if read and write database host+name are the
     # same.
     class { 'puppetdb::server::validate_db':
-      database          => $database,
       database_host     => $database_host,
       database_port     => $database_port,
       database_username => $database_username,
@@ -71,49 +70,42 @@ class puppetdb::server::database (
     require => $ini_setting_require,
   }
 
-  if $database == 'embedded' {
-    $classname = 'org.hsqldb.jdbcDriver'
-    $subprotocol = 'hsqldb'
-    $subname = "file:${database_embedded_path};hsqldb.tx=mvcc;sql.syntax_pgs=true"
-  } elsif $database == 'postgres' {
-    $classname = 'org.postgresql.Driver'
-    $subprotocol = 'postgresql'
+  $classname = 'org.postgresql.Driver'
+  $subprotocol = 'postgresql'
 
-    if !empty($jdbc_ssl_properties) {
-      $database_suffix = $jdbc_ssl_properties
-    }
-    else {
-      $database_suffix = ''
-    }
+  if !empty($jdbc_ssl_properties) {
+    $database_suffix = $jdbc_ssl_properties
+  }
+  else {
+    $database_suffix = ''
+  }
 
-    $subname_default = "//${database_host}:${database_port}/${database_name}${database_suffix}"
+  $subname_default = "//${database_host}:${database_port}/${database_name}${database_suffix}"
 
-    if $postgresql_ssl_on and !empty($jdbc_ssl_properties) {
-      fail("Variables 'postgresql_ssl_on' and 'jdbc_ssl_properties' can not be used at the same time!")
-    }
+  if $postgresql_ssl_on and !empty($jdbc_ssl_properties) {
+    fail("Variables 'postgresql_ssl_on' and 'jdbc_ssl_properties' can not be used at the same time!")
+  }
 
-    if $postgresql_ssl_on {
-      $subname = @("EOT"/L)
-        ${subname_default}?\
-        ssl=true&sslfactory=org.postgresql.ssl.LibPQFactory&\
-        sslmode=verify-full&sslrootcert=${ssl_ca_cert_path}&\
-        sslkey=${ssl_key_pk8_path}&sslcert=${ssl_cert_path}\
-        | EOT
-    } else {
-      $subname = $subname_default
-    }
+  if $postgresql_ssl_on {
+    $subname = @("EOT"/L)
+      ${subname_default}?\
+      ssl=true&sslfactory=org.postgresql.ssl.LibPQFactory&\
+      sslmode=verify-full&sslrootcert=${ssl_ca_cert_path}&\
+      sslkey=${ssl_key_pk8_path}&sslcert=${ssl_cert_path}\
+      | EOT
+  } else {
+    $subname = $subname_default
+  }
 
-    ##Only setup for postgres
-    ini_setting { 'puppetdb_psdatabase_username':
-      setting => 'username',
-      value   => $database_username,
-    }
+  ini_setting { 'puppetdb_psdatabase_username':
+    setting => 'username',
+    value   => $database_username,
+  }
 
-    if $database_password != undef and $manage_db_password {
-      ini_setting { 'puppetdb_psdatabase_password':
-        setting => 'password',
-        value   => $database_password,
-      }
+  if $database_password != undef and $manage_db_password {
+    ini_setting { 'puppetdb_psdatabase_password':
+      setting => 'password',
+      value   => $database_password,
     }
   }
 

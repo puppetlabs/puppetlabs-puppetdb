@@ -1,16 +1,20 @@
-# Private class
-# A define type to manage the creation of a read-only postgres users.
+# @summary manage the creation of a read-only postgres users
+#
 # In particular, it manages the necessary grants to enable such a user
 # to have read-only access to any existing objects as well as changes
 # the default access privileges so read-only access is maintained when
 # new objects are created by the $database_owner
 #
-# @param database_read_only_username [String] The name of the postgres read only user.
-# @param database [String] The name of the database to grant access to.
-# @param database_owner [String] The user which owns the database (i.e. the migration user
-#        for the database).
-# @param password_hash [String] The value of $_database_password in app_database.
-
+# @param read_database_username
+#   The name of the postgres read only user.
+# @param database_name
+#   The name of the database to grant access to.
+# @param database_owner
+#   The user which owns the database (i.e. the migration user for the database).
+# @param password_hash
+#   The value of $_database_password in app_database.
+#
+# @api private
 define puppetdb::database::read_only_user (
   String $read_database_username,
   String $database_name,

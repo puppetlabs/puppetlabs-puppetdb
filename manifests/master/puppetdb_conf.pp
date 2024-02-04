@@ -1,5 +1,6 @@
-# Manage the puppetdb.conf file on the puppeet master. See README.md for more
-# details.
+# @summary manage the puppetdb.conf file on the puppet primary
+#
+# @api private
 class puppetdb::master::puppetdb_conf (
   $server             = 'localhost',
   $port               = '8081',

@@ -70,7 +70,7 @@ jobs:
             test-
 
       - name: "Run static & syntax tests"
-        run: bundle exec rake syntax lint metadata_lint check:symlinks check:git_ignore check:dot_underscore check:test_file rubocop
+        run: bundle exec rake syntax lint metadata_lint check:symlinks check:git_ignore check:dot_underscore check:test_file strings:validate:reference rubocop
 
       - name: "Dependency check"
         run: |

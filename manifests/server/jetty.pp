@@ -1,4 +1,6 @@
-# PRIVATE CLASS - do not use directly
+# @summary configures puppetdb jetty ini
+#
+# @api private
 class puppetdb::server::jetty (
   $listen_address                 = $puppetdb::params::listen_address,
   $listen_port                    = $puppetdb::params::listen_port,

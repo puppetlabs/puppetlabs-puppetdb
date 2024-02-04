@@ -10,7 +10,6 @@ shared_examples 'puppetdb::globals' do |error = false|
   let(:defaults) do
     {
       version: 'present',
-      database: 'postgres',
       puppet_confdir: Puppet[:confdir],
     }
   end

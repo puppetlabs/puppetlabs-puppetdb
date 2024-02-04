@@ -1,5 +1,6 @@
-# Private class. Grant read permissions to $database_read_only_username by default, for new tables created by
-# $database_username.
+# @summary grant read permissions to $database_read_only_username by default, for new tables created by $database_username
+#
+# @api private
 define puppetdb::database::default_read_grant (
   String $database_name,
   String $schema,

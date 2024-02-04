@@ -220,26 +220,6 @@ describe 'puppetdb::server::database', type: :class do
     }
   end
 
-  describe 'when overriding database_path for embedded' do
-    let(:params) do
-      {
-        'database' => 'embedded',
-        'database_embedded_path' => '/tmp/foo',
-      }
-    end
-
-    it {
-      is_expected.to contain_ini_setting('puppetdb_subname')
-        .with(
-          'ensure'  => 'present',
-          'path'    => '/etc/puppetlabs/puppetdb/conf.d/database.ini',
-          'section' => 'database',
-          'setting' => 'subname',
-          'value'   => 'file:/tmp/foo;hsqldb.tx=mvcc;sql.syntax_pgs=true',
-        )
-    }
-  end
-
   describe 'when setting max pool size' do
     context 'on current PuppetDB' do
       describe 'to a numeric value' do
