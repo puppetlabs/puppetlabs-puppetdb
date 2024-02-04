@@ -1,5 +1,37 @@
 # create the PuppetDB postgresql database
 #
+# @param listen_addresses
+#   The `listen_address` is a comma-separated list of hostnames or IP addresses on
+#   which the postgres server should listen for incoming connections. This defaults
+#   to `localhost`. This parameter maps directly to PostgreSQL's `listen_addresses`
+#   config option. Use a `*` to allow connections on any accessible address.
+#
+# @param database_name
+#   Sets the name of the database. Defaults to `puppetdb`.
+#
+# @param database_username
+#   Creates a user for access the database. Defaults to `puppetdb`.
+#
+# @param database_password
+#   Sets the password for the database user above. Defaults to `puppetdb`.
+#
+# @param manage_server
+#   Conditionally manages the PostgreSQL server via `postgresql::server`. Defaults
+#   to `true`. If set to `false`, this class will create the database and user via
+#   `postgresql::server::db` but not attempt to install or manage the server itself.
+#
+# @param test_url
+#   The URL to use for testing if the PuppetDB instance is running. Defaults to
+#   `/pdb/meta/v1/version`.
+#
+# @param manage_package_repo
+#   If `true`, the official postgresql.org repo will be added and postgres won't
+#   be installed from the regular repository. Defaults to `true`.
+#
+# @param postgres_version
+#   If the postgresql.org repo is installed, you can install several versions of
+#   postgres. Defaults to `11` with PuppetDB version 7.0.0 or newer, and `9.6` in older versions.
+#
 class puppetdb::database::postgresql (
   $listen_addresses            = $puppetdb::params::database_host,
   $puppetdb_server             = $puppetdb::params::puppetdb_server,
