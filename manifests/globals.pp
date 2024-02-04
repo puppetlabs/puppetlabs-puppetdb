@@ -4,6 +4,9 @@
 #   The version of the `puppetdb` package that should be installed. You may specify
 #   an explicit version number, 'present', or 'latest' (defaults to 'present').
 #
+# @param puppet_confdir
+#   Puppet's config directory. Defaults to `/etc/puppetlabs/puppet`.
+#
 class puppetdb::globals (
   $version                      = 'present',
   Stdlib::Absolutepath $puppet_confdir = $settings::confdir,

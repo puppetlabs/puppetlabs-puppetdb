@@ -1155,7 +1155,7 @@ Default value: `'present'`
 
 Data type: `Stdlib::Absolutepath`
 
-
+Puppet's config directory. Defaults to `/etc/puppetlabs/puppet`.
 
 Default value: `$settings::confdir`
 
