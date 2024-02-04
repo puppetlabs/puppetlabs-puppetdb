@@ -1145,29 +1145,30 @@ The following parameters are available in the `puppetdb::master::config` class:
 * [`puppetdb_server`](#-puppetdb--master--config--puppetdb_server)
 * [`puppetdb_port`](#-puppetdb--master--config--puppetdb_port)
 * [`puppetdb_disable_ssl`](#-puppetdb--master--config--puppetdb_disable_ssl)
-* [`masterless`](#-puppetdb--master--config--masterless)
 * [`puppetdb_soft_write_failure`](#-puppetdb--master--config--puppetdb_soft_write_failure)
 * [`manage_routes`](#-puppetdb--master--config--manage_routes)
 * [`manage_storeconfigs`](#-puppetdb--master--config--manage_storeconfigs)
-* [`enable_storeconfigs`](#-puppetdb--master--config--enable_storeconfigs)
 * [`manage_report_processor`](#-puppetdb--master--config--manage_report_processor)
 * [`manage_config`](#-puppetdb--master--config--manage_config)
 * [`create_puppet_service_resource`](#-puppetdb--master--config--create_puppet_service_resource)
 * [`strict_validation`](#-puppetdb--master--config--strict_validation)
 * [`enable_reports`](#-puppetdb--master--config--enable_reports)
+* [`enable_storeconfigs`](#-puppetdb--master--config--enable_storeconfigs)
 * [`puppet_confdir`](#-puppetdb--master--config--puppet_confdir)
 * [`puppet_conf`](#-puppetdb--master--config--puppet_conf)
+* [`masterless`](#-puppetdb--master--config--masterless)
 * [`terminus_package`](#-puppetdb--master--config--terminus_package)
 * [`puppet_service_name`](#-puppetdb--master--config--puppet_service_name)
 * [`puppetdb_startup_timeout`](#-puppetdb--master--config--puppetdb_startup_timeout)
-* [`test_url`](#-puppetdb--master--config--test_url)
 * [`restart_puppet`](#-puppetdb--master--config--restart_puppet)
+* [`test_url`](#-puppetdb--master--config--test_url)
 
 ##### <a name="-puppetdb--master--config--puppetdb_server"></a>`puppetdb_server`
 
 Data type: `Any`
 
-
+The dns name or ip of the PuppetDB server. Defaults to the hostname of the
+current node, i.e. `$::fqdn`.
 
 Default value: `fact('networking.fqdn')`
 
@@ -1175,7 +1176,7 @@ Default value: `fact('networking.fqdn')`
 
 Data type: `Any`
 
-
+The port that the PuppetDB server is running on. Defaults to `8081`.
 
 Default value:
 
@@ -1192,7 +1193,10 @@ defined(Class['puppetdb']) ? {
 
 Data type: `Any`
 
-
+If true, use plain HTTP to talk to PuppetDB. Defaults to the value of
+`disable_ssl` if PuppetDB is on the same server as the Puppet Master, or else
+false. If you set this, you probably need to set `puppetdb_port` to match the HTTP
+port of the PuppetDB.
 
 Default value:
 
@@ -1202,19 +1206,12 @@ defined(Class['puppetdb']) ? {
     default => false
 ```
 
-##### <a name="-puppetdb--master--config--masterless"></a>`masterless`
-
-Data type: `Any`
-
-
-
-Default value: `$puppetdb::params::masterless`
-
 ##### <a name="-puppetdb--master--config--puppetdb_soft_write_failure"></a>`puppetdb_soft_write_failure`
 
 Data type: `Any`
 
-
+Boolean to fail in a soft manner if PuppetDB is not accessible for command
+submission Defaults to `false`.
 
 Default value: `false`
 
@@ -1222,7 +1219,8 @@ Default value: `false`
 
 Data type: `Any`
 
-
+If `true`, the module will overwrite the Puppet master's routes file to
+configure it to use PuppetDB. Defaults to `true`.
 
 Default value: `true`
 
@@ -1230,15 +1228,8 @@ Default value: `true`
 
 Data type: `Any`
 
-
-
-Default value: `true`
-
-##### <a name="-puppetdb--master--config--enable_storeconfigs"></a>`enable_storeconfigs`
-
-Data type: `Any`
-
-
+If `true`, the module will manage the Puppet master's storeconfig settings.
+Defaults to `true`.
 
 Default value: `true`
 
@@ -1246,7 +1237,8 @@ Default value: `true`
 
 Data type: `Any`
 
-
+If `true`, the module will manage the 'reports' field in the puppet.conf file to
+enable or disable the PuppetDB report processor. Defaults to `false`.
 
 Default value: `false`
 
@@ -1254,7 +1246,9 @@ Default value: `false`
 
 Data type: `Any`
 
-
+If `true`, the module will store values from `puppetdb_server` and `puppetdb_port`
+parameters in the PuppetDB configuration file. If `false`, an existing PuppetDB
+configuration file will be used to retrieve server and port values.
 
 Default value: `true`
 
@@ -1262,7 +1256,11 @@ Default value: `true`
 
 Data type: `Any`
 
-
+If `true`, AND if `restart_puppet` is true, then the module will create a service
+resource for `puppet_service_name` if it has not been defined. Defaults to `true`.
+If you are already declaring the `puppet_service_name` service resource in another
+part of your code, setting this to `false` will avoid creation of that service
+resource by this module, avoiding potential duplicate resource errors.
 
 Default value: `true`
 
@@ -1270,7 +1268,8 @@ Default value: `true`
 
 Data type: `Any`
 
-
+If `true`, the module will fail if PuppetDB is not reachable, otherwise it will
+preconfigure PuppetDB without checking.
 
 Default value: `true`
 
@@ -1278,15 +1277,27 @@ Default value: `true`
 
 Data type: `Any`
 
-
+Ignored unless `manage_report_processor` is `true`, in which case this setting
+will determine whether or not the PuppetDB report processor is enabled (`true`)
+or disabled (`false`) in the puppet.conf file.
 
 Default value: `false`
+
+##### <a name="-puppetdb--master--config--enable_storeconfigs"></a>`enable_storeconfigs`
+
+Data type: `Any`
+
+Ignored unless `manage_storeconfigs` is `true`, in which case this setting
+will determine whether or not client configuration storage is enabled (`true`)
+or disabled (`false`) in the puppet.conf file.
+
+Default value: `true`
 
 ##### <a name="-puppetdb--master--config--puppet_confdir"></a>`puppet_confdir`
 
 Data type: `Any`
 
-
+Puppet's config directory. Defaults to `/etc/puppet`.
 
 Default value: `$puppetdb::params::puppet_confdir`
 
@@ -1294,15 +1305,26 @@ Default value: `$puppetdb::params::puppet_confdir`
 
 Data type: `Any`
 
-
+Puppet's config file. Defaults to `/etc/puppet/puppet.conf`.
 
 Default value: `$puppetdb::params::puppet_conf`
+
+##### <a name="-puppetdb--master--config--masterless"></a>`masterless`
+
+Data type: `Any`
+
+A boolean switch to enable or disable the masterless setup of PuppetDB. Defaults
+to `false`.
+
+Default value: `$puppetdb::params::masterless`
 
 ##### <a name="-puppetdb--master--config--terminus_package"></a>`terminus_package`
 
 Data type: `Any`
 
-
+Name of the package to use that represents the PuppetDB terminus code. Defaults
+to `puppetdb-termini`, when `puppetdb_version` is set to `<= 2.3.x` the default
+changes to `puppetdb-terminus`.
 
 Default value: `$puppetdb::params::terminus_package`
 
@@ -1310,7 +1332,9 @@ Default value: `$puppetdb::params::terminus_package`
 
 Data type: `Any`
 
-
+Name of the service that represents Puppet. You can change this to `apache2` or
+`httpd` depending on your operating system, if you plan on having Puppet run
+using Apache/Passenger for example.
 
 Default value: `$puppetdb::params::puppet_service_name`
 
@@ -1318,9 +1342,22 @@ Default value: `$puppetdb::params::puppet_service_name`
 
 Data type: `Any`
 
-
+The maximum amount of time that the module should wait for PuppetDB to start up.
+This is most important during the initial install of PuppetDB (defaults to 15
+seconds).
 
 Default value: `$puppetdb::params::puppetdb_startup_timeout`
+
+##### <a name="-puppetdb--master--config--restart_puppet"></a>`restart_puppet`
+
+Data type: `Any`
+
+If `true`, the module will restart the Puppet master when PuppetDB configuration
+files are changed by the module. Defaults to `true`. If set to `false`, you
+must restart the service manually in order to pick up changes to the config
+files (other than `puppet.conf`).
+
+Default value: `true`
 
 ##### <a name="-puppetdb--master--config--test_url"></a>`test_url`
 
@@ -1329,14 +1366,6 @@ Data type: `Any`
 
 
 Default value: `$puppetdb::params::test_url`
-
-##### <a name="-puppetdb--master--config--restart_puppet"></a>`restart_puppet`
-
-Data type: `Any`
-
-
-
-Default value: `true`
 
 ### <a name="puppetdb--server"></a>`puppetdb::server`
 
