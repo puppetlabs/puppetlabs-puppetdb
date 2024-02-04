@@ -6,6 +6,9 @@
 #   to `localhost`. This parameter maps directly to PostgreSQL's `listen_addresses`
 #   config option. Use a `*` to allow connections on any accessible address.
 #
+# @param puppetdb_server
+#   Hostname or IP address to configure for SSL rules.
+#
 # @param database_name
 #   Sets the name of the database. Defaults to `puppetdb`.
 #
@@ -15,14 +18,16 @@
 # @param database_password
 #   Sets the password for the database user above. Defaults to `puppetdb`.
 #
+# @param database_port
+#   The port that the database server listens on. Defaults to `5432`.
+#
+# @param manage_database
+#   If true, the PostgreSQL database will be managed by this module. Defaults to `true`.
+#
 # @param manage_server
 #   Conditionally manages the PostgreSQL server via `postgresql::server`. Defaults
 #   to `true`. If set to `false`, this class will create the database and user via
 #   `postgresql::server::db` but not attempt to install or manage the server itself.
-#
-# @param test_url
-#   The URL to use for testing if the PuppetDB instance is running. Defaults to
-#   `/pdb/meta/v1/version`.
 #
 # @param manage_package_repo
 #   If `true`, the official postgresql.org repo will be added and postgres won't
@@ -31,6 +36,34 @@
 # @param postgres_version
 #   If the postgresql.org repo is installed, you can install several versions of
 #   postgres. Defaults to `11` with PuppetDB version 7.0.0 or newer, and `9.6` in older versions.
+#
+# @param postgresql_ssl_on
+#   If `true`, it configures SSL connections between PuppetDB and the PostgreSQL database.
+#   Defaults to `false`.
+#
+# @param postgresql_ssl_cert_path
+#   Path to the Postgresql SSL certificate.
+#
+# @param postgresql_ssl_key_path
+#   Path to the Postgresql SSL key.
+#
+# @param postgresql_ssl_ca_cert_path
+#   Path to the Postgresql SSL CA.
+#
+# @param read_database_username
+#   The name of the read database user to connect as. Defaults to `puppetdb-read`. This
+#   option is supported in PuppetDB >= 1.6.
+#
+# @param read_database_password
+#   The password for the read database user. Defaults to `puppetdb-read`. This option is
+#   supported in PuppetDB >= 1.6.
+#
+# @param read_database_host
+#   *This parameter must be set to use another PuppetDB instance for queries.*
+#
+#   The hostname or IP address of the read database server. If set to `undef`, and
+#   `manage_database` is set to `true`, it will use the value of the `database_host`
+#   parameter. This option is supported in PuppetDB >= 1.6.
 #
 class puppetdb::database::postgresql (
   $listen_addresses            = $puppetdb::params::database_host,
