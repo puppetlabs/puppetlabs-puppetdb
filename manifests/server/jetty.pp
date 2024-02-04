@@ -1,4 +1,4 @@
-# configures puppetdb jetty ini
+# @summary configures puppetdb jetty ini
 #
 # @api private
 class puppetdb::server::jetty (

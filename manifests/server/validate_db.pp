@@ -1,4 +1,4 @@
-# validates the database connection
+# @summary validates the database connection
 #
 # @api private
 class puppetdb::server::validate_db (

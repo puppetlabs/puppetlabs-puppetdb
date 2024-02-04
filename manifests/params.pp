@@ -1,4 +1,4 @@
-# default configuration settings
+# @summary default configuration settings
 #
 # @api private
 class puppetdb::params inherits puppetdb::globals {

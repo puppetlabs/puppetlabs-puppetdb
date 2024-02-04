@@ -1,4 +1,4 @@
-# global configuration class for PuppetDB
+# @summary global configuration class for PuppetDB
 #
 # @param version
 #   The version of the `puppetdb` package that should be installed. You may specify

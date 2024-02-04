@@ -1,4 +1,4 @@
-# create the PuppetDB postgresql database
+# @summary create the PuppetDB postgresql database
 #
 # @param listen_addresses
 #   The `listen_address` is a comma-separated list of hostnames or IP addresses on

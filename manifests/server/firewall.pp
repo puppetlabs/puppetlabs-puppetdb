@@ -1,4 +1,4 @@
-# manage puppetdb firewall rules
+# @summary manage puppetdb firewall rules
 #
 # @api private
 class puppetdb::server::firewall (

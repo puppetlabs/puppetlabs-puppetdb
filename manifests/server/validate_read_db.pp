@@ -1,4 +1,4 @@
-# validates the read only database connection
+# @summary validates the read only database connection
 #
 # @api private
 class puppetdb::server::validate_read_db (

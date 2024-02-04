@@ -1,4 +1,4 @@
-# manage the installation of the report processor on the primary
+# @summary manage the installation of the report processor on the primary
 #
 # @api private
 class puppetdb::master::report_processor (

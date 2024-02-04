@@ -1,4 +1,4 @@
-# configure SSL for the PuppetDB postgresql database
+# @summary configure SSL for the PuppetDB postgresql database
 #
 # @api private
 class puppetdb::database::ssl_configuration (

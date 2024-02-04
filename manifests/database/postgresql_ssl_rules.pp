@@ -1,4 +1,4 @@
-# manage the pg_ident.conf and pg_hba.conf files
+# @summary manage the pg_ident.conf and pg_hba.conf files
 #
 # @api private
 define puppetdb::database::postgresql_ssl_rules (

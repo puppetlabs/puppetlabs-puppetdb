@@ -1,4 +1,4 @@
-# manage puppetdb read_database ini
+# @summary manage puppetdb read_database ini
 #
 # @api private
 class puppetdb::server::read_database (

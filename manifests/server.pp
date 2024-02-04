@@ -1,4 +1,4 @@
-# manage the PuppetDB server
+# @summary manage the PuppetDB server
 #
 # @param listen_address
 #   The address that the web server should bind to for HTTP requests. Defaults to

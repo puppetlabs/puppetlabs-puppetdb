@@ -1,5 +1,4 @@
-# configure the puppet master to enable storeconfigs and to use puppetdb as
-# the storeconfigs backend
+# @summary configure the puppet master to enable storeconfigs and to use puppetdb as the storeconfigs backend
 #
 # @api private
 class puppetdb::master::storeconfigs (

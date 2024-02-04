@@ -1,4 +1,4 @@
-# manage puppetdb config ini
+# @summary manage puppetdb config ini
 #
 # @api private
 class puppetdb::server::command_processing (

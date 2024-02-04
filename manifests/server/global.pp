@@ -1,4 +1,4 @@
-# manage puppetdb global setting
+# @summary manage puppetdb global setting
 #
 # @api private
 class puppetdb::server::global (

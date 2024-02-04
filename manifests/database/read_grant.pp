@@ -1,4 +1,4 @@
-# grant read-only permissions to $database_read_only_username for all objects in $schema of $database_name
+# @summary grant read-only permissions to $database_read_only_username for all objects in $schema of $database_name
 #
 # @api private
 define puppetdb::database::read_grant (

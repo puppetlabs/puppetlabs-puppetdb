@@ -1,4 +1,5 @@
-# A define type to manage the creation of a read-only postgres users.
+# @summary manage the creation of a read-only postgres users
+#
 # In particular, it manages the necessary grants to enable such a user
 # to have read-only access to any existing objects as well as changes
 # the default access privileges so read-only access is maintained when

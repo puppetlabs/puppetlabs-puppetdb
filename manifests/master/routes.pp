@@ -1,4 +1,4 @@
-# manages the routes configuration file on the master
+# @summary manages the routes configuration file on the master
 #
 # @api private
 class puppetdb::master::routes (

@@ -1,4 +1,4 @@
-# manage the puppet configuration on the primary
+# @summary manage the puppet configuration on the primary
 #
 # @param puppetdb_server
 #   The dns name or ip of the PuppetDB server. Defaults to the hostname of the

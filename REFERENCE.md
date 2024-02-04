@@ -39,7 +39,7 @@
 * `puppetdb::database::default_read_grant`: grant read permissions to $database_read_only_username by default, for new tables created by $database_username
 * `puppetdb::database::postgresql_ssl_rules`: manage the pg_ident.conf and pg_hba.conf files
 * `puppetdb::database::read_grant`: grant read-only permissions to $database_read_only_username for all objects in $schema of $database_name
-* `puppetdb::database::read_only_user`: A define type to manage the creation of a read-only postgres users. In particular, it manages the necessary grants to enable such a user to h
+* `puppetdb::database::read_only_user`: manage the creation of a read-only postgres users
 
 ### Resource types
 

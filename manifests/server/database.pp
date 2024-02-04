@@ -1,4 +1,4 @@
-# manage puppetdb database ini
+# @summary manage puppetdb database ini
 #
 # @api private
 class puppetdb::server::database (
