@@ -56,10 +56,10 @@
 #   or disabled (`false`) in the puppet.conf file.
 #
 # @param puppet_confdir
-#   Puppet's config directory. Defaults to `/etc/puppet`.
+#   Puppet's config directory. Defaults to `/etc/puppetlabs/puppet`.
 #
 # @param puppet_conf
-#   Puppet's config file. Defaults to `/etc/puppet/puppet.conf`.
+#   Puppet's config file. Defaults to `${puppet_confdir}/puppet.conf`.
 #
 # @param masterless
 #   A boolean switch to enable or disable the masterless setup of PuppetDB. Defaults
@@ -79,6 +79,9 @@
 #   The maximum amount of time that the module should wait for PuppetDB to start up.
 #   This is most important during the initial install of PuppetDB (defaults to 15
 #   seconds).
+#
+# @param test_url
+#   The URL to use for testing if the PuppetDB instance is running.
 #
 # @param restart_puppet
 #   If `true`, the module will restart the Puppet master when PuppetDB configuration

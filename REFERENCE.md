@@ -1184,8 +1184,8 @@ The following parameters are available in the `puppetdb::master::config` class:
 * [`terminus_package`](#-puppetdb--master--config--terminus_package)
 * [`puppet_service_name`](#-puppetdb--master--config--puppet_service_name)
 * [`puppetdb_startup_timeout`](#-puppetdb--master--config--puppetdb_startup_timeout)
-* [`restart_puppet`](#-puppetdb--master--config--restart_puppet)
 * [`test_url`](#-puppetdb--master--config--test_url)
+* [`restart_puppet`](#-puppetdb--master--config--restart_puppet)
 
 ##### <a name="-puppetdb--master--config--puppetdb_server"></a>`puppetdb_server`
 
@@ -1321,7 +1321,7 @@ Default value: `true`
 
 Data type: `Any`
 
-Puppet's config directory. Defaults to `/etc/puppet`.
+Puppet's config directory. Defaults to `/etc/puppetlabs/puppet`.
 
 Default value: `$puppetdb::params::puppet_confdir`
 
@@ -1329,7 +1329,7 @@ Default value: `$puppetdb::params::puppet_confdir`
 
 Data type: `Any`
 
-Puppet's config file. Defaults to `/etc/puppet/puppet.conf`.
+Puppet's config file. Defaults to `${puppet_confdir}/puppet.conf`.
 
 Default value: `$puppetdb::params::puppet_conf`
 
@@ -1372,6 +1372,14 @@ seconds).
 
 Default value: `$puppetdb::params::puppetdb_startup_timeout`
 
+##### <a name="-puppetdb--master--config--test_url"></a>`test_url`
+
+Data type: `Any`
+
+The URL to use for testing if the PuppetDB instance is running.
+
+Default value: `$puppetdb::params::test_url`
+
 ##### <a name="-puppetdb--master--config--restart_puppet"></a>`restart_puppet`
 
 Data type: `Any`
@@ -1382,14 +1390,6 @@ must restart the service manually in order to pick up changes to the config
 files (other than `puppet.conf`).
 
 Default value: `true`
-
-##### <a name="-puppetdb--master--config--test_url"></a>`test_url`
-
-Data type: `Any`
-
-
-
-Default value: `$puppetdb::params::test_url`
 
 ### <a name="puppetdb--server"></a>`puppetdb::server`
 
