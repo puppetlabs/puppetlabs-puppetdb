@@ -339,13 +339,6 @@ You must declare the class to use it:
 
     class { 'puppetdb::globals': }
 
-**Parameters within `puppetdb::globals`:**
-
-#### `version`
-
-The version of the `puppetdb` package that should be installed. You may specify
-an explicit version number, 'present', or 'latest' (defaults to 'present').
-
 ### puppetdb
 
 The `puppetdb` class is intended as a high-level abstraction (sort of an

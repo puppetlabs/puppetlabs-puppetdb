@@ -1,5 +1,9 @@
 # global configuration class for PuppetDB
 #
+# @param version
+#   The version of the `puppetdb` package that should be installed. You may specify
+#   an explicit version number, 'present', or 'latest' (defaults to 'present').
+#
 class puppetdb::globals (
   $version                      = 'present',
   Stdlib::Absolutepath $puppet_confdir = $settings::confdir,

@@ -1121,7 +1121,8 @@ The following parameters are available in the `puppetdb::globals` class:
 
 Data type: `Any`
 
-
+The version of the `puppetdb` package that should be installed. You may specify
+an explicit version number, 'present', or 'latest' (defaults to 'present').
 
 Default value: `'present'`
 
