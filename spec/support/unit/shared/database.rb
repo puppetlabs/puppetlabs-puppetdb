@@ -227,6 +227,7 @@ shared_examples 'puppetdb::database::postgresql_ssl_rules' do |error|
     it { is_expected.to raise_error(error) }
   else
     let(:identity_map_key) { "#{with[:database_name]}-#{with[:database_username]}-map" }
+    let(:client_cert) { (with[:postgres_version].to_f >= 12.0) ? 'verify-full' : '1' }
 
     it { is_expected.to contain_puppetdb__database__postgresql_ssl_rules(name).with(with) }
 
@@ -239,7 +240,7 @@ shared_examples 'puppetdb::database::postgresql_ssl_rules' do |error|
           address:     '0.0.0.0/0',
           auth_method: 'cert',
           order:       0,
-          auth_option: "map=#{identity_map_key} clientcert=1",
+          auth_option: "map=#{identity_map_key} clientcert=#{client_cert}",
         )
     }
 
@@ -252,7 +253,7 @@ shared_examples 'puppetdb::database::postgresql_ssl_rules' do |error|
           address:     '::0/0',
           auth_method: 'cert',
           order:       0,
-          auth_option: "map=#{identity_map_key} clientcert=1",
+          auth_option: "map=#{identity_map_key} clientcert=#{client_cert}",
         )
     }
 

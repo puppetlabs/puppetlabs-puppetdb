@@ -110,37 +110,5 @@ describe 'puppetdb::database::ssl_configuration', type: :class do
         end
       end
     end
-
-    context 'when the specified Postgresql version is 12 or later' do
-      let(:params) do
-        {
-          database_name: 'puppetdb',
-          database_username: 'puppetdb',
-          postgres_version: '12'
-        }
-      end
-
-      it 'has hba rule for puppetdb user ipv4' do
-        is_expected.to contain_postgresql__server__pg_hba_rule("Allow certificate mapped connections to #{params[:database_name]} as #{params[:database_username]} (ipv4)")
-          .with_type('hostssl')
-          .with_database(params[:database_name])
-          .with_user(params[:database_username])
-          .with_address('0.0.0.0/0')
-          .with_auth_method('cert')
-          .with_order(0)
-          .with_auth_option("map=#{identity_map} clientcert=verify-full")
-      end
-
-      it 'has hba rule for puppetdb user ipv6' do
-        is_expected.to contain_postgresql__server__pg_hba_rule("Allow certificate mapped connections to #{params[:database_name]} as #{params[:database_username]} (ipv6)")
-          .with_type('hostssl')
-          .with_database(params[:database_name])
-          .with_user(params[:database_username])
-          .with_address('::0/0')
-          .with_auth_method('cert')
-          .with_order(0)
-          .with_auth_option("map=#{identity_map} clientcert=verify-full")
-      end
-    end
   end
 end

@@ -6,11 +6,28 @@ valid = {
   'puppetdb-read': {
     database_name:     'puppetdb',
     database_username: 'monitor',
+    postgres_version: '11',
     puppetdb_server:   'localhost',
   },
   'monitor': {
     database_name:     'opensesame',
     database_username: 'grover',
+    postgres_version: '11',
+    puppetdb_server:   'rainbow',
+  },
+}
+
+valid_12plus = {
+  'puppetdb-read': {
+    database_name:     'puppetdb',
+    database_username: 'monitor',
+    postgres_version: '12',
+    puppetdb_server:   'localhost',
+  },
+  'monitor': {
+    database_name:     'opensesame',
+    database_username: 'grover',
+    postgres_version: '12',
     puppetdb_server:   'rainbow',
   },
 }
@@ -27,6 +44,15 @@ describe 'puppetdb::database::postgresql_ssl_rules' do
 
   valid.each do |name, params|
     context "for valid #{name}" do
+      include_examples 'puppetdb::database::postgresql_ssl_rules' do
+        let(:title) { name.to_s }
+        let(:params) { params }
+      end
+    end
+  end
+
+  valid_12plus.each do |name, params|
+    context "for valid_12plus #{name}" do
       include_examples 'puppetdb::database::postgresql_ssl_rules' do
         let(:title) { name.to_s }
         let(:params) { params }
