@@ -4,7 +4,7 @@
 define puppetdb::database::postgresql_ssl_rules (
   String $database_name,
   String $database_username,
-  String $postgres_version,
+  String[2,3] $postgres_version,
   String $puppetdb_server,
 ) {
   $identity_map_key = "${database_name}-${database_username}-map"
