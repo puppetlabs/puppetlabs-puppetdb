@@ -72,7 +72,7 @@ shared_examples 'postgresql_psql default read grant' do
                   acl.defaclacl
                 FROM pg_default_acl acl
                 JOIN pg_namespace ns ON acl.defaclnamespace=ns.oid
-                WHERE acl.defaclacl::text ~ '.*\\\\\"#{with[:database_read_only_username]}\\\\\"=r/#{with[:database_username]}\\\".*'
+                WHERE '@' || array_to_string(acl.defaclacl, '@') || '@' ~ '@(\"?)#{with[:database_read_only_username]}\\1=r/(\"?)#{with[:database_username]}\\2@'
                 AND nspname = 'public'",
       )
   }
@@ -92,7 +92,7 @@ shared_examples 'postgresql_psql default read grant' do
                   acl.defaclacl
                 FROM pg_default_acl acl
                 JOIN pg_namespace ns ON acl.defaclnamespace=ns.oid
-                WHERE acl.defaclacl::text ~ '.*\\\\\"#{with[:database_read_only_username]}\\\\\"=U/#{with[:database_username]}\\\".*'
+                WHERE '@' || array_to_string(acl.defaclacl, '@') || '@' ~ '@(\"?)#{with[:database_read_only_username]}\\1=U/(\"?)#{with[:database_username]}\\2@'
                 AND nspname = 'public'",
       )
   }
@@ -112,7 +112,7 @@ shared_examples 'postgresql_psql default read grant' do
                   acl.defaclacl
                 FROM pg_default_acl acl
                 JOIN pg_namespace ns ON acl.defaclnamespace=ns.oid
-                WHERE acl.defaclacl::text ~ '.*\\\\\"#{with[:database_read_only_username]}\\\\\"=X/#{with[:database_username]}\\\".*'
+                WHERE '@' || array_to_string(acl.defaclacl, '@') || '@' ~ '@(\"?)#{with[:database_read_only_username]}\\1=X/(\"?)#{with[:database_username]}\\2@'
                 AND nspname = 'public'",
       )
   }
