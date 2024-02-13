@@ -75,6 +75,7 @@ class puppetdb::database::postgresql (
   $manage_database             = $puppetdb::params::manage_database,
   $manage_server               = $puppetdb::params::manage_dbserver,
   $manage_package_repo         = $puppetdb::params::manage_pg_repo,
+  $manage_dnf_module           = $puppetdb::params::manage_pg_dnf_module,
   $postgres_version            = $puppetdb::params::postgres_version,
   $postgresql_ssl_on           = $puppetdb::params::postgresql_ssl_on,
   $postgresql_ssl_key_path     = $puppetdb::params::postgresql_ssl_key_path,
@@ -87,6 +88,7 @@ class puppetdb::database::postgresql (
   if $manage_server {
     class { 'postgresql::globals':
       manage_package_repo => $manage_package_repo,
+      manage_dnf_module   => $manage_dnf_module,
       version             => $postgres_version,
     }
     # get the pg server up and running
