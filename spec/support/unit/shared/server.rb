@@ -21,7 +21,7 @@ shared_examples 'puppetdb::server::firewall' do
       .with(
         dport: with[:http_port],
         proto: 'tcp',
-        action: 'accept',
+        jump: 'accept',
       )
   }
 
@@ -31,7 +31,7 @@ shared_examples 'puppetdb::server::firewall' do
       .with(
         dport: with[:ssl_port],
         proto: 'tcp',
-        action: 'accept',
+        jump: 'accept',
       )
   }
 end
