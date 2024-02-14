@@ -17,8 +17,6 @@ fixtures:
     postgresql:
       repo: 'https://github.com/puppetlabs/puppetlabs-postgresql.git'
       ref: 'v9.2.0'
-    firewall:
-      repo: 'https://github.com/puppetlabs/puppetlabs-firewall.git'
-      ref: 'v6.0.0'
+    firewall: 'https://github.com/puppetlabs/puppetlabs-firewall.git'
   symlinks:
     puppetdb: '#{source_dir}'
