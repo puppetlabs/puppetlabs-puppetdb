@@ -2,10 +2,30 @@
 
 Release notes for the puppetlabs-puppetdb module.
 
-#### Unreleased
-* Drop support for Puppet 6
-* Drop support for Ubuntu 16.04 and Scientific Linux 7
-* Remove all code related to embedded database
+## [v8.0.0](https://github.com/puppetlabs/puppetlabs-puppetdb/tree/v8.0.0) - 2024-02-15
+
+[Full Changelog](https://github.com/puppetlabs/puppetlabs-puppetdb/compare/7.14.0...v8.0.0)
+
+### Changed
+
+- Change default postgres version to 14 [#379](https://github.com/puppetlabs/puppetlabs-puppetdb/pull/379) ([jonathannewman](https://github.com/jonathannewman))
+- Drop support for Ubuntu 16 and Scientific Linux 7 [#384](https://github.com/puppetlabs/puppetlabs-puppetdb/pull/384) ([h0tw1r3](https://github.com/h0tw1r3))
+- Drop support for < Puppet 7 [#383](https://github.com/puppetlabs/puppetlabs-puppetdb/pull/383) ([h0tw1r3](https://github.com/h0tw1r3))
+- Update firewall manifests to use `jump` instead of `action` [#372](https://github.com/puppetlabs/puppetlabs-puppetdb/pull/372) ([david22swan](https://github.com/david22swan))
+- Make puppet_confdir configurable [#376](https://github.com/puppetlabs/puppetlabs-puppetdb/pull/376) ([h0tw1r3](https://github.com/h0tw1r3))
+
+### Fixed
+
+- Un-terminated quoted string when creating read user [#371](https://github.com/puppetlabs/puppetlabs-puppetdb/pull/371) ([waipeng](https://github.com/waipeng))
+- FreeBSD support [#342](https://github.com/puppetlabs/puppetlabs-puppetdb/pull/342) ([smortex](https://github.com/smortex))
+- Use the correct value for clientcert in pg_hba.conf for Postgresql 12 [#380](https://github.com/puppetlabs/puppetlabs-puppetdb/pull/380) ([jhunt-steds](https://github.com/jhunt-steds))
+
+### Other
+
+- Add release workflows [#389](https://github.com/puppetlabs/puppetlabs-puppetdb/pull/389) ([h0tw1r3](https://github.com/h0tw1r3))
+- Cleanup reference documentation [#388](https://github.com/puppetlabs/puppetlabs-puppetdb/pull/388) ([h0tw1r3](https://github.com/h0tw1r3))
+- Update acceptance testing and add workflow [#387](https://github.com/puppetlabs/puppetlabs-puppetdb/pull/387) ([h0tw1r3](https://github.com/h0tw1r3))
+- Modernize test framework and add ci workflow [#385](https://github.com/puppetlabs/puppetlabs-puppetdb/pull/385) ([h0tw1r3](https://github.com/h0tw1r3))
 
 #### 7.14.0 - 2023/10/09
 * Owner of puppetdb config.ini is now root
