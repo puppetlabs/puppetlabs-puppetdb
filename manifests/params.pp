@@ -24,11 +24,7 @@ class puppetdb::params inherits puppetdb::globals {
     $manage_pg_repo            = false
   }
 
-  if $puppetdb_version in ['latest','present'] or versioncmp($puppetdb_version, '7.0.0') >= 0 {
-    $postgres_version          = '11'
-  } else {
-    $postgres_version          = '9.6'
-  }
+  $postgres_version          = '14'
 
   $puppetdb_major_version = $puppetdb_version ? {
     'latest'  => '8',
