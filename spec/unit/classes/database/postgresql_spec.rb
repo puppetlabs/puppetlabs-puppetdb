@@ -94,7 +94,7 @@ describe 'puppetdb::database::postgresql', type: :class do
           {
             read_database_username: params[:read_database_username],
             database_name:          params[:database_name],
-            password_hash:          'md588e898a4bade3fe1c9b96f650ec85900', # TODO: mock properly
+            password_hash:          %r{^(md5|SCRAM)}, # TODO: mock properly
             database_owner:         params[:database_username],
           }
         end

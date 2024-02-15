@@ -6,8 +6,7 @@ describe 'standalone' do
   let(:puppetdb_params) {}
   let(:puppetdb_master_config_params) {}
 
-  # TODO: temporary work-around for EL installs
-  let(:postgres_version) { "(getvar('facts.os.family') == 'RedHat') ? { true => '12', default => undef }" }
+  let(:postgres_version) { 'undef' } # default
   let(:manage_firewall) { "(getvar('facts.os.family') == 'RedHat' and Integer(getvar('facts.os.release.major')) > 7)" }
 
   describe 'with defaults' do

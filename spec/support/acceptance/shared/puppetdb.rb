@@ -3,19 +3,7 @@
 shared_examples 'puppetdb' do
   let(:pp) do
     <<~PP
-    # FIXME: temporary work-around for EL installs
     if $facts['os']['family'] == 'RedHat' {
-      $gpg_key_file = $facts['os']['release']['major'] ? {
-        '7'     => 'PGDG-RPM-GPG-KEY-RHEL7',
-        default => 'PGDG-RPM-GPG-KEY-RHEL',
-      }
-      file { "/etc/pki/rpm-gpg/${gpg_key_file}":
-        source => "https://download.postgresql.org/pub/repos/yum/keys/${gpg_key_file}",
-      }
-      -> Yumrepo <| tag == 'postgresql::repo' |> {
-        gpgkey => "file:///etc/pki/rpm-gpg/${gpg_key_file}",
-      }
-
       # Work-around EL systemd in docker bug affecting forked services
       file_line { 'puppetdb-unit-remove-pidfile':
         path               => '/lib/systemd/system/puppetdb.service',
