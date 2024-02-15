@@ -23,7 +23,7 @@ describe 'puppetdb::server::validate_db', type: :class do
         )
     }
 
-    it { is_expected.not_to contain_postgresql__validate_db_connection('validate puppetdb postgres connection') }
+    it { is_expected.not_to contain_postgresql_conn_validateor('validate puppetdb postgres connection') }
   end
 
   context 'with parameter tests' do
@@ -31,13 +31,13 @@ describe 'puppetdb::server::validate_db', type: :class do
 
     context 'with jdbc_ssl_properties set false' do
       it {
-        is_expected.to contain_postgresql__validate_db_connection('validate puppetdb postgres connection')
+        is_expected.to contain_postgresql_conn_validator('validate puppetdb postgres connection')
           .with(
-            database_host:     'localhost',
-            database_port:     '5432',
-            database_username: 'puppetdb',
-            database_password: 'puppetdb',
-            database_name:     'puppetdb',
+            host:        'localhost',
+            port:        '5432',
+            db_username: 'puppetdb',
+            db_password: 'puppetdb',
+            db_name:     'puppetdb',
           )
       }
     end
@@ -45,7 +45,7 @@ describe 'puppetdb::server::validate_db', type: :class do
     context 'without database password' do
       let(:params) { { database_password: nil } }
 
-      it { is_expected.not_to contain_postgresql__validate_db_connection('validate puppetdb postgres connection') }
+      it { is_expected.not_to contain_postgresql_conn_validator('validate puppetdb postgres connection') }
     end
   end
 end
