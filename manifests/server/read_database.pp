@@ -98,16 +98,6 @@ class puppetdb::server::read_database (
       }
     }
 
-    ini_setting { 'puppetdb_read_classname':
-      setting => 'classname',
-      value   => $classname,
-    }
-
-    ini_setting { 'puppetdb_read_subprotocol':
-      setting => 'subprotocol',
-      value   => $subprotocol,
-    }
-
     ini_setting { 'puppetdb_read_pgs':
       setting => 'syntax_pgs',
       value   => true,

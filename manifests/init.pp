@@ -131,27 +131,11 @@
 # @param node_purge_gc_batch_limit
 #   Nodes will be purged in batches of this size, one batch per gc-interval.
 #
-# @param log_slow_statements
-#   This sets the number of seconds before an SQL query is considered "slow." Slow
-#   SQL queries are logged as warnings, to assist in debugging and tuning. Note
-#   PuppetDB does not interrupt slow queries; it simply reports them after they
-#   complete.
-#
-#   The default value is `10` seconds. A value of 0 will disable logging of slow
-#   queries. This option is supported in PuppetDB >= 1.1.
-#
 # @param conn_max_age
 #   The maximum time (in minutes) for a pooled connection to remain unused before
 #   it is closed off.
 #
 #   If not supplied, we default to `60` minutes. This option is supported in PuppetDB >= 1.1.
-#
-# @param conn_keep_alive
-#   This sets the time (in minutes) for a connection to remain idle before sending
-#   a test query to the DB. This is useful to prevent a DB from timing out
-#   connections on its end.
-#
-#   If not supplied, we default to 45 minutes. This option is supported in PuppetDB >= 1.1.
 #
 # @param conn_lifetime
 #   The maximum time (in minutes) a pooled connection should remain open. Any
@@ -249,27 +233,11 @@
 #   is set to `undef`, and `manage_database` is set to `true`, it will use the value of
 #   the `database_name` parameter. This option is supported in PuppetDB >= 1.6.
 #
-# @param read_log_slow_statements
-#   This sets the number of seconds before an SQL query to the read database is
-#   considered "slow." Slow SQL queries are logged as warnings, to assist in
-#   debugging and tuning. Note PuppetDB does not interrupt slow queries; it simply
-#   reports them after they complete.
-#
-#   The default value is 10 seconds. A value of 0 will disable logging of slow
-#   queries. This option is supported in PuppetDB >= 1.6.
-#
 # @param read_conn_max_age
 #   The maximum time (in minutes) for a pooled read database connection to remain
 #   unused before it is closed off.
 #
 #   If not supplied, we default to 60 minutes. This option is supported in PuppetDB >= 1.6.
-#
-# @param read_conn_keep_alive
-#   This sets the time (in minutes) for a read database connection to remain idle
-#   before sending a test query to the DB. This is useful to prevent a DB from
-#   timing out connections on its end.
-#
-#   If not supplied, we default to 45 minutes. This option is supported in PuppetDB >= 1.6.
 #
 # @param read_conn_lifetime
 #   The maximum time (in minutes) a pooled read database connection should remain
