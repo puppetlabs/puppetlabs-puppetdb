@@ -46,26 +46,6 @@ describe 'puppetdb::server::read_database', type: :class do
         )
     }
     it {
-      is_expected.to contain_ini_setting('puppetdb_read_classname')
-        .with(
-          'ensure'  => 'present',
-          'path'    => '/etc/puppetlabs/puppetdb/conf.d/read_database.ini',
-          'section' => 'read-database',
-          'setting' => 'classname',
-          'value'   => 'org.postgresql.Driver',
-        )
-    }
-    it {
-      is_expected.to contain_ini_setting('puppetdb_read_subprotocol')
-        .with(
-          'ensure'  => 'present',
-          'path'    => '/etc/puppetlabs/puppetdb/conf.d/read_database.ini',
-          'section' => 'read-database',
-          'setting' => 'subprotocol',
-          'value'   => 'postgresql',
-        )
-    }
-    it {
       is_expected.to contain_ini_setting('puppetdb_read_pgs')
         .with(
           'ensure'  => 'present',
@@ -86,16 +66,6 @@ describe 'puppetdb::server::read_database', type: :class do
         )
     }
     it {
-      is_expected.to contain_ini_setting('puppetdb_read_log_slow_statements')
-        .with(
-          'ensure'  => 'present',
-          'path'    => '/etc/puppetlabs/puppetdb/conf.d/read_database.ini',
-          'section' => 'read-database',
-          'setting' => 'log-slow-statements',
-          'value'   => 10,
-        )
-    }
-    it {
       is_expected.to contain_ini_setting('puppetdb_read_conn_max_age')
         .with(
           'ensure'  => 'present',
@@ -103,16 +73,6 @@ describe 'puppetdb::server::read_database', type: :class do
           'section' => 'read-database',
           'setting' => 'conn-max-age',
           'value'   => '60',
-        )
-    }
-    it {
-      is_expected.to contain_ini_setting('puppetdb_read_conn_keep_alive')
-        .with(
-          'ensure'  => 'present',
-          'path'    => '/etc/puppetlabs/puppetdb/conf.d/read_database.ini',
-          'section' => 'read-database',
-          'setting' => 'conn-keep-alive',
-          'value'   => '45',
         )
     }
     it {

@@ -102,27 +102,11 @@
 # @param node_purge_gc_batch_limit
 #   Nodes will be purged in batches of this size, one batch per gc-interval.
 #
-# @param log_slow_statements
-#   This sets the number of seconds before an SQL query is considered "slow." Slow
-#   SQL queries are logged as warnings, to assist in debugging and tuning. Note
-#   PuppetDB does not interrupt slow queries; it simply reports them after they
-#   complete.
-#
-#   The default value is `10` seconds. A value of 0 will disable logging of slow
-#   queries. This option is supported in PuppetDB >= 1.1.
-#
 # @param conn_max_age
 #   The maximum time (in minutes) for a pooled connection to remain unused before
 #   it is closed off.
 #
 #   If not supplied, we default to `60` minutes. This option is supported in PuppetDB >= 1.1.
-#
-# @param conn_keep_alive
-#   This sets the time (in minutes) for a connection to remain idle before sending
-#   a test query to the DB. This is useful to prevent a DB from timing out
-#   connections on its end.
-#
-#   If not supplied, we default to 45 minutes. This option is supported in PuppetDB >= 1.1.
 #
 # @param conn_lifetime
 #   The maximum time (in minutes) a pooled connection should remain open. Any
@@ -217,27 +201,11 @@
 #   is set to `undef`, and `manage_database` is set to `true`, it will use the value of
 #   the `database_name` parameter. This option is supported in PuppetDB >= 1.6.
 #
-# @param read_log_slow_statements
-#   This sets the number of seconds before an SQL query to the read database is
-#   considered "slow." Slow SQL queries are logged as warnings, to assist in
-#   debugging and tuning. Note PuppetDB does not interrupt slow queries; it simply
-#   reports them after they complete.
-#
-#   The default value is 10 seconds. A value of 0 will disable logging of slow
-#   queries. This option is supported in PuppetDB >= 1.6.
-#
 # @param read_conn_max_age
 #   The maximum time (in minutes) for a pooled read database connection to remain
 #   unused before it is closed off.
 #
 #   If not supplied, we default to 60 minutes. This option is supported in PuppetDB >= 1.6.
-#
-# @param read_conn_keep_alive
-#   This sets the time (in minutes) for a read database connection to remain idle
-#   before sending a test query to the DB. This is useful to prevent a DB from
-#   timing out connections on its end.
-#
-#   If not supplied, we default to 45 minutes. This option is supported in PuppetDB >= 1.6.
 #
 # @param read_conn_lifetime
 #   The maximum time (in minutes) a pooled read database connection should remain
@@ -379,9 +347,7 @@ class puppetdb::server (
   Optional[Array] $facts_blacklist         = $puppetdb::params::facts_blacklist,
   $gc_interval                             = $puppetdb::params::gc_interval,
   $node_purge_gc_batch_limit               = $puppetdb::params::node_purge_gc_batch_limit,
-  $log_slow_statements                     = $puppetdb::params::log_slow_statements,
   $conn_max_age                            = $puppetdb::params::conn_max_age,
-  $conn_keep_alive                         = $puppetdb::params::conn_keep_alive,
   $conn_lifetime                           = $puppetdb::params::conn_lifetime,
   $puppetdb_package                        = $puppetdb::params::puppetdb_package,
   $puppetdb_service                        = $puppetdb::params::puppetdb_service,
@@ -396,9 +362,7 @@ class puppetdb::server (
   $manage_read_db_password                 = $puppetdb::params::manage_read_db_password,
   $read_database_jdbc_ssl_properties       = $puppetdb::params::read_database_jdbc_ssl_properties,
   $read_database_validate                  = $puppetdb::params::read_database_validate,
-  $read_log_slow_statements                = $puppetdb::params::read_log_slow_statements,
   $read_conn_max_age                       = $puppetdb::params::read_conn_max_age,
-  $read_conn_keep_alive                    = $puppetdb::params::read_conn_keep_alive,
   $read_conn_lifetime                      = $puppetdb::params::read_conn_lifetime,
   $confdir                                 = $puppetdb::params::confdir,
   $vardir                                  = $puppetdb::params::vardir,
@@ -511,9 +475,7 @@ class puppetdb::server (
     facts_blacklist           => $facts_blacklist,
     gc_interval               => $gc_interval,
     node_purge_gc_batch_limit => $node_purge_gc_batch_limit,
-    log_slow_statements       => $log_slow_statements,
     conn_max_age              => $conn_max_age,
-    conn_keep_alive           => $conn_keep_alive,
     conn_lifetime             => $conn_lifetime,
     confdir                   => $confdir,
     puppetdb_user             => $puppetdb_user,
@@ -545,9 +507,7 @@ class puppetdb::server (
     ssl_ca_cert_path       => $ssl_ca_cert_path,
     jdbc_ssl_properties    => $read_database_jdbc_ssl_properties,
     database_validate      => $read_database_validate,
-    log_slow_statements    => $read_log_slow_statements,
     conn_max_age           => $read_conn_max_age,
-    conn_keep_alive        => $read_conn_keep_alive,
     conn_lifetime          => $read_conn_lifetime,
     confdir                => $confdir,
     puppetdb_user          => $puppetdb_user,

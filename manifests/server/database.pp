@@ -16,9 +16,7 @@ class puppetdb::server::database (
   $facts_blacklist           = $puppetdb::params::facts_blacklist,
   $gc_interval               = $puppetdb::params::gc_interval,
   $node_purge_gc_batch_limit = $puppetdb::params::node_purge_gc_batch_limit,
-  $log_slow_statements       = $puppetdb::params::log_slow_statements,
   $conn_max_age              = $puppetdb::params::conn_max_age,
-  $conn_keep_alive           = $puppetdb::params::conn_keep_alive,
   $conn_lifetime             = $puppetdb::params::conn_lifetime,
   $confdir                   = $puppetdb::params::confdir,
   $puppetdb_user             = $puppetdb::params::puppetdb_user,
@@ -70,9 +68,6 @@ class puppetdb::server::database (
     require => $ini_setting_require,
   }
 
-  $classname = 'org.postgresql.Driver'
-  $subprotocol = 'postgresql'
-
   if !empty($jdbc_ssl_properties) {
     $database_suffix = $jdbc_ssl_properties
   }
@@ -107,16 +102,6 @@ class puppetdb::server::database (
       setting => 'password',
       value   => $database_password,
     }
-  }
-
-  ini_setting { 'puppetdb_classname':
-    setting => 'classname',
-    value   => $classname,
-  }
-
-  ini_setting { 'puppetdb_subprotocol':
-    setting => 'subprotocol',
-    value   => $subprotocol,
   }
 
   ini_setting { 'puppetdb_pgs':
@@ -154,19 +139,9 @@ class puppetdb::server::database (
     value   => $report_ttl,
   }
 
-  ini_setting { 'puppetdb_log_slow_statements':
-    setting => 'log-slow-statements',
-    value   => $log_slow_statements,
-  }
-
   ini_setting { 'puppetdb_conn_max_age':
     setting => 'conn-max-age',
     value   => $conn_max_age,
-  }
-
-  ini_setting { 'puppetdb_conn_keep_alive':
-    setting => 'conn-keep-alive',
-    value   => $conn_keep_alive,
   }
 
   ini_setting { 'puppetdb_conn_lifetime':

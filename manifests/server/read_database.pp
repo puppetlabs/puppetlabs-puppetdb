@@ -10,9 +10,7 @@ class puppetdb::server::read_database (
   $manage_db_password     = $puppetdb::params::manage_read_db_password,
   $jdbc_ssl_properties    = $puppetdb::params::read_database_jdbc_ssl_properties,
   $database_validate      = $puppetdb::params::read_database_validate,
-  $log_slow_statements    = $puppetdb::params::read_log_slow_statements,
   $conn_max_age           = $puppetdb::params::read_conn_max_age,
-  $conn_keep_alive        = $puppetdb::params::read_conn_keep_alive,
   $conn_lifetime          = $puppetdb::params::read_conn_lifetime,
   $confdir                = $puppetdb::params::confdir,
   $puppetdb_user          = $puppetdb::params::puppetdb_user,
@@ -64,9 +62,6 @@ class puppetdb::server::read_database (
       require => $ini_setting_require,
     }
 
-    $classname = 'org.postgresql.Driver'
-    $subprotocol = 'postgresql'
-
     if !empty($jdbc_ssl_properties) {
       $database_suffix = $jdbc_ssl_properties
     }
@@ -103,16 +98,6 @@ class puppetdb::server::read_database (
       }
     }
 
-    ini_setting { 'puppetdb_read_classname':
-      setting => 'classname',
-      value   => $classname,
-    }
-
-    ini_setting { 'puppetdb_read_subprotocol':
-      setting => 'subprotocol',
-      value   => $subprotocol,
-    }
-
     ini_setting { 'puppetdb_read_pgs':
       setting => 'syntax_pgs',
       value   => true,
@@ -123,19 +108,9 @@ class puppetdb::server::read_database (
       value   => $subname,
     }
 
-    ini_setting { 'puppetdb_read_log_slow_statements':
-      setting => 'log-slow-statements',
-      value   => $log_slow_statements,
-    }
-
     ini_setting { 'puppetdb_read_conn_max_age':
       setting => 'conn-max-age',
       value   => $conn_max_age,
-    }
-
-    ini_setting { 'puppetdb_read_conn_keep_alive':
-      setting => 'conn-keep-alive',
-      value   => $conn_keep_alive,
     }
 
     ini_setting { 'puppetdb_read_conn_lifetime':
