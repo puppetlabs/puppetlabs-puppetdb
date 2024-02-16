@@ -45,4 +45,8 @@ shared_examples 'puppetdb' do
   it 'applies idempotently' do
     idempotent_apply(pp, debug: ENV.key?('DEBUG'))
   end
+
+  it 'agent can puppetdb_query' do
+    apply_manifest("$envs = puppetdb_query('environments[name]{}')", expect_failures: false, debug: ENV.key?('DEBUG'))
+  end
 end

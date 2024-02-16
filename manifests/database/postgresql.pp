@@ -84,6 +84,8 @@ class puppetdb::database::postgresql (
   $read_database_password      = $puppetdb::params::read_database_password,
   $read_database_host          = $puppetdb::params::read_database_host
 ) inherits puppetdb::params {
+  $port = scanf($database_port, '%i')[0]
+
   if $manage_server {
     class { 'postgresql::globals':
       manage_package_repo => $manage_package_repo,
@@ -93,7 +95,7 @@ class puppetdb::database::postgresql (
     class { 'postgresql::server':
       ip_mask_allow_all_users => '0.0.0.0/0',
       listen_addresses        => $listen_addresses,
-      port                    => scanf($database_port, '%i')[0],
+      port                    => $port,
     }
 
     # We need to create the ssl connection for the read user, when
@@ -129,6 +131,7 @@ class puppetdb::database::postgresql (
       postgresql::server::extension { 'pg_trgm':
         database => $database_name,
         require  => Postgresql::Server::Db[$database_name],
+        port     => $port,
       }
     }
   }
@@ -139,10 +142,12 @@ class puppetdb::database::postgresql (
       user     => $database_username,
       password => $database_password,
       grant    => 'all',
+      port     => $port,
     }
 
     -> postgresql_psql { 'revoke all access on public schema':
       db      => $database_name,
+      port    => $port,
       command => 'REVOKE CREATE ON SCHEMA public FROM public',
       unless  => "SELECT * FROM
                   (SELECT has_schema_privilege('public', 'public', 'create') can_create) privs
@@ -151,6 +156,7 @@ class puppetdb::database::postgresql (
 
     -> postgresql_psql { "grant all permissions to ${database_username}":
       db      => $database_name,
+      port    => $port,
       command => "GRANT CREATE ON SCHEMA public TO \"${database_username}\"",
       unless  => "SELECT * FROM
                   (SELECT has_schema_privilege('${database_username}', 'public', 'create') can_create) privs
@@ -162,10 +168,12 @@ class puppetdb::database::postgresql (
       database_name          => $database_name,
       password_hash          => postgresql::postgresql_password($read_database_username, $read_database_password),
       database_owner         => $database_username,
+      database_port          => $port,
     }
 
     -> postgresql_psql { "grant ${read_database_username} role to ${database_username}":
       db      => $database_name,
+      port    => $port,
       command => "GRANT \"${read_database_username}\" TO \"${database_username}\"",
       unless  => "SELECT oid, rolname FROM pg_roles WHERE
                    pg_has_role( '${database_username}', oid, 'member') and rolname = '${read_database_username}'";

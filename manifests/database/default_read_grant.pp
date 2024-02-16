@@ -6,9 +6,11 @@ define puppetdb::database::default_read_grant (
   String $schema,
   String $database_username,
   String $database_read_only_username,
+  Optional[Stdlib::Port] $database_port = undef,
 ) {
   postgresql_psql { "grant default select permission for ${database_read_only_username}":
     db      => $database_name,
+    port    => $database_port,
     command => "ALTER DEFAULT PRIVILEGES
                   FOR USER \"${database_username}\"
                   IN SCHEMA \"${schema}\"
@@ -26,6 +28,7 @@ define puppetdb::database::default_read_grant (
 
   postgresql_psql { "grant default usage permission for ${database_read_only_username}":
     db      => $database_name,
+    port    => $database_port,
     command => "ALTER DEFAULT PRIVILEGES
                   FOR USER \"${database_username}\"
                   IN SCHEMA \"${schema}\"
@@ -43,6 +46,7 @@ define puppetdb::database::default_read_grant (
 
   postgresql_psql { "grant default execute permission for ${database_read_only_username}":
     db      => $database_name,
+    port    => $database_port,
     command => "ALTER DEFAULT PRIVILEGES
                   FOR USER \"${database_username}\"
                   IN SCHEMA \"${schema}\"
