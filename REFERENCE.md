@@ -99,9 +99,7 @@ The following parameters are available in the `puppetdb` class:
 * [`facts_blacklist`](#-puppetdb--facts_blacklist)
 * [`gc_interval`](#-puppetdb--gc_interval)
 * [`node_purge_gc_batch_limit`](#-puppetdb--node_purge_gc_batch_limit)
-* [`log_slow_statements`](#-puppetdb--log_slow_statements)
 * [`conn_max_age`](#-puppetdb--conn_max_age)
-* [`conn_keep_alive`](#-puppetdb--conn_keep_alive)
 * [`conn_lifetime`](#-puppetdb--conn_lifetime)
 * [`puppetdb_package`](#-puppetdb--puppetdb_package)
 * [`puppetdb_service`](#-puppetdb--puppetdb_service)
@@ -122,9 +120,7 @@ The following parameters are available in the `puppetdb` class:
 * [`read_database_jdbc_ssl_properties`](#-puppetdb--read_database_jdbc_ssl_properties)
 * [`read_database_validate`](#-puppetdb--read_database_validate)
 * [`read_database_name`](#-puppetdb--read_database_name)
-* [`read_log_slow_statements`](#-puppetdb--read_log_slow_statements)
 * [`read_conn_max_age`](#-puppetdb--read_conn_max_age)
-* [`read_conn_keep_alive`](#-puppetdb--read_conn_keep_alive)
 * [`read_conn_lifetime`](#-puppetdb--read_conn_lifetime)
 * [`ssl_dir`](#-puppetdb--ssl_dir)
 * [`ssl_set_cert_paths`](#-puppetdb--ssl_set_cert_paths)
@@ -457,20 +453,6 @@ Nodes will be purged in batches of this size, one batch per gc-interval.
 
 Default value: `$puppetdb::params::node_purge_gc_batch_limit`
 
-##### <a name="-puppetdb--log_slow_statements"></a>`log_slow_statements`
-
-Data type: `Any`
-
-This sets the number of seconds before an SQL query is considered "slow." Slow
-SQL queries are logged as warnings, to assist in debugging and tuning. Note
-PuppetDB does not interrupt slow queries; it simply reports them after they
-complete.
-
-The default value is `10` seconds. A value of 0 will disable logging of slow
-queries. This option is supported in PuppetDB >= 1.1.
-
-Default value: `$puppetdb::params::log_slow_statements`
-
 ##### <a name="-puppetdb--conn_max_age"></a>`conn_max_age`
 
 Data type: `Any`
@@ -481,18 +463,6 @@ it is closed off.
 If not supplied, we default to `60` minutes. This option is supported in PuppetDB >= 1.1.
 
 Default value: `$puppetdb::params::conn_max_age`
-
-##### <a name="-puppetdb--conn_keep_alive"></a>`conn_keep_alive`
-
-Data type: `Any`
-
-This sets the time (in minutes) for a connection to remain idle before sending
-a test query to the DB. This is useful to prevent a DB from timing out
-connections on its end.
-
-If not supplied, we default to 45 minutes. This option is supported in PuppetDB >= 1.1.
-
-Default value: `$puppetdb::params::conn_keep_alive`
 
 ##### <a name="-puppetdb--conn_lifetime"></a>`conn_lifetime`
 
@@ -690,20 +660,6 @@ the `database_name` parameter. This option is supported in PuppetDB >= 1.6.
 
 Default value: `$puppetdb::params::read_database_name`
 
-##### <a name="-puppetdb--read_log_slow_statements"></a>`read_log_slow_statements`
-
-Data type: `Any`
-
-This sets the number of seconds before an SQL query to the read database is
-considered "slow." Slow SQL queries are logged as warnings, to assist in
-debugging and tuning. Note PuppetDB does not interrupt slow queries; it simply
-reports them after they complete.
-
-The default value is 10 seconds. A value of 0 will disable logging of slow
-queries. This option is supported in PuppetDB >= 1.6.
-
-Default value: `$puppetdb::params::read_log_slow_statements`
-
 ##### <a name="-puppetdb--read_conn_max_age"></a>`read_conn_max_age`
 
 Data type: `Any`
@@ -714,18 +670,6 @@ unused before it is closed off.
 If not supplied, we default to 60 minutes. This option is supported in PuppetDB >= 1.6.
 
 Default value: `$puppetdb::params::read_conn_max_age`
-
-##### <a name="-puppetdb--read_conn_keep_alive"></a>`read_conn_keep_alive`
-
-Data type: `Any`
-
-This sets the time (in minutes) for a read database connection to remain idle
-before sending a test query to the DB. This is useful to prevent a DB from
-timing out connections on its end.
-
-If not supplied, we default to 45 minutes. This option is supported in PuppetDB >= 1.6.
-
-Default value: `$puppetdb::params::read_conn_keep_alive`
 
 ##### <a name="-puppetdb--read_conn_lifetime"></a>`read_conn_lifetime`
 
@@ -1427,9 +1371,7 @@ The following parameters are available in the `puppetdb::server` class:
 * [`facts_blacklist`](#-puppetdb--server--facts_blacklist)
 * [`gc_interval`](#-puppetdb--server--gc_interval)
 * [`node_purge_gc_batch_limit`](#-puppetdb--server--node_purge_gc_batch_limit)
-* [`log_slow_statements`](#-puppetdb--server--log_slow_statements)
 * [`conn_max_age`](#-puppetdb--server--conn_max_age)
-* [`conn_keep_alive`](#-puppetdb--server--conn_keep_alive)
 * [`conn_lifetime`](#-puppetdb--server--conn_lifetime)
 * [`puppetdb_package`](#-puppetdb--server--puppetdb_package)
 * [`puppetdb_service`](#-puppetdb--server--puppetdb_service)
@@ -1449,9 +1391,7 @@ The following parameters are available in the `puppetdb::server` class:
 * [`read_database_jdbc_ssl_properties`](#-puppetdb--server--read_database_jdbc_ssl_properties)
 * [`read_database_validate`](#-puppetdb--server--read_database_validate)
 * [`read_database_name`](#-puppetdb--server--read_database_name)
-* [`read_log_slow_statements`](#-puppetdb--server--read_log_slow_statements)
 * [`read_conn_max_age`](#-puppetdb--server--read_conn_max_age)
-* [`read_conn_keep_alive`](#-puppetdb--server--read_conn_keep_alive)
 * [`read_conn_lifetime`](#-puppetdb--server--read_conn_lifetime)
 * [`ssl_dir`](#-puppetdb--server--ssl_dir)
 * [`ssl_set_cert_paths`](#-puppetdb--server--ssl_set_cert_paths)
@@ -1715,20 +1655,6 @@ Nodes will be purged in batches of this size, one batch per gc-interval.
 
 Default value: `$puppetdb::params::node_purge_gc_batch_limit`
 
-##### <a name="-puppetdb--server--log_slow_statements"></a>`log_slow_statements`
-
-Data type: `Any`
-
-This sets the number of seconds before an SQL query is considered "slow." Slow
-SQL queries are logged as warnings, to assist in debugging and tuning. Note
-PuppetDB does not interrupt slow queries; it simply reports them after they
-complete.
-
-The default value is `10` seconds. A value of 0 will disable logging of slow
-queries. This option is supported in PuppetDB >= 1.1.
-
-Default value: `$puppetdb::params::log_slow_statements`
-
 ##### <a name="-puppetdb--server--conn_max_age"></a>`conn_max_age`
 
 Data type: `Any`
@@ -1739,18 +1665,6 @@ it is closed off.
 If not supplied, we default to `60` minutes. This option is supported in PuppetDB >= 1.1.
 
 Default value: `$puppetdb::params::conn_max_age`
-
-##### <a name="-puppetdb--server--conn_keep_alive"></a>`conn_keep_alive`
-
-Data type: `Any`
-
-This sets the time (in minutes) for a connection to remain idle before sending
-a test query to the DB. This is useful to prevent a DB from timing out
-connections on its end.
-
-If not supplied, we default to 45 minutes. This option is supported in PuppetDB >= 1.1.
-
-Default value: `$puppetdb::params::conn_keep_alive`
 
 ##### <a name="-puppetdb--server--conn_lifetime"></a>`conn_lifetime`
 
@@ -1940,20 +1854,6 @@ the `database_name` parameter. This option is supported in PuppetDB >= 1.6.
 
 Default value: `$puppetdb::params::read_database_name`
 
-##### <a name="-puppetdb--server--read_log_slow_statements"></a>`read_log_slow_statements`
-
-Data type: `Any`
-
-This sets the number of seconds before an SQL query to the read database is
-considered "slow." Slow SQL queries are logged as warnings, to assist in
-debugging and tuning. Note PuppetDB does not interrupt slow queries; it simply
-reports them after they complete.
-
-The default value is 10 seconds. A value of 0 will disable logging of slow
-queries. This option is supported in PuppetDB >= 1.6.
-
-Default value: `$puppetdb::params::read_log_slow_statements`
-
 ##### <a name="-puppetdb--server--read_conn_max_age"></a>`read_conn_max_age`
 
 Data type: `Any`
@@ -1964,18 +1864,6 @@ unused before it is closed off.
 If not supplied, we default to 60 minutes. This option is supported in PuppetDB >= 1.6.
 
 Default value: `$puppetdb::params::read_conn_max_age`
-
-##### <a name="-puppetdb--server--read_conn_keep_alive"></a>`read_conn_keep_alive`
-
-Data type: `Any`
-
-This sets the time (in minutes) for a read database connection to remain idle
-before sending a test query to the DB. This is useful to prevent a DB from
-timing out connections on its end.
-
-If not supplied, we default to 45 minutes. This option is supported in PuppetDB >= 1.6.
-
-Default value: `$puppetdb::params::read_conn_keep_alive`
 
 ##### <a name="-puppetdb--server--read_conn_lifetime"></a>`read_conn_lifetime`
 
