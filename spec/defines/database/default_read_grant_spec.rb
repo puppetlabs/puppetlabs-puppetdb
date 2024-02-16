@@ -3,13 +3,15 @@
 require 'spec_helper'
 
 describe 'puppetdb::database::default_read_grant' do
+  defaults = {
+    database_name:               'puppetdb',
+    schema:                      'public',
+    database_username:           'puppetdb',
+    database_read_only_username: 'puppetdb-read',
+  }
   valid = {
-    'standard': {
-      database_name:               'puppetdb',
-      schema:                      'public',
-      database_username:           'puppetdb',
-      database_read_only_username: 'puppetdb-read',
-    }
+    'standard': defaults,
+    'standard with port': defaults.merge({ database_port: 5433 }),
   }
 
   invalid = {
@@ -18,7 +20,8 @@ describe 'puppetdb::database::default_read_grant' do
       schema:                      'public',
       database_username:           'puppetdb',
       database_read_only_username: 'puppetdb-read',
-    }
+    },
+    'invalid data type': defaults.merge({ database_port: '5433' }),
   }
 
   let(:facts) { on_supported_os.take(1).first[1] }

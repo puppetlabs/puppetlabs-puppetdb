@@ -105,4 +105,23 @@ describe 'standalone' do
       it { is_expected.to be_running }
     end
   end
+
+  describe 'supports changing database port', :change do
+    let(:puppetdb_params) do
+      <<~EOS
+        database_port           => '5433',
+        read_database_port      => '5433',
+      EOS
+    end
+
+    it_behaves_like 'puppetdb'
+
+    describe port(5433), :status do
+      it { is_expected.to be_listening }
+    end
+
+    describe service('puppetdb') do
+      it { is_expected.to be_running }
+    end
+  end
 end

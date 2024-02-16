@@ -2,22 +2,25 @@
 
 require 'spec_helper'
 
+defaults = {
+  read_database_username: 'puppetdb-read',
+  database_name:          'puppetdb',
+  database_owner:         'puppetdb',
+}
+
 valid = {
-  'puppetdb-read': {
-    read_database_username: 'puppetdb-read',
-    database_name:          'puppetdb',
-    password_hash:          'blah',
-    database_owner:         'puppetdb',
-  },
+  'puppetdb-read': defaults.merge({ password_hash: 'blash' }),
   'spectest': {
     read_database_username: 'spectest-read',
     database_name:          'spectest',
     database_owner:         'spectest',
   },
+  'with port': defaults.merge({ database_port: 5433 }),
 }
 
 invalid = {
   'no params': {},
+  'invalid data type': defaults.merge({ database_port: '5433' }),
 }
 
 describe 'puppetdb::database::read_only_user', type: :define do

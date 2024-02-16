@@ -20,15 +20,18 @@ define puppetdb::database::read_only_user (
   String $database_name,
   String $database_owner,
   Variant[String, Boolean] $password_hash = false,
+  Optional[Stdlib::Port] $database_port = undef,
 ) {
   postgresql::server::role { $read_database_username:
     password_hash => $password_hash,
+    port          => $database_port,
   }
 
   -> postgresql::server::database_grant { "${database_name} grant connection permission to ${read_database_username}":
     privilege => 'CONNECT',
     db        => $database_name,
     role      => $read_database_username,
+    port      => $database_port,
   }
 
   -> puppetdb::database::default_read_grant {
@@ -36,6 +39,7 @@ define puppetdb::database::read_only_user (
       database_username           => $database_owner,
       database_read_only_username => $read_database_username,
       database_name               => $database_name,
+      database_port               => $database_port,
       schema                      => 'public',
   }
 
@@ -43,6 +47,7 @@ define puppetdb::database::read_only_user (
     "${database_name} grant read-only permission on existing objects to ${read_database_username}":
       database_read_only_username => $read_database_username,
       database_name               => $database_name,
+      database_port               => $database_port,
       schema                      => 'public',
   }
 }
