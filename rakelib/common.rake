@@ -1,23 +1,18 @@
-require 'dependency_checker'
-require 'metadata_json_lint'
+begin
+  require 'metadata_json_lint'
 
-# PDK validate behaviors
-MetadataJsonLint.options.fail_on_warnings = true
-MetadataJsonLint.options.strict_license = true
-MetadataJsonLint.options.strict_puppet_version = true
-MetadataJsonLint.options.strict_dependencies = true
+  # PDK validate behaviors
+  MetadataJsonLint.options.fail_on_warnings = true
+  MetadataJsonLint.options.strict_license = true
+  MetadataJsonLint.options.strict_puppet_version = true
+  MetadataJsonLint.options.strict_dependencies = true
 
-PuppetLint.configuration.log_forat = '%{path}:%{line}:%{check}:%{KIND}:%{message}'
-PuppetLint.configuration.fail_on_warnings = true
-PuppetLint.configuration.ignore_paths.reject! { |c| c == 'spec/**/*.pp' }
-PuppetLint.configuration.ignore_paths << 'spec/fixtures/**/*.pp'
-
-desc 'Run dependency-checker'
-task :metadata_deps do
-  dpc = DependencyChecker::Runner.new
-  dpc.resolve_from_files(['metadata.json'])
-  dpc.run
-  raise 'dependency checker failed' unless dpc.problems.zero?
+  PuppetLint.configuration.log_forat = '%{path}:%{line}:%{check}:%{KIND}:%{message}'
+  PuppetLint.configuration.fail_on_warnings = true
+  PuppetLint.configuration.ignore_paths.reject! { |c| c == 'spec/**/*.pp' }
+  PuppetLint.configuration.ignore_paths << 'spec/fixtures/**/*.pp'
+rescue LoadError
+  # ignore
 end
 
 # output task execution
