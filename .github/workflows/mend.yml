@@ -1,0 +1,16 @@
+---
+name: "mend"
+
+on:
+  pull_request_target:
+    types:
+      - opened
+      - synchronize
+  schedule:
+    - cron: "0 0 * * *"
+  workflow_dispatch:
+
+jobs:
+  mend:
+    uses: "puppetlabs/cat-github-actions/.github/workflows/mend_ruby.yml@main"
+    secrets: "inherit"
