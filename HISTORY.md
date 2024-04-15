@@ -1,64 +1,55 @@
-## puppetlabs-puppetdb changelog
-
-Release notes for the puppetlabs-puppetdb module.
-
-#### Unreleased
-* Drop support for Puppet 6
-* Drop support for Ubuntu 16.04 and Scientific Linux 7
-* Remove all code related to embedded database
-
-#### 7.14.0 - 2023/10/09
+## [7.14.0] (2023/10/09)
 * Owner of puppetdb config.ini is now root
 * Remove support for EOL OSes CentOS 6, Debian 8 & 9.
 
-#### 7.13.0 - 2023/04/19
+## [7.13.0] (2023/04/19)
 * Replace usage of legacy ::osfamily fact with structured form
   [PDB-5611](https://tickets.puppetlabs.com/browse/PDB-5611)
 
-#### 7.12.0 - 2022/12/13
+## [7.12.0] (2022/12/13)
 * Grant read role to write user to fix database user permissions issue
   [PDB-5559](https://tickets.puppetlabs.com/browse/PDB-5559)
 
-#### 7.11.0 - Not Released
+## [7.11.0] (Not Released)
 
-#### 7.10.0 - 2021/12/16
+## [7.10.0] (2021/12/16)
 * Add support for Debian 11
 * Allow puppetlabs/stdlib 8.0.0
 * Default to PostgreSQL 11 when using PuppetDB 7.0.0 or later
 * Update minimum version of puppetlabs/postgresql module to 6.5.0
 
-#### 7.9.0 - 2021/06/23
+## [7.9.0] (2021/06/23)
 
 * When `manage_database` is true, it will create a read-only user in postgres
   and configure PuppetDB to use that user for its read-database connection
   pool
 * Update module dependencies for inifile, firewall, and stdlib
 
-#### 7.8.0 - 2021/03/25
+## [7.8.0] (2021/03/25)
 
 * Added an option `postgresql_ssl_on` to enable an SSL connection between
   PostgreSQL and PuppetDB using Puppet agent certificates to verify the
   connection and authorize PuppetDB to access the puppetdb database.
 * Update our metadata to allow puppetlabs-postgresql 7 (this fixes an issue on el8)
 
-#### 7.7.1 - 2020/12/15
+## [7.7.1] (2020/12/15)
 
 * When using Puppet 7 or newer, the connection validator will use the new HTTP
   client. This removes a deprecation warning in the agent output.
 
-#### 7.7.0 - 2020/11/05
+## [7.7.0] (2020/11/05)
 
 * When applied to a node running puppet `7.0.0` or newer, the
   `puppetdb::master::config` class will default to the `json` fact cache. See
   [PUP-10656](https://tickets.puppetlabs.com/browse/PUP-10656) for more
   information.
 
-#### 7.6.0 - 2020/09/02
+## [7.6.0] (2020/09/02)
 
 * Added `migrate` parameter to manage the database.ini config option
 * Added Ubuntu 20.04 LTS as a supported platform
 
-#### 7.5.0 - 2020/06/10
+## [7.5.0] (2020/06/10)
 
 * Added `java_bin` parameter to set the full path to the java bin
 * Added `node_purge_gc_batch_limit` parameter
@@ -67,28 +58,28 @@ Release notes for the puppetlabs-puppetdb module.
 * Updated functions to use puppet4 functions
 * Added `enable_storeconfigs` parameter, specifies whether or not the manage the master's storeconfigs (default: `true`)
 
-#### 7.4.0 - 2019/06/14
+## [7.4.0] (2019/06/14)
 
 This is a minor feature release.
 
 Detailed changes:
 * Add the `manage_database` parameter to skip database and extension creation
 
-#### 7.3.0 - 2019/06/14
+## [7.3.0] (2019/06/14)
 
 This is a minor feature release.
 
 Detailed changes:
 * Update module dependencies for firewall and stdlib
 
-#### 7.2.0 - 2019/05/17
+## [7.2.0] (2019/05/17)
 
 This is a minor feature release.
 
 Detailed changes:
 * Update module dependencies for inifile and PostgreSQL
 
-#### 7.1.0 - 2018/10/02
+## [7.1.0] (2018/10/02)
 
 This is a minor feature release.
 
@@ -96,18 +87,14 @@ Detailed changes:
 * Fix issue with DLO path default being hardcoded
 * Update module dependencies to allow compatibility with Puppet 6
 
-------------------------------------------
-
-#### 7.0.1 - 2018/07/30
+## [7.0.1] (2018/07/30)
 
 This is a minor bugfix release.
 
 Detailed changes:
 * Update the upper bound of required puppet version in metadata.json (Thanks @ekohl!)
 
-------------------------------------------
-
-#### 7.0.0 - 2018/06/27
+## [7.0.0] (2018/06/27)
 
 This is a major release that replaces validate_* methods with data types.
 The minimum required version of puppetlabs/stdlib has been bummped to 4.13.1
@@ -123,9 +110,7 @@ Detailed changes:
 * Update list of supported platforms
 * Retire the previously deprecated `database_ssl` and `read_database_ssl` params in favor of `jdbc_ssl_properties` and `read_database_jdbc_ssl_properties`
 
-------------------------------------------
-
-#### 6.0.2 - 2017/11/06
+## [6.0.2] (2017/11/06)
 
 This is a minor bugfix release.
 
@@ -134,9 +119,7 @@ Detailed changes:
  * Update the upper bound of the puppetlabs inifile dependency
  * Explicitly add database dependency in the PostgreSQL manifest (Thanks @pgassmann!)
 
-------------------------------------------
-
-#### 6.0.1 - 2017/06/05
+## [6.0.1] (2017/06/05)
 
 This is a minor bugfix release.
 
@@ -144,9 +127,7 @@ Detailed changes:
 
 * Update the required puppet version in metadata.json
 
-------------------------------------------
-
-#### 6.0.0 - 2017/06/05
+## [6.0.0] (2017/06/05)
 
 This is a major release to support PuppetDB 5.0. Note that the default
 PostgreSQL version is now 9.6, the minimum required by PuppetDB 5.0. If you're
@@ -173,10 +154,7 @@ Detailed changes:
 * Manage the pg_trgm database extension (Thanks @PascalBourdier!)
 * Default open_ssl_listen_port to undef instead of true (Thanks @mmckinst!)
 
-
-------------------------------------------
-
-#### 5.1.2 - 2016/03/14
+## [5.1.2] (2016/03/14)
 
 This is a minor bugfix release.
 
@@ -185,9 +163,7 @@ Detailed changes:
 * Support RHEL upgrades from the `puppetdb-terminus` (<= PuppetDB 2) to the
 `puppetdb-termini` (>= PuppetDB 3).
 
-------------------------------------------
-
-#### 5.1.1 - 2016/02/09
+## [5.1.1] (2016/02/09)
 
 This is a minor bugfix release.
 
@@ -196,9 +172,7 @@ Detailed changes:
 * Revert a change to 'puppetdb-terminus' installation process that occurred in
 the last release.
 
-------------------------------------------
-
-#### 5.1.0 - 2016/02/09
+## [5.1.0] (2016/02/09)
 
 This is a minor feature release.
 
@@ -215,9 +189,7 @@ Detailed changes:
 * Allow default java_args to be overridden.
 * Linting fixes.
 
-------------------------------------------
-
-#### 5.0.0 - 2015/07/08
+## [5.0.0] (2015/07/08)
 
 This is a major release to provide default support for PuppetDB 3.0.0, so
 lots of changes have been introduced. Ensure you read the upgrade guide
@@ -237,9 +209,7 @@ Detailed changes:
   option can be disabled if required.
 * Default ssl-host is now 0.0.0.0
 
-------------------------------------------
-
-#### 4.3.0 - 2015/06/10
+## [4.3.0] (2015/06/10)
 
 This is a minor feature release.
 
@@ -251,9 +221,7 @@ Detailed changes:
 * Bug: Fix ordering issues with read_database_ini
 * Testing: Fix file_concat dependency and fix rspec warnings
 
-------------------------------------------
-
-#### 4.2.1 - 2015/04/07
+## [4.2.1] (2015/04/07)
 
 This is a minor bugfix release.
 
@@ -261,9 +229,7 @@ Detailed Changes:
 
 * Ignore `._foo` files when building the `.tar.gz` of the module.
 
-------------------------------------------
-
-#### 4.2.0 - 2015/04/02
+## [4.2.0] (2015/04/02)
 
 This is a minor feature release.
 
@@ -282,9 +248,7 @@ Detailed Changes:
 * Database validation is now optional via the `database_validate` and `read_database_validate` params.
 * Documentation updates to the README and metadata.json.
 
-------------------------------------------
-
-#### 4.1.0 - 2014/11/13
+## [4.1.0] (2014/11/13)
 
 This is a minor feature release.
 
@@ -298,9 +262,7 @@ Detailed Changes:
 * Corrected PE detection support.
 * Correct the path for HSQLDB to use /var/lib/puppetdb/db instead of /usr/share/puppetdb/db as is standard in PuppetDB core.
 
-------------------------------------------
-
-#### 4.0.0 - 2014/09/16
+## [4.0.0] (2014/09/16)
 
 For this release, all dependency versions have been bumped to their latest.
 
@@ -314,9 +276,7 @@ Detailed Changes:
 * The parameter `manage_firewall` for the class `puppetdb::database::postgresql` has now been removed, since the postgresql module no longer supports this.
 * The parameter `open_postgres_port` for the class `puppetdb` has also been removed, due to postgresql changes.
 
-------------------------------------------
-
-#### 3.0.1 - 2014/02/11
+## [3.0.1] (2014/02/11)
 
 This release contains only minor bug fixes.
 
@@ -334,9 +294,7 @@ Detailed Changes:
 * Convert tests to beaker (Ashley Penney)
 * Use the /v2 metrics endpoint instead of /metrics (Ken Barber)
 
-------------------------------------------
-
-#### 3.0.0 - 2013/10/27
+## [3.0.0] (2013/10/27)
 
 This major release changes the main dependency for the postgresql module from
 version 2.5.x to 3.x. Since the postgresql module is not backwards compatible,
@@ -371,9 +329,7 @@ Detailed Changes:
 * Adjust memory for PuppetDB tests to avoid OOM killer (Ken Barber)
 * Ensure ntpdate executes early during testing (Ken Barber)
 
-------------------------------------------
-
-#### 2.0.0 - 2013/10/04
+## [2.0.0] (2013/10/04)
 
 This major release changes the main dependency for the inifile module from
 the deprecated `cprice404/inifile` to `puppetlabs/inifile` to remove
@@ -397,9 +353,7 @@ Detailed Changes:
 * add archlinux support (Niels Abspoel)
 * Added puppetdb service control (Akos Hencz)
 
-------------------------------------------
-
-#### 1.6.0 - 2013/08/07
+## [1.6.0] (2013/08/07)
 
 This minor feature release provides extra parameters for new configuration
 items available in PuppetDB 1.4, and also provides some older parameters
@@ -413,9 +367,7 @@ that were missed previously:
 
 Consult the README.md file, or the PuppetDB documentation for more details.
 
-------------------------------------------
-
-#### 1.5.0 - 2013/07/18
+## [1.5.0] (2013/07/18)
 
 This minor feature release provides the following new functionality:
 
@@ -424,9 +376,7 @@ This minor feature release provides the following new functionality:
 * The ruby code for validating the PuppetDB connection now
   supports validating on a non-SSL HTTP port.
 
-------------------------------------------
-
-#### 1.4.0 - 2013/05/13
+## [1.4.0] (2013/05/13)
 
 This feature release provides support for managing the puppetdb report
 processor on your master.
@@ -441,9 +391,7 @@ To enable the report processor, you can do something like this:
 This will add the 'puppetdb' report processor to the list of `reports`
 inside your master's `puppet.conf` file.
 
-------------------------------------------
-
-#### 1.3.0 - 2013/05/13
+## [1.3.0] (2013/05/13)
 
 This feature release provides us with a few new features for the PuppetDB
 module.
@@ -495,9 +443,7 @@ release possible :-).
 * Added support for Java VM options (Karel Brezina)
 * Add initial rspec-system tests and scaffolding (Ken Barber)
 
-------------------------------------------
-
-#### 1.2.1 - 2013/04/08
+## [1.2.1] (2013/04/08)
 
 This is a minor bugfix that solves the PuppetDB startup exception:
 
@@ -509,9 +455,7 @@ This was due to the default `node-ttl` and `node-purge-ttl` settings not having 
 
 * (Ken Barber) Add 's' suffix to period settings to avoid exceptions in PuppetDB
 
-------------------------------------------
-
-#### 1.2.0 - 2013/04/05
+## [1.2.0] (2013/04/05)
 
 This release is primarily about providing full configuration file support in the module for PuppetDB 1.2.0. (The alignment of version is a coincidence I assure you :-).
 
@@ -527,10 +471,7 @@ Consult the README for futher details about these new configurable items.
 
 * (Nick Lewis) Add params and ini settings for node/purge/report ttls and document them
 
-------------------------------------------
-
-1.1.5
-=====
+## [1.1.5]
 
 2013-02-13 - Karel Brezina
  * Fix database creation so database_username, database_password and
@@ -542,10 +483,7 @@ Consult the README for futher details about these new configurable items.
 2013-01-17 - Chris Price
  * Improve documentation in init.pp
 
-------------------------------------------
-
-1.1.4
-=====
+## [1.1.4]
 
 This is a bugfix release, mostly around fixing backward-compatibility for the
 deprecated `manage_redhat_firewall` parameter.  It wasn't actually entirely
@@ -557,10 +495,7 @@ backwards-compatible in the 1.1.3 release.
 2013-01-16 - Chris Price <chris@puppetlabs.com>
  * Fix deprecation warnings around manage_redhat_firewall (448f8bc)
 
-------------------------------------------
-
-1.1.3
-=====
+## [1.1.3]
 
 This is mostly a maintenance release, to update the module dependencies to newer
 versions in preparation for some new features.  This release does include some nice
@@ -584,10 +519,7 @@ submissions!
 2012-11-13 - Drew Blessing <Drew.Blessing@Buckle.com>
  * 17594 - PuppetDB - Add ability to set standard host listen address and open firewall
 
-------------------------------------------
-
-1.1.2
-=====
+## [1.1.2]
 
 2012-10-26 - Chris Price <chris@puppetlabs.com> (1.1.2)
  * 1.1.2 release
