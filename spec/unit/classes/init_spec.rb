@@ -67,6 +67,22 @@ describe 'puppetdb', type: :class do
         end
       end
 
+      context 'with password encryption' do
+        let :params do
+          {
+            postgresql_password_encryption: 'md5',
+          }
+        end
+
+        it do
+          is_expected.to contain_postgresql__server__pg_hba_rule('allow access to all users for instance main')
+            .with_type('host')
+            .with_database('all')
+            .with_user('all')
+            .with_auth_method('md5')
+        end
+      end
+
       context 'when using ssl certificates' do
         let(:params) do
           {

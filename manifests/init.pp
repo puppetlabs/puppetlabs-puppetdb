@@ -374,6 +374,9 @@
 # @param java_bin
 #   java binary path for PuppetDB. If undef, default will be used.
 #
+# @param postgresql_password_encryption
+#   PostgreSQL password authentication method, either `md5` or `scram-sha-256`
+#
 class puppetdb (
   $listen_address                          = $puppetdb::params::listen_address,
   $listen_port                             = $puppetdb::params::listen_port,
@@ -460,6 +463,7 @@ class puppetdb (
   Boolean $automatic_dlo_cleanup           = $puppetdb::params::automatic_dlo_cleanup,
   String[1] $cleanup_timer_interval        = $puppetdb::params::cleanup_timer_interval,
   Integer[1] $dlo_max_age                  = $puppetdb::params::dlo_max_age,
+  Postgresql::Pg_password_encryption $postgresql_password_encryption = $puppetdb::params::password_encryption,
   Optional[Stdlib::Absolutepath] $java_bin = $puppetdb::params::java_bin,
 ) inherits puppetdb::params {
   class { 'puppetdb::server':
@@ -568,6 +572,7 @@ class puppetdb (
     read_database_username      => $read_database_username,
     read_database_password      => $read_database_password,
     read_database_host          => $read_database_host,
+    password_encryption         => $postgresql_password_encryption,
     before                      => $database_before,
   }
 }

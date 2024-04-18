@@ -42,6 +42,7 @@ class puppetdb::params inherits puppetdb::globals {
   $database_validate      = true
   $database_max_pool_size = undef
   $puppetdb_server        = fact('networking.fqdn')
+  $password_encryption    = 'scram-sha-256'
 
   # These settings manage the various auto-deactivation and auto-purge settings
   $node_ttl               = '7d'
