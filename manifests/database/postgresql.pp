@@ -65,6 +65,11 @@
 #   `manage_database` is set to `true`, it will use the value of the `database_host`
 #   parameter. This option is supported in PuppetDB >= 1.6.
 #
+# @param password_sensitive
+#   Whether password should be of Datatype Sensitive[String]
+# @param password_encryption
+#   PostgreSQL password authentication method, either `md5` or `scram-sha-256`
+#
 class puppetdb::database::postgresql (
   $listen_addresses            = $puppetdb::params::database_host,
   $puppetdb_server             = $puppetdb::params::puppetdb_server,
@@ -82,7 +87,9 @@ class puppetdb::database::postgresql (
   $postgresql_ssl_ca_cert_path = $puppetdb::params::postgresql_ssl_ca_cert_path,
   $read_database_username      = $puppetdb::params::read_database_username,
   $read_database_password      = $puppetdb::params::read_database_password,
-  $read_database_host          = $puppetdb::params::read_database_host
+  $read_database_host          = $puppetdb::params::read_database_host,
+  Boolean $password_sensitive  = false,
+  Postgresql::Pg_password_encryption $password_encryption = $puppetdb::params::password_encryption,
 ) inherits puppetdb::params {
   $port = scanf($database_port, '%i')[0]
 
@@ -96,6 +103,7 @@ class puppetdb::database::postgresql (
       ip_mask_allow_all_users => '0.0.0.0/0',
       listen_addresses        => $listen_addresses,
       port                    => $port,
+      password_encryption     => $password_encryption,
     }
 
     # We need to create the ssl connection for the read user, when
@@ -166,9 +174,11 @@ class puppetdb::database::postgresql (
     -> puppetdb::database::read_only_user { $read_database_username:
       read_database_username => $read_database_username,
       database_name          => $database_name,
-      password_hash          => postgresql::postgresql_password($read_database_username, $read_database_password),
+      password_hash          => postgresql::postgresql_password(
+      $read_database_username, $read_database_password, $password_sensitive, $password_encryption),
       database_owner         => $database_username,
       database_port          => $port,
+      password_encryption    => $password_encryption,
     }
 
     -> postgresql_psql { "grant ${read_database_username} role to ${database_username}":
