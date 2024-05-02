@@ -5,7 +5,15 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
-## [v8.0.0](https://github.com/puppetlabs/puppetlabs-puppetdb/tree/v8.0.0) - 2024-04-18
+## [v8.0.1](https://github.com/puppetlabs/puppetlabs-puppetdb/tree/v8.0.1) - 2024-05-02
+
+[Full Changelog](https://github.com/puppetlabs/puppetlabs-puppetdb/compare/v8.0.0...v8.0.1)
+
+### Fixed
+
+- Fix lower bound the of puppetlabs-postgresql dependency [#402](https://github.com/puppetlabs/puppetlabs-puppetdb/pull/402) ([smortex](https://github.com/smortex))
+
+## [v8.0.0](https://github.com/puppetlabs/puppetlabs-puppetdb/tree/v8.0.0) - 2024-04-30
 
 [Full Changelog](https://github.com/puppetlabs/puppetlabs-puppetdb/compare/7.14.0...v8.0.0)
 
@@ -14,6 +22,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 - Drop support for puppet < 7 [#383](https://github.com/puppetlabs/puppetlabs-puppetdb/pull/383) ([h0tw1r3](https://github.com/h0tw1r3))
 - Change default postgres version to 14 [#379](https://github.com/puppetlabs/puppetlabs-puppetdb/pull/379) ([jonathannewman](https://github.com/jonathannewman))
 - Update firewall manifests to use `jump` instead of `action` [#372](https://github.com/puppetlabs/puppetlabs-puppetdb/pull/372) ([david22swan](https://github.com/david22swan))
+- Remove obsolete database config options [#357](https://github.com/puppetlabs/puppetlabs-puppetdb/pull/357) ([smokris](https://github.com/smokris))
 
 ### Added
 
@@ -22,6 +31,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ### Fixed
 
+- Support scram-sha-256 password_encryption method [#400](https://github.com/puppetlabs/puppetlabs-puppetdb/pull/400) ([deric](https://github.com/deric))
 - Fix custom database port support [#392](https://github.com/puppetlabs/puppetlabs-puppetdb/pull/392) ([h0tw1r3](https://github.com/h0tw1r3))
 - Correct clientcert value in pg_hba.conf for Postgresql >= 12 [#380](https://github.com/puppetlabs/puppetlabs-puppetdb/pull/380) ([jhunt-steds](https://github.com/jhunt-steds))
 - Unterminated quoted string when creating read user [#371](https://github.com/puppetlabs/puppetlabs-puppetdb/pull/371) ([waipeng](https://github.com/waipeng))

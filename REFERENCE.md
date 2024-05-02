@@ -146,6 +146,7 @@ The following parameters are available in the `puppetdb` class:
 * [`cleanup_timer_interval`](#-puppetdb--cleanup_timer_interval)
 * [`dlo_max_age`](#-puppetdb--dlo_max_age)
 * [`java_bin`](#-puppetdb--java_bin)
+* [`postgresql_password_encryption`](#-puppetdb--postgresql_password_encryption)
 
 ##### <a name="-puppetdb--listen_address"></a>`listen_address`
 
@@ -899,6 +900,14 @@ java binary path for PuppetDB. If undef, default will be used.
 
 Default value: `$puppetdb::params::java_bin`
 
+##### <a name="-puppetdb--postgresql_password_encryption"></a>`postgresql_password_encryption`
+
+Data type: `Postgresql::Pg_password_encryption`
+
+PostgreSQL password authentication method, either `md5` or `scram-sha-256`
+
+Default value: `$puppetdb::params::password_encryption`
+
 ### <a name="puppetdb--database--postgresql"></a>`puppetdb::database::postgresql`
 
 create the PuppetDB postgresql database
@@ -924,6 +933,8 @@ The following parameters are available in the `puppetdb::database::postgresql` c
 * [`read_database_username`](#-puppetdb--database--postgresql--read_database_username)
 * [`read_database_password`](#-puppetdb--database--postgresql--read_database_password)
 * [`read_database_host`](#-puppetdb--database--postgresql--read_database_host)
+* [`password_sensitive`](#-puppetdb--database--postgresql--password_sensitive)
+* [`password_encryption`](#-puppetdb--database--postgresql--password_encryption)
 
 ##### <a name="-puppetdb--database--postgresql--listen_addresses"></a>`listen_addresses`
 
@@ -1074,6 +1085,22 @@ The hostname or IP address of the read database server. If set to `undef`, and
 parameter. This option is supported in PuppetDB >= 1.6.
 
 Default value: `$puppetdb::params::read_database_host`
+
+##### <a name="-puppetdb--database--postgresql--password_sensitive"></a>`password_sensitive`
+
+Data type: `Boolean`
+
+Whether password should be of Datatype Sensitive[String]
+
+Default value: `false`
+
+##### <a name="-puppetdb--database--postgresql--password_encryption"></a>`password_encryption`
+
+Data type: `Postgresql::Pg_password_encryption`
+
+PostgreSQL password authentication method, either `md5` or `scram-sha-256`
+
+Default value: `$puppetdb::params::password_encryption`
 
 ### <a name="puppetdb--globals"></a>`puppetdb::globals`
 
