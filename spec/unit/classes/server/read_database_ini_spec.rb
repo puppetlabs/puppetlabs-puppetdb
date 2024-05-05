@@ -38,11 +38,12 @@ describe 'puppetdb::server::read_database', type: :class do
     it {
       is_expected.to contain_ini_setting('puppetdb_read_database_password')
         .with(
-          'ensure'  => 'present',
-          'path'    => '/etc/puppetlabs/puppetdb/conf.d/read_database.ini',
-          'section' => 'read-database',
-          'setting' => 'password',
-          'value'   => 'puppetdb-read',
+          'ensure'    => 'present',
+          'path'      => '/etc/puppetlabs/puppetdb/conf.d/read_database.ini',
+          'section'   => 'read-database',
+          'setting'   => 'password',
+          'value'     => 'puppetdb-read',
+          'show_diff' => false,
         )
     }
     it {
