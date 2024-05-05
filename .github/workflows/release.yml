@@ -1,9 +1,35 @@
 name: "Publish module"
+run-name: >
+  ${{ format('tag={0}', inputs.tag) }}
+  ${{ format('release={0}', inputs.release) }}
+  ${{ format('publish={0}', inputs.publish) }}
+  ${{ format('edit={0}', inputs.edit) }}
 
 on:
   workflow_dispatch:
+    inputs:
+      tag:
+        description: "Enter an old tag, or blank to tag HEAD of branch"
+        type: string
+      release:
+        description: "Create a Github release"
+        type: boolean
+        default: true
+      publish:
+        description: "Publish to the Forge"
+        type: boolean
+        default: true
+      edit:
+        description: "Re-tag and regenerate release notes"
+        type: boolean
+        default: false
 
 jobs:
   release:
-    uses: "puppetlabs/cat-github-actions/.github/workflows/module_release.yml@main"
+    uses: "puppetlabs/cat-github-actions/.github/workflows/module_release.yml@release-any-tag"
     secrets: "inherit"
+    with:
+      tag: ${{ inputs.tag }}
+      release: ${{ inputs.release }}
+      publish: ${{ inputs.publish }}
+      edit: ${{ inputs.edit }}
