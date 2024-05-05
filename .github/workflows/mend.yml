@@ -1,4 +1,3 @@
----
 name: "mend"
 
 on:
@@ -11,6 +10,7 @@ on:
   workflow_dispatch:
 
 jobs:
+
   mend:
-    uses: "puppetlabs/cat-github-actions/.github/workflows/mend_ruby.yml@main"
+    uses: "puppetlabs/cat-github-actions/.github/workflows/mend_ruby.yml@release-any-tag"
     secrets: "inherit"

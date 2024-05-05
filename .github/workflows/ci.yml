@@ -7,14 +7,18 @@ on:
       - "main"
   workflow_dispatch:
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   Spec:
-    uses: "puppetlabs/cat-github-actions/.github/workflows/module_ci.yml@main"
+    uses: "puppetlabs/cat-github-actions/.github/workflows/module_ci.yml@release-any-tag"
     secrets: "inherit"
 
   Acceptance:
     needs: Spec
-    uses: "puppetlabs/cat-github-actions/.github/workflows/module_acceptance.yml@main"
+    uses: "puppetlabs/cat-github-actions/.github/workflows/module_acceptance.yml@release-any-tag"
     secrets: "inherit"
     with:
       runs_on: "ubuntu-20.04"
