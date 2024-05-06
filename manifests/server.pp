@@ -660,6 +660,7 @@ class puppetdb::server (
         weekday  => '*',
         command  => "/usr/bin/find ${vardir}/stockpile/discard/ -type f -mtime ${dlo_max_age} -delete",
         user     => $puppetdb_user,
+        require  => Package[$puppetdb_package],
       }
     }
   }
