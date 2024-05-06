@@ -210,9 +210,9 @@ describe 'puppetdb::server', type: :class do
             is_expected.to contain_file('/etc/puppetlabs/puppetdb/ssl/private.pk8')
               .with(
                 ensure: 'file',
-                owner: 'puppetdb',
+                owner: 'root',
                 group: 'puppetdb',
-                mode: '0600',
+                mode: '0640',
               )
           end
         end

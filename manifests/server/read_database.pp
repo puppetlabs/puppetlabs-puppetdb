@@ -13,7 +13,6 @@ class puppetdb::server::read_database (
   $conn_max_age           = $puppetdb::params::read_conn_max_age,
   $conn_lifetime          = $puppetdb::params::read_conn_lifetime,
   $confdir                = $puppetdb::params::confdir,
-  $puppetdb_user          = $puppetdb::params::puppetdb_user,
   $puppetdb_group         = $puppetdb::params::puppetdb_group,
   $database_max_pool_size = $puppetdb::params::read_database_max_pool_size,
   $postgresql_ssl_on      = $puppetdb::params::postgresql_ssl_on,
@@ -44,9 +43,9 @@ class puppetdb::server::read_database (
 
     file { $read_database_ini:
       ensure => file,
-      owner  => $puppetdb_user,
+      owner  => 'root',
       group  => $puppetdb_group,
-      mode   => '0600',
+      mode   => '0640',
     }
 
     $file_require = File[$read_database_ini]

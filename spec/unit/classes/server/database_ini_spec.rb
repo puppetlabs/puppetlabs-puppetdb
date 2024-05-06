@@ -20,9 +20,9 @@ describe 'puppetdb::server::database', type: :class do
         is_expected.to contain_file("#{pdbconfdir}/database.ini")
           .with(
             'ensure'  => 'file',
-            'owner'   => 'puppetdb',
+            'owner'   => 'root',
             'group'   => 'puppetdb',
-            'mode'    => '0600',
+            'mode'    => '0640',
           )
       }
       it {
