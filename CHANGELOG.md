@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v8.1.0](https://github.com/puppetlabs/puppetlabs-puppetdb/tree/v8.1.0) - 2024-05-07
+
+[Full Changelog](https://github.com/puppetlabs/puppetlabs-puppetdb/compare/v8.0.1...v8.1.0)
+
+### Added
+
+- Add a `puppetdb_version` fact with PuppetDB version [#404](https://github.com/puppetlabs/puppetlabs-puppetdb/pull/404) ([rwaffen](https://github.com/rwaffen))
+- Restrict configuration file permissions [#343](https://github.com/puppetlabs/puppetlabs-puppetdb/pull/343) ([smortex](https://github.com/smortex))
+- Hide passwords from output [#320](https://github.com/puppetlabs/puppetlabs-puppetdb/pull/320) ([gfa](https://github.com/gfa))
+
+### Fixed
+
+- set encoding when creating the DB [#359](https://github.com/puppetlabs/puppetlabs-puppetdb/pull/359) ([elfranne](https://github.com/elfranne))
+- cron puppetdb-dlo-cleanup requires package [#321](https://github.com/puppetlabs/puppetlabs-puppetdb/pull/321) ([glennaaldering](https://github.com/glennaaldering))
+
 ## [v8.0.1](https://github.com/puppetlabs/puppetlabs-puppetdb/tree/v8.0.1) - 2024-05-02
 
 [Full Changelog](https://github.com/puppetlabs/puppetlabs-puppetdb/compare/v8.0.0...v8.0.1)
@@ -17,31 +32,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 [Full Changelog](https://github.com/puppetlabs/puppetlabs-puppetdb/compare/7.14.0...v8.0.0)
 
-### Changed
-- Drop support for Ubuntu 16 and Scientific Linux 7 [#384](https://github.com/puppetlabs/puppetlabs-puppetdb/pull/384) ([h0tw1r3](https://github.com/h0tw1r3))
-- Drop support for puppet < 7 [#383](https://github.com/puppetlabs/puppetlabs-puppetdb/pull/383) ([h0tw1r3](https://github.com/h0tw1r3))
-- Change default postgres version to 14 [#379](https://github.com/puppetlabs/puppetlabs-puppetdb/pull/379) ([jonathannewman](https://github.com/jonathannewman))
-- Update firewall manifests to use `jump` instead of `action` [#372](https://github.com/puppetlabs/puppetlabs-puppetdb/pull/372) ([david22swan](https://github.com/david22swan))
-- Remove obsolete database config options [#357](https://github.com/puppetlabs/puppetlabs-puppetdb/pull/357) ([smokris](https://github.com/smokris))
-
-### Added
-
-- Allow puppetlabs/firewall 8.x [#395](https://github.com/puppetlabs/puppetlabs-puppetdb/pull/395) ([gcoxmoz](https://github.com/gcoxmoz))
-- Make `puppet_confdir` configurable [#376](https://github.com/puppetlabs/puppetlabs-puppetdb/pull/376) ([h0tw1r3](https://github.com/h0tw1r3))
-
-### Fixed
-
-- Support scram-sha-256 password_encryption method [#400](https://github.com/puppetlabs/puppetlabs-puppetdb/pull/400) ([deric](https://github.com/deric))
-- Fix custom database port support [#392](https://github.com/puppetlabs/puppetlabs-puppetdb/pull/392) ([h0tw1r3](https://github.com/h0tw1r3))
-- Correct clientcert value in pg_hba.conf for Postgresql >= 12 [#380](https://github.com/puppetlabs/puppetlabs-puppetdb/pull/380) ([jhunt-steds](https://github.com/jhunt-steds))
-- Unterminated quoted string when creating read user [#371](https://github.com/puppetlabs/puppetlabs-puppetdb/pull/371) ([waipeng](https://github.com/waipeng))
-- Fix FreeBSD support [#342](https://github.com/puppetlabs/puppetlabs-puppetdb/pull/342) ([smortex](https://github.com/smortex))
-
 ## [7.14.0](https://github.com/puppetlabs/puppetlabs-puppetdb/tree/7.14.0) - 2023-10-09
 
 [Full Changelog](https://github.com/puppetlabs/puppetlabs-puppetdb/compare/7.13.0...7.14.0)
 
 ### Changed
+
 - Drop EoL Debian 8/9 [#347](https://github.com/puppetlabs/puppetlabs-puppetdb/pull/347) ([bastelfreak](https://github.com/bastelfreak))
 - Drop EoL CentOS 6 [#346](https://github.com/puppetlabs/puppetlabs-puppetdb/pull/346) ([bastelfreak](https://github.com/bastelfreak))
 
@@ -70,15 +66,6 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 ## [7.11.0](https://github.com/puppetlabs/puppetlabs-puppetdb/tree/7.11.0) - 2022-12-12
 
 [Full Changelog](https://github.com/puppetlabs/puppetlabs-puppetdb/compare/7.10.0...7.11.0)
-
-### Added
-
-- (PDB-5559) Grant read user to write user [#361](https://github.com/puppetlabs/puppetlabs-puppetdb/pull/361) ([austb](https://github.com/austb))
-- Mark as compatible with puppetlabs/postgresql 8.x [#353](https://github.com/puppetlabs/puppetlabs-puppetdb/pull/353) ([ekohl](https://github.com/ekohl))
-
-### Fixed
-
-- Fix legacy fact usage [#355](https://github.com/puppetlabs/puppetlabs-puppetdb/pull/355) ([smortex](https://github.com/smortex))
 
 ## [7.10.0](https://github.com/puppetlabs/puppetlabs-puppetdb/tree/7.10.0) - 2021-12-16
 
@@ -154,10 +141,6 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 [Full Changelog](https://github.com/puppetlabs/puppetlabs-puppetdb/compare/7.3.0...7.4.0)
 
-### Added
-
-- Add possibilty to skip database creation in the module [#296](https://github.com/puppetlabs/puppetlabs-puppetdb/pull/296) ([jhooyberghs](https://github.com/jhooyberghs))
-
 ## [7.3.0](https://github.com/puppetlabs/puppetlabs-puppetdb/tree/7.3.0) - 2019-06-14
 
 [Full Changelog](https://github.com/puppetlabs/puppetlabs-puppetdb/compare/7.2.0...7.3.0)
@@ -191,6 +174,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 [Full Changelog](https://github.com/puppetlabs/puppetlabs-puppetdb/compare/6.0.2...7.0.0)
 
 ### Changed
+
 - Setup for 7.0.0 release [#279](https://github.com/puppetlabs/puppetlabs-puppetdb/pull/279) ([Zak-Kent](https://github.com/Zak-Kent))
 
 ### Added
@@ -220,6 +204,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 [Full Changelog](https://github.com/puppetlabs/puppetlabs-puppetdb/compare/5.1.2...6.0.0)
 
 ### Changed
+
 - Default to postgres 9.6 [#265](https://github.com/puppetlabs/puppetlabs-puppetdb/pull/265) ([mullr](https://github.com/mullr))
 
 ### Added
@@ -277,6 +262,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 [Full Changelog](https://github.com/puppetlabs/puppetlabs-puppetdb/compare/4.2.1...4.3.0)
 
 ### Changed
+
 - (PDB-1657) Manage Postgres repos by default [#197](https://github.com/puppetlabs/puppetlabs-puppetdb/pull/197) ([ajroetker](https://github.com/ajroetker))
 - (PDB-1035) Add default PuppetDB root context [#181](https://github.com/puppetlabs/puppetlabs-puppetdb/pull/181) ([ajroetker](https://github.com/ajroetker))
 
@@ -332,6 +318,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 [Full Changelog](https://github.com/puppetlabs/puppetlabs-puppetdb/compare/3.0.1...4.0.0)
 
 ### Changed
+
 - do not manage firewall for postgres, puppetlabs/postgres module from [#135](https://github.com/puppetlabs/puppetlabs-puppetdb/pull/135) ([buzzdeee](https://github.com/buzzdeee))
 
 ### Added
@@ -357,6 +344,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 [Full Changelog](https://github.com/puppetlabs/puppetlabs-puppetdb/compare/3.0.0...3.0.1)
 
 ### Changed
+
 - Use the /v2 metrics endpoint instead of /metrics [#116](https://github.com/puppetlabs/puppetlabs-puppetdb/pull/116) ([kbarber](https://github.com/kbarber))
 
 ### Added
@@ -411,6 +399,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 [Full Changelog](https://github.com/puppetlabs/puppetlabs-puppetdb/compare/1.4.0...1.5.0)
 
 ### Changed
+
 - Fix dependency for stdlib for 'downcase' [#70](https://github.com/puppetlabs/puppetlabs-puppetdb/pull/70) ([kbarber](https://github.com/kbarber))
 
 ### Added
@@ -424,6 +413,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 [Full Changelog](https://github.com/puppetlabs/puppetlabs-puppetdb/compare/1.2.1...1.4.0)
 
 ### Changed
+
 - Use fqdn for ssl listen address instead of clientcert [#63](https://github.com/puppetlabs/puppetlabs-puppetdb/pull/63) ([cprice404](https://github.com/cprice404))
 - Increase default report-ttl to 14d [#60](https://github.com/puppetlabs/puppetlabs-puppetdb/pull/60) ([cprice404](https://github.com/cprice404))
 
@@ -455,11 +445,6 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 ## [1.1.5](https://github.com/puppetlabs/puppetlabs-puppetdb/tree/1.1.5) - 2013-04-04
 
 [Full Changelog](https://github.com/puppetlabs/puppetlabs-puppetdb/compare/1.1.4...1.1.5)
-
-### Added
-
-- Configuration improvements [#36](https://github.com/puppetlabs/puppetlabs-puppetdb/pull/36) ([kbrezina](https://github.com/kbrezina))
-- Bug/master/manage redhat firewall [#30](https://github.com/puppetlabs/puppetlabs-puppetdb/pull/30) ([cprice404](https://github.com/cprice404))
 
 ## [1.1.4](https://github.com/puppetlabs/puppetlabs-puppetdb/tree/1.1.4) - 2013-01-17
 
