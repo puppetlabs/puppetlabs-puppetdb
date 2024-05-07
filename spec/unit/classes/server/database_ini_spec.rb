@@ -38,11 +38,12 @@ describe 'puppetdb::server::database', type: :class do
       it {
         is_expected.to contain_ini_setting('puppetdb_psdatabase_password')
           .with(
-            'ensure'  => 'present',
-            'path'    => "#{pdbconfdir}/database.ini",
-            'section' => 'database',
-            'setting' => 'password',
-            'value'   => 'puppetdb',
+            'ensure'    => 'present',
+            'path'      => "#{pdbconfdir}/database.ini",
+            'section'   => 'database',
+            'setting'   => 'password',
+            'value'     => 'puppetdb',
+            'show_diff' => false,
           )
       }
       it {
