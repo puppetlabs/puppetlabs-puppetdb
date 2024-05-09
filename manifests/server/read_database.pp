@@ -5,7 +5,7 @@ class puppetdb::server::read_database (
   $read_database_host     = $puppetdb::params::read_database_host,
   $read_database_port     = $puppetdb::params::read_database_port,
   $read_database_username = $puppetdb::params::read_database_username,
-  $read_database_password = $puppetdb::params::read_database_password,
+  Variant[String[1], Sensitive[String[1]]] $read_database_password = $puppetdb::params::read_database_password,
   $read_database_name     = $puppetdb::params::read_database_name,
   $manage_db_password     = $puppetdb::params::manage_read_db_password,
   $jdbc_ssl_properties    = $puppetdb::params::read_database_jdbc_ssl_properties,

@@ -344,7 +344,7 @@ Default value: `$puppetdb::params::database_username`
 
 ##### <a name="-puppetdb--database_password"></a>`database_password`
 
-Data type: `Any`
+Data type: `Variant[String[1], Sensitive[String[1]]]`
 
 The password for the database user. Defaults to `puppetdb`.
 
@@ -615,7 +615,7 @@ Default value: `$puppetdb::params::read_database_username`
 
 ##### <a name="-puppetdb--read_database_password"></a>`read_database_password`
 
-Data type: `Any`
+Data type: `Variant[String[1], Sensitive[String[1]]]`
 
 The password for the read database user. Defaults to `puppetdb-read`. This option is
 supported in PuppetDB >= 1.6.
@@ -973,7 +973,7 @@ Default value: `$puppetdb::params::database_username`
 
 ##### <a name="-puppetdb--database--postgresql--database_password"></a>`database_password`
 
-Data type: `Any`
+Data type: `Variant[String[1], Sensitive[String[1]]]`
 
 Sets the password for the database user above. Defaults to `puppetdb`.
 
@@ -1067,7 +1067,7 @@ Default value: `$puppetdb::params::read_database_username`
 
 ##### <a name="-puppetdb--database--postgresql--read_database_password"></a>`read_database_password`
 
-Data type: `Any`
+Data type: `Variant[String[1], Sensitive[String[1]]]`
 
 The password for the read database user. Defaults to `puppetdb-read`. This option is
 supported in PuppetDB >= 1.6.
@@ -1583,7 +1583,7 @@ Default value: `$puppetdb::params::database_username`
 
 ##### <a name="-puppetdb--server--database_password"></a>`database_password`
 
-Data type: `Any`
+Data type: `Variant[String[1], Sensitive[String[1]]]`
 
 The password for the database user. Defaults to `puppetdb`.
 
@@ -1835,7 +1835,7 @@ Default value: `$puppetdb::params::read_database_username`
 
 ##### <a name="-puppetdb--server--read_database_password"></a>`read_database_password`
 
-Data type: `Any`
+Data type: `Variant[String[1], Sensitive[String[1]]]`
 
 The password for the read database user. Defaults to `puppetdb-read`. This option is
 supported in PuppetDB >= 1.6.
