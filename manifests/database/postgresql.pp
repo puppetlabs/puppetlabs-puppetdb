@@ -91,7 +91,6 @@ class puppetdb::database::postgresql (
   Boolean $password_sensitive  = false,
   Postgresql::Pg_password_encryption $password_encryption = $puppetdb::params::password_encryption,
 ) inherits puppetdb::params {
-
   if $manage_server {
     class { 'postgresql::globals':
       manage_package_repo => $manage_package_repo,
