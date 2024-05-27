@@ -51,7 +51,7 @@ describe 'puppetdb::database::postgresql', type: :class do
           database_password: 'puppetdb',
           read_database_username: 'puppetdb-read',
           read_database_password: 'puppetdb-read',
-          database_port: '5432',
+          database_port: 5432,
         }
       end
 
@@ -61,7 +61,7 @@ describe 'puppetdb::database::postgresql', type: :class do
             user:     params[:database_username],
             password: params[:database_password],
             grant:    'all',
-            port:     params[:database_port].to_i,
+            port:     params[:database_port],
             encoding: 'UTF8',
             locale:   'en_US.UTF-8',
           )
@@ -72,7 +72,7 @@ describe 'puppetdb::database::postgresql', type: :class do
           .that_requires("Postgresql::Server::Db[#{params[:database_name]}]")
           .with(
             db:      params[:database_name],
-            port:    params[:database_port].to_i,
+            port:    params[:database_port],
             command: 'REVOKE CREATE ON SCHEMA public FROM public',
             unless:  "SELECT * FROM
                   (SELECT has_schema_privilege('public', 'public', 'create') can_create) privs
@@ -86,7 +86,7 @@ describe 'puppetdb::database::postgresql', type: :class do
           .that_comes_before("Puppetdb::Database::Read_only_user[#{params[:read_database_username]}]")
           .with(
             db:      params[:database_name],
-            port:    params[:database_port].to_i,
+            port:    params[:database_port],
             command: "GRANT CREATE ON SCHEMA public TO \"#{params[:database_username]}\"",
             unless:  "SELECT * FROM
                   (SELECT has_schema_privilege('#{params[:database_username]}', 'public', 'create') can_create) privs
@@ -102,7 +102,7 @@ describe 'puppetdb::database::postgresql', type: :class do
             database_name:          params[:database_name],
             password_hash:          %r{^(md5|SCRAM)}, # TODO: mock properly
             database_owner:         params[:database_username],
-            database_port:          params[:database_port].to_i,
+            database_port:          params[:database_port],
           }
         end
       end
@@ -112,7 +112,7 @@ describe 'puppetdb::database::postgresql', type: :class do
           .that_requires("Puppetdb::Database::Read_only_user[#{params[:read_database_username]}]")
           .with(
             db:      params[:database_name],
-            port:    params[:database_port].to_i,
+            port:    params[:database_port],
             command: "GRANT \"#{params[:read_database_username]}\" TO \"#{params[:database_username]}\"",
             unless:  "SELECT oid, rolname FROM pg_roles WHERE
                    pg_has_role( '#{params[:database_username]}', oid, 'member') and rolname = '#{params[:read_database_username]}'",
