@@ -3,11 +3,11 @@
 # @api private
 class puppetdb::params inherits puppetdb::globals {
   $listen_address            = 'localhost'
-  $listen_port               = 8080
+  $listen_port               = '8080'
   $disable_cleartext         = false
   $open_listen_port          = false
   $ssl_listen_address        = '0.0.0.0'
-  $ssl_listen_port           = 8081
+  $ssl_listen_port           = '8081'
   $ssl_protocols             = undef
   $disable_ssl               = false
   $cipher_suites             = undef
@@ -33,7 +33,7 @@ class puppetdb::params inherits puppetdb::globals {
   }
 
   $database_host          = 'localhost'
-  $database_port          = 5432
+  $database_port          = '5432'
   $database_name          = 'puppetdb'
   $database_username      = 'puppetdb'
   $database_password      = 'puppetdb'
@@ -51,26 +51,26 @@ class puppetdb::params inherits puppetdb::globals {
 
   $facts_blacklist        = undef
 
-  $gc_interval               = 60
-  $node_purge_gc_batch_limit = 25
+  $gc_interval               = '60'
+  $node_purge_gc_batch_limit = '25'
 
-  $conn_max_age           = 60
-  $conn_lifetime          = 0
+  $conn_max_age           = '60'
+  $conn_lifetime          = '0'
 
   $max_threads            = undef
   $migrate                = true
 
   # These settings are for the read database
   $read_database_host                = undef
-  $read_database_port                = 5432
+  $read_database_port                = '5432'
   $read_database_name                = 'puppetdb'
   $read_database_username            = 'puppetdb-read'
   $read_database_password            = 'puppetdb-read'
   $manage_read_db_password           = true
   $read_database_jdbc_ssl_properties = ''
   $read_database_validate            = true
-  $read_conn_max_age                 = 60
-  $read_conn_lifetime                = 0
+  $read_conn_max_age                 = '60'
+  $read_conn_lifetime                = '0'
   $read_database_max_pool_size       = undef
 
   $manage_firewall         = true
