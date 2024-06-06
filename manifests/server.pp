@@ -339,7 +339,7 @@ class puppetdb::server (
   Variant[String[1], Sensitive[String[1]]]                   $database_password                 = $puppetdb::params::database_password,
   String[1]                                                  $database_name                     = $puppetdb::params::database_name,
   Boolean                                                    $manage_db_password                = $puppetdb::params::manage_db_password,
-  String                                                     $jdbc_ssl_properties               = $puppetdb::params::jdbc_ssl_properties,
+  Variant[String, Boolean]                                   $jdbc_ssl_properties               = $puppetdb::params::jdbc_ssl_properties,
   Boolean                                                    $database_validate                 = $puppetdb::params::database_validate,
   Pattern[/\A[0-9dhms]+\Z/]                                  $node_ttl                          = $puppetdb::params::node_ttl,
   Pattern[/\A[0-9dhms]+\Z/]                                  $node_purge_ttl                    = $puppetdb::params::node_purge_ttl,
