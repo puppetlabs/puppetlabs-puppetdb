@@ -2,23 +2,23 @@
 #
 # @api private
 class puppetdb::server::read_database (
-  $read_database_host     = $puppetdb::params::read_database_host,
-  $read_database_port     = $puppetdb::params::read_database_port,
-  $read_database_username = $puppetdb::params::read_database_username,
-  Variant[String[1], Sensitive[String[1]]] $read_database_password = $puppetdb::params::read_database_password,
-  $read_database_name     = $puppetdb::params::read_database_name,
-  $manage_db_password     = $puppetdb::params::manage_read_db_password,
-  $jdbc_ssl_properties    = $puppetdb::params::read_database_jdbc_ssl_properties,
-  $database_validate      = $puppetdb::params::read_database_validate,
-  $conn_max_age           = $puppetdb::params::read_conn_max_age,
-  $conn_lifetime          = $puppetdb::params::read_conn_lifetime,
-  $confdir                = $puppetdb::params::confdir,
-  $puppetdb_group         = $puppetdb::params::puppetdb_group,
-  $database_max_pool_size = $puppetdb::params::read_database_max_pool_size,
-  $postgresql_ssl_on      = $puppetdb::params::postgresql_ssl_on,
-  $ssl_cert_path          = $puppetdb::params::ssl_cert_path,
-  $ssl_key_pk8_path       = $puppetdb::params::ssl_key_pk8_path,
-  $ssl_ca_cert_path       = $puppetdb::params::ssl_ca_cert_path
+  Optional[Stdlib::Host]                                     $read_database_host     = $puppetdb::params::read_database_host,
+  Variant[Stdlib::Port::Unprivileged, Pattern[/\A[0-9]+\Z/]] $read_database_port     = $puppetdb::params::read_database_port,
+  String[1]                                                  $read_database_username = $puppetdb::params::read_database_username,
+  Variant[String[1], Sensitive[String[1]]]                   $read_database_password = $puppetdb::params::read_database_password,
+  String[1]                                                  $read_database_name     = $puppetdb::params::read_database_name,
+  Boolean                                                    $manage_db_password     = $puppetdb::params::manage_read_db_password,
+  Variant[String, Boolean]                                   $jdbc_ssl_properties    = $puppetdb::params::read_database_jdbc_ssl_properties,
+  Boolean                                                    $database_validate      = $puppetdb::params::read_database_validate,
+  Variant[Integer, Pattern[/\A[0-9]+\Z/]]                    $conn_max_age           = $puppetdb::params::read_conn_max_age,
+  Variant[Integer, Pattern[/\A[0-9]+\Z/]]                    $conn_lifetime          = $puppetdb::params::read_conn_lifetime,
+  Stdlib::Absolutepath                                       $confdir                = $puppetdb::params::confdir,
+  String[1]                                                  $puppetdb_group         = $puppetdb::params::puppetdb_group,
+  Optional[Variant[Integer, Enum['absent']]]                 $database_max_pool_size = $puppetdb::params::read_database_max_pool_size,
+  Boolean                                                    $postgresql_ssl_on      = $puppetdb::params::postgresql_ssl_on,
+  Stdlib::Absolutepath                                       $ssl_cert_path          = $puppetdb::params::ssl_cert_path,
+  Stdlib::Absolutepath                                       $ssl_key_pk8_path       = $puppetdb::params::ssl_key_pk8_path,
+  Stdlib::Absolutepath                                       $ssl_ca_cert_path       = $puppetdb::params::ssl_ca_cert_path
 ) inherits puppetdb::params {
   if $read_database_host != undef {
     if str2bool($database_validate) {

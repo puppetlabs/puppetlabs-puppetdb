@@ -2,11 +2,11 @@
 #
 # @api private
 class puppetdb::server::puppetdb (
-  $certificate_whitelist_file = $puppetdb::params::certificate_whitelist_file,
-  $certificate_whitelist      = $puppetdb::params::certificate_whitelist,
-  $disable_update_checking    = $puppetdb::params::disable_update_checking,
-  $confdir                    = $puppetdb::params::confdir,
-  $puppetdb_group             = $puppetdb::params::puppetdb_group,
+  Stdlib::Absolutepath $certificate_whitelist_file = $puppetdb::params::certificate_whitelist_file,
+  Array                $certificate_whitelist      = $puppetdb::params::certificate_whitelist,
+  Optional[Boolean]    $disable_update_checking    = $puppetdb::params::disable_update_checking,
+  Stdlib::Absolutepath $confdir                    = $puppetdb::params::confdir,
+  String[1]            $puppetdb_group             = $puppetdb::params::puppetdb_group,
 ) inherits puppetdb::params {
   $puppetdb_ini = "${confdir}/puppetdb.ini"
 
