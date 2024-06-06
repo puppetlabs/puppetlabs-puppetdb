@@ -398,7 +398,7 @@ class puppetdb (
   Enum['running', 'true', 'stopped', 'false']                $puppetdb_service_status           = $puppetdb::params::puppetdb_service_status,
   String[1]                                                  $puppetdb_user                     = $puppetdb::params::puppetdb_user,
   String[1]                                                  $puppetdb_group                    = $puppetdb::params::puppetdb_group,
-  String[1]                                                  $puppetdb_server                   = $puppetdb::params::puppetdb_server,
+  Stdlib::Host                                               $puppetdb_server                   = $puppetdb::params::puppetdb_server,
   Optional[Stdlib::Host]                                     $read_database_host                = $puppetdb::params::read_database_host,
   Variant[Stdlib::Port::Unprivileged, Pattern[/\A[0-9]+\Z/]] $read_database_port                = $puppetdb::params::read_database_port,
   String[1]                                                  $read_database_username            = $puppetdb::params::read_database_username,
