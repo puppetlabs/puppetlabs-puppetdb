@@ -2,9 +2,9 @@
 #
 # @api private
 class puppetdb::master::routes (
-  $puppet_confdir = $puppetdb::params::puppet_confdir,
-  $masterless     = $puppetdb::params::masterless,
-  $routes         = undef,
+  Stdlib::Absolutepath $puppet_confdir = $puppetdb::params::puppet_confdir,
+  Boolean              $masterless     = $puppetdb::params::masterless,
+  Optional[Hash]       $routes         = undef,
 ) inherits puppetdb::params {
   if $masterless {
     $routes_real = {
