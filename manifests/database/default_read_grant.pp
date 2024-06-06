@@ -2,10 +2,10 @@
 #
 # @api private
 define puppetdb::database::default_read_grant (
-  String $database_name,
-  String $schema,
-  String $database_username,
-  String $database_read_only_username,
+  String[1]              $database_name,
+  String                 $schema,
+  String[1]              $database_username,
+  String[1]              $database_read_only_username,
   Optional[Stdlib::Port] $database_port = undef,
 ) {
   postgresql_psql { "grant default select permission for ${database_read_only_username}":
