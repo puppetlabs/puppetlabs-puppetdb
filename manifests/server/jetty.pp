@@ -2,21 +2,21 @@
 #
 # @api private
 class puppetdb::server::jetty (
-  Stdlib::Host                                               $listen_address     = $puppetdb::params::listen_address,
-  Variant[Stdlib::Port::Unprivileged, Pattern[/\A[0-9]+\Z/]] $listen_port        = $puppetdb::params::listen_port,
-  Boolean                                                    $disable_cleartext  = $puppetdb::params::disable_cleartext,
-  Stdlib::Host                                               $ssl_listen_address = $puppetdb::params::ssl_listen_address,
-  Variant[Stdlib::Port::Unprivileged, Pattern[/\A[0-9]+\Z/]] $ssl_listen_port    = $puppetdb::params::ssl_listen_port,
-  Boolean                                                    $disable_ssl        = $puppetdb::params::disable_ssl,
-  Boolean                                                    $ssl_set_cert_paths = $puppetdb::params::ssl_set_cert_paths,
-  Stdlib::Absolutepath                                       $ssl_cert_path      = $puppetdb::params::ssl_cert_path,
-  Stdlib::Absolutepath                                       $ssl_key_path       = $puppetdb::params::ssl_key_path,
-  Stdlib::Absolutepath                                       $ssl_ca_cert_path   = $puppetdb::params::ssl_ca_cert_path,
-  Optional[String]                                           $ssl_protocols      = $puppetdb::params::ssl_protocols,
-  Optional[String]                                           $cipher_suites      = $puppetdb::params::cipher_suites,
-  Stdlib::Absolutepath                                       $confdir            = $puppetdb::params::confdir,
-  Optional[Integer]                                          $max_threads        = $puppetdb::params::max_threads,
-  String[1]                                                  $puppetdb_group     = $puppetdb::params::puppetdb_group,
+  Stdlib::Host                                       $listen_address     = $puppetdb::params::listen_address,
+  Variant[Stdlib::Port::User, Pattern[/\A[0-9]+\Z/]] $listen_port        = $puppetdb::params::listen_port,
+  Boolean                                            $disable_cleartext  = $puppetdb::params::disable_cleartext,
+  Stdlib::Host                                       $ssl_listen_address = $puppetdb::params::ssl_listen_address,
+  Variant[Stdlib::Port::User, Pattern[/\A[0-9]+\Z/]] $ssl_listen_port    = $puppetdb::params::ssl_listen_port,
+  Boolean                                            $disable_ssl        = $puppetdb::params::disable_ssl,
+  Boolean                                            $ssl_set_cert_paths = $puppetdb::params::ssl_set_cert_paths,
+  Stdlib::Absolutepath                               $ssl_cert_path      = $puppetdb::params::ssl_cert_path,
+  Stdlib::Absolutepath                               $ssl_key_path       = $puppetdb::params::ssl_key_path,
+  Stdlib::Absolutepath                               $ssl_ca_cert_path   = $puppetdb::params::ssl_ca_cert_path,
+  Optional[String]                                   $ssl_protocols      = $puppetdb::params::ssl_protocols,
+  Optional[String]                                   $cipher_suites      = $puppetdb::params::cipher_suites,
+  Stdlib::Absolutepath                               $confdir            = $puppetdb::params::confdir,
+  Optional[Integer]                                  $max_threads        = $puppetdb::params::max_threads,
+  String[1]                                          $puppetdb_group     = $puppetdb::params::puppetdb_group,
 ) inherits puppetdb::params {
   $jetty_ini = "${confdir}/jetty.ini"
 

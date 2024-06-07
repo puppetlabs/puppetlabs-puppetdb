@@ -3,7 +3,7 @@
 # @api private
 class puppetdb::server::read_database (
   Optional[Stdlib::Host]                                            $read_database_host     = $puppetdb::params::read_database_host,
-  Variant[Stdlib::Port::Unprivileged, Pattern[/\A[0-9]+\Z/]]        $read_database_port     = $puppetdb::params::read_database_port,
+  Variant[Stdlib::Port::User, Pattern[/\A[0-9]+\Z/]]                $read_database_port     = $puppetdb::params::read_database_port,
   String[1]                                                         $read_database_username = $puppetdb::params::read_database_username,
   Variant[String[1], Sensitive[String[1]]]                          $read_database_password = $puppetdb::params::read_database_password,
   String[1]                                                         $read_database_name     = $puppetdb::params::read_database_name,

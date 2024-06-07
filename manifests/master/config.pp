@@ -90,35 +90,35 @@
 #   files (other than `puppet.conf`).
 #
 class puppetdb::master::config (
-  Stdlib::Host                                               $puppetdb_server                = fact('networking.fqdn'),
-  Variant[Stdlib::Port::Unprivileged, Pattern[/\A[0-9]+\Z/]] $puppetdb_port                  = defined(Class['puppetdb']) ? {
+  Stdlib::Host                                       $puppetdb_server                = fact('networking.fqdn'),
+  Variant[Stdlib::Port::User, Pattern[/\A[0-9]+\Z/]] $puppetdb_port                  = defined(Class['puppetdb']) ? {
     true    => $puppetdb::disable_ssl ? {
       true => 8080,
       default => 8081,
     },
     default => 8081,
   },
-  Boolean                                                    $puppetdb_disable_ssl           = defined(Class['puppetdb']) ? {
+  Boolean                                            $puppetdb_disable_ssl           = defined(Class['puppetdb']) ? {
     true    => $puppetdb::disable_ssl,
     default => false,
   },
-  Boolean                                                    $masterless                     = $puppetdb::params::masterless,
-  Boolean                                                    $puppetdb_soft_write_failure    = false,
-  Boolean                                                    $manage_routes                  = true,
-  Boolean                                                    $manage_storeconfigs            = true,
-  Boolean                                                    $enable_storeconfigs            = true,
-  Boolean                                                    $manage_report_processor        = false,
-  Boolean                                                    $manage_config                  = true,
-  Boolean                                                    $create_puppet_service_resource = true,
-  Boolean                                                    $strict_validation              = true,
-  Boolean                                                    $enable_reports                 = false,
-  Stdlib::Absolutepath                                       $puppet_confdir                 = $puppetdb::params::puppet_confdir,
-  Stdlib::Absolutepath                                       $puppet_conf                    = $puppetdb::params::puppet_conf,
-  String[1]                                                  $terminus_package               = $puppetdb::params::terminus_package,
-  String[1]                                                  $puppet_service_name            = $puppetdb::params::puppet_service_name,
-  Integer                                                    $puppetdb_startup_timeout       = $puppetdb::params::puppetdb_startup_timeout,
-  String[1]                                                  $test_url                       = $puppetdb::params::test_url,
-  Boolean                                                    $restart_puppet                 = true,
+  Boolean                                            $masterless                     = $puppetdb::params::masterless,
+  Boolean                                            $puppetdb_soft_write_failure    = false,
+  Boolean                                            $manage_routes                  = true,
+  Boolean                                            $manage_storeconfigs            = true,
+  Boolean                                            $enable_storeconfigs            = true,
+  Boolean                                            $manage_report_processor        = false,
+  Boolean                                            $manage_config                  = true,
+  Boolean                                            $create_puppet_service_resource = true,
+  Boolean                                            $strict_validation              = true,
+  Boolean                                            $enable_reports                 = false,
+  Stdlib::Absolutepath                               $puppet_confdir                 = $puppetdb::params::puppet_confdir,
+  Stdlib::Absolutepath                               $puppet_conf                    = $puppetdb::params::puppet_conf,
+  String[1]                                          $terminus_package               = $puppetdb::params::terminus_package,
+  String[1]                                          $puppet_service_name            = $puppetdb::params::puppet_service_name,
+  Integer                                            $puppetdb_startup_timeout       = $puppetdb::params::puppetdb_startup_timeout,
+  String[1]                                          $test_url                       = $puppetdb::params::test_url,
+  Boolean                                            $restart_puppet                 = true,
 ) inherits puppetdb::params {
   # **WARNING**: Ugly hack to work around a yum bug with metadata parsing. This
   # should not be copied, replicated or even looked at. In short, never rename
