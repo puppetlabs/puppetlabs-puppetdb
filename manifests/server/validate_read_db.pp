@@ -7,7 +7,7 @@ class puppetdb::server::validate_read_db (
   String[1]                                          $database_username   = $puppetdb::params::database_username,
   Variant[String[1], Sensitive[String[1]]]           $database_password   = $puppetdb::params::database_password,
   String[1]                                          $database_name       = $puppetdb::params::database_name,
-  Variant[String, Boolean]                           $jdbc_ssl_properties = $puppetdb::params::jdbc_ssl_properties,
+  Variant[String[0], Boolean[false]]                 $jdbc_ssl_properties = $puppetdb::params::jdbc_ssl_properties,
 ) inherits puppetdb::params {
   if ($database_password != undef and $jdbc_ssl_properties == false) {
     postgresql_conn_validator { 'validate puppetdb postgres (read) connection':

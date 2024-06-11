@@ -3,7 +3,7 @@
 # @api private
 define puppetdb::database::default_read_grant (
   String[1]              $database_name,
-  String                 $schema,
+  String[1]              $schema,
   String[1]              $database_username,
   String[1]              $database_read_only_username,
   Optional[Stdlib::Port] $database_port = undef,

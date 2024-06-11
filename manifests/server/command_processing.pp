@@ -3,10 +3,10 @@
 # @api private
 class puppetdb::server::command_processing (
   Stdlib::Absolutepath $confdir           = $puppetdb::params::confdir,
-  Optional[Integer]    $command_threads   = $puppetdb::params::command_threads,
-  Optional[Integer]    $concurrent_writes = $puppetdb::params::concurrent_writes,
-  Optional[Integer]    $store_usage       = $puppetdb::params::store_usage,
-  Optional[Integer]    $temp_usage        = $puppetdb::params::temp_usage,
+  Optional[Integer[0]] $command_threads   = $puppetdb::params::command_threads,
+  Optional[Integer[0]] $concurrent_writes = $puppetdb::params::concurrent_writes,
+  Optional[Integer[0]] $store_usage       = $puppetdb::params::store_usage,
+  Optional[Integer[0]] $temp_usage        = $puppetdb::params::temp_usage,
 ) inherits puppetdb::params {
   $config_ini = "${confdir}/config.ini"
 

@@ -77,7 +77,7 @@
 #
 # @param puppetdb_startup_timeout
 #   The maximum amount of time that the module should wait for PuppetDB to start up.
-#   This is most important during the initial install of PuppetDB (defaults to 15
+#   This is most important during the initial install of PuppetDB (defaults to 120
 #   seconds).
 #
 # @param test_url
@@ -116,7 +116,7 @@ class puppetdb::master::config (
   Stdlib::Absolutepath                               $puppet_conf                    = $puppetdb::params::puppet_conf,
   String[1]                                          $terminus_package               = $puppetdb::params::terminus_package,
   String[1]                                          $puppet_service_name            = $puppetdb::params::puppet_service_name,
-  Integer                                            $puppetdb_startup_timeout       = $puppetdb::params::puppetdb_startup_timeout,
+  Integer[0]                                         $puppetdb_startup_timeout       = $puppetdb::params::puppetdb_startup_timeout,
   String[1]                                          $test_url                       = $puppetdb::params::test_url,
   Boolean                                            $restart_puppet                 = true,
 ) inherits puppetdb::params {

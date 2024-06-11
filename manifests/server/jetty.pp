@@ -12,10 +12,10 @@ class puppetdb::server::jetty (
   Stdlib::Absolutepath                               $ssl_cert_path      = $puppetdb::params::ssl_cert_path,
   Stdlib::Absolutepath                               $ssl_key_path       = $puppetdb::params::ssl_key_path,
   Stdlib::Absolutepath                               $ssl_ca_cert_path   = $puppetdb::params::ssl_ca_cert_path,
-  Optional[String]                                   $ssl_protocols      = $puppetdb::params::ssl_protocols,
-  Optional[String]                                   $cipher_suites      = $puppetdb::params::cipher_suites,
+  Optional[String[1]]                                $ssl_protocols      = $puppetdb::params::ssl_protocols,
+  Optional[String[1]]                                $cipher_suites      = $puppetdb::params::cipher_suites,
   Stdlib::Absolutepath                               $confdir            = $puppetdb::params::confdir,
-  Optional[Integer]                                  $max_threads        = $puppetdb::params::max_threads,
+  Optional[Integer[0]]                               $max_threads        = $puppetdb::params::max_threads,
   String[1]                                          $puppetdb_group     = $puppetdb::params::puppetdb_group,
 ) inherits puppetdb::params {
   $jetty_ini = "${confdir}/jetty.ini"

@@ -2,9 +2,9 @@
 #
 # @api private
 define puppetdb::database::read_grant (
-  String                 $database_name,
-  String                 $schema,
-  String                 $database_read_only_username,
+  String[1]              $database_name,
+  String[1]              $schema,
+  String[1]              $database_read_only_username,
   Optional[Stdlib::Port] $database_port = undef,
 ) {
   postgresql_psql { "grant select permission for ${database_read_only_username}":
