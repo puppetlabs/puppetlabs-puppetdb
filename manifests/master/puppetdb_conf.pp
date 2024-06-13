@@ -21,19 +21,29 @@ class puppetdb::master::puppetdb_conf (
   }
 
   if $legacy_terminus {
-    ini_setting { 'puppetdbserver':
-      setting => 'server',
-      value   => $server,
-    }
-    ini_setting { 'puppetdbport':
-      setting => 'port',
-      value   => $port,
-    }
+    $legacy_ensure = 'present'
+    $newterminus_ensure = 'absent'
   } else {
-    ini_setting { 'puppetdbserver_urls':
-      setting => 'server_urls',
-      value   => "https://${server}:${port}/",
-    }
+    $legacy_ensure = 'absent'
+    $newterminus_ensure = 'present'
+  }
+
+  ini_setting { 'puppetdbserver':
+    ensure  => $legacy_ensure,
+    setting => 'server',
+    value   => $server,
+  }
+
+  ini_setting { 'puppetdbport':
+    ensure  => $legacy_ensure,
+    setting => 'port',
+    value   => $port,
+  }
+
+  ini_setting { 'puppetdbserver_urls':
+    ensure  => $newterminus_ensure,
+    setting => 'server_urls',
+    value   => "https://${server}:${port}/",
   }
 
   ini_setting { 'soft_write_failure':
