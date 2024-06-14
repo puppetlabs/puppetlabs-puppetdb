@@ -2,6 +2,7 @@
 
 require 'spec_helper'
 require 'facter'
+require 'open3'
 
 describe 'puppetdb_version' do
   subject(:fact) { Facter.fact(:puppetdb_version) }
