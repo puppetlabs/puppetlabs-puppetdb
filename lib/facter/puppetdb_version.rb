@@ -5,7 +5,7 @@ Facter.add(:puppetdb_version) do
     require 'open3'
 
     # check if os is debian/ubuntu and the package is not from puppetlabs
-    if Facter.value(:osfamily) == 'Debian'
+    if Facter.value(:os)('family') == 'Debian'
       package_maintainer = Facter::Core::Execution.execute('apt-cache show puppetdb | grep "Maintainer:" | head -1')
       unless package_maintainer.include? 'Puppet Labs'
         output, status = Open3.capture2('dpkg-query --showformat=\'${Version}\' --show puppetdb')
