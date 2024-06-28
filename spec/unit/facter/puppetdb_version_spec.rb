@@ -1,25 +1,39 @@
-# frozen_string_literal: true
-
-require 'spec_helper'
 require 'facter'
 
 describe 'puppetdb_version' do
-  subject(:fact) { Facter.fact(:puppetdb_version) }
-
   before(:each) do
     Facter.clear
   end
 
-  it 'returns the correct puppetdb version' do
-    allow(Facter::Util::Resolution).to receive(:which).with('puppetdb').and_return('/usr/bin/puppetdb')
-    allow(Facter::Core::Execution).to receive(:execute).with('puppetdb --version').and_return("puppetdb version: 7.18.0\n")
+  context 'when puppetdb is available' do
+    before(:each) do
+      allow(Facter::Util::Resolution).to receive(:which).with('puppetdb').and_return('/usr/bin/puppetdb')
+    end
 
-    expect(Facter.fact(:puppetdb_version).value).to eq('7.18.0')
+    context 'on a default system' do
+      it 'returns the correct version from puppetdb --version' do
+        expect(Facter::Core::Execution).to receive(:execute)
+          .with('puppetdb --version')
+          .and_return('puppetdb version: 7.19.0')
+
+        expect(Facter.fact(:puppetdb_version).value).to eq('7.19.0')
+      end
+
+      it 'returns nil if the command execution fails' do
+        allow(Facter::Core::Execution).to receive(:execute).with('puppetdb --version').and_raise(Facter::Core::Execution::ExecutionFailure)
+
+        expect(Facter.fact(:puppetdb_version).value).to be_nil
+      end
+    end
   end
 
-  it 'returns nil if puppetdb command is not available' do
-    allow(Facter::Util::Resolution).to receive(:which).with('puppetdb').and_return(nil)
+  context 'when puppetdb is not available' do
+    before(:each) do
+      allow(Facter::Util::Resolution).to receive(:which).with('puppetdb').and_return(nil)
+    end
 
-    expect(Facter.fact(:puppetdb_version).value).to be_nil
+    it 'returns nil' do
+      expect(Facter.fact(:puppetdb_version).value).to be_nil
+    end
   end
 end
