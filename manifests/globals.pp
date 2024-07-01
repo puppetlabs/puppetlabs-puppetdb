@@ -8,7 +8,7 @@
 #   Puppet's config directory. Defaults to `/etc/puppetlabs/puppet`.
 #
 class puppetdb::globals (
-  $version                      = 'present',
+  String[1]            $version        = 'present',
   Stdlib::Absolutepath $puppet_confdir = $settings::confdir,
 ) {
   if !(fact('os.family') in ['RedHat', 'Suse', 'Archlinux', 'Debian', 'OpenBSD', 'FreeBSD']) {

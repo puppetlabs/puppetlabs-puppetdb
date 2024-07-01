@@ -87,7 +87,7 @@ describe 'puppetdb', type: :class do
         let(:params) do
           {
             postgresql_ssl_on: true,
-            puppetdb_server: 'puppetdb_host',
+            puppetdb_server: 'puppetdb.example.com',
           }
         end
 
@@ -96,7 +96,7 @@ describe 'puppetdb', type: :class do
           is_expected.to contain_class('puppetdb::database::postgresql')
             .with(
               'postgresql_ssl_on' => true,
-              'puppetdb_server' => 'puppetdb_host',
+              'puppetdb_server' => 'puppetdb.example.com',
             )
         }
       end

@@ -2,10 +2,10 @@
 #
 # @api private
 define puppetdb::database::postgresql_ssl_rules (
-  String $database_name,
-  String $database_username,
+  String[1]   $database_name,
+  String[1]   $database_username,
   String[2,3] $postgres_version,
-  String $puppetdb_server,
+  String[1]   $puppetdb_server,
 ) {
   $identity_map_key = "${database_name}-${database_username}-map"
 

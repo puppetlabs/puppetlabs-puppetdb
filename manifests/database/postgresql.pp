@@ -71,27 +71,30 @@
 #   PostgreSQL password authentication method, either `md5` or `scram-sha-256`
 #
 class puppetdb::database::postgresql (
-  $listen_addresses            = $puppetdb::params::database_host,
-  $puppetdb_server             = $puppetdb::params::puppetdb_server,
-  $database_name               = $puppetdb::params::database_name,
-  $database_username           = $puppetdb::params::database_username,
-  Variant[String[1], Sensitive[String[1]]] $database_password = $puppetdb::params::database_password,
-  $database_port               = $puppetdb::params::database_port,
-  $manage_database             = $puppetdb::params::manage_database,
-  $manage_server               = $puppetdb::params::manage_dbserver,
-  $manage_package_repo         = $puppetdb::params::manage_pg_repo,
-  $postgres_version            = $puppetdb::params::postgres_version,
-  $postgresql_ssl_on           = $puppetdb::params::postgresql_ssl_on,
-  $postgresql_ssl_key_path     = $puppetdb::params::postgresql_ssl_key_path,
-  $postgresql_ssl_cert_path    = $puppetdb::params::postgresql_ssl_cert_path,
-  $postgresql_ssl_ca_cert_path = $puppetdb::params::postgresql_ssl_ca_cert_path,
-  $read_database_username      = $puppetdb::params::read_database_username,
-  Variant[String[1], Sensitive[String[1]]] $read_database_password = $puppetdb::params::read_database_password,
-  $read_database_host          = $puppetdb::params::read_database_host,
-  Boolean $password_sensitive  = false,
-  Postgresql::Pg_password_encryption $password_encryption = $puppetdb::params::password_encryption,
+  Stdlib::Host                                       $listen_addresses            = $puppetdb::params::database_host,
+  Stdlib::Host                                       $puppetdb_server             = $puppetdb::params::puppetdb_server,
+  String[1]                                          $database_name               = $puppetdb::params::database_name,
+  String[1]                                          $database_username           = $puppetdb::params::database_username,
+  Variant[String[1], Sensitive[String[1]]]           $database_password           = $puppetdb::params::database_password,
+  Variant[Stdlib::Port::User, Pattern[/\A[0-9]+\Z/]] $database_port               = $puppetdb::params::database_port,
+  Boolean                                            $manage_database             = $puppetdb::params::manage_database,
+  Boolean                                            $manage_server               = $puppetdb::params::manage_dbserver,
+  Boolean                                            $manage_package_repo         = $puppetdb::params::manage_pg_repo,
+  String[2,3]                                        $postgres_version            = $puppetdb::params::postgres_version,
+  Boolean                                            $postgresql_ssl_on           = $puppetdb::params::postgresql_ssl_on,
+  Stdlib::Absolutepath                               $postgresql_ssl_key_path     = $puppetdb::params::postgresql_ssl_key_path,
+  Stdlib::Absolutepath                               $postgresql_ssl_cert_path    = $puppetdb::params::postgresql_ssl_cert_path,
+  Stdlib::Absolutepath                               $postgresql_ssl_ca_cert_path = $puppetdb::params::postgresql_ssl_ca_cert_path,
+  String[1]                                          $read_database_username      = $puppetdb::params::read_database_username,
+  Variant[String[1], Sensitive[String[1]]]           $read_database_password      = $puppetdb::params::read_database_password,
+  Optional[Stdlib::Host]                             $read_database_host          = $puppetdb::params::read_database_host,
+  Boolean                                            $password_sensitive          = false,
+  Postgresql::Pg_password_encryption                 $password_encryption         = $puppetdb::params::password_encryption,
 ) inherits puppetdb::params {
-  $port = scanf($database_port, '%i')[0]
+  $port = case $database_port.is_a(String) {
+    true: { scanf($database_port, '%i')[0] }
+    default: { $database_port }
+  }
 
   if $manage_server {
     class { 'postgresql::globals':

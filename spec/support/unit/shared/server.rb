@@ -6,7 +6,7 @@ shared_examples 'puppetdb::server::firewall' do
       http_port: '8080',
       open_http_port: false,
       ssl_port: '8081',
-      open_ssl_port: nil,
+      open_ssl_port: false,
     }
   end
 

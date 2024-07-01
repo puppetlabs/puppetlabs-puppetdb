@@ -2,9 +2,9 @@
 #
 # @api private
 class puppetdb::server::global (
-  $vardir         = $puppetdb::params::vardir,
-  $confdir        = $puppetdb::params::confdir,
-  $puppetdb_group = $puppetdb::params::puppetdb_group,
+  Stdlib::Absolutepath $vardir         = $puppetdb::params::vardir,
+  Stdlib::Absolutepath $confdir        = $puppetdb::params::confdir,
+  String[1]            $puppetdb_group = $puppetdb::params::puppetdb_group,
 ) inherits puppetdb::params {
   $config_ini = "${confdir}/config.ini"
 

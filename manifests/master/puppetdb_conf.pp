@@ -2,14 +2,14 @@
 #
 # @api private
 class puppetdb::master::puppetdb_conf (
-  $server             = 'localhost',
-  $port               = '8081',
-  $soft_write_failure = $puppetdb::disable_ssl ? {
+  Stdlib::Host                                       $server             = 'localhost',
+  Variant[Stdlib::Port::User, Pattern[/\A[0-9]+\Z/]] $port               = '8081',
+  Stdlib::Absolutepath                               $puppet_confdir     = $puppetdb::params::puppet_confdir,
+  Boolean                                            $soft_write_failure = $puppetdb::disable_ssl ? {
     true => true,
     default => false,
   },
-  $puppet_confdir     = $puppetdb::params::puppet_confdir,
-  $legacy_terminus    = $puppetdb::params::terminus_package ? {
+  Boolean                                            $legacy_terminus    = $puppetdb::params::terminus_package ? {
     /(puppetdb-terminus)/ => true,
     default               => false,
   },
