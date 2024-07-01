@@ -11,7 +11,7 @@ class puppetdb::params inherits puppetdb::globals {
   $ssl_protocols             = undef
   $disable_ssl               = false
   $cipher_suites             = undef
-  $open_ssl_listen_port      = undef
+  $open_ssl_listen_port      = false
   $postgres_listen_addresses = 'localhost'
 
   $puppetdb_version          = $puppetdb::globals::version

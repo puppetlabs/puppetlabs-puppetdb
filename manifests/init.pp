@@ -353,7 +353,7 @@ class puppetdb (
   Stdlib::Host                                                         $ssl_listen_address                = $puppetdb::params::ssl_listen_address,
   Variant[Stdlib::Port::User, Pattern[/\A[0-9]+\Z/]]                   $ssl_listen_port                   = $puppetdb::params::ssl_listen_port,
   Boolean                                                              $disable_ssl                       = $puppetdb::params::disable_ssl,
-  Optional[Boolean]                                                    $open_ssl_listen_port              = $puppetdb::params::open_ssl_listen_port,
+  Boolean                                                              $open_ssl_listen_port              = $puppetdb::params::open_ssl_listen_port,
   Stdlib::Absolutepath                                                 $ssl_dir                           = $puppetdb::params::ssl_dir,
   Boolean                                                              $ssl_set_cert_paths                = $puppetdb::params::ssl_set_cert_paths,
   Stdlib::Absolutepath                                                 $ssl_cert_path                     = $puppetdb::params::ssl_cert_path,
