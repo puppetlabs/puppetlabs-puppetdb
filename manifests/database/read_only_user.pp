@@ -18,12 +18,12 @@
 #
 # @api private
 define puppetdb::database::read_only_user (
-  String $read_database_username,
-  String $database_name,
-  String $database_owner,
-  Variant[String[1], Boolean, Sensitive[String[1]]] $password_hash = false,
-  Optional[Stdlib::Port] $database_port = undef,
-  Optional[Postgresql::Pg_password_encryption] $password_encryption = undef,
+  String[1]                                         $read_database_username,
+  String[1]                                         $database_name,
+  String[1]                                         $database_owner,
+  Variant[String[1], Boolean, Sensitive[String[1]]] $password_hash       = false,
+  Optional[Stdlib::Port]                            $database_port       = undef,
+  Optional[Postgresql::Pg_password_encryption]      $password_encryption = undef,
 ) {
   postgresql::server::role { $read_database_username:
     password_hash => $password_hash,

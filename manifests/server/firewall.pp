@@ -2,10 +2,10 @@
 #
 # @api private
 class puppetdb::server::firewall (
-  $http_port      = $puppetdb::params::listen_port,
-  $open_http_port = $puppetdb::params::open_listen_port,
-  $ssl_port       = $puppetdb::params::ssl_listen_port,
-  $open_ssl_port  = $puppetdb::params::open_ssl_listen_port,
+  Variant[Stdlib::Port::User, Pattern[/\A[0-9]+\Z/]] $http_port      = $puppetdb::params::listen_port,
+  Boolean                                            $open_http_port = $puppetdb::params::open_listen_port,
+  Variant[Stdlib::Port::User, Pattern[/\A[0-9]+\Z/]] $ssl_port       = $puppetdb::params::ssl_listen_port,
+  Boolean                                            $open_ssl_port  = $puppetdb::params::open_ssl_listen_port,
 ) inherits puppetdb::params {
   include firewall
 

@@ -2,9 +2,9 @@
 #
 # @api private
 class puppetdb::master::report_processor (
-  $puppet_conf = $puppetdb::params::puppet_conf,
-  $masterless  = $puppetdb::params::masterless,
-  $enable      = false
+  Stdlib::Absolutepath $puppet_conf = $puppetdb::params::puppet_conf,
+  Boolean              $masterless  = $puppetdb::params::masterless,
+  Boolean              $enable      = false
 ) inherits puppetdb::params {
   if $masterless {
     $puppet_conf_section = 'main'
