@@ -4,5 +4,7 @@ Facter.add(:puppetdb_version) do
   setcode do
     output = Facter::Core::Execution.execute('puppetdb --version')
     output.split(':').last.strip
+  rescue Facter::Core::Execution::ExecutionFailure
+    nil
   end
 end
