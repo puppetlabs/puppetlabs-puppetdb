@@ -196,6 +196,9 @@ class puppetdb::params inherits puppetdb::globals {
   $postgresql_ssl_key_path      = "${postgresql_ssl_folder}/private_keys/${trusted['certname']}.pem"
   $postgresql_ssl_ca_cert_path  = "${postgresql_ssl_folder}/certs/ca.pem"
 
+  # Configuration of the locales
+  $postgresql_locale = 'C.UTF-8'
+
   # certificates used for Jetty configuration
   $ssl_set_cert_paths       = false
   $ssl_cert_path            = "${ssl_dir}/public.pem"

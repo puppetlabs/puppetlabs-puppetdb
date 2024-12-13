@@ -49,6 +49,8 @@
 #
 # @param postgresql_ssl_ca_cert_path
 #   Path to the Postgresql SSL CA.
+# @param postgresql_locale
+#   The locale to use for the database. Defaults to `C.UTF-8`.
 #
 # @param read_database_username
 #   The name of the read database user to connect as. Defaults to `puppetdb-read`. This
@@ -85,6 +87,7 @@ class puppetdb::database::postgresql (
   $postgresql_ssl_key_path     = $puppetdb::params::postgresql_ssl_key_path,
   $postgresql_ssl_cert_path    = $puppetdb::params::postgresql_ssl_cert_path,
   $postgresql_ssl_ca_cert_path = $puppetdb::params::postgresql_ssl_ca_cert_path,
+  $postgresql_locale           = $puppetdb::params::postgresql_locale,
   $read_database_username      = $puppetdb::params::read_database_username,
   Variant[String[1], Sensitive[String[1]]] $read_database_password = $puppetdb::params::read_database_password,
   $read_database_host          = $puppetdb::params::read_database_host,
@@ -150,7 +153,7 @@ class puppetdb::database::postgresql (
       user     => $database_username,
       password => $database_password,
       encoding => 'UTF8',
-      locale   => 'en_US.UTF-8',
+      locale   => $postgresql_locale,
       grant    => 'all',
       port     => $port,
     }
