@@ -156,6 +156,9 @@
 #   service doesn't start on boot either. Valid values are `true`, `running`,
 #   `false`, and `stopped`.
 #
+# @param puppetdb_terminus_package
+#   The PuppetDB terminus package name in the package manager. Defaults to `puppetdb-termini` or `puppetdb-terminus`.
+#
 # @param puppetdb_user
 #   Puppetdb service user
 #
@@ -396,6 +399,7 @@ class puppetdb (
   $puppetdb_package                        = $puppetdb::params::puppetdb_package,
   $puppetdb_service                        = $puppetdb::params::puppetdb_service,
   $puppetdb_service_status                 = $puppetdb::params::puppetdb_service_status,
+  String[1] $puppetdb_terminus_package     = $puppetdb::params::terminus_package,
   $puppetdb_user                           = $puppetdb::params::puppetdb_user,
   $puppetdb_group                          = $puppetdb::params::puppetdb_group,
   $puppetdb_server                         = $puppetdb::params::puppetdb_server,
