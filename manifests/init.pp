@@ -67,7 +67,7 @@
 #
 # @param postgres_version
 #   If the postgresql.org repo is installed, you can install several versions of
-#   postgres. Defaults to `11` with PuppetDB version 7.0.0 or newer, and `9.6` in older versions.
+#   postgres. Default is 14.
 #
 # @param database_host
 #   Hostname to use for the database connection. For single case installations this
