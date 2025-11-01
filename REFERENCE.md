@@ -313,7 +313,7 @@ Default value: `$puppetdb::params::manage_pg_repo`
 Data type: `Any`
 
 If the postgresql.org repo is installed, you can install several versions of
-postgres. Defaults to `11` with PuppetDB version 7.0.0 or newer, and `9.6` in older versions.
+postgres. Defaults to `14`.
 
 Default value: `$puppetdb::params::postgres_version`
 
