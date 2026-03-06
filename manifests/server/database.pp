@@ -13,7 +13,8 @@ class puppetdb::server::database (
   Pattern[/\A[0-9dhms]+\Z/]                                            $node_ttl                  = $puppetdb::params::node_ttl,
   Pattern[/\A[0-9dhms]+\Z/]                                            $node_purge_ttl            = $puppetdb::params::node_purge_ttl,
   Pattern[/\A[0-9dhms]+\Z/]                                            $report_ttl                = $puppetdb::params::report_ttl,
-  Optional[Array]                                                      $facts_blacklist           = $puppetdb::params::facts_blacklist,
+  Optional[Array]                                                      $facts_blocklist           = $puppetdb::params::facts_blocklist,
+  Optional[Enum['literal', 'regex']]                                   $facts_blocklist_type      = $puppetdb::params::facts_blocklist_type,
   Variant[Integer[0], Pattern[/\A[0-9]+\Z/]]                           $gc_interval               = $puppetdb::params::gc_interval,
   Variant[Integer[0], Pattern[/\A[0-9]+\Z/]]                           $node_purge_gc_batch_limit = $puppetdb::params::node_purge_gc_batch_limit,
   Variant[Integer[0], Pattern[/\A[0-9]+\Z/]]                           $conn_max_age              = $puppetdb::params::conn_max_age,
@@ -168,16 +169,23 @@ class puppetdb::server::database (
     }
   }
 
-  if ($facts_blacklist) and length($facts_blacklist) != 0 {
-    $joined_facts_blacklist = join($facts_blacklist, ', ')
-    ini_setting { 'puppetdb_facts_blacklist':
-      setting => 'facts-blacklist',
-      value   => $joined_facts_blacklist,
+  if ($facts_blocklist) and length($facts_blocklist) != 0 {
+    $joined_facts_blocklist = join($facts_blocklist, ', ')
+    ini_setting { 'puppetdb_facts_blocklist':
+      setting => 'facts-blocklist',
+      value   => $joined_facts_blocklist,
     }
   } else {
-    ini_setting { 'puppetdb_facts_blacklist':
+    ini_setting { 'puppetdb_facts_blocklist':
       ensure  => absent,
-      setting => 'facts-blacklist',
+      setting => 'facts-blocklist',
+    }
+  }
+
+  if $facts_blocklist_type {
+    ini_setting { 'puppetdb_facts_blocklist_type':
+      setting => 'facts-blocklist-type',
+      value   => $joined_facts_blocklist,
     }
   }
 }
