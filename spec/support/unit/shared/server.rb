@@ -16,22 +16,30 @@ shared_examples 'puppetdb::server::firewall' do
   it { is_expected.to contain_class('firewall') }
 
   it {
-    option = with[:open_http_port] ? 'to' : 'not_to'
-    is_expected.method(option).call contain_firewall("#{with[:http_port]} accept - puppetdb")
-      .with(
-        dport: with[:http_port],
-        proto: 'tcp',
-        jump: 'accept',
-      )
+    firewall_matcher = contain_firewall("#{with[:http_port]} accept - puppetdb")
+                       .with(
+                          dport: with[:http_port],
+                          proto: 'tcp',
+                          jump: 'accept',
+                        )
+    if with[:open_http_port]
+      is_expected.to firewall_matcher
+    else
+      is_expected.not_to firewall_matcher
+    end
   }
 
   it {
-    option = with[:open_ssl_port] ? 'to' : 'not_to'
-    is_expected.method(option).call contain_firewall("#{with[:ssl_port]} accept - puppetdb")
-      .with(
-        dport: with[:ssl_port],
-        proto: 'tcp',
-        jump: 'accept',
-      )
+    firewall_matcher = contain_firewall("#{with[:ssl_port]} accept - puppetdb")
+                       .with(
+                          dport: with[:ssl_port],
+                          proto: 'tcp',
+                          jump: 'accept',
+                        )
+    if with[:open_ssl_port]
+      is_expected.to firewall_matcher
+    else
+      is_expected.not_to firewall_matcher
+    end
   }
 end

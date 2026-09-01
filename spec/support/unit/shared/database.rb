@@ -220,7 +220,7 @@ shared_examples 'puppetdb::database::default_read_grant' do |error|
 end
 
 shared_examples 'puppetdb::database::postgresql_ssl_rules' do |error|
-  let(:defaults) { { postgres_version: '14' } }
+  let(:defaults) { { postgres_version: '17' } }
   let(:with) { defined?(args) ? defaults.merge(args) : defaults }
 
   if error
