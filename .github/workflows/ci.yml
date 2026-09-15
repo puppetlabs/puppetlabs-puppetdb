@@ -1,11 +1,17 @@
----
 name: "ci"
 
 on:
   pull_request:
     branches:
       - "main"
+  pull_request_target:
+    types: [labeled, reopened]
+    branches:
+      - "main"
   workflow_dispatch:
+
+permissions:
+  contents: read
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -13,6 +19,7 @@ concurrency:
 
 jobs:
   Spec:
+    if: github.event_name != 'pull_request_target'
     uses: "puppetlabs/cat-github-actions/.github/workflows/module_ci.yml@main"
     secrets: "inherit"
 
