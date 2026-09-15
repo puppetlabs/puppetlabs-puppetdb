@@ -71,7 +71,7 @@
 #   PostgreSQL password authentication method, either `md5` or `scram-sha-256`
 #
 class puppetdb::database::postgresql (
-  Stdlib::Host                                       $listen_addresses            = $puppetdb::params::database_host,
+  Variant[Stdlib::Host, Pattern[/^\*$/]]             $listen_addresses            = $puppetdb::params::database_host,
   Stdlib::Host                                       $puppetdb_server             = $puppetdb::params::puppetdb_server,
   String[1]                                          $database_name               = $puppetdb::params::database_name,
   String[1]                                          $database_username           = $puppetdb::params::database_username,
