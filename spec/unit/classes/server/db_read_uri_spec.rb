@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe 'puppetdb::server::read_database', type: :class do
@@ -24,7 +26,7 @@ describe 'puppetdb::server::read_database', type: :class do
       end
 
       it {
-        is_expected.to contain_ini_setting('puppetdb_read_subname')
+        expect(subject).to contain_ini_setting('puppetdb_read_subname')
           .with(
             section: 'read-database',
             setting: 'subname',
@@ -43,7 +45,7 @@ describe 'puppetdb::server::read_database', type: :class do
       end
 
       it 'configures subname correctly' do
-        is_expected.to contain_ini_setting('puppetdb_read_subname')
+        expect(subject).to contain_ini_setting('puppetdb_read_subname')
           .with(
             ensure: 'present',
             path: '/etc/puppetlabs/puppetdb/conf.d/read_database.ini',
@@ -68,7 +70,7 @@ describe 'puppetdb::server::read_database', type: :class do
         end
 
         it 'raises an error' do
-          is_expected.to compile
+          expect(subject).to compile
             .and_raise_error(%r{Variables 'postgresql_ssl_on' and 'jdbc_ssl_properties' can not be used at the same time!})
         end
       end

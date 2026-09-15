@@ -12,13 +12,13 @@ describe 'puppetdb::server::validate_db', type: :class do
 
   context 'with default params' do
     it {
-      is_expected.to contain_class('puppetdb::server::validate_db')
+      expect(subject).to contain_class('puppetdb::server::validate_db')
         .with(
-          database_host:     'localhost',
-          database_port:     '5432',
+          database_host: 'localhost',
+          database_port: '5432',
           database_username: 'puppetdb',
           database_password: 'puppetdb',
-          database_name:     'puppetdb',
+          database_name: 'puppetdb',
           jdbc_ssl_properties: '',
         )
     }
@@ -31,13 +31,13 @@ describe 'puppetdb::server::validate_db', type: :class do
 
     context 'with jdbc_ssl_properties set false' do
       it {
-        is_expected.to contain_postgresql_conn_validator('validate puppetdb postgres connection')
+        expect(subject).to contain_postgresql_conn_validator('validate puppetdb postgres connection')
           .with(
-            host:        'localhost',
-            port:        '5432',
+            host: 'localhost',
+            port: '5432',
             db_username: 'puppetdb',
             db_password: 'puppetdb',
-            db_name:     'puppetdb',
+            db_name: 'puppetdb',
           )
       }
     end

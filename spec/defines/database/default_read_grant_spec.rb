@@ -4,21 +4,21 @@ require 'spec_helper'
 
 describe 'puppetdb::database::default_read_grant' do
   defaults = {
-    database_name:               'puppetdb',
-    schema:                      'public',
-    database_username:           'puppetdb',
+    database_name: 'puppetdb',
+    schema: 'public',
+    database_username: 'puppetdb',
     database_read_only_username: 'puppetdb-read',
   }
   valid = {
-    'standard': defaults,
+    standard: defaults,
     'standard with port': defaults.merge({ database_port: 5433 }),
   }
 
   invalid = {
     'no params': {},
     'without database_name': {
-      schema:                      'public',
-      database_username:           'puppetdb',
+      schema: 'public',
+      database_username: 'puppetdb',
       database_read_only_username: 'puppetdb-read',
     },
     'invalid data type': defaults.merge({ database_port: '5433' }),

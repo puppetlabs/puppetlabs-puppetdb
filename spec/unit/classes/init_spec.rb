@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe 'puppetdb', type: :class do
@@ -35,6 +37,7 @@ describe 'puppetdb', type: :class do
           it { is_expected.to compile.with_all_deps }
         end
       end
+
       describe 'without managed postgresql database' do
         let :params do
           {
@@ -75,7 +78,7 @@ describe 'puppetdb', type: :class do
         end
 
         it do
-          is_expected.to contain_postgresql__server__pg_hba_rule('allow access to all users for instance main')
+          expect(subject).to contain_postgresql__server__pg_hba_rule('allow access to all users for instance main')
             .with_type('host')
             .with_database('all')
             .with_user('all')
@@ -92,8 +95,9 @@ describe 'puppetdb', type: :class do
         end
 
         it { is_expected.to contain_class('puppetdb::server').with('postgresql_ssl_on' => true) }
+
         it {
-          is_expected.to contain_class('puppetdb::database::postgresql')
+          expect(subject).to contain_class('puppetdb::database::postgresql')
             .with(
               'postgresql_ssl_on' => true,
               'puppetdb_server' => 'puppetdb.example.com',
@@ -125,7 +129,7 @@ describe 'puppetdb', type: :class do
       end
 
       it "when using a value that does not match the validation regex for #{ttl_arg} puppetdb class" do
-        expect { is_expected.to contain_class('puppetdb') }.to raise_error(Puppet::Error)
+        expect { expect(subject).to contain_class('puppetdb') }.to raise_error(Puppet::Error)
       end
     end
   end

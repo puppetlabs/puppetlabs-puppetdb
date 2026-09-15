@@ -18,28 +18,28 @@ shared_examples 'puppetdb::server::firewall' do
   it {
     firewall_matcher = contain_firewall("#{with[:http_port]} accept - puppetdb")
                        .with(
-                          dport: with[:http_port],
-                          proto: 'tcp',
-                          jump: 'accept',
-                        )
+                         dport: with[:http_port],
+                         proto: 'tcp',
+                         jump: 'accept',
+                       )
     if with[:open_http_port]
-      is_expected.to firewall_matcher
+      expect(subject).to firewall_matcher
     else
-      is_expected.not_to firewall_matcher
+      expect(subject).not_to firewall_matcher
     end
   }
 
   it {
     firewall_matcher = contain_firewall("#{with[:ssl_port]} accept - puppetdb")
                        .with(
-                          dport: with[:ssl_port],
-                          proto: 'tcp',
-                          jump: 'accept',
-                        )
+                         dport: with[:ssl_port],
+                         proto: 'tcp',
+                         jump: 'accept',
+                       )
     if with[:open_ssl_port]
-      is_expected.to firewall_matcher
+      expect(subject).to firewall_matcher
     else
-      is_expected.not_to firewall_matcher
+      expect(subject).not_to firewall_matcher
     end
   }
 end

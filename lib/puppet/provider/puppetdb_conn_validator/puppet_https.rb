@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # See: #10295 for more details.
 #
 # This is a workaround for bug: #4248 whereby ruby files outside of the normal
@@ -43,9 +45,7 @@ Puppet::Type.type(:puppetdb_conn_validator).provide(:puppet_https) do
       success = validator.attempt_connection
     end
 
-    unless success
-      Puppet.notice("Failed to connect to puppetdb within timeout window of #{timeout} seconds; giving up.")
-    end
+    Puppet.notice("Failed to connect to puppetdb within timeout window of #{timeout} seconds; giving up.") unless success
 
     success
   end
