@@ -7,9 +7,9 @@ class puppetdb::server::firewall (
   Variant[Stdlib::Port::User, Pattern[/\A[0-9]+\Z/]] $ssl_port       = $puppetdb::params::ssl_listen_port,
   Boolean                                            $open_ssl_port  = $puppetdb::params::open_ssl_listen_port,
 ) inherits puppetdb::params {
-  include firewall
-
   if ($open_http_port) {
+    include firewall
+
     firewall { "${http_port} accept - puppetdb":
       dport => $http_port,
       proto => 'tcp',
@@ -18,6 +18,8 @@ class puppetdb::server::firewall (
   }
 
   if ($open_ssl_port) {
+    include firewall
+
     firewall { "${ssl_port} accept - puppetdb":
       dport => $ssl_port,
       proto => 'tcp',
