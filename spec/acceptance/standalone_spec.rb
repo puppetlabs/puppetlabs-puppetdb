@@ -63,8 +63,11 @@ describe 'standalone' do
 
         describe command('puppet config print --section master reports') do
           its(:stdout) do
-            option = enable_reports ? 'to' : 'not_to'
-            is_expected.method(option).call match 'puppetdb'
+            if enable_reports
+              is_expected.to match 'puppetdb'
+            else
+              is_expected.not_to match 'puppetdb'
+            end
           end
         end
       end

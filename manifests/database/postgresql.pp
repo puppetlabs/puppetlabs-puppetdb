@@ -35,7 +35,7 @@
 #
 # @param postgres_version
 #   If the postgresql.org repo is installed, you can install several versions of
-#   postgres. Defaults to `11` with PuppetDB version 7.0.0 or newer, and `9.6` in older versions.
+#   postgres. Defaults to `17`.
 #
 # @param postgresql_ssl_on
 #   If `true`, it configures SSL connections between PuppetDB and the PostgreSQL database.

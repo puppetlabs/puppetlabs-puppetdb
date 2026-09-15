@@ -1,6 +1,9 @@
 puppetdb
 =========
 
+> **Disclaimer:** This module is unsupported. Maintenance is best-effort only,
+> with no guaranteed response times for issues or pull requests.
+
 #### Table of Contents
 
 1. [Overview - What is the PuppetDB module?](#overview)
