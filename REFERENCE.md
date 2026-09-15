@@ -96,7 +96,8 @@ The following parameters are available in the `puppetdb` class:
 * [`node_ttl`](#-puppetdb--node_ttl)
 * [`node_purge_ttl`](#-puppetdb--node_purge_ttl)
 * [`report_ttl`](#-puppetdb--report_ttl)
-* [`facts_blacklist`](#-puppetdb--facts_blacklist)
+* [`facts_blocklist`](#-puppetdb--facts_blocklist)
+* [`facts_blocklist_type`](#-puppetdb--facts_blocklist_type)
 * [`gc_interval`](#-puppetdb--gc_interval)
 * [`node_purge_gc_batch_limit`](#-puppetdb--node_purge_gc_batch_limit)
 * [`conn_max_age`](#-puppetdb--conn_max_age)
@@ -428,13 +429,22 @@ The length of time reports should be stored before being deleted. (defaults to
 
 Default value: `$puppetdb::params::report_ttl`
 
-##### <a name="-puppetdb--facts_blacklist"></a>`facts_blacklist`
+##### <a name="-puppetdb--facts_blocklist"></a>`facts_blocklist`
 
 Data type: `Optional[Array]`
 
 A list of fact names to be ignored whenever submitted.
 
-Default value: `$puppetdb::params::facts_blacklist`
+Default value: `$puppetdb::params::facts_blocklist`
+
+##### <a name="-puppetdb--facts_blocklist_type"></a>`facts_blocklist_type`
+
+Data type: `Optional[Enum['literal', 'regex']]`
+
+Select mode for interpreting the fact-blocklist, either literally or as
+Java regular expressions.
+
+Default value: `$puppetdb::params::facts_blocklist_type`
 
 ##### <a name="-puppetdb--gc_interval"></a>`gc_interval`
 
@@ -1395,7 +1405,8 @@ The following parameters are available in the `puppetdb::server` class:
 * [`node_ttl`](#-puppetdb--server--node_ttl)
 * [`node_purge_ttl`](#-puppetdb--server--node_purge_ttl)
 * [`report_ttl`](#-puppetdb--server--report_ttl)
-* [`facts_blacklist`](#-puppetdb--server--facts_blacklist)
+* [`facts_blocklist`](#-puppetdb--server--facts_blocklist)
+* [`facts_blocklist_type`](#-puppetdb--server--facts_blocklist_type)
 * [`gc_interval`](#-puppetdb--server--gc_interval)
 * [`node_purge_gc_batch_limit`](#-puppetdb--server--node_purge_gc_batch_limit)
 * [`conn_max_age`](#-puppetdb--server--conn_max_age)
@@ -1656,13 +1667,22 @@ The length of time reports should be stored before being deleted. (defaults to
 
 Default value: `$puppetdb::params::report_ttl`
 
-##### <a name="-puppetdb--server--facts_blacklist"></a>`facts_blacklist`
+##### <a name="-puppetdb--server--facts_blocklist"></a>`facts_blocklist`
 
 Data type: `Optional[Array]`
 
 A list of fact names to be ignored whenever submitted.
 
-Default value: `$puppetdb::params::facts_blacklist`
+Default value: `$puppetdb::params::facts_blocklist`
+
+##### <a name="-puppetdb--facts_blocklist_type"></a>`facts_blocklist_type`
+
+Data type: `Optional[Enum['literal', 'regex']]`
+
+Select mode for interpreting the fact-blocklist, either literally or as
+Java regular expressions.
+
+Default value: `$puppetdb::params::facts_blocklist_type`
 
 ##### <a name="-puppetdb--server--gc_interval"></a>`gc_interval`
 
