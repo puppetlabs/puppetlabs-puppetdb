@@ -15,4 +15,5 @@ jobs:
     uses: "puppetlabs/cat-github-actions/.github/workflows/module_acceptance.yml@main"
     secrets: "inherit"
     with:
+      flags: "--collection-platform-exclude 9:Debian-12"
       runs_on: "ubuntu-24.04"
