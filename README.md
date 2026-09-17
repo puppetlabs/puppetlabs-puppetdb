@@ -464,13 +464,13 @@ Limitations
 
 Currently, PuppetDB is compatible with:
 
-    Puppet Version: 4.10+
+    Puppet Versions: 8 and 9
 
 Platforms:
-* Red Hat Enterprise Linux (RHEL) 7, 8, 9, 10
-* SUSE Enterprise Linux (SLES) 12, 15
-* Debian 10 (Buster), 11 (Bullseye), 12 (Bookworm)
-* Ubuntu 20.04 (Focal), 22.04 (Jammy) LTS, 24.04 (Noble) LTS
+* Red Hat Enterprise Linux (RHEL) 8, 9, 10
+* SUSE Enterprise Linux (SLES) 15
+* Debian 12 (Bookworm)
+* Ubuntu 22.04 (Jammy) LTS, 24.04 (Noble) LTS
 
 Development
 ------------

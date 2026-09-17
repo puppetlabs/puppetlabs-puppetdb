@@ -4,7 +4,7 @@ require 'spec_helper_acceptance'
 
 describe 'standalone' do
   let(:manage_firewall) { "(getvar('facts.os.family') == 'RedHat' and Integer(getvar('facts.os.release.major')) > 7)" }
-  let(:postgres_version) { 'undef' } # default
+  let(:postgres_version) { "(getvar('facts.os.family') == 'Suse') ? { true => '15', default => undef }" }
   let(:puppetdb_master_config_params) {}
   let(:puppetdb_params) {}
 

@@ -19,5 +19,5 @@ ci:
   provisioner: docker
   images:
     - litmusimage/oraclelinux:9
-    - litmusimage/debian:13
+    - litmusimage/debian:12
     - litmusimage/ubuntu:24.04
