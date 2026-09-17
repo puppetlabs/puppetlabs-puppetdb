@@ -467,14 +467,10 @@ Currently, PuppetDB is compatible with:
     Puppet Version: 4.10+
 
 Platforms:
-* EL 5, 6, 7
-* Debian 6, 7
-* Ubuntu 10.04, 12.04, 14.04
-
-Community Maintained Platforms:
-* Archlinux
-* OpenBSD 5.6-current and newer
-* SLES 11 SP1
+* Red Hat Enterprise Linux (RHEL) 7, 8, 9, 10
+* SUSE Enterprise Linux (SLES) 12, 15
+* Debian 10 (Buster), 11 (Bullseye), 12 (Bookworm)
+* Ubuntu 20.04 (Focal), 22.04 (Jammy) LTS, 24.04 (Noble) LTS
 
 Development
 ------------
