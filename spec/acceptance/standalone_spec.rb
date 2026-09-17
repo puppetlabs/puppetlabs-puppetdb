@@ -7,19 +7,27 @@ describe 'standalone' do
   let(:postgres_version) { "(getvar('facts.os.family') == 'Suse') ? { true => '15', default => undef }" }
   let(:puppetdb_master_config_params) {}
   let(:puppetdb_params) {}
+  let(:puppetdb_ready_command) do
+    <<~SH
+      sh -c 'if timeout 300 sh -c "until netstat -tunl | grep -q ":8080 "; do sleep 2; done"; then exit 0; fi;
+      systemctl status puppetdb --no-pager;
+      journalctl -u puppetdb --no-pager -n 100;
+      exit 1'
+    SH
+  end
 
   it_behaves_like 'puppetserver'
 
   describe 'with defaults' do
     it_behaves_like 'puppetdb'
 
+    describe command(puppetdb_ready_command), :status do
+      its(:exit_status) { is_expected.to eq 0 }
+    end
+
     describe service('puppetdb'), :status do
       it { is_expected.to be_enabled }
       it { is_expected.to be_running }
-    end
-
-    describe command(%q(timeout 120 sh -c 'until netstat -tunl | grep -q ":8080 "; do sleep 2; done')), :status do
-      its(:exit_status) { is_expected.to eq 0 }
     end
 
     describe port(8080), :status do
