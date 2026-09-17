@@ -2,6 +2,10 @@
 
 require 'spec_helper_acceptance'
 
+PUPPETDB_READY_COMMAND = 'timeout 300 sh -c "until netstat -tunl ' \
+                         '| grep -q \':8080 \'; do sleep 2; done" || { systemctl status puppetdb ' \
+                         '--no-pager; journalctl -u puppetdb --no-pager -n 100; exit 1; }'
+
 describe 'standalone' do
   let(:manage_firewall) { "(getvar('facts.os.family') == 'RedHat' and Integer(getvar('facts.os.release.major')) > 7)" }
   let(:postgres_version) { "(getvar('facts.os.family') == 'Suse') ? { true => '15', default => undef }" }
@@ -13,7 +17,7 @@ describe 'standalone' do
   describe 'with defaults' do
     it_behaves_like 'puppetdb'
 
-    describe command(%q(timeout 300 sh -c 'until netstat -tunl | grep -q ":8080 "; do sleep 2; done')), :status do
+    describe command(PUPPETDB_READY_COMMAND), :status do
       its(:exit_status) { is_expected.to eq 0 }
     end
 
