@@ -18,7 +18,7 @@ describe 'standalone' do
       it { is_expected.to be_running }
     end
 
-    describe command(%q{timeout 120 sh -c 'until netstat -tunl | grep -q ":8080 "; do sleep 2; done'}), :status do
+    describe command(%q(timeout 120 sh -c 'until netstat -tunl | grep -q ":8080 "; do sleep 2; done')), :status do
       its(:exit_status) { is_expected.to eq 0 }
     end
 
