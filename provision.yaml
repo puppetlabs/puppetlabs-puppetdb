@@ -17,6 +17,8 @@ apt:
     - litmusimage/ubuntu:24.04
 ci:
   provisioner: docker
+  params:
+    puppet_version: '8.17.0'
   images:
     - litmusimage/oraclelinux:9
     - litmusimage/debian:12
