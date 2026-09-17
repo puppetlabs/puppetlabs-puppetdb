@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe 'puppetdb::server::puppetdb', type: :class do
@@ -7,39 +9,42 @@ describe 'puppetdb::server::puppetdb', type: :class do
 
   describe 'when using default values' do
     it {
-      is_expected.to contain_ini_setting('puppetdb-connections-from-master-only')
+      expect(subject).to contain_ini_setting('puppetdb-connections-from-master-only')
         .with(
-          'ensure'  => 'absent',
-          'path'    => '/etc/puppetlabs/puppetdb/conf.d/puppetdb.ini',
+          'ensure' => 'absent',
+          'path' => '/etc/puppetlabs/puppetdb/conf.d/puppetdb.ini',
           'section' => 'puppetdb',
           'setting' => 'certificate-whitelist',
-          'value'   => '/etc/puppetlabs/puppetdb/certificate-whitelist',
+          'value' => '/etc/puppetlabs/puppetdb/certificate-whitelist',
         )
     }
+
     it {
-      is_expected.to contain_file('/etc/puppetlabs/puppetdb/certificate-whitelist')
+      expect(subject).to contain_file('/etc/puppetlabs/puppetdb/certificate-whitelist')
         .with(
-          'ensure'  => 'absent',
-          'owner'   => 0,
-          'group'   => 0,
-          'mode'    => '0644',
+          'ensure' => 'absent',
+          'owner' => 0,
+          'group' => 0,
+          'mode' => '0644',
           'content' => '',
         )
     }
+
     it {
-      is_expected.to contain_file('/etc/puppetlabs/puppetdb/conf.d/puppetdb.ini')
+      expect(subject).to contain_file('/etc/puppetlabs/puppetdb/conf.d/puppetdb.ini')
         .with(
-          'ensure'  => 'file',
-          'owner'   => 'root',
-          'group'   => 'puppetdb',
-          'mode'    => '0640',
+          'ensure' => 'file',
+          'owner' => 'root',
+          'group' => 'puppetdb',
+          'mode' => '0640',
         )
     }
+
     it {
-      is_expected.to contain_ini_setting('puppetdb_disable_update_checking')
+      expect(subject).to contain_ini_setting('puppetdb_disable_update_checking')
         .with(
-          'ensure'  => 'absent',
-          'path'    => '/etc/puppetlabs/puppetdb/conf.d/puppetdb.ini',
+          'ensure' => 'absent',
+          'path' => '/etc/puppetlabs/puppetdb/conf.d/puppetdb.ini',
           'section' => 'puppetdb',
           'setting' => 'disable-update-checking',
         )
@@ -54,22 +59,23 @@ describe 'puppetdb::server::puppetdb', type: :class do
     end
 
     it {
-      is_expected.to contain_ini_setting('puppetdb-connections-from-master-only')
+      expect(subject).to contain_ini_setting('puppetdb-connections-from-master-only')
         .with(
-          'ensure'  => 'present',
-          'path'    => '/etc/puppetlabs/puppetdb/conf.d/puppetdb.ini',
+          'ensure' => 'present',
+          'path' => '/etc/puppetlabs/puppetdb/conf.d/puppetdb.ini',
           'section' => 'puppetdb',
           'setting' => 'certificate-whitelist',
-          'value'   => '/etc/puppetlabs/puppetdb/certificate-whitelist',
+          'value' => '/etc/puppetlabs/puppetdb/certificate-whitelist',
         )
     }
+
     it {
-      is_expected.to contain_file('/etc/puppetlabs/puppetdb/certificate-whitelist')
+      expect(subject).to contain_file('/etc/puppetlabs/puppetdb/certificate-whitelist')
         .with(
-          'ensure'  => 'present',
-          'owner'   => 0,
-          'group'   => 0,
-          'mode'    => '0644',
+          'ensure' => 'present',
+          'owner' => 0,
+          'group' => 0,
+          'mode' => '0644',
           'content' => "puppetmaster\n",
         )
     }
@@ -83,13 +89,13 @@ describe 'puppetdb::server::puppetdb', type: :class do
     end
 
     it {
-      is_expected.to contain_ini_setting('puppetdb_disable_update_checking')
+      expect(subject).to contain_ini_setting('puppetdb_disable_update_checking')
         .with(
-          'ensure'  => 'present',
-          'path'    => '/etc/puppetlabs/puppetdb/conf.d/puppetdb.ini',
+          'ensure' => 'present',
+          'path' => '/etc/puppetlabs/puppetdb/conf.d/puppetdb.ini',
           'section' => 'puppetdb',
           'setting' => 'disable-update-checking',
-          'value'   => 'true',
+          'value' => 'true',
         )
     }
   end

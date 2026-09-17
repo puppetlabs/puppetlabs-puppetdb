@@ -12,12 +12,12 @@ describe 'puppetdb::master::storeconfigs', type: :class do
   end
 
   let(:param_ensure) { params[:enable] ? 'present' : 'absent' }
-  let(:puppet_conf_section) { params[:masterless] ? 'main' : 'master' }
+  let(:puppet_conf_section) { params[:masterless] ? 'main' : 'server' }
   let(:puppet_conf) { File.join(Puppet[:confdir], 'puppet.conf') }
 
   context 'with default parameters' do
     it {
-      is_expected.to contain_ini_setting("puppet.conf/#{puppet_conf_section}/storeconfigs")
+      expect(subject).to contain_ini_setting("puppet.conf/#{puppet_conf_section}/storeconfigs")
         .with_ensure(param_ensure)
         .with(
           section: puppet_conf_section,
@@ -26,8 +26,9 @@ describe 'puppetdb::master::storeconfigs', type: :class do
           value: true,
         )
     }
+
     it {
-      is_expected.to contain_ini_setting("puppet.conf/#{puppet_conf_section}/storeconfigs_backend")
+      expect(subject).to contain_ini_setting("puppet.conf/#{puppet_conf_section}/storeconfigs_backend")
         .with_ensure(param_ensure)
         .with(
           section: puppet_conf_section,

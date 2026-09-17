@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe 'puppetdb::server::database', type: :class do
@@ -17,141 +19,155 @@ describe 'puppetdb::server::database', type: :class do
       end
 
       it {
-        is_expected.to contain_file("#{pdbconfdir}/database.ini")
+        expect(subject).to contain_file("#{pdbconfdir}/database.ini")
           .with(
-            'ensure'  => 'file',
-            'owner'   => 'root',
-            'group'   => 'puppetdb',
-            'mode'    => '0640',
+            'ensure' => 'file',
+            'owner' => 'root',
+            'group' => 'puppetdb',
+            'mode' => '0640',
           )
       }
+
       it {
-        is_expected.to contain_ini_setting('puppetdb_psdatabase_username')
+        expect(subject).to contain_ini_setting('puppetdb_psdatabase_username')
           .with(
-            'ensure'  => 'present',
-            'path'    => "#{pdbconfdir}/database.ini",
+            'ensure' => 'present',
+            'path' => "#{pdbconfdir}/database.ini",
             'section' => 'database',
             'setting' => 'username',
-            'value'   => 'puppetdb',
+            'value' => 'puppetdb',
           )
       }
+
       it {
-        is_expected.to contain_ini_setting('puppetdb_psdatabase_password')
+        expect(subject).to contain_ini_setting('puppetdb_psdatabase_password')
           .with(
-            'ensure'    => 'present',
-            'path'      => "#{pdbconfdir}/database.ini",
-            'section'   => 'database',
-            'setting'   => 'password',
-            'value'     => 'puppetdb',
+            'ensure' => 'present',
+            'path' => "#{pdbconfdir}/database.ini",
+            'section' => 'database',
+            'setting' => 'password',
+            'value' => 'puppetdb',
             'show_diff' => false,
           )
       }
+
       it {
-        is_expected.to contain_ini_setting('puppetdb_pgs')
+        expect(subject).to contain_ini_setting('puppetdb_pgs')
           .with(
-            'ensure'  => 'present',
-            'path'    => "#{pdbconfdir}/database.ini",
+            'ensure' => 'present',
+            'path' => "#{pdbconfdir}/database.ini",
             'section' => 'database',
             'setting' => 'syntax_pgs',
-            'value'   => true,
+            'value' => true,
           )
       }
+
       it {
-        is_expected.to contain_ini_setting('puppetdb_subname')
+        expect(subject).to contain_ini_setting('puppetdb_subname')
           .with(
-            'ensure'  => 'present',
-            'path'    => "#{pdbconfdir}/database.ini",
+            'ensure' => 'present',
+            'path' => "#{pdbconfdir}/database.ini",
             'section' => 'database',
             'setting' => 'subname',
-            'value'   => '//localhost:5432/puppetdb',
+            'value' => '//localhost:5432/puppetdb',
           )
       }
+
       it {
-        is_expected.to contain_ini_setting('puppetdb_gc_interval')
+        expect(subject).to contain_ini_setting('puppetdb_gc_interval')
           .with(
-            'ensure'  => 'present',
-            'path'    => "#{pdbconfdir}/database.ini",
+            'ensure' => 'present',
+            'path' => "#{pdbconfdir}/database.ini",
             'section' => 'database',
             'setting' => 'gc-interval',
-            'value'   => '60',
+            'value' => '60',
           )
       }
+
       it {
-        is_expected.to contain_ini_setting('puppetdb_node_purge_gc_batch_limit')
+        expect(subject).to contain_ini_setting('puppetdb_node_purge_gc_batch_limit')
           .with(
-            'ensure'  => 'present',
-            'path'    => "#{pdbconfdir}/database.ini",
+            'ensure' => 'present',
+            'path' => "#{pdbconfdir}/database.ini",
             'section' => 'database',
             'setting' => 'node-purge-gc-batch-limit',
-            'value'   => '25',
+            'value' => '25',
           )
       }
+
       it {
-        is_expected.to contain_ini_setting('puppetdb_node_ttl')
+        expect(subject).to contain_ini_setting('puppetdb_node_ttl')
           .with(
-            'ensure'  => 'present',
-            'path'    => "#{pdbconfdir}/database.ini",
+            'ensure' => 'present',
+            'path' => "#{pdbconfdir}/database.ini",
             'section' => 'database',
             'setting' => 'node-ttl',
-            'value'   => '7d',
+            'value' => '7d',
           )
       }
+
       it {
-        is_expected.to contain_ini_setting('puppetdb_node_purge_ttl')
+        expect(subject).to contain_ini_setting('puppetdb_node_purge_ttl')
           .with(
-            'ensure'  => 'present',
-            'path'    => "#{pdbconfdir}/database.ini",
+            'ensure' => 'present',
+            'path' => "#{pdbconfdir}/database.ini",
             'section' => 'database',
             'setting' => 'node-purge-ttl',
-            'value'   => '14d',
+            'value' => '14d',
           )
       }
+
       it {
-        is_expected.to contain_ini_setting('puppetdb_report_ttl')
+        expect(subject).to contain_ini_setting('puppetdb_report_ttl')
           .with(
-            'ensure'  => 'present',
-            'path'    => "#{pdbconfdir}/database.ini",
+            'ensure' => 'present',
+            'path' => "#{pdbconfdir}/database.ini",
             'section' => 'database',
             'setting' => 'report-ttl',
-            'value'   => '14d',
+            'value' => '14d',
           )
       }
+
       it {
-        is_expected.to contain_ini_setting('puppetdb_conn_max_age')
+        expect(subject).to contain_ini_setting('puppetdb_conn_max_age')
           .with(
-            'ensure'  => 'present',
-            'path'    => "#{pdbconfdir}/database.ini",
+            'ensure' => 'present',
+            'path' => "#{pdbconfdir}/database.ini",
             'section' => 'database',
             'setting' => 'conn-max-age',
-            'value'   => '60',
+            'value' => '60',
           )
       }
+
       it {
-        is_expected.to contain_ini_setting('puppetdb_conn_lifetime')
+        expect(subject).to contain_ini_setting('puppetdb_conn_lifetime')
           .with(
-            'ensure'  => 'present',
-            'path'    => "#{pdbconfdir}/database.ini",
+            'ensure' => 'present',
+            'path' => "#{pdbconfdir}/database.ini",
             'section' => 'database',
             'setting' => 'conn-lifetime',
-            'value'   => '0',
+            'value' => '0',
           )
       }
+
       it {
-        is_expected.to contain_ini_setting('puppetdb_migrate')
+        expect(subject).to contain_ini_setting('puppetdb_migrate')
           .with(
-            'ensure'  => 'present',
-            'path'    => "#{pdbconfdir}/database.ini",
+            'ensure' => 'present',
+            'path' => "#{pdbconfdir}/database.ini",
             'section' => 'database',
             'setting' => 'migrate',
-            'value'   => true,
+            'value' => true,
           )
       }
+
       it { is_expected.not_to contain_ini_setting('puppetdb_database_max_pool_size') }
+
       it {
-        is_expected.to contain_ini_setting('puppetdb_facts_blacklist')
+        expect(subject).to contain_ini_setting('puppetdb_facts_blacklist')
           .with(
-            'ensure'  => 'absent',
-            'path'    => "#{pdbconfdir}/database.ini",
+            'ensure' => 'absent',
+            'path' => "#{pdbconfdir}/database.ini",
             'section' => 'database',
             'setting' => 'facts-blacklist',
           )
@@ -170,13 +186,13 @@ describe 'puppetdb::server::database', type: :class do
     end
 
     it {
-      is_expected.to contain_ini_setting('puppetdb_facts_blacklist')
+      expect(subject).to contain_ini_setting('puppetdb_facts_blacklist')
         .with(
-          'ensure'  => 'present',
-          'path'    => '/etc/puppetlabs/puppetdb/conf.d/database.ini',
+          'ensure' => 'present',
+          'path' => '/etc/puppetlabs/puppetdb/conf.d/database.ini',
           'section' => 'database',
           'setting' => 'facts-blacklist',
-          'value'   => 'one_fact, another_fact',
+          'value' => 'one_fact, another_fact',
         )
     }
   end
@@ -191,13 +207,13 @@ describe 'puppetdb::server::database', type: :class do
         end
 
         it {
-          is_expected.to contain_ini_setting('puppetdb_database_max_pool_size')
+          expect(subject).to contain_ini_setting('puppetdb_database_max_pool_size')
             .with(
-              'ensure'  => 'present',
-              'path'    => '/etc/puppetlabs/puppetdb/conf.d/database.ini',
+              'ensure' => 'present',
+              'path' => '/etc/puppetlabs/puppetdb/conf.d/database.ini',
               'section' => 'database',
               'setting' => 'maximum-pool-size',
-              'value'   => '12345',
+              'value' => '12345',
             )
         }
       end
@@ -210,10 +226,10 @@ describe 'puppetdb::server::database', type: :class do
         end
 
         it {
-          is_expected.to contain_ini_setting('puppetdb_database_max_pool_size')
+          expect(subject).to contain_ini_setting('puppetdb_database_max_pool_size')
             .with(
-              'ensure'  => 'absent',
-              'path'    => '/etc/puppetlabs/puppetdb/conf.d/database.ini',
+              'ensure' => 'absent',
+              'path' => '/etc/puppetlabs/puppetdb/conf.d/database.ini',
               'section' => 'database',
               'setting' => 'maximum-pool-size',
             )
@@ -232,13 +248,13 @@ describe 'puppetdb::server::database', type: :class do
         end
 
         it {
-          is_expected.to contain_ini_setting('puppetdb_database_max_pool_size')
+          expect(subject).to contain_ini_setting('puppetdb_database_max_pool_size')
             .with(
-              'ensure'  => 'present',
-              'path'    => '/etc/puppetlabs/puppetdb/conf.d/database.ini',
+              'ensure' => 'present',
+              'path' => '/etc/puppetlabs/puppetdb/conf.d/database.ini',
               'section' => 'database',
               'setting' => 'partition-conn-max',
-              'value'   => '12345',
+              'value' => '12345',
             )
         }
       end
@@ -251,10 +267,10 @@ describe 'puppetdb::server::database', type: :class do
         end
 
         it {
-          is_expected.to contain_ini_setting('puppetdb_database_max_pool_size')
+          expect(subject).to contain_ini_setting('puppetdb_database_max_pool_size')
             .with(
-              'ensure'  => 'absent',
-              'path'    => '/etc/puppetlabs/puppetdb/conf.d/database.ini',
+              'ensure' => 'absent',
+              'path' => '/etc/puppetlabs/puppetdb/conf.d/database.ini',
               'section' => 'database',
               'setting' => 'partition-conn-max',
             )
@@ -296,7 +312,7 @@ describe 'puppetdb::server::database', type: :class do
     end
 
     it 'configures subname correctly' do
-      is_expected.to contain_ini_setting('puppetdb_subname')
+      expect(subject).to contain_ini_setting('puppetdb_subname')
         .with(
           ensure: 'present',
           path: '/etc/puppetlabs/puppetdb/conf.d/database.ini',

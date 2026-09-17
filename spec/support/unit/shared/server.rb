@@ -13,33 +13,40 @@ shared_examples 'puppetdb::server::firewall' do
   let(:with) { defined?(params) ? defaults.merge(params) : defaults }
 
   it { is_expected.to contain_class('puppetdb::server::firewall').with(with) }
-  it { is_expected.to contain_class('firewall') }
+
+  it {
+    if with[:open_http_port] || with[:open_ssl_port]
+      expect(subject).to contain_class('firewall')
+    else
+      expect(subject).not_to contain_class('firewall')
+    end
+  }
 
   it {
     firewall_matcher = contain_firewall("#{with[:http_port]} accept - puppetdb")
                        .with(
-                          dport: with[:http_port],
-                          proto: 'tcp',
-                          jump: 'accept',
-                        )
+                         dport: with[:http_port],
+                         proto: 'tcp',
+                         jump: 'accept',
+                       )
     if with[:open_http_port]
-      is_expected.to firewall_matcher
+      expect(subject).to firewall_matcher
     else
-      is_expected.not_to firewall_matcher
+      expect(subject).not_to firewall_matcher
     end
   }
 
   it {
     firewall_matcher = contain_firewall("#{with[:ssl_port]} accept - puppetdb")
                        .with(
-                          dport: with[:ssl_port],
-                          proto: 'tcp',
-                          jump: 'accept',
-                        )
+                         dport: with[:ssl_port],
+                         proto: 'tcp',
+                         jump: 'accept',
+                       )
     if with[:open_ssl_port]
-      is_expected.to firewall_matcher
+      expect(subject).to firewall_matcher
     else
-      is_expected.not_to firewall_matcher
+      expect(subject).not_to firewall_matcher
     end
   }
 end

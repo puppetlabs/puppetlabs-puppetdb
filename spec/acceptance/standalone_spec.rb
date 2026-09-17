@@ -1,16 +1,25 @@
+# frozen_string_literal: true
+
 require 'spec_helper_acceptance'
 
+PUPPETDB_READY_COMMAND = 'timeout 300 sh -c "until netstat -tunl ' \
+                         '| grep -q \':8080 \'; do sleep 2; done" || { systemctl status puppetdb ' \
+                         '--no-pager; journalctl -u puppetdb --no-pager -n 100; exit 1; }'
+
 describe 'standalone' do
-  it_behaves_like 'puppetserver'
-
-  let(:puppetdb_params) {}
-  let(:puppetdb_master_config_params) {}
-
-  let(:postgres_version) { 'undef' } # default
   let(:manage_firewall) { "(getvar('facts.os.family') == 'RedHat' and Integer(getvar('facts.os.release.major')) > 7)" }
+  let(:postgres_version) { "(getvar('facts.os.family') == 'Suse') ? { true => '15', default => undef }" }
+  let(:puppetdb_master_config_params) {}
+  let(:puppetdb_params) {}
+
+  it_behaves_like 'puppetserver'
 
   describe 'with defaults' do
     it_behaves_like 'puppetdb'
+
+    describe command(PUPPETDB_READY_COMMAND), :status do
+      its(:exit_status) { is_expected.to eq 0 }
+    end
 
     describe service('puppetdb'), :status do
       it { is_expected.to be_enabled }
@@ -50,7 +59,7 @@ describe 'standalone' do
   context 'with manage report processor', :change do
     ['remove', 'add'].each do |outcome|
       context "#{outcome}s puppet config puppetdb report processor" do
-        let(:enable_reports) { (outcome == 'add') ? true : false }
+        let(:enable_reports) { (outcome == 'add') }
 
         let(:puppetdb_master_config_params) do
           <<~EOS
@@ -99,7 +108,7 @@ describe 'standalone' do
         ~> service { 'puppetdb':
           ensure => 'running',
         }
-        EOS
+      EOS
 
       apply_manifest(pp, expect_failures: false, debug: ENV.key?('DEBUG'))
     end

@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
-include RspecPuppetFacts
+# Same rspec-puppet-facts idiom .rubocop.yml exempts for spec_helper.rb (D-07); kept here instead.
+include RspecPuppetFacts # rubocop:disable Style/MixinUsage
 
-Dir['./spec/support/unit/**/*.rb'].sort.each { |f| require f }
+Dir['./spec/support/unit/**/*.rb'].each { |f| require f }
 
 RSpec.configure do |c|
   c.fail_if_no_examples = true

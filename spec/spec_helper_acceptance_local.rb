@@ -6,7 +6,7 @@ class LitmusHelper
   include PuppetLitmus
 end
 
-Dir['./spec/support/acceptance/**/*.rb'].sort.each { |f| require f }
+Dir['./spec/support/acceptance/**/*.rb'].each { |f| require f }
 
 RSpec.configure do |c|
   c.fail_fast = true

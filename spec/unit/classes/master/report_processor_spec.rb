@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe 'puppetdb::master::report_processor', type: :class do
@@ -20,14 +22,14 @@ describe 'puppetdb::master::report_processor', type: :class do
 
       describe 'when using default values' do
         it {
-          is_expected.to contain_ini_subsetting('puppet.conf/reports/puppetdb')
+          expect(subject).to contain_ini_subsetting('puppet.conf/reports/puppetdb')
             .with(
-              'ensure'                => 'absent',
-              'path'                  => '/etc/puppet/puppet.conf',
-              'section'               => 'master',
-              'setting'               => 'reports',
-              'subsetting'            => 'puppetdb',
-              'subsetting_separator'  => ',',
+              'ensure' => 'absent',
+              'path' => '/etc/puppet/puppet.conf',
+              'section' => 'master',
+              'setting' => 'reports',
+              'subsetting' => 'puppetdb',
+              'subsetting_separator' => ',',
             )
         }
       end
@@ -40,14 +42,14 @@ describe 'puppetdb::master::report_processor', type: :class do
         end
 
         it {
-          is_expected.to contain_ini_subsetting('puppet.conf/reports/puppetdb')
+          expect(subject).to contain_ini_subsetting('puppet.conf/reports/puppetdb')
             .with(
-              'ensure'                => 'present',
-              'path'                  => '/etc/puppet/puppet.conf',
-              'section'               => 'master',
-              'setting'               => 'reports',
-              'subsetting'            => 'puppetdb',
-              'subsetting_separator'  => ',',
+              'ensure' => 'present',
+              'path' => '/etc/puppet/puppet.conf',
+              'section' => 'master',
+              'setting' => 'reports',
+              'subsetting' => 'puppetdb',
+              'subsetting_separator' => ',',
             )
         }
       end

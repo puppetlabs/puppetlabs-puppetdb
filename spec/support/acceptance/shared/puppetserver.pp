@@ -13,7 +13,7 @@ if $facts['os']['family'] == 'RedHat' {
   package { 'iproute': ensure => installed }
 
   # TODO: rework this hack, maybe not needed for newer version of postgresl module?
-  if versioncmp($facts['os']['release']['major'], '8') >= 0 {
+  if $facts['os']['release']['major'] == '8' {
     package { 'disable-builtin-dnf-postgresql-module':
       ensure   => 'disabled',
       name     => 'postgresql',

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Puppet::Functions.create_function(:'puppetdb::flatten_java_args') do
   dispatch :flatten_java_args do
     optional_param 'Hash', :java_args

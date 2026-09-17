@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe 'puppetdb::database::ssl_configuration', type: :class do
@@ -27,7 +29,7 @@ describe 'puppetdb::database::ssl_configuration', type: :class do
     it { is_expected.to compile.with_all_deps }
 
     it 'has server.key file' do
-      is_expected.to contain_file('postgres private key')
+      expect(subject).to contain_file('postgres private key')
         .with(
           ensure: 'present',
           owner: 'postgres',
@@ -38,7 +40,7 @@ describe 'puppetdb::database::ssl_configuration', type: :class do
     end
 
     it 'has server.crt file' do
-      is_expected.to contain_file('postgres public key')
+      expect(subject).to contain_file('postgres public key')
         .with(
           ensure: 'present',
           owner: 'postgres',
@@ -49,28 +51,28 @@ describe 'puppetdb::database::ssl_configuration', type: :class do
     end
 
     it 'has ssl config attribute' do
-      is_expected.to contain_postgresql__server__config_entry('ssl')
+      expect(subject).to contain_postgresql__server__config_entry('ssl')
         .with_value('on').with_ensure('present')
         .that_requires('File[postgres private key]')
         .that_requires('File[postgres public key]')
     end
 
     it 'has ssl_cert_file config attribute' do
-      is_expected.to contain_postgresql__server__config_entry('ssl_cert_file')
+      expect(subject).to contain_postgresql__server__config_entry('ssl_cert_file')
         .with_value("#{datadir_path}/server.crt").with_ensure('present')
         .that_requires('File[postgres private key]')
         .that_requires('File[postgres public key]')
     end
 
     it 'has ssl_key_file config attribute' do
-      is_expected.to contain_postgresql__server__config_entry('ssl_key_file')
+      expect(subject).to contain_postgresql__server__config_entry('ssl_key_file')
         .with_value("#{datadir_path}/server.key").with_ensure('present')
         .that_requires('File[postgres private key]')
         .that_requires('File[postgres public key]')
     end
 
     it 'has ssl_ca_file config attribute' do
-      is_expected.to contain_postgresql__server__config_entry('ssl_ca_file')
+      expect(subject).to contain_postgresql__server__config_entry('ssl_ca_file')
         .with_value(params[:postgresql_ssl_ca_cert_path]).with_ensure('present')
         .that_requires('File[postgres private key]')
         .that_requires('File[postgres public key]')
@@ -86,9 +88,9 @@ describe 'puppetdb::database::ssl_configuration', type: :class do
       let(:name) { "Configure postgresql ssl rules for #{args[:database_username]}" }
       let(:args) do
         {
-          database_name:     params[:database_name],
+          database_name: params[:database_name],
           database_username: params[:database_username],
-          puppetdb_server:   params[:puppetdb_server] || facts[:networking]['fqdn'],
+          puppetdb_server: params[:puppetdb_server] || facts[:networking]['fqdn'],
         }
       end
 

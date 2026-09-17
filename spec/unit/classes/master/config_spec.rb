@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe 'puppetdb::master::config', type: :class do
@@ -18,7 +20,7 @@ describe 'puppetdb::master::config', type: :class do
           let(:pre_condition) { 'class { "puppetdb": }' }
 
           it {
-            is_expected.to contain_puppetdb_conn_validator('puppetdb_conn').with(
+            expect(subject).to contain_puppetdb_conn_validator('puppetdb_conn').with(
               puppetdb_server: 'puppetdb.example.com',
               puppetdb_port: '8081',
               use_ssl: 'true',
@@ -30,7 +32,7 @@ describe 'puppetdb::master::config', type: :class do
           let(:pre_condition) { 'class { "puppetdb": disable_ssl => true }' }
 
           it {
-            is_expected.to contain_puppetdb_conn_validator('puppetdb_conn').with(
+            expect(subject).to contain_puppetdb_conn_validator('puppetdb_conn').with(
               puppetdb_port: '8080',
               use_ssl: 'false',
             )
@@ -42,7 +44,7 @@ describe 'puppetdb::master::config', type: :class do
           let(:params) { { puppetdb_port: '1234' } }
 
           it {
-            is_expected.to contain_puppetdb_conn_validator('puppetdb_conn').with(
+            expect(subject).to contain_puppetdb_conn_validator('puppetdb_conn').with(
               puppetdb_port: '1234',
               use_ssl: 'true',
             )
@@ -54,7 +56,7 @@ describe 'puppetdb::master::config', type: :class do
           let(:params) { { puppetdb_port: '1234' } }
 
           it {
-            is_expected.to contain_puppetdb_conn_validator('puppetdb_conn').with(
+            expect(subject).to contain_puppetdb_conn_validator('puppetdb_conn').with(
               puppetdb_port: '1234',
               use_ssl: 'false',
             )
@@ -71,8 +73,9 @@ describe 'puppetdb::master::config', type: :class do
 
           it { is_expected.to contain_package('puppetdb-terminus').with(ensure: '2.2.0') }
           it { is_expected.to contain_puppetdb_conn_validator('puppetdb_conn').with(test_url: '/v3/version') }
+
           it {
-            is_expected.to contain_service('puppetmaster')
+            expect(subject).to contain_service('puppetmaster')
               .with_ensure('running')
               .with_enable(true)
           }

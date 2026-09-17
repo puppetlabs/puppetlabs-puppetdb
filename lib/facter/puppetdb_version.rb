@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Facter.add(:puppetdb_version) do
   confine { Facter::Util::Resolution.which('puppetdb') }
 
