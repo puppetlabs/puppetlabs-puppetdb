@@ -5,30 +5,27 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
-## [v9.0.0](https://github.com/puppetlabs/puppetlabs-puppetdb/tree/v9.0.0) - 2026-09-01
+## [v9.0.0](https://github.com/puppetlabs/puppetlabs-puppetdb/tree/v9.0.0) - 2026-09-30
 
 [Full Changelog](https://github.com/puppetlabs/puppetlabs-puppetdb/compare/v8.1.0...v9.0.0)
 
 ### Added
 
-- Add strict Puppet data type validation across module parameters (String, Integer, Boolean, Enum, Array, Hash, Absolutepath, Stdlib::Host, etc.), including port validation restricted to the unprivileged range (1024-49151) [#411](https://github.com/puppetlabs/puppetlabs-puppetdb/pull/411) ([chambersmp](https://github.com/chambersmp))
-- Support for Puppet 9
-
-### Changed
-
-- **Breaking:** Default `postgres_version` bumped from `14` to `17` to match the version installed by the latest Puppet Enterprise
-- Use the `Sensitive` data type for secrets (passwords) [#331](https://github.com/puppetlabs/puppetlabs-puppetdb/pull/331) ([cocker-cc](https://github.com/cocker-cc))
-- Extend the `puppetdb_version` fact to handle Debian packages [#416](https://github.com/puppetlabs/puppetlabs-puppetdb/pull/416) ([rwaffen](https://github.com/rwaffen))
-- Updated to PDK 3.8.0, dropped Puppet 7 support, and tightened version requirements on module dependencies
-- Update CI workflows (maint) [#410](https://github.com/puppetlabs/puppetlabs-puppetdb/pull/410) ([h0tw1r3](https://github.com/h0tw1r3))
-- Update CODEOWNERS [#417](https://github.com/puppetlabs/puppetlabs-puppetdb/pull/417) ([chambersmp](https://github.com/chambersmp))
+- Set data types for puppetdb parameters [#411](https://github.com/puppetlabs/puppetlabs-puppetdb/pull/411) ([chambersmp](https://github.com/chambersmp))
+- Allow `Sensitive` data type for secrets [#331](https://github.com/puppetlabs/puppetlabs-puppetdb/pull/331) ([cocker-cc](https://github.com/cocker-cc))
 
 ### Fixed
 
-- Correct spelling of "certificates" [#414](https://github.com/puppetlabs/puppetlabs-puppetdb/pull/414) ([viscountstyx](https://github.com/viscountstyx))
-- Lower the `stdlib` requirement back down, since `puppetdb` depends on `puppetlabs/postgresql`, which depends on `puppet/systemd`, and `puppet/systemd` does not yet support `stdlib >= 10.0.0`
-- Correct stale `postgres_version` documentation in `puppetdb::init` and `puppetdb::database::postgresql` that still referenced the old `11`/`9.6` defaults
-- Set `open_ssl_port` to default `false` instead of `undef` in unit test shared examples
+- Extend fact to not fail on debian packages [#416](https://github.com/puppetlabs/puppetlabs-puppetdb/pull/416) ([rwaffen](https://github.com/rwaffen))
+
+### Other
+
+- Prepare module for Puppet 9 [#438](https://github.com/puppetlabs/puppetlabs-puppetdb/pull/438) ([gavindidrichsen](https://github.com/gavindidrichsen))
+- Feature maintenance [#436](https://github.com/puppetlabs/puppetlabs-puppetdb/pull/436) ([klab-systems](https://github.com/klab-systems))
+- Update storeconfig ini section with masters [#432](https://github.com/puppetlabs/puppetlabs-puppetdb/pull/432) ([XMol](https://github.com/XMol))
+- Issue 430: Fix Datatype for listen_addresses [#431](https://github.com/puppetlabs/puppetlabs-puppetdb/pull/431) ([cocker-cc](https://github.com/cocker-cc))
+- Only include 'firewall' module when necessary [#415](https://github.com/puppetlabs/puppetlabs-puppetdb/pull/415) ([Geod24](https://github.com/Geod24))
+- Correct spelling of certificates in manifest comments [#414](https://github.com/puppetlabs/puppetlabs-puppetdb/pull/414) ([viscountstyx](https://github.com/viscountstyx))
 
 ## [v8.1.0](https://github.com/puppetlabs/puppetlabs-puppetdb/tree/v8.1.0) - 2024-05-07
 
@@ -56,6 +53,27 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 ## [v8.0.0](https://github.com/puppetlabs/puppetlabs-puppetdb/tree/v8.0.0) - 2024-04-30
 
 [Full Changelog](https://github.com/puppetlabs/puppetlabs-puppetdb/compare/7.14.0...v8.0.0)
+
+### Changed
+
+- Drop support for Ubuntu 16 and Scientific Linux 7 [#384](https://github.com/puppetlabs/puppetlabs-puppetdb/pull/384) ([h0tw1r3](https://github.com/h0tw1r3))
+- Drop support for puppet < 7 [#383](https://github.com/puppetlabs/puppetlabs-puppetdb/pull/383) ([h0tw1r3](https://github.com/h0tw1r3))
+- Change default postgres version to 14 [#379](https://github.com/puppetlabs/puppetlabs-puppetdb/pull/379) ([jonathannewman](https://github.com/jonathannewman))
+- Update firewall manifests to use `jump` instead of `action` [#372](https://github.com/puppetlabs/puppetlabs-puppetdb/pull/372) ([david22swan](https://github.com/david22swan))
+- Remove obsolete database config options [#357](https://github.com/puppetlabs/puppetlabs-puppetdb/pull/357) ([smokris](https://github.com/smokris))
+
+### Added
+
+- Allow puppetlabs/firewall 8.x [#395](https://github.com/puppetlabs/puppetlabs-puppetdb/pull/395) ([gcoxmoz](https://github.com/gcoxmoz))
+- Make `puppet_confdir` configurable [#376](https://github.com/puppetlabs/puppetlabs-puppetdb/pull/376) ([h0tw1r3](https://github.com/h0tw1r3))
+
+### Fixed
+
+- Support scram-sha-256 password_encryption method [#400](https://github.com/puppetlabs/puppetlabs-puppetdb/pull/400) ([deric](https://github.com/deric))
+- Fix custom database port support [#392](https://github.com/puppetlabs/puppetlabs-puppetdb/pull/392) ([h0tw1r3](https://github.com/h0tw1r3))
+- Correct clientcert value in pg_hba.conf for Postgresql >= 12 [#380](https://github.com/puppetlabs/puppetlabs-puppetdb/pull/380) ([jhunt-steds](https://github.com/jhunt-steds))
+- Unterminated quoted string when creating read user [#371](https://github.com/puppetlabs/puppetlabs-puppetdb/pull/371) ([waipeng](https://github.com/waipeng))
+- Fix FreeBSD support [#342](https://github.com/puppetlabs/puppetlabs-puppetdb/pull/342) ([smortex](https://github.com/smortex))
 
 ## [7.14.0](https://github.com/puppetlabs/puppetlabs-puppetdb/tree/7.14.0) - 2023-10-09
 
@@ -91,6 +109,15 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 ## [7.11.0](https://github.com/puppetlabs/puppetlabs-puppetdb/tree/7.11.0) - 2022-12-12
 
 [Full Changelog](https://github.com/puppetlabs/puppetlabs-puppetdb/compare/7.10.0...7.11.0)
+
+### Added
+
+- (PDB-5559) Grant read user to write user [#361](https://github.com/puppetlabs/puppetlabs-puppetdb/pull/361) ([austb](https://github.com/austb))
+- Mark as compatible with puppetlabs/postgresql 8.x [#353](https://github.com/puppetlabs/puppetlabs-puppetdb/pull/353) ([ekohl](https://github.com/ekohl))
+
+### Fixed
+
+- Fix legacy fact usage [#355](https://github.com/puppetlabs/puppetlabs-puppetdb/pull/355) ([smortex](https://github.com/smortex))
 
 ## [7.10.0](https://github.com/puppetlabs/puppetlabs-puppetdb/tree/7.10.0) - 2021-12-16
 
@@ -165,6 +192,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 ## [7.4.0](https://github.com/puppetlabs/puppetlabs-puppetdb/tree/7.4.0) - 2019-08-06
 
 [Full Changelog](https://github.com/puppetlabs/puppetlabs-puppetdb/compare/7.3.0...7.4.0)
+
+### Added
+
+- Add possibilty to skip database creation in the module [#296](https://github.com/puppetlabs/puppetlabs-puppetdb/pull/296) ([jhooyberghs](https://github.com/jhooyberghs))
 
 ## [7.3.0](https://github.com/puppetlabs/puppetlabs-puppetdb/tree/7.3.0) - 2019-06-14
 
@@ -350,7 +381,6 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 - OpenBSD support [#136](https://github.com/puppetlabs/puppetlabs-puppetdb/pull/136) ([buzzdeee](https://github.com/buzzdeee))
 - Add read-database support [#132](https://github.com/puppetlabs/puppetlabs-puppetdb/pull/132) ([tdevelioglu](https://github.com/tdevelioglu))
-- Allow set manage_server in init class [#131](https://github.com/puppetlabs/puppetlabs-puppetdb/pull/131) ([baurmatt](https://github.com/baurmatt))
 - implement max_threads option for jetty [#130](https://github.com/puppetlabs/puppetlabs-puppetdb/pull/130) ([stefanandres](https://github.com/stefanandres))
 - Allow more flexible routes configuration [#127](https://github.com/puppetlabs/puppetlabs-puppetdb/pull/127) ([dalen](https://github.com/dalen))
 - Add strict_variables support when puppetdb is not on puppetmaster [#126](https://github.com/puppetlabs/puppetlabs-puppetdb/pull/126) ([mcanevet](https://github.com/mcanevet))
@@ -470,6 +500,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 ## [1.1.5](https://github.com/puppetlabs/puppetlabs-puppetdb/tree/1.1.5) - 2013-04-04
 
 [Full Changelog](https://github.com/puppetlabs/puppetlabs-puppetdb/compare/1.1.4...1.1.5)
+
+### Added
+
+- Configuration improvements [#36](https://github.com/puppetlabs/puppetlabs-puppetdb/pull/36) ([kbrezina](https://github.com/kbrezina))
+- Bug/master/manage redhat firewall [#30](https://github.com/puppetlabs/puppetlabs-puppetdb/pull/30) ([cprice404](https://github.com/cprice404))
 
 ## [1.1.4](https://github.com/puppetlabs/puppetlabs-puppetdb/tree/1.1.4) - 2013-01-17
 
