@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe 'puppetdb::server::global', type: :class do
@@ -7,7 +9,7 @@ describe 'puppetdb::server::global', type: :class do
     include_examples 'puppetdb::params'
 
     it {
-      is_expected.to contain_ini_setting('puppetdb_global_vardir')
+      expect(subject).to contain_ini_setting('puppetdb_global_vardir')
         .with(
           'ensure' => 'present',
           'path' => '/etc/puppetlabs/puppetdb/conf.d/config.ini',
@@ -16,13 +18,14 @@ describe 'puppetdb::server::global', type: :class do
           'value' => '/opt/puppetlabs/server/data/puppetdb',
         )
     }
+
     it {
-      is_expected.to contain_file('/etc/puppetlabs/puppetdb/conf.d/config.ini')
+      expect(subject).to contain_file('/etc/puppetlabs/puppetdb/conf.d/config.ini')
         .with(
-          'ensure'  => 'file',
-          'owner'   => 'root',
-          'group'   => 'puppetdb',
-          'mode'    => '0640',
+          'ensure' => 'file',
+          'owner' => 'root',
+          'group' => 'puppetdb',
+          'mode' => '0640',
         )
     }
   end
@@ -31,7 +34,7 @@ describe 'puppetdb::server::global', type: :class do
     let(:pre_condition) { 'class { "puppetdb::globals": version => "2.2.0", }' }
 
     it {
-      is_expected.to contain_ini_setting('puppetdb_global_vardir')
+      expect(subject).to contain_ini_setting('puppetdb_global_vardir')
         .with(
           'ensure' => 'present',
           'path' => '/etc/puppetdb/conf.d/config.ini',
@@ -42,12 +45,12 @@ describe 'puppetdb::server::global', type: :class do
     }
 
     it {
-      is_expected.to contain_file('/etc/puppetdb/conf.d/config.ini')
+      expect(subject).to contain_file('/etc/puppetdb/conf.d/config.ini')
         .with(
-          'ensure'  => 'file',
-          'owner'   => 'root',
-          'group'   => 'puppetdb',
-          'mode'    => '0640',
+          'ensure' => 'file',
+          'owner' => 'root',
+          'group' => 'puppetdb',
+          'mode' => '0640',
         )
     }
   end

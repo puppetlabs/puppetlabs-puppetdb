@@ -4,16 +4,16 @@ require 'spec_helper'
 
 defaults = {
   read_database_username: 'puppetdb-read',
-  database_name:          'puppetdb',
-  database_owner:         'puppetdb',
+  database_name: 'puppetdb',
+  database_owner: 'puppetdb',
 }
 
 valid = {
   'puppetdb-read': defaults.merge({ password_hash: 'blash' }),
-  'spectest': {
+  spectest: {
     read_database_username: 'spectest-read',
-    database_name:          'spectest',
-    database_owner:         'spectest',
+    database_name: 'spectest',
+    database_owner: 'spectest',
   },
   'with port': defaults.merge({ database_port: 5433 }),
 }

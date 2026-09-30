@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe 'puppetdb::server', type: :class do
@@ -28,12 +30,12 @@ describe 'puppetdb::server', type: :class do
         it { is_expected.to contain_class('puppetdb::server::puppetdb') }
 
         it {
-          is_expected.to contain_package('puppetdb')
+          expect(subject).to contain_package('puppetdb')
             .that_notifies('Service[puppetdb]')
         }
 
         it {
-          is_expected.to contain_service('puppetdb')
+          expect(subject).to contain_service('puppetdb')
             .with_ensure('running')
             .with_enable(true)
         }
@@ -53,15 +55,15 @@ describe 'puppetdb::server', type: :class do
         end
 
         it {
-          is_expected.to contain_ini_subsetting("'-Xms'")
+          expect(subject).to contain_ini_subsetting("'-Xms'")
             .with(
-              'ensure'            => 'present',
-              'path'              => pathdir.to_s,
-              'section'           => '',
+              'ensure' => 'present',
+              'path' => pathdir.to_s,
+              'section' => '',
               'key_val_separator' => '=',
-              'setting'           => 'JAVA_ARGS',
-              'subsetting'        => '-Xms',
-              'value'             => '2g',
+              'setting' => 'JAVA_ARGS',
+              'subsetting' => '-Xms',
+              'value' => '2g',
             )
         }
       end
@@ -76,7 +78,7 @@ describe 'puppetdb::server', type: :class do
 
         context 'on standard PuppetDB' do
           it {
-            is_expected.to contain_ini_setting('java_args')
+            expect(subject).to contain_ini_setting('java_args')
               .with(
                 'ensure' => 'present',
                 'path' => pathdir.to_s,
@@ -197,7 +199,7 @@ describe 'puppetdb::server', type: :class do
 
         context 'private key file is converted from .pem to .pk8 format' do
           it 'runs exec command' do
-            is_expected.to contain_exec(key_pk8_path)
+            expect(subject).to contain_exec(key_pk8_path)
               .with(
                 path: ['/opt/puppetlabs/puppet/bin', facts[:path]],
                 command: "openssl pkcs8 -topk8 -inform PEM -outform DER -in #{key_path} -out #{key_pk8_path} -nocrypt",
@@ -207,7 +209,7 @@ describe 'puppetdb::server', type: :class do
           end
 
           it 'contains file private.pk8' do
-            is_expected.to contain_file('/etc/puppetlabs/puppetdb/ssl/private.pk8')
+            expect(subject).to contain_file('/etc/puppetlabs/puppetdb/ssl/private.pk8')
               .with(
                 ensure: 'file',
                 owner: 'root',

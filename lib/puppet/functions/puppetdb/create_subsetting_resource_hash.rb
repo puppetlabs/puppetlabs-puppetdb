@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Puppet::Functions.create_function(:'puppetdb::create_subsetting_resource_hash') do
   dispatch :create_subsetting_resource_hash do
     required_param 'Hash', :java_args

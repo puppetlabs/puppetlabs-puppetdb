@@ -11,7 +11,7 @@ describe 'puppetdb::database::postgresql', type: :class do
     it { is_expected.to contain_class('postgresql::server::contrib') }
 
     it {
-      is_expected.to contain_postgresql__server__extension('pg_trgm')
+      expect(subject).to contain_postgresql__server__extension('pg_trgm')
         .that_requires('Postgresql::Server::Db[puppetdb]')
         .with_database('puppetdb')
     }
@@ -56,39 +56,39 @@ describe 'puppetdb::database::postgresql', type: :class do
       end
 
       it {
-        is_expected.to contain_postgresql__server__db(params[:database_name])
+        expect(subject).to contain_postgresql__server__db(params[:database_name])
           .with(
-            user:     params[:database_username],
+            user: params[:database_username],
             password: params[:database_password],
-            grant:    'all',
-            port:     params[:database_port].to_i,
+            grant: 'all',
+            port: params[:database_port].to_i,
             encoding: 'UTF8',
-            locale:   'en_US.UTF-8',
+            locale: 'en_US.UTF-8',
           )
       }
 
       it {
-        is_expected.to contain_postgresql_psql('revoke all access on public schema')
+        expect(subject).to contain_postgresql_psql('revoke all access on public schema')
           .that_requires("Postgresql::Server::Db[#{params[:database_name]}]")
           .with(
-            db:      params[:database_name],
-            port:    params[:database_port].to_i,
+            db: params[:database_name],
+            port: params[:database_port].to_i,
             command: 'REVOKE CREATE ON SCHEMA public FROM public',
-            unless:  "SELECT * FROM
+            unless: "SELECT * FROM
                   (SELECT has_schema_privilege('public', 'public', 'create') can_create) privs
                 WHERE privs.can_create=false",
           )
       }
 
       it {
-        is_expected.to contain_postgresql_psql("grant all permissions to #{params[:database_username]}")
+        expect(subject).to contain_postgresql_psql("grant all permissions to #{params[:database_username]}")
           .that_requires('Postgresql_psql[revoke all access on public schema]')
           .that_comes_before("Puppetdb::Database::Read_only_user[#{params[:read_database_username]}]")
           .with(
-            db:      params[:database_name],
-            port:    params[:database_port].to_i,
+            db: params[:database_name],
+            port: params[:database_port].to_i,
             command: "GRANT CREATE ON SCHEMA public TO \"#{params[:database_username]}\"",
-            unless:  "SELECT * FROM
+            unless: "SELECT * FROM
                   (SELECT has_schema_privilege('#{params[:database_username]}', 'public', 'create') can_create) privs
                 WHERE privs.can_create=true",
           )
@@ -99,22 +99,22 @@ describe 'puppetdb::database::postgresql', type: :class do
         let(:args) do
           {
             read_database_username: params[:read_database_username],
-            database_name:          params[:database_name],
-            password_hash:          %r{^(md5|SCRAM)}, # TODO: mock properly
-            database_owner:         params[:database_username],
-            database_port:          params[:database_port].to_i,
+            database_name: params[:database_name],
+            password_hash: %r{^(md5|SCRAM)}, # TODO: mock properly
+            database_owner: params[:database_username],
+            database_port: params[:database_port].to_i,
           }
         end
       end
 
       it {
-        is_expected.to contain_postgresql_psql("grant #{params[:read_database_username]} role to #{params[:database_username]}")
+        expect(subject).to contain_postgresql_psql("grant #{params[:read_database_username]} role to #{params[:database_username]}")
           .that_requires("Puppetdb::Database::Read_only_user[#{params[:read_database_username]}]")
           .with(
-            db:      params[:database_name],
-            port:    params[:database_port].to_i,
+            db: params[:database_name],
+            port: params[:database_port].to_i,
             command: "GRANT \"#{params[:read_database_username]}\" TO \"#{params[:database_username]}\"",
-            unless:  "SELECT oid, rolname FROM pg_roles WHERE
+            unless: "SELECT oid, rolname FROM pg_roles WHERE
                    pg_has_role( '#{params[:database_username]}', oid, 'member') and rolname = '#{params[:read_database_username]}'",
           )
       }

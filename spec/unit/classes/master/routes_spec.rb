@@ -16,7 +16,7 @@ describe 'puppetdb::master::routes', type: :class do
   let(:params) do
     {
       puppet_confdir: Puppet[:confdir],
-      masterless:     false,
+      masterless: false,
     }
   end
 
@@ -28,11 +28,11 @@ describe 'puppetdb::master::routes', type: :class do
         apply: {
           catalog: {
             terminus: 'compiler',
-            cache:    'puppetdb',
+            cache: 'puppetdb',
           },
           facts: {
             terminus: 'facter',
-            cache:    'puppetdb_apply',
+            cache: 'puppetdb_apply',
           },
         },
       }
@@ -43,19 +43,19 @@ describe 'puppetdb::master::routes', type: :class do
         master: {
           facts: {
             terminus: 'puppetdb',
-            cache: (Puppet::Util::Package.versioncmp(serverversion, '7.0') >= 0) ? 'json' : 'yaml'
+            cache: (Puppet::Util::Package.versioncmp(serverversion, '7.0') >= 0) ? 'json' : 'yaml',
           },
-        }
+        },
       }
     end
   end
 
   context 'with defaults' do
     it {
-      is_expected.to contain_file("#{params[:puppet_confdir]}/routes.yaml")
+      expect(subject).to contain_file("#{params[:puppet_confdir]}/routes.yaml")
         .with(
-          ensure:  'file',
-          mode:    '0644',
+          ensure: 'file',
+          mode: '0644',
         )
     }
 

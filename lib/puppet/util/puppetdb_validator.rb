@@ -1,12 +1,10 @@
+# frozen_string_literal: true
+
 require 'puppet/network/http_pool'
 
 # Validator class, for testing that PuppetDB is alive
 class Puppet::Util::PuppetdbValidator
-  attr_reader :puppetdb_server
-  attr_reader :puppetdb_port
-  attr_reader :use_ssl
-  attr_reader :test_path
-  attr_reader :test_headers
+  attr_reader :puppetdb_server, :puppetdb_port, :use_ssl, :test_path, :test_headers
 
   def initialize(puppetdb_server, puppetdb_port, use_ssl = true, test_path = '/pdb/meta/v1/version')
     @puppetdb_server = puppetdb_server

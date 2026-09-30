@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Rough conversion of grepping in the puppet source:
 # grep defaultfor lib/puppet/provider/service/*.rb
 # Source https://github.com/voxpupuli/voxpupuli-test/blob/master/lib/voxpupuli/test/facts.rb

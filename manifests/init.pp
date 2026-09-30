@@ -510,7 +510,7 @@ class puppetdb (
     false => Class['puppetdb::server'],
     default => [
       Class['puppetdb::server'],
-      Class['puppetdb::server::validate_db']
+      Class['puppetdb::server::validate_db'],
     ],
   }
 

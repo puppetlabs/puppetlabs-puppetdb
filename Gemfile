@@ -27,6 +27,17 @@ def location_for(place_or_constraint, fake_constraint = nil, opts = {})
   end
 end
 
+# Switch selection on puppetcore gemsource and ruby version.
+def puppet_floor_version(puppetcore_source)
+  return nil if puppetcore_source == 'https://rubygems.org'
+
+  ruby_version = Gem::Version.new(RUBY_VERSION.dup)
+  return '~> 9.0' if Gem::Requirement.create('>= 4.0.0').satisfied_by?(ruby_version)
+  return '~> 8.17' if Gem::Requirement.create('>= 3.1.0').satisfied_by?(ruby_version)
+
+  nil # puppet 8+ requires ruby >= 3.1; leave older rubies unconstrained
+end
+
 # Print debug information if DEBUG_GEMS or VERBOSE is set
 def print_gem_statement_for(gems)
   puts 'DEBUG: Gem definitions that will be generated:'
@@ -41,7 +52,8 @@ group :development do
   gem "json", '= 2.18.0',                        require: false if Gem::Requirement.create(['>= 4.0.0', '< 5.0.0']).satisfied_by?(Gem::Version.new(RUBY_VERSION.dup))
   gem "racc", '~> 1.4.0',                        require: false if Gem::Requirement.create(['>= 2.7.0', '< 3.0.0']).satisfied_by?(Gem::Version.new(RUBY_VERSION.dup))
   gem "deep_merge", '~> 1.2.2',                  require: false
-  gem "voxpupuli-puppet-lint-plugins", '~> 5.0', require: false
+  gem "voxpupuli-puppet-lint-plugins", '~> 7.0', require: false if gemsource_puppetcore != "https://rubygems.org"
+  gem "voxpupuli-puppet-lint-plugins", '~> 6.0', require: false if gemsource_puppetcore == "https://rubygems.org"
   gem "facterdb", '~> 2.1',                      require: false if Gem::Requirement.create(['< 3.0.0']).satisfied_by?(Gem::Version.new(RUBY_VERSION.dup))
   gem "facterdb", '~> 3.0',                      require: false if Gem::Requirement.create(['>= 3.0.0']).satisfied_by?(Gem::Version.new(RUBY_VERSION.dup))
   gem "metadata-json-lint", '~> 4.0',            require: false
@@ -64,8 +76,9 @@ group :development do
   gem "bigdecimal", '< 3.2.2',                   require: false, platforms: [:windows]
 end
 group :development, :release_prep do
-  gem "puppet-strings", '~> 4.0',              require: false
-  gem "puppetlabs_spec_helper", '~> 8.0',      require: false
+  gem "puppet-strings", '>= 4.0', '< 6.0',     require: false
+  gem "puppetlabs_spec_helper", '~> 9.0',      require: false if gemsource_puppetcore != "https://rubygems.org"
+  gem "puppetlabs_spec_helper", '~> 8.0',      require: false if gemsource_puppetcore == "https://rubygems.org"
   gem "puppet-blacksmith", '>= 7.0', '< 10.0', require: false
 end
 group :system_tests do
@@ -77,7 +90,7 @@ end
 
 gems = {}
 bolt_version = ENV.fetch('BOLT_GEM_VERSION', nil)
-puppet_version = ENV.fetch('PUPPET_GEM_VERSION', nil)
+puppet_version = ENV.fetch('PUPPET_GEM_VERSION', puppet_floor_version(gemsource_puppetcore))
 facter_version = ENV.fetch('FACTER_GEM_VERSION', nil)
 hiera_version = ENV.fetch('HIERA_GEM_VERSION', nil)
 

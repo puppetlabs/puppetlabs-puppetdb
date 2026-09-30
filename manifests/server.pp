@@ -639,10 +639,10 @@ class puppetdb::server (
       # https://puppet.com/docs/puppetdb/5.2/maintain_and_tune.html#clean-up-the-dead-letter-office
       systemd::unit_file { 'puppetdb-dlo-cleanup.service':
         content => epp("${module_name}/puppetdb-DLO-cleanup.service.epp", {
-            'puppetdb_user'  => $puppetdb_user,
-            'puppetdb_group' => $puppetdb_group,
-            'vardir'         => $vardir,
-            'dlo_max_age'    => $dlo_max_age
+          'puppetdb_user'  => $puppetdb_user,
+          'puppetdb_group' => $puppetdb_group,
+          'vardir'         => $vardir,
+          'dlo_max_age'    => $dlo_max_age
         }),
       }
       -> systemd::unit_file { 'puppetdb-dlo-cleanup.timer':

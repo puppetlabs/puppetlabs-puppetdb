@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe 'puppetdb::master::puppetdb_conf', type: :class do
@@ -16,7 +18,7 @@ describe 'puppetdb::master::puppetdb_conf', type: :class do
       let(:pre_condition) { 'class { "puppetdb": }' }
 
       it {
-        is_expected.to contain_ini_setting('soft_write_failure')
+        expect(subject).to contain_ini_setting('soft_write_failure')
           .with_setting('soft_write_failure')
           .with_value(false)
       }

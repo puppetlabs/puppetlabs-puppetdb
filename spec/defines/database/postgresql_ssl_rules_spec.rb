@@ -4,31 +4,31 @@ require 'spec_helper'
 
 valid = {
   'puppetdb-read': {
-    database_name:     'puppetdb',
+    database_name: 'puppetdb',
     database_username: 'monitor',
     postgres_version: '11',
-    puppetdb_server:   'localhost',
+    puppetdb_server: 'localhost',
   },
-  'monitor': {
-    database_name:     'opensesame',
+  monitor: {
+    database_name: 'opensesame',
     database_username: 'grover',
     postgres_version: '11',
-    puppetdb_server:   'rainbow',
+    puppetdb_server: 'rainbow',
   },
 }
 
 valid_12plus = {
   'puppetdb-read': {
-    database_name:     'puppetdb',
+    database_name: 'puppetdb',
     database_username: 'monitor',
     postgres_version: '12',
-    puppetdb_server:   'localhost',
+    puppetdb_server: 'localhost',
   },
-  'monitor': {
-    database_name:     'opensesame',
+  monitor: {
+    database_name: 'opensesame',
     database_username: 'grover',
     postgres_version: '12',
-    puppetdb_server:   'rainbow',
+    puppetdb_server: 'rainbow',
   },
 }
 

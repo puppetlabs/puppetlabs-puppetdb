@@ -18,9 +18,9 @@ shared_examples 'puppetdb::globals' do |error = false|
 
   it {
     if error
-      is_expected.to raise_error(error)
+      expect(subject).to raise_error(error)
     else
-      is_expected.to contain_class('puppetdb::globals').with(with)
+      expect(subject).to contain_class('puppetdb::globals').with(with)
     end
   }
 end

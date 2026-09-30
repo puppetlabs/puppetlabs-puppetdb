@@ -4,8 +4,8 @@ require 'spec_helper'
 
 defaults = {
   database_read_only_username: 'puppetdb-read',
-  database_name:               'puppetdb',
-  schema:                      'public',
+  database_name: 'puppetdb',
+  schema: 'public',
 }
 
 valid = {
