@@ -2,7 +2,8 @@
 
 require 'spec_helper_acceptance'
 
-PUPPETDB_READY_COMMAND = 'timeout 300 sh -c "until netstat -tunl ' \
+# ss rather than netstat: net-tools is not installed by default on RedHat
+PUPPETDB_READY_COMMAND = 'timeout 300 sh -c "until ss -tln ' \
                          '| grep -q \':8080 \'; do sleep 2; done" || { systemctl status puppetdb ' \
                          '--no-pager; journalctl -u puppetdb --no-pager -n 100; exit 1; }'
 

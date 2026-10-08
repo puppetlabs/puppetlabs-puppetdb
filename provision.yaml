@@ -21,3 +21,5 @@ ci:
     - litmusimage/oraclelinux:9
     - litmusimage/debian:12
     - litmusimage/ubuntu:24.04
+    - litmusimage/redhat:8
+    - litmusimage/redhat:9
