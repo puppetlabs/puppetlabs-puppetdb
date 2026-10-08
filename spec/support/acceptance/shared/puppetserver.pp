@@ -14,14 +14,18 @@ if $facts['os']['family'] == 'RedHat' {
 
   # TODO: rework this hack, maybe not needed for newer version of postgresl module?
   if $facts['os']['release']['major'] == '8' {
-    package { 'disable-builtin-dnf-postgresql-module':
-      ensure   => 'disabled',
-      name     => 'postgresql',
-      provider => 'dnfmodule',
+    # Not every EL8 image has the postgresql module (the UBI based litmusimage/redhat:8 does not),
+    # and `dnf module disable` fails with "missing groups or modules" when it is absent.
+    exec { 'disable-builtin-dnf-postgresql-module':
+      command  => 'dnf -y module disable postgresql',
+      onlyif   => 'dnf -q module list postgresql',
+      unless   => 'dnf -q module list --disabled postgresql | grep -q postgresql',
+      path     => ['/usr/bin', '/bin'],
+      provider => 'shell',
     }
 
     Yumrepo <| tag == 'postgresql::repo' |>
-    -> Package['disable-dnf-postgresql-module']
+    -> Exec['disable-builtin-dnf-postgresql-module']
     -> Package <| tag == 'postgresql' |>
   }
 
