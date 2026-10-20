@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+RSpec::Matchers.define_negated_matcher :omit_class, :contain_class
+RSpec::Matchers.define_negated_matcher :omit_firewall, :contain_firewall
+
 shared_examples 'puppetdb::server::firewall' do
   let(:defaults) do
     {
@@ -12,41 +15,16 @@ shared_examples 'puppetdb::server::firewall' do
 
   let(:with) { defined?(params) ? defaults.merge(params) : defaults }
 
+  def firewall_rule(port, open)
+    name = "#{port} accept - puppetdb"
+    (open ? contain_firewall(name) : omit_firewall(name)).with(dport: port, proto: 'tcp', jump: 'accept')
+  end
+
   it { is_expected.to contain_class('puppetdb::server::firewall').with(with) }
 
-  it {
-    if with[:open_http_port] || with[:open_ssl_port]
-      expect(subject).to contain_class('firewall')
-    else
-      expect(subject).not_to contain_class('firewall')
-    end
-  }
+  it { is_expected.to((with[:open_http_port] || with[:open_ssl_port]) ? contain_class('firewall') : omit_class('firewall')) }
 
-  it {
-    firewall_matcher = contain_firewall("#{with[:http_port]} accept - puppetdb")
-                       .with(
-                         dport: with[:http_port],
-                         proto: 'tcp',
-                         jump: 'accept',
-                       )
-    if with[:open_http_port]
-      expect(subject).to firewall_matcher
-    else
-      expect(subject).not_to firewall_matcher
-    end
-  }
+  it { is_expected.to firewall_rule(with[:http_port], with[:open_http_port]) }
 
-  it {
-    firewall_matcher = contain_firewall("#{with[:ssl_port]} accept - puppetdb")
-                       .with(
-                         dport: with[:ssl_port],
-                         proto: 'tcp',
-                         jump: 'accept',
-                       )
-    if with[:open_ssl_port]
-      expect(subject).to firewall_matcher
-    else
-      expect(subject).not_to firewall_matcher
-    end
-  }
+  it { is_expected.to firewall_rule(with[:ssl_port], with[:open_ssl_port]) }
 end

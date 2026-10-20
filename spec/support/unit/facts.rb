@@ -6,12 +6,10 @@
 add_custom_fact :service_provider, ->(_os, facts) do
   os = RSpec.configuration.facterdb_string_keys ? facts['os'] : facts[:os]
   case os['family'].downcase
-  when 'archlinux'
+  when 'archlinux', 'debian'
     'systemd'
   when 'darwin'
     'launchd'
-  when 'debian'
-    'systemd'
   when 'freebsd'
     'freebsd'
   when 'gentoo'

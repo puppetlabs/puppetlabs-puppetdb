@@ -32,11 +32,8 @@ describe 'Puppet::Util::PuppetdbValidator' do
         raise Puppet::HTTP::ResponseError, Puppet::HTTP::ResponseNetHTTP.new(url, notfound) if uri.hostname == 'wrongserver.com' && uri.port == 8081 && uri.scheme == 'https'
         raise Puppet::HTTP::HTTPError, 'Unknown host' if uri.hostname == 'non-existing.com' && uri.scheme == 'https'
 
-        if uri.hostname == 'mypuppetdb.com' && uri.port == 8080 && uri.scheme == 'http'
-          Puppet::HTTP::ResponseNetHTTP.new(url, nethttpok)
-        elsif uri.hostname == 'mypuppetdb.com' && uri.port == 8081 && uri.scheme == 'https'
-          Puppet::HTTP::ResponseNetHTTP.new(url, nethttpok)
-        end
+        ok_endpoint = uri.hostname == 'mypuppetdb.com' && ((uri.port == 8080 && uri.scheme == 'http') || (uri.port == 8081 && uri.scheme == 'https'))
+        Puppet::HTTP::ResponseNetHTTP.new(url, nethttpok) if ok_endpoint
       end
     end
   end
@@ -47,31 +44,56 @@ describe 'Puppet::Util::PuppetdbValidator' do
   end
 
   it 'stills validate without ssl' do
-    validator = Puppet::Util::PuppetdbValidator.new('mypuppetdb.com', 8080, false)
+    validator = Puppet::Util::PuppetdbValidator.new('mypuppetdb.com', 8080, use_ssl: false)
     expect(validator.attempt_connection).to be true
   end
 
-  it 'returns false and issues an appropriate notice if connection is refused' do
-    puppetdb_server = 'mypuppetdb.com'
-    puppetdb_port = 8080
-    validator = Puppet::Util::PuppetdbValidator.new(puppetdb_server, puppetdb_port)
-    expect(Puppet).to receive(:notice).with("Unable to connect to puppetdb server (https://#{puppetdb_server}:#{puppetdb_port}): Connection refused")
-    expect(validator.attempt_connection).to be false
-  end
+  context 'when the connection fails' do
+    let(:validator) { Puppet::Util::PuppetdbValidator.new(puppetdb_server, puppetdb_port) }
 
-  it 'returns false and issues an appropriate notice if connection succeeds but puppetdb is not available' do
-    puppetdb_server = 'wrongserver.com'
-    puppetdb_port = 8081
-    validator = Puppet::Util::PuppetdbValidator.new(puppetdb_server, puppetdb_port)
-    expect(Puppet).to receive(:notice).with("Unable to connect to puppetdb server (https://#{puppetdb_server}:#{puppetdb_port}): [404] Not found")
-    expect(validator.attempt_connection).to be false
-  end
+    context 'with a refused connection' do
+      let(:puppetdb_server) { 'mypuppetdb.com' }
+      let(:puppetdb_port) { 8080 }
 
-  it 'returns false and issues an appropriate notice if host:port is unreachable or does not exist' do
-    puppetdb_server = 'non-existing.com'
-    puppetdb_port = nil
-    validator = Puppet::Util::PuppetdbValidator.new(puppetdb_server, puppetdb_port)
-    expect(Puppet).to receive(:notice).with("Unable to connect to puppetdb server (https://#{puppetdb_server}:#{puppetdb_port}): Unknown host")
-    expect(validator.attempt_connection).to be false
+      it do
+        allow(Puppet).to receive(:notice)
+        expect(validator.attempt_connection).to be false
+      end
+
+      it 'issues an appropriate notice' do
+        expect(Puppet).to receive(:notice).with("Unable to connect to puppetdb server (https://#{puppetdb_server}:#{puppetdb_port}): Connection refused")
+        validator.attempt_connection
+      end
+    end
+
+    context 'with puppetdb not available on a reachable server' do
+      let(:puppetdb_server) { 'wrongserver.com' }
+      let(:puppetdb_port) { 8081 }
+
+      it do
+        allow(Puppet).to receive(:notice)
+        expect(validator.attempt_connection).to be false
+      end
+
+      it 'issues an appropriate notice' do
+        expect(Puppet).to receive(:notice).with("Unable to connect to puppetdb server (https://#{puppetdb_server}:#{puppetdb_port}): [404] Not found")
+        validator.attempt_connection
+      end
+    end
+
+    context 'with an unreachable or non-existing host:port' do
+      let(:puppetdb_server) { 'non-existing.com' }
+      let(:puppetdb_port) { nil }
+
+      it do
+        allow(Puppet).to receive(:notice)
+        expect(validator.attempt_connection).to be false
+      end
+
+      it 'issues an appropriate notice' do
+        expect(Puppet).to receive(:notice).with("Unable to connect to puppetdb server (https://#{puppetdb_server}:#{puppetdb_port}): Unknown host")
+        validator.attempt_connection
+      end
+    end
   end
 end

@@ -5,11 +5,11 @@ require 'spec_helper'
 describe 'puppetdb::server::firewall', type: :class do
   let(:facts) { on_supported_os.take(1).first[1] }
 
-  context 'defaults' do
+  context 'with defaults' do
     include_examples 'puppetdb::server::firewall'
   end
 
-  context 'custom ports and open firewall' do
+  context 'with custom ports and open firewall' do
     let(:params) do
       {
         http_port: '9000',

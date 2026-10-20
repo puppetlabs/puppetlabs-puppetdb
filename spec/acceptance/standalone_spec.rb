@@ -10,8 +10,8 @@ PUPPETDB_READY_COMMAND = 'timeout 300 sh -c "until ss -tln ' \
 describe 'standalone' do
   let(:manage_firewall) { "(getvar('facts.os.family') == 'RedHat' and Integer(getvar('facts.os.release.major')) > 7)" }
   let(:postgres_version) { "(getvar('facts.os.family') == 'Suse') ? { true => '15', default => undef }" }
-  let(:puppetdb_master_config_params) {}
-  let(:puppetdb_params) {}
+  let(:puppetdb_master_config_params) { '' }
+  let(:puppetdb_params) { '' }
 
   it_behaves_like 'puppetserver'
 
@@ -27,20 +27,23 @@ describe 'standalone' do
       it { is_expected.to be_running }
     end
 
-    describe port(8080), :status do
-      it { is_expected.to be_listening }
+    [8080, 8081].each do |listen_port|
+      describe port(listen_port), :status do
+        it { is_expected.to be_listening }
+      end
     end
 
-    describe port(8081), :status do
-      it { is_expected.to be_listening }
-    end
+    context 'with puppetdb postgres user', :status do
+      let(:readonly_create) do
+        run_shell('psql "postgresql://puppetdb-read:puppetdb-read@localhost/puppetdb" -c "create table tables(id int)"', expect_failures: true)
+      end
 
-    context 'puppetdb postgres user', :status do
       it 'is not allowing read-only user to create tables' do
-        run_shell('psql "postgresql://puppetdb-read:puppetdb-read@localhost/puppetdb" -c "create table tables(id int)"', expect_failures: true) do |r|
-          expect(r.stderr).to match(%r{^ERROR:  permission denied for schema public.*})
-          expect(r.exit_code).to eq 1
-        end
+        expect(readonly_create.stderr).to match(%r{^ERROR:  permission denied for schema public.*})
+      end
+
+      it 'fails with exit code 1 when read-only user creates tables' do
+        expect(readonly_create.exit_code).to eq 1
       end
 
       it 'is allowing normal user to manage schema' do
@@ -57,48 +60,40 @@ describe 'standalone' do
     end
   end
 
-  context 'with manage report processor', :change do
-    ['remove', 'add'].each do |outcome|
-      context "#{outcome}s puppet config puppetdb report processor" do
-        let(:enable_reports) { (outcome == 'add') }
+  ['remove', 'add'].each do |outcome|
+    context "with manage report processor when it #{outcome}s puppet config puppetdb report processor", :change do
+      let(:enable_reports) { (outcome == 'add') }
 
-        let(:puppetdb_master_config_params) do
-          <<~EOS
-            manage_report_processor => true,
-            enable_reports          => #{enable_reports},
-          EOS
-        end
+      let(:puppetdb_master_config_params) do
+        <<~PARAMS
+          manage_report_processor => true,
+          enable_reports          => #{enable_reports},
+        PARAMS
+      end
 
-        it_behaves_like 'puppetdb'
+      it_behaves_like 'puppetdb'
 
-        describe command('puppet config print --section master reports') do
-          its(:stdout) do
-            if enable_reports
-              is_expected.to match 'puppetdb'
-            else
-              is_expected.not_to match 'puppetdb'
-            end
-          end
-        end
+      describe command('puppet config print --section master reports') do
+        its(:stdout) { is_expected.to(satisfy { |out| out.include?('puppetdb') == enable_reports }) }
       end
     end
   end
 
   describe 'puppetdb with postgresql ssl', :change do
     let(:puppetdb_params) do
-      <<~EOS
+      <<~PARAMS
         postgresql_ssl_on       => true,
         database_listen_address => '0.0.0.0',
         database_host           => $facts['networking']['fqdn'],
-      EOS
+      PARAMS
     end
 
     it_behaves_like 'puppetdb'
   end
 
   describe 'set wrong database password in puppetdb conf', :change do
-    it 'applies manifest' do
-      pp = <<~EOS
+    let(:pp) do
+      <<~PP
         ini_setting { "puppetdb password":
           ensure  => present,
           path    => '/etc/puppetlabs/puppetdb/conf.d/database.ini',
@@ -109,9 +104,11 @@ describe 'standalone' do
         ~> service { 'puppetdb':
           ensure => 'running',
         }
-      EOS
+      PP
+    end
 
-      apply_manifest(pp, expect_failures: false, debug: ENV.key?('DEBUG'))
+    it 'applies manifest' do
+      expect { apply_manifest(pp, expect_failures: false, debug: ENV.key?('DEBUG')) }.not_to raise_error
     end
 
     describe service('puppetdb') do
@@ -121,10 +118,10 @@ describe 'standalone' do
 
   describe 'supports changing database port', :change do
     let(:puppetdb_params) do
-      <<~EOS
+      <<~PARAMS
         database_port           => '5433',
         read_database_port      => '5433',
-      EOS
+      PARAMS
     end
 
     it_behaves_like 'puppetdb'

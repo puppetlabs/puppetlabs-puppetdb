@@ -6,7 +6,7 @@ require 'puppet/network/http_pool'
 class Puppet::Util::PuppetdbValidator
   attr_reader :puppetdb_server, :puppetdb_port, :use_ssl, :test_path, :test_headers
 
-  def initialize(puppetdb_server, puppetdb_port, use_ssl = true, test_path = '/pdb/meta/v1/version')
+  def initialize(puppetdb_server, puppetdb_port, use_ssl: true, test_path: '/pdb/meta/v1/version')
     @puppetdb_server = puppetdb_server
     @puppetdb_port   = puppetdb_port
     @use_ssl         = use_ssl

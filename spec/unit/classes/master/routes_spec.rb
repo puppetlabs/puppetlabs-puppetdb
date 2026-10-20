@@ -52,7 +52,7 @@ describe 'puppetdb::master::routes', type: :class do
 
   context 'with defaults' do
     it {
-      expect(subject).to contain_file("#{params[:puppet_confdir]}/routes.yaml")
+      expect(catalogue).to contain_file("#{params[:puppet_confdir]}/routes.yaml")
         .with(
           ensure: 'file',
           mode: '0644',

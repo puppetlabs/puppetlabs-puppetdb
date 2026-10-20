@@ -18,7 +18,7 @@ describe 'puppetdb::master::puppetdb_conf', type: :class do
       let(:pre_condition) { 'class { "puppetdb": }' }
 
       it {
-        expect(subject).to contain_ini_setting('soft_write_failure')
+        expect(catalogue).to contain_ini_setting('soft_write_failure')
           .with_setting('soft_write_failure')
           .with_value(false)
       }

@@ -16,11 +16,5 @@ shared_examples 'puppetdb::globals' do |error = false|
 
   let(:with) { defaults.merge(defined?(args) ? args : {}) }
 
-  it {
-    if error
-      expect(subject).to raise_error(error)
-    else
-      expect(subject).to contain_class('puppetdb::globals').with(with)
-    end
-  }
+  it { is_expected.to(error ? raise_error(error) : contain_class('puppetdb::globals').with(with)) }
 end
