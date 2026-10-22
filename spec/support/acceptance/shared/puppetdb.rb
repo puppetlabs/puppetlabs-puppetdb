@@ -43,10 +43,10 @@ shared_examples 'puppetdb' do
   end
 
   it 'applies idempotently' do
-    idempotent_apply(pp, debug: ENV.key?('DEBUG'))
+    expect { idempotent_apply(pp, debug: ENV.key?('DEBUG')) }.not_to raise_error
   end
 
   it 'agent can puppetdb_query' do
-    apply_manifest("$envs = puppetdb_query('environments[name]{}')", expect_failures: false, debug: ENV.key?('DEBUG'))
+    expect { apply_manifest("$envs = puppetdb_query('environments[name]{}')", expect_failures: false, debug: ENV.key?('DEBUG')) }.not_to raise_error
   end
 end

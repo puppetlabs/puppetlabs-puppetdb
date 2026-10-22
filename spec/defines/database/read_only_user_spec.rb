@@ -30,7 +30,7 @@ describe 'puppetdb::database::read_only_user', type: :define do
   let(:args) { params }
 
   valid.each do |name, params|
-    context "for valid #{name}" do
+    context "with valid #{name}" do
       include_examples 'puppetdb::database::read_only_user' do
         let(:title) { name.to_s }
         let(:params) { params }
@@ -39,7 +39,7 @@ describe 'puppetdb::database::read_only_user', type: :define do
   end
 
   invalid.each do |name, params|
-    context "for invalid #{name}" do
+    context "with invalid #{name}" do
       include_examples 'puppetdb::database::read_only_user', Puppet::Error do
         let(:title) { name.to_s }
         let(:params) { params }

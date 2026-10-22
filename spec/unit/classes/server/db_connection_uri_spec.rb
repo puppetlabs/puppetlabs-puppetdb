@@ -24,14 +24,7 @@ describe 'puppetdb::server::database', type: :class do
         }
       end
 
-      it {
-        expect(subject).to contain_ini_setting('puppetdb_subname')
-          .with(
-            section: 'database',
-            setting: 'subname',
-            value: '//localhost:5432/puppetdb?ssl=true',
-          )
-      }
+      it { is_expected.to contain_ini_setting('puppetdb_subname').with(section: 'database', setting: 'subname', value: '//localhost:5432/puppetdb?ssl=true') }
     end
 
     describe 'when using ssl communication' do
@@ -41,36 +34,30 @@ describe 'puppetdb::server::database', type: :class do
           ssl_key_pk8_path: '/tmp/private_key.pk8',
         }
       end
-
-      it 'configures subname correctly' do
-        expect(subject).to contain_ini_setting('puppetdb_subname')
-          .with(
-            ensure: 'present',
-            path: '/etc/puppetlabs/puppetdb/conf.d/database.ini',
-            section: 'database',
-            setting: 'subname',
-            value: '//localhost:5432/puppetdb?' \
-                   'ssl=true&sslfactory=org.postgresql.ssl.LibPQFactory&' \
-                   'sslmode=verify-full&' \
-                   'sslrootcert=/etc/puppetlabs/puppetdb/ssl/ca.pem&' \
-                   'sslkey=/tmp/private_key.pk8&' \
-                   'sslcert=/etc/puppetlabs/puppetdb/ssl/public.pem',
-          )
+      let(:subname) do
+        '//localhost:5432/puppetdb?' \
+          'ssl=true&sslfactory=org.postgresql.ssl.LibPQFactory&' \
+          'sslmode=verify-full&' \
+          'sslrootcert=/etc/puppetlabs/puppetdb/ssl/ca.pem&' \
+          'sslkey=/tmp/private_key.pk8&' \
+          'sslcert=/etc/puppetlabs/puppetdb/ssl/public.pem'
       end
 
-      context 'when setting jdbc_ssl_properties as well' do
-        let(:params) do
-          {
-            jdbc_ssl_properties: '?ssl=true',
-            postgresql_ssl_on: true,
-          }
-        end
-
-        it 'raises an error' do
-          expect(subject).to compile
-            .and_raise_error(%r{Variables 'postgresql_ssl_on' and 'jdbc_ssl_properties' can not be used at the same time!})
-        end
+      it do
+        expect(catalogue).to contain_ini_setting('puppetdb_subname')
+          .with(ensure: 'present', path: '/etc/puppetlabs/puppetdb/conf.d/database.ini', section: 'database', setting: 'subname', value: subname)
       end
+    end
+
+    describe 'when using ssl communication and setting jdbc_ssl_properties as well' do
+      let(:params) do
+        {
+          jdbc_ssl_properties: '?ssl=true',
+          postgresql_ssl_on: true,
+        }
+      end
+
+      it { is_expected.to compile.and_raise_error(%r{Variables 'postgresql_ssl_on' and 'jdbc_ssl_properties' can not be used at the same time!}) }
     end
   end
 end

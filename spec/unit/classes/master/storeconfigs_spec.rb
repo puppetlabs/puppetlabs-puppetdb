@@ -11,31 +11,16 @@ describe 'puppetdb::master::storeconfigs', type: :class do
     }
   end
 
-  let(:param_ensure) { params[:enable] ? 'present' : 'absent' }
   let(:puppet_conf_section) { params[:masterless] ? 'main' : 'server' }
-  let(:puppet_conf) { File.join(Puppet[:confdir], 'puppet.conf') }
 
   context 'with default parameters' do
-    it {
-      expect(subject).to contain_ini_setting("puppet.conf/#{puppet_conf_section}/storeconfigs")
-        .with_ensure(param_ensure)
-        .with(
-          section: puppet_conf_section,
-          path: puppet_conf,
-          setting: 'storeconfigs',
-          value: true,
-        )
-    }
+    let(:setting_params) { { ensure: 'present', section: puppet_conf_section, path: File.join(Puppet[:confdir], 'puppet.conf') } }
 
-    it {
-      expect(subject).to contain_ini_setting("puppet.conf/#{puppet_conf_section}/storeconfigs_backend")
-        .with_ensure(param_ensure)
-        .with(
-          section: puppet_conf_section,
-          path: puppet_conf,
-          setting: 'storeconfigs_backend',
-          value: 'puppetdb',
-        )
-    }
+    it { is_expected.to contain_ini_setting("puppet.conf/#{puppet_conf_section}/storeconfigs").with(setting_params.merge(setting: 'storeconfigs', value: true)) }
+
+    it do
+      expect(catalogue).to contain_ini_setting("puppet.conf/#{puppet_conf_section}/storeconfigs_backend")
+        .with(setting_params.merge(setting: 'storeconfigs_backend', value: 'puppetdb'))
+    end
   end
 end

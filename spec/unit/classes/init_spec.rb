@@ -33,9 +33,7 @@ describe 'puppetdb', type: :class do
           }
         end
 
-        describe 'manifest' do
-          it { is_expected.to compile.with_all_deps }
-        end
+        it { is_expected.to compile.with_all_deps }
       end
 
       describe 'without managed postgresql database' do
@@ -46,10 +44,8 @@ describe 'puppetdb', type: :class do
           }
         end
 
-        describe 'manifest' do
-          it { is_expected.to compile.with_all_deps }
-          it { is_expected.not_to contain_postgresql__server__db('puppetdb') }
-        end
+        it { is_expected.to compile.with_all_deps }
+        it { is_expected.not_to contain_postgresql__server__db('puppetdb') }
       end
 
       context 'when not managing the database password' do
@@ -61,13 +57,11 @@ describe 'puppetdb', type: :class do
           }
         end
 
-        describe 'ini_setting entries for the password will not exist' do
-          it { is_expected.to contain_class('puppetdb::server').with('manage_db_password' => false) }
-          it { is_expected.to contain_class('puppetdb::server').with('manage_read_db_password' => false) }
+        it { is_expected.to contain_class('puppetdb::server').with('manage_db_password' => false) }
+        it { is_expected.to contain_class('puppetdb::server').with('manage_read_db_password' => false) }
 
-          it { is_expected.not_to contain_ini__setting('puppetdb_psdatabase_password') }
-          it { is_expected.not_to contain_ini__setting('puppetdb_read_database_password') }
-        end
+        it { is_expected.not_to contain_ini__setting('puppetdb_psdatabase_password') }
+        it { is_expected.not_to contain_ini__setting('puppetdb_read_database_password') }
       end
 
       context 'with password encryption' do
@@ -78,7 +72,7 @@ describe 'puppetdb', type: :class do
         end
 
         it do
-          expect(subject).to contain_postgresql__server__pg_hba_rule('allow access to all users for instance main')
+          expect(catalogue).to contain_postgresql__server__pg_hba_rule('allow access to all users for instance main')
             .with_type('host')
             .with_database('all')
             .with_user('all')
@@ -97,7 +91,7 @@ describe 'puppetdb', type: :class do
         it { is_expected.to contain_class('puppetdb::server').with('postgresql_ssl_on' => true) }
 
         it {
-          expect(subject).to contain_class('puppetdb::database::postgresql')
+          expect(catalogue).to contain_class('puppetdb::database::postgresql')
             .with(
               'postgresql_ssl_on' => true,
               'puppetdb_server' => 'puppetdb.example.com',
@@ -129,7 +123,7 @@ describe 'puppetdb', type: :class do
       end
 
       it "when using a value that does not match the validation regex for #{ttl_arg} puppetdb class" do
-        expect { expect(subject).to contain_class('puppetdb') }.to raise_error(Puppet::Error)
+        expect { catalogue }.to raise_error(Puppet::Error)
       end
     end
   end

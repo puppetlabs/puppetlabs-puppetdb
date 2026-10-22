@@ -4,12 +4,14 @@ require 'spec_helper'
 
 describe 'puppetdb::server::jetty', type: :class do
   let(:facts) { on_supported_os.take(1).first[1] }
+  let(:ini_path) { '/etc/puppetlabs/puppetdb/conf.d/jetty.ini' }
 
   it { is_expected.to contain_class('puppetdb::server::jetty') }
 
   ['default', 'legacy'].each do |values|
     describe "when using #{values} values" do
       let(:pre_condition) { 'class { "puppetdb::globals": version => "2.2.0", }' } if values == 'legacy'
+      let(:ini_path) { "#{pdbconfdir}/jetty.ini" }
       let(:pdbconfdir) do
         if values == 'legacy'
           '/etc/puppetdb/conf.d'
@@ -18,59 +20,15 @@ describe 'puppetdb::server::jetty', type: :class do
         end
       end
 
-      it {
-        expect(subject).to contain_file("#{pdbconfdir}/jetty.ini")
-          .with(
-            'ensure' => 'file',
-            'owner' => 'root',
-            'group' => 'puppetdb',
-            'mode' => '0640',
-          )
-      }
+      it { is_expected.to contain_file("#{pdbconfdir}/jetty.ini").with('ensure' => 'file', 'owner' => 'root', 'group' => 'puppetdb', 'mode' => '0640') }
 
-      it {
-        expect(subject).to contain_ini_setting('puppetdb_host')
-          .with(
-            'ensure' => 'present',
-            'path' => "#{pdbconfdir}/jetty.ini",
-            'section' => 'jetty',
-            'setting' => 'host',
-            'value' => 'localhost',
-          )
-      }
+      it { is_expected.to contain_ini_setting('puppetdb_host').with('ensure' => 'present', 'path' => ini_path, 'section' => 'jetty', 'setting' => 'host', 'value' => 'localhost') }
 
-      it {
-        expect(subject).to contain_ini_setting('puppetdb_port')
-          .with(
-            'ensure' => 'present',
-            'path' => "#{pdbconfdir}/jetty.ini",
-            'section' => 'jetty',
-            'setting' => 'port',
-            'value' => 8080,
-          )
-      }
+      it { is_expected.to contain_ini_setting('puppetdb_port').with('ensure' => 'present', 'path' => ini_path, 'section' => 'jetty', 'setting' => 'port', 'value' => 8080) }
 
-      it {
-        expect(subject).to contain_ini_setting('puppetdb_sslhost')
-          .with(
-            'ensure' => 'present',
-            'path' => "#{pdbconfdir}/jetty.ini",
-            'section' => 'jetty',
-            'setting' => 'ssl-host',
-            'value' => '0.0.0.0',
-          )
-      }
+      it { is_expected.to contain_ini_setting('puppetdb_sslhost').with('ensure' => 'present', 'path' => ini_path, 'section' => 'jetty', 'setting' => 'ssl-host', 'value' => '0.0.0.0') }
 
-      it {
-        expect(subject).to contain_ini_setting('puppetdb_sslport')
-          .with(
-            'ensure' => 'present',
-            'path' => "#{pdbconfdir}/jetty.ini",
-            'section' => 'jetty',
-            'setting' => 'ssl-port',
-            'value' => 8081,
-          )
-      }
+      it { is_expected.to contain_ini_setting('puppetdb_sslport').with('ensure' => 'present', 'path' => ini_path, 'section' => 'jetty', 'setting' => 'ssl-port', 'value' => 8081) }
 
       it { is_expected.not_to contain_ini_setting('puppetdb_sslprotocols') }
     end
@@ -83,47 +41,13 @@ describe 'puppetdb::server::jetty', type: :class do
       }
     end
 
-    it {
-      expect(subject).to contain_ini_setting('puppetdb_host')
-        .with(
-          'ensure' => 'present',
-          'path' => '/etc/puppetlabs/puppetdb/conf.d/jetty.ini',
-          'section' => 'jetty',
-          'setting' => 'host',
-          'value' => 'localhost',
-        )
-    }
+    it { is_expected.to contain_ini_setting('puppetdb_host').with('ensure' => 'present', 'path' => ini_path, 'section' => 'jetty', 'setting' => 'host', 'value' => 'localhost') }
 
-    it {
-      expect(subject).to contain_ini_setting('puppetdb_port')
-        .with(
-          'ensure' => 'present',
-          'path' => '/etc/puppetlabs/puppetdb/conf.d/jetty.ini',
-          'section' => 'jetty',
-          'setting' => 'port',
-          'value' => 8080,
-        )
-    }
+    it { is_expected.to contain_ini_setting('puppetdb_port').with('ensure' => 'present', 'path' => ini_path, 'section' => 'jetty', 'setting' => 'port', 'value' => 8080) }
 
-    it {
-      expect(subject).to contain_ini_setting('puppetdb_sslhost')
-        .with(
-          'ensure' => 'absent',
-          'path' => '/etc/puppetlabs/puppetdb/conf.d/jetty.ini',
-          'section' => 'jetty',
-          'setting' => 'ssl-host',
-        )
-    }
+    it { is_expected.to contain_ini_setting('puppetdb_sslhost').with('ensure' => 'absent', 'path' => ini_path, 'section' => 'jetty', 'setting' => 'ssl-host') }
 
-    it {
-      expect(subject).to contain_ini_setting('puppetdb_sslport')
-        .with(
-          'ensure' => 'absent',
-          'path' => '/etc/puppetlabs/puppetdb/conf.d/jetty.ini',
-          'section' => 'jetty',
-          'setting' => 'ssl-port',
-        )
-    }
+    it { is_expected.to contain_ini_setting('puppetdb_sslport').with('ensure' => 'absent', 'path' => ini_path, 'section' => 'jetty', 'setting' => 'ssl-port') }
   end
 
   describe 'when setting max_threads' do
@@ -133,62 +57,32 @@ describe 'puppetdb::server::jetty', type: :class do
       }
     end
 
-    it {
-      expect(subject).to contain_ini_setting('puppetdb_max_threads')
-        .with(
-          'ensure' => 'present',
-          'path' => '/etc/puppetlabs/puppetdb/conf.d/jetty.ini',
-          'section' => 'jetty',
-          'setting' => 'max-threads',
-          'value' => '150',
-        )
-    }
+    it { is_expected.to contain_ini_setting('puppetdb_max_threads').with('ensure' => 'present', 'path' => ini_path, 'section' => 'jetty', 'setting' => 'max-threads', 'value' => '150') }
   end
 
   describe 'when setting ssl_protocols' do
-    context 'to a valid string' do
+    context 'with a valid string' do
       let(:params) { { 'ssl_protocols' => 'TLSv1, TLSv1.1, TLSv1.2' } }
 
-      it {
-        expect(subject).to contain_ini_setting('puppetdb_sslprotocols').with(
-          'ensure' => 'present',
-          'path' => '/etc/puppetlabs/puppetdb/conf.d/jetty.ini',
-          'section' => 'jetty',
-          'setting' => 'ssl-protocols',
-          'value' => 'TLSv1, TLSv1.1, TLSv1.2',
-        )
-      }
+      it do
+        expect(catalogue).to contain_ini_setting('puppetdb_sslprotocols')
+          .with('ensure' => 'present', 'path' => ini_path, 'section' => 'jetty', 'setting' => 'ssl-protocols', 'value' => 'TLSv1, TLSv1.1, TLSv1.2')
+      end
     end
 
-    context 'to an invalid type (non-string)' do
+    context 'with an invalid type (non-string)' do
       let(:params) { { 'ssl_protocols' => ['invalid', 'type'] } }
 
-      it 'fails' do
-        expect {
-          expect(subject).to contain_class('puppetdb::server::jetty')
-        }.to raise_error(Puppet::Error)
-      end
+      it { expect { catalogue }.to raise_error(Puppet::Error) }
     end
   end
 
   describe 'when setting cipher_suites' do
-    context 'to a valid string' do
-      let(:params) do
-        {
-          'cipher_suites' => 'SSL_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384, SSL_ECDHE_RSA_WITH_AES_256_CBC_SHA384, SSL_RSA_WITH_AES_256_CBC_SHA256',
-        }
-      end
+    context 'with a valid string' do
+      let(:ciphers) { 'SSL_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384, SSL_ECDHE_RSA_WITH_AES_256_CBC_SHA384, SSL_RSA_WITH_AES_256_CBC_SHA256' }
+      let(:params) { { 'cipher_suites' => ciphers } }
 
-      it {
-        expect(subject).to contain_ini_setting('puppetdb_cipher-suites')
-          .with(
-            'ensure' => 'present',
-            'path' => '/etc/puppetlabs/puppetdb/conf.d/jetty.ini',
-            'section' => 'jetty',
-            'setting' => 'cipher-suites',
-            'value' => 'SSL_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384, SSL_ECDHE_RSA_WITH_AES_256_CBC_SHA384, SSL_RSA_WITH_AES_256_CBC_SHA256',
-          )
-      }
+      it { is_expected.to contain_ini_setting('puppetdb_cipher-suites').with('ensure' => 'present', 'path' => ini_path, 'section' => 'jetty', 'setting' => 'cipher-suites', 'value' => ciphers) }
     end
   end
 
@@ -199,26 +93,8 @@ describe 'puppetdb::server::jetty', type: :class do
       }
     end
 
-    it {
-      expect(subject).to contain_ini_setting('puppetdb_host')
-        .with(
-          'ensure' => 'absent',
-          'path' => '/etc/puppetlabs/puppetdb/conf.d/jetty.ini',
-          'section' => 'jetty',
-          'setting' => 'host',
-          'value' => 'localhost',
-        )
-    }
+    it { is_expected.to contain_ini_setting('puppetdb_host').with('ensure' => 'absent', 'path' => ini_path, 'section' => 'jetty', 'setting' => 'host', 'value' => 'localhost') }
 
-    it {
-      expect(subject).to contain_ini_setting('puppetdb_port')
-        .with(
-          'ensure' => 'absent',
-          'path' => '/etc/puppetlabs/puppetdb/conf.d/jetty.ini',
-          'section' => 'jetty',
-          'setting' => 'port',
-          'value' => 8080,
-        )
-    }
+    it { is_expected.to contain_ini_setting('puppetdb_port').with('ensure' => 'absent', 'path' => ini_path, 'section' => 'jetty', 'setting' => 'port', 'value' => 8080) }
   end
 end

@@ -25,7 +25,7 @@ describe 'puppetdb::database::read_grant' do
   let(:args) { params }
 
   valid.each do |name, params|
-    context "for valid #{name}" do
+    context "with valid #{name}" do
       include_examples 'puppetdb::database::read_grant' do
         let(:title) { name.to_s }
         let(:params) { params }
@@ -34,7 +34,7 @@ describe 'puppetdb::database::read_grant' do
   end
 
   invalid.each do |name, params|
-    context "for invalid #{name}" do
+    context "with invalid #{name}" do
       include_examples 'puppetdb::database::read_grant', Puppet::Error do
         let(:title) { name.to_s }
         let(:params) { params }

@@ -11,17 +11,10 @@ describe 'puppetdb::server::validate_read_db', type: :class do
   let(:facts) { on_supported_os.take(1).first[1] }
 
   context 'with default params' do
-    it {
-      expect(subject).to contain_class('puppetdb::server::validate_read_db')
-        .with(
-          database_host: 'localhost',
-          database_port: '5432',
-          database_username: 'puppetdb',
-          database_password: 'puppetdb',
-          database_name: 'puppetdb',
-          jdbc_ssl_properties: '',
-        )
-    }
+    it do
+      expect(catalogue).to contain_class('puppetdb::server::validate_read_db')
+        .with(database_host: 'localhost', database_port: '5432', database_username: 'puppetdb', database_password: 'puppetdb', database_name: 'puppetdb', jdbc_ssl_properties: '')
+    end
 
     it { is_expected.not_to contain_postgresql_conn_validator('validate puppetdb postgres (read) connection') }
   end
@@ -30,16 +23,10 @@ describe 'puppetdb::server::validate_read_db', type: :class do
     let(:params) { { jdbc_ssl_properties: false } }
 
     context 'with jdbc_ssl_properties set false' do
-      it {
-        expect(subject).to contain_postgresql_conn_validator('validate puppetdb postgres (read) connection')
-          .with(
-            host: 'localhost',
-            port: '5432',
-            db_username: 'puppetdb',
-            db_password: 'puppetdb',
-            db_name: 'puppetdb',
-          )
-      }
+      it do
+        expect(catalogue).to contain_postgresql_conn_validator('validate puppetdb postgres (read) connection')
+          .with(host: 'localhost', port: '5432', db_username: 'puppetdb', db_password: 'puppetdb', db_name: 'puppetdb')
+      end
     end
 
     context 'without database password' do
