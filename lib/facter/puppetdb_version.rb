@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 Facter.add(:puppetdb_version) do
-  confine { Facter::Util::Resolution.which('puppetdb') }
+  confine { Facter::Core::Execution.which('puppetdb') }
 
   setcode do
     output = Facter::Core::Execution.execute('puppetdb --version')
