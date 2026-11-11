@@ -156,6 +156,9 @@
 #   service doesn't start on boot either. Valid values are `true`, `running`,
 #   `false`, and `stopped`.
 #
+# @param puppetdb_terminus_package
+#   The PuppetDB terminus package name in the package manager. Defaults to `puppetdb-termini` or `puppetdb-terminus`.
+#
 # @param puppetdb_user
 #   Puppetdb service user
 #
@@ -393,6 +396,7 @@ class puppetdb (
   Variant[Integer[0], Pattern[/\A[0-9]+\Z/]]                           $node_purge_gc_batch_limit         = $puppetdb::params::node_purge_gc_batch_limit,
   Variant[Integer[0], Pattern[/\A[0-9]+\Z/]]                           $conn_max_age                      = $puppetdb::params::conn_max_age,
   Variant[Integer[0], Pattern[/\A[0-9]+\Z/]]                           $conn_lifetime                     = $puppetdb::params::conn_lifetime,
+  String[1]                                                            $puppetdb_terminus_package         = $puppetdb::params::terminus_package,
   String[1]                                                            $puppetdb_package                  = $puppetdb::params::puppetdb_package,
   String[1]                                                            $puppetdb_service                  = $puppetdb::params::puppetdb_service,
   Enum['running', 'true', 'stopped', 'false']                          $puppetdb_service_status           = $puppetdb::params::puppetdb_service_status,

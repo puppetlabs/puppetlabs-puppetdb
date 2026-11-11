@@ -104,6 +104,7 @@ The following parameters are available in the `puppetdb` class:
 * [`puppetdb_package`](#-puppetdb--puppetdb_package)
 * [`puppetdb_service`](#-puppetdb--puppetdb_service)
 * [`puppetdb_service_status`](#-puppetdb--puppetdb_service_status)
+* [`puppetdb_terminus_package`](#-puppetdb--puppetdb_terminus_package)
 * [`puppetdb_user`](#-puppetdb--puppetdb_user)
 * [`puppetdb_group`](#-puppetdb--puppetdb_group)
 * [`puppetdb_server`](#-puppetdb--puppetdb_server)
@@ -503,6 +504,14 @@ service doesn't start on boot either. Valid values are `true`, `running`,
 `false`, and `stopped`.
 
 Default value: `$puppetdb::params::puppetdb_service_status`
+
+##### <a name="-puppetdb--puppetdb_terminus_package"></a>`puppetdb_terminus_package`
+
+Data type: `String[1]`
+
+The PuppetDB terminus package name in the package manager. Defaults to `puppetdb-termini` or `puppetdb-terminus`.
+
+Default value: `$puppetdb::params::terminus_package`
 
 ##### <a name="-puppetdb--puppetdb_user"></a>`puppetdb_user`
 
